@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusVip" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />   
     <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="wechat" property="wechat" jdbcType="VARCHAR" />
@@ -21,7 +22,7 @@
     <result column="updated_name" property="updatedName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    vip.id, vip.customer_code, vip.card_no, vip.mobile, vip.wechat, vip.cn_name, vip.sex, 
+    vip.id, vip.customer_code, vip.card_type, vip.card_no, vip.mobile, vip.wechat, vip.cn_name, vip.sex, 
     vip.brithday, vip.email, vip.origin_precent, vip.vip_time, vip.enable_price, vip.memo, 
     vip.enabled, vip.updated_time, vip.created_name, vip.updated_name
   </sql>
@@ -39,7 +40,6 @@
   			and (vip.card_no like '%${q}%' 
   				or vip.mobile like '%${q}%'
   				or vip.cn_name like '%${q}%'
-  				or vip.wechat like '%${q}%'
   				)
   		</if>
   		
@@ -57,6 +57,10 @@
   		
   		<if test="cardNo != null and cardNo != ''">
   			and vip.card_no = #{cardNo}
+  		</if>
+  		
+  		<if test="cardType != null">
+  			and vip.card_type = #{cardType}
   		</if>
   		
   		<if test="customerType != null and customerType != ''">
@@ -79,6 +83,7 @@
 	SELECT 
 		vip.id as id, 
 		vip.customer_code as customer_code, 
+		vip.card_type as card_type,
 		vip.card_no as card_no, 
 		vip.mobile as mobile, 
 		vip.wechat as wechat, 
@@ -107,13 +112,14 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.BusVip" >
-    insert into bus_vip (id, customer_code, card_no, 
+    insert into bus_vip (id, customer_code, card_type, card_no, 
       mobile, wechat, cn_name, 
       sex, brithday, email, 
       origin_precent, vip_time, enable_price, 
       memo, enabled, updated_time, 
       created_name, updated_name)
-    values (#{id,jdbcType=VARCHAR}, #{customerCode,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{customerCode,jdbcType=VARCHAR}, #{cardType,jdbcType=INTEGER},
+      #{cardNo,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, #{cnName,jdbcType=VARCHAR}, 
       #{sex,jdbcType=VARCHAR}, #{brithday,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, 
       #{originPrecent,jdbcType=DECIMAL}, #{vipTime,jdbcType=TIMESTAMP}, #{enablePrice,jdbcType=DECIMAL}, 
@@ -128,6 +134,9 @@
       </if>
       <if test="customerCode != null" >
         customer_code,
+      </if>
+      <if test="cardType != null" >
+        card_type,
       </if>
       <if test="cardNo != null" >
         card_no,
@@ -182,6 +191,9 @@
       <if test="customerCode != null" >
         #{customerCode,jdbcType=VARCHAR},
       </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=INTEGER},
+      </if>
       <if test="cardNo != null" >
         #{cardNo,jdbcType=VARCHAR},
       </if>
@@ -234,6 +246,9 @@
     <set >
       <if test="customerCode != null" >
         customer_code = #{customerCode,jdbcType=VARCHAR},
+      </if>    
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=INTEGER},
       </if>
       <if test="cardNo != null" >
         card_no = #{cardNo,jdbcType=VARCHAR},
@@ -286,6 +301,7 @@
   <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusVip" >
     update bus_vip
     set customer_code = #{customerCode,jdbcType=VARCHAR},
+      card_type = #{cardType,jdbcType=INTEGER},
       card_no = #{cardNo,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       wechat = #{wechat,jdbcType=VARCHAR},

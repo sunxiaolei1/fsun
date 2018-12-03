@@ -26,30 +26,30 @@
   <sql id="conditions">
   	<where>  	
   		<if test="q != null and q != ''">
-  			and (customer_code like '%${q}%' 
-  				or customer_name like '%${q}%' 
-  				or tel like '%${q}%'
+  			and (a.customer_code like '%${q}%' 
+  				or a.customer_name like '%${q}%' 
+  				or a.tel like '%${q}%'
   				)
   		</if>
   		
   		<if test="id != null and id != ''">
-  			and id = #{id}
+  			and a.id = #{id}
   		</if>
   		
   		<if test="customerCode != null and customerCode != ''">
-  			and customer_code = #{customerCode}
+  			and a.customer_code = #{customerCode}
   		</if>
   		
   		<if test="customerType != null and customerType != ''">
-  			and customer_type = #{customerType}
+  			and a.customer_type = #{customerType}
   		</if>
   		
   		<if test="salesman != null and salesman != ''">
-  			and salesman = #{salesman}
+  			and a.salesman = #{salesman}
   		</if> 		
   		
   		<if test="enabled != null and enabled != ''">
-  			and enabled = #{enabled}
+  			and a.enabled = #{enabled}
   		</if>
 
 	</where>
@@ -59,15 +59,31 @@
   	parameterType="com.fsun.domain.entity.BusCustomerCondition" >    
 	SELECT 
 		<include refid="Base_Column_List" />
-    FROM bus_customer
+    FROM bus_customer a
     	<include refid="conditions" />
   </select>
   
   <select id="selectListMap" resultType="java.util.Map" 
   	parameterType="com.fsun.domain.entity.BusCustomerCondition" >    
 	SELECT 
-		<include refid="Base_Column_List" />
-    FROM bus_customer
+		a.id, 
+		a.customer_code, 
+		a.customer_type, 
+		a.customer_name, 
+		a.contacts, 
+		a.address, 
+		a.tel, 
+		a.memo, 
+		a.salesman, 
+    	a.credit_price, 
+    	a.enabled, 
+    	a.created_time, 
+    	a.updated_time, 
+    	a.created_id, 
+    	a.updated_id,
+    	b.customer_name as salesman_name
+    FROM bus_customer a
+    LEFT JOIN bus_customer b ON a.salesman = b.customer_code 
     	<include refid="conditions" />
   </select>
   

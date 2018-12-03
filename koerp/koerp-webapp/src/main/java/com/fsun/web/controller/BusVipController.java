@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fsun.api.bus.BusVipApi;
 import com.fsun.common.utils.StringUtils;
@@ -32,12 +33,14 @@ public class BusVipController extends BaseController {
 
 	@RequestMapping("/index")
 	public String index() {
-		return "/busCustomer/index";
+		return "/busVip/index";
 	}
-
+	
 	@RequestMapping("/toDetailView")
-	public String toDetailView() {
-		return "/busCustomer/detail";
+	public ModelAndView toDetailView(String id) {		
+		ModelAndView modelAndView = new ModelAndView("/busVip/detail");
+		modelAndView.addObject("id", id);
+		return modelAndView;
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
@@ -111,7 +114,7 @@ public class BusVipController extends BaseController {
 	}
 
 
-	@RequestMapping(value="/status/{enabled}", method = {RequestMethod.GET})
+	@RequestMapping(value="/status/{enabled}", method = {RequestMethod.POST})
 	@ResponseBody
 	public HttpResult changeStatus(@PathVariable("enabled") Boolean enabled, 
 		@RequestParam("ids") String ids) {

@@ -1,18 +1,20 @@
 ﻿var isTrueData = [{"id":"", "text": "请选择..."},{"id":"true", "text": "是"},{"id": "false", "text": "否"}];
 var isEnableData = new Array();
 var busCustomerTypeData = new Array();
+var vipCardTypeData = new Array();
 
 /**************************   ecorder    *********************************/
 
 var isTrue = {'false': '否', 'true': '是'};
 var isEnable = {};
 var busCustomerType = {};
+var vipCardType = {};
 
 $(function () {
 	synchronizeData();	
 	isEnable = formatterCodeType(isEnableData);
 	busCustomerType = formatterCodeType(busCustomerTypeData);
-
+	vipCardType = formatterCodeType(vipCardTypeData);
 });
 
 function formatterCodeType(result) {
@@ -39,6 +41,8 @@ function synchronizeData() {
         				isEnableData.push(item);
         			}else if(item.codeType == 'BusCustomerType') {
         				busCustomerTypeData.push(item);
+        			}else if(item.codeType == 'VipCardType') {
+        				vipCardTypeData.push(item);
         			}
         			
     	        });
@@ -49,6 +53,11 @@ function synchronizeData() {
 				});
 
         		busCustomerTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		vipCardTypeData.unshift({
         			codeCode:"",
 					codeName:"请选择..."
 				});

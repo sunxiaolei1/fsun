@@ -3,7 +3,7 @@
 <mapper namespace="com.fsun.dao.mapper.BusVipUnpaidMapper" >
   <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusVipUnpaid" >
     <id column="unpaid_id" property="unpaidId" jdbcType="VARCHAR" />
-    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
     <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
     <result column="pay_mode" property="payMode" jdbcType="SMALLINT" />
     <result column="trade_type" property="tradeType" jdbcType="SMALLINT" />
@@ -14,10 +14,11 @@
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    unpaid_id, customer_id, shop_id, pay_mode, trade_type, trade_status, trade_time, 
-    trade_price, memo, order_id, created_time, updated_time
+    unpaid_id, customer_code, shop_id, pay_mode, trade_type, trade_status, trade_time, 
+    trade_price, memo, order_id, created_time, updated_time, card_no
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -30,16 +31,16 @@
     where unpaid_id = #{unpaidId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.BusVipUnpaid" >
-    insert into bus_vip_unpaid (unpaid_id, customer_id, shop_id, 
+    insert into bus_vip_unpaid (unpaid_id, customer_code, shop_id, 
       pay_mode, trade_type, trade_status, 
       trade_time, trade_price, memo, 
-      order_id, created_time, updated_time
-      )
-    values (#{unpaidId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
+      order_id, created_time, updated_time, 
+      card_no)
+    values (#{unpaidId,jdbcType=VARCHAR}, #{customerCode,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
       #{payMode,jdbcType=SMALLINT}, #{tradeType,jdbcType=SMALLINT}, #{tradeStatus,jdbcType=SMALLINT}, 
       #{tradeTime,jdbcType=TIMESTAMP}, #{tradePrice,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, 
-      #{orderId,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}
-      )
+      #{orderId,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{cardNo,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusVipUnpaid" >
     insert into bus_vip_unpaid
@@ -47,8 +48,8 @@
       <if test="unpaidId != null" >
         unpaid_id,
       </if>
-      <if test="customerId != null" >
-        customer_id,
+      <if test="customerCode != null" >
+        customer_code,
       </if>
       <if test="shopId != null" >
         shop_id,
@@ -80,13 +81,16 @@
       <if test="updatedTime != null" >
         updated_time,
       </if>
+      <if test="cardNo != null" >
+        card_no,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="unpaidId != null" >
         #{unpaidId,jdbcType=VARCHAR},
       </if>
-      <if test="customerId != null" >
-        #{customerId,jdbcType=VARCHAR},
+      <if test="customerCode != null" >
+        #{customerCode,jdbcType=VARCHAR},
       </if>
       <if test="shopId != null" >
         #{shopId,jdbcType=VARCHAR},
@@ -118,13 +122,16 @@
       <if test="updatedTime != null" >
         #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusVipUnpaid" >
     update bus_vip_unpaid
     <set >
-      <if test="customerId != null" >
-        customer_id = #{customerId,jdbcType=VARCHAR},
+      <if test="customerCode != null" >
+        customer_code = #{customerCode,jdbcType=VARCHAR},
       </if>
       <if test="shopId != null" >
         shop_id = #{shopId,jdbcType=VARCHAR},
@@ -156,12 +163,15 @@
       <if test="updatedTime != null" >
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="cardNo != null" >
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
     </set>
     where unpaid_id = #{unpaidId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusVipUnpaid" >
     update bus_vip_unpaid
-    set customer_id = #{customerId,jdbcType=VARCHAR},
+    set customer_code = #{customerCode,jdbcType=VARCHAR},
       shop_id = #{shopId,jdbcType=VARCHAR},
       pay_mode = #{payMode,jdbcType=SMALLINT},
       trade_type = #{tradeType,jdbcType=SMALLINT},
@@ -171,7 +181,8 @@
       memo = #{memo,jdbcType=VARCHAR},
       order_id = #{orderId,jdbcType=VARCHAR},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      card_no = #{cardNo,jdbcType=VARCHAR}
     where unpaid_id = #{unpaidId,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -3,7 +3,7 @@
 <%@ include file="../headerJS.jsp" %>
 
 <div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="客户管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
+	<div title="会员卡管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
 		<!-- 查询条件 -->
 		<%@include file="./searchbar.jsp"%>
 		
@@ -25,20 +25,21 @@
 var columns = 
     [[
 		{field:'id',checkbox:true},
-		{field:'customer_code',title:'客户编号',width:130,align:'center',sortable:true},
-		{field:'customer_type',title:'客户类型',width:80,align:'center',sortable:true, formatter:function(value, row){
-			return formatter(value, window.parent.busCustomerType); 
-		}},
-		{field:'customer_name',title:'客户名称',width:150,align:'center',sortable:true},
-		{field:'tel',title:'手机号',width:120,align:'center',sortable:true},
-		{field:'salesman',title:'所属销售代表',width:100,align:'center',sortable:true, formatter:function(value, row){
-			return row.salesman_name; 
+		{field:'customer_code',title:'所属客户',width:130,align:'center',sortable:true, formatter:function(value, row){
+			return row.customer_name; 
 		}},						
-		{field:"credit_price",title:"信用额度(元)",width:80, align:'center'},
-		{field:"enabled",title:"状态", width:80,align:'center', formatter:function(value, row){
+		{field:'card_type',title:'卡级别',width:80,align:'center',sortable:true, formatter:function(value, row){
+			return formatter(value, window.parent.vipCardType); 
+		}},
+		{field:'card_no',title:'卡号',width:140,align:'center',sortable:true},
+		{field:'mobile',title:'手机号',width:120,align:'center',sortable:true},					
+		{field:"cn_name",title:"持卡人",width:80, align:'center'},
+		{field:"vip_time",title:"开卡时间",width:120, align:'center'},
+		{field:"enable_price",title:"可用余额",width:80, align:'center'},
+		{field:"enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
 			return formatter(value, window.parent.isEnable); 
 		}},
-		{field:'memo',title:'备注',width:200,align:'center',sortable:true}		
+		{field:'memo',title:'备注',width:150,align:'center',sortable:true}		
 	]];
 
 var currDataGrid;

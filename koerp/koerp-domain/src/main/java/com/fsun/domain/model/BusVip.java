@@ -15,6 +15,11 @@ public class BusVip {
      * 表字段 : bus_vip.customer_code
      */
     private String customerCode;
+    
+    /**
+     * 卡类型
+     */
+    private Integer cardType;
 
     /**
      * 会员卡号
@@ -241,4 +246,14 @@ public class BusVip {
     public void setUpdatedName(String updatedName) {
         this.updatedName = updatedName == null ? null : updatedName.trim();
     }
+
+	public Integer getCardType() {
+		return cardType;
+	}
+
+	public void setCardType(Integer cardType) {
+		this.cardType = cardType;
+	}
+    
+    
 }

@@ -23,6 +23,11 @@ public class BusVipCondition extends SortCondition {
      * 表字段 : bus_vip.customer_code
      */
     private String customerCode;
+    
+    /**
+     * 会员卡类型
+     */
+    private Integer cardType;
 
     /**
      * 会员卡号
@@ -275,6 +280,14 @@ public class BusVipCondition extends SortCondition {
 
 	public void setUpdatedName(String updatedName) {
 		this.updatedName = updatedName;
+	}
+
+	public Integer getCardType() {
+		return cardType;
+	}
+
+	public void setCardType(Integer cardType) {
+		this.cardType = cardType;
 	}
 	
 	

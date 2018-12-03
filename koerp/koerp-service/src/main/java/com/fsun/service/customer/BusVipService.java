@@ -73,6 +73,7 @@ public class BusVipService implements BusVipApi {
 			if(busVip==null){
 				throw new VipException("会员卡不存在");
 			}	
+			busVip.setCardType(domain.getCardType());
 			busVip.setCardNo(domain.getCardNo());
 			busVip.setMobile(domain.getMobile());
 			busVip.setCustomerCode(domain.getCustomerCode());

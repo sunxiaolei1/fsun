@@ -12,9 +12,9 @@ public class BusVipUnpaid {
 
     /**
      * 会员Id
-     * 表字段 : bus_vip_unpaid.customer_id
+     * 表字段 : bus_vip_unpaid.customer_code
      */
-    private String customerId;
+    private String customerCode;
 
     /**
      * 店仓编号
@@ -29,7 +29,7 @@ public class BusVipUnpaid {
     private Short payMode;
 
     /**
-     * 交易类型  1 挂账，2 挂账结款 
+     * 交易类型  1 挂账，2 挂账结款 3会员卡消费 4会员卡充值
      * 表字段 : bus_vip_unpaid.trade_type
      */
     private Short tradeType;
@@ -76,6 +76,12 @@ public class BusVipUnpaid {
      */
     private Date updatedTime;
 
+    /**
+     * 
+     * 表字段 : bus_vip_unpaid.card_no
+     */
+    private String cardNo;
+
     public String getUnpaidId() {
         return unpaidId;
     }
@@ -84,12 +90,12 @@ public class BusVipUnpaid {
         this.unpaidId = unpaidId == null ? null : unpaidId.trim();
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public String getCustomerCode() {
+        return customerCode;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId == null ? null : customerId.trim();
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode == null ? null : customerCode.trim();
     }
 
     public String getShopId() {
@@ -170,5 +176,13 @@ public class BusVipUnpaid {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo == null ? null : cardNo.trim();
     }
 }
