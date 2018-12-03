@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.DocAsnHeaderMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.DocAsnHeader" >
+    <id column="asn_no" property="asnNo" jdbcType="VARCHAR" />
+    <result column="ext_order_no" property="extOrderNo" jdbcType="VARCHAR" />
+    <result column="delivery_time" property="deliveryTime" jdbcType="TIMESTAMP" />
+    <result column="check_user_id" property="checkUserId" jdbcType="VARCHAR" />
+    <result column="check_name" property="checkName" jdbcType="VARCHAR" />
+    <result column="check_status" property="checkStatus" jdbcType="CHAR" />
+    <result column="po_no" property="poNo" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="asn_type" property="asnType" jdbcType="CHAR" />
+    <result column="asn_status" property="asnStatus" jdbcType="CHAR" />
+    <result column="asn_source" property="asnSource" jdbcType="CHAR" />
+    <result column="order_price" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="to_shop_id" property="toShopId" jdbcType="VARCHAR" />
+    <result column="to_shop_name" property="toShopName" jdbcType="VARCHAR" />
+    <result column="from_shop_id" property="fromShopId" jdbcType="VARCHAR" />
+    <result column="from_shop_name" property="fromShopName" jdbcType="VARCHAR" />
+    <result column="expected_time" property="expectedTime" jdbcType="TIMESTAMP" />
+    <result column="volume" property="volume" jdbcType="DECIMAL" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="carrier_id" property="carrierId" jdbcType="VARCHAR" />
+    <result column="carrier_name" property="carrierName" jdbcType="VARCHAR" />
+    <result column="place_loading" property="placeLoading" jdbcType="VARCHAR" />
+    <result column="place_discharge" property="placeDischarge" jdbcType="VARCHAR" />
+    <result column="pay_terms" property="payTerms" jdbcType="VARCHAR" />
+    <result column="delivery_terms" property="deliveryTerms" jdbcType="VARCHAR" />
+    <result column="descr" property="descr" jdbcType="VARCHAR" />
+    <result column="vehicle_no" property="vehicleNo" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="user_define1" property="userDefine1" jdbcType="VARCHAR" />
+    <result column="user_define2" property="userDefine2" jdbcType="VARCHAR" />
+    <result column="user_define3" property="userDefine3" jdbcType="VARCHAR" />
+    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+    <result column="supplier_id" property="supplierId" jdbcType="VARCHAR" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+    <result column="supplier_address" property="supplierAddress" jdbcType="VARCHAR" />
+    <result column="supplier_zip_code" property="supplierZipCode" jdbcType="VARCHAR" />
+    <result column="supplier_contact" property="supplierContact" jdbcType="VARCHAR" />
+    <result column="supplier_tel" property="supplierTel" jdbcType="VARCHAR" />
+    <result column="i_id" property="iId" jdbcType="VARCHAR" />
+    <result column="i_name" property="iName" jdbcType="VARCHAR" />
+    <result column="i_address" property="iAddress" jdbcType="VARCHAR" />
+    <result column="i_zip_code" property="iZipCode" jdbcType="VARCHAR" />
+    <result column="i_contact" property="iContact" jdbcType="VARCHAR" />
+    <result column="i_tel" property="iTel" jdbcType="VARCHAR" />
+    <result column="receiving_Time" property="receivingTime" jdbcType="TIMESTAMP" />
+    <result column="created_name" property="createdName" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_name" property="updatedName" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    asn_no, ext_order_no, delivery_time, check_user_id, check_name, check_status, po_no, 
+    order_no, asn_type, asn_status, asn_source, order_price, to_shop_id, to_shop_name, 
+    from_shop_id, from_shop_name, expected_time, volume, memo, carrier_id, carrier_name, 
+    place_loading, place_discharge, pay_terms, delivery_terms, descr, vehicle_no, address, 
+    mobile, user_define1, user_define2, user_define3, zip_code, supplier_id, supplier_name, 
+    supplier_address, supplier_zip_code, supplier_contact, supplier_tel, i_id, i_name, 
+    i_address, i_zip_code, i_contact, i_tel, receiving_Time, created_name, created_time, 
+    updated_name, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from doc_asn_header
+    where asn_no = #{asnNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from doc_asn_header
+    where asn_no = #{asnNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fsun.domain.model.DocAsnHeader" >
+    insert into doc_asn_header (asn_no, ext_order_no, delivery_time, 
+      check_user_id, check_name, check_status, 
+      po_no, order_no, asn_type, 
+      asn_status, asn_source, order_price, 
+      to_shop_id, to_shop_name, from_shop_id, 
+      from_shop_name, expected_time, volume, 
+      memo, carrier_id, carrier_name, 
+      place_loading, place_discharge, pay_terms, 
+      delivery_terms, descr, vehicle_no, 
+      address, mobile, user_define1, 
+      user_define2, user_define3, zip_code, 
+      supplier_id, supplier_name, supplier_address, 
+      supplier_zip_code, supplier_contact, supplier_tel, 
+      i_id, i_name, i_address, 
+      i_zip_code, i_contact, i_tel, 
+      receiving_Time, created_name, created_time, 
+      updated_name, updated_time)
+    values (#{asnNo,jdbcType=VARCHAR}, #{extOrderNo,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=TIMESTAMP}, 
+      #{checkUserId,jdbcType=VARCHAR}, #{checkName,jdbcType=VARCHAR}, #{checkStatus,jdbcType=CHAR}, 
+      #{poNo,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{asnType,jdbcType=CHAR}, 
+      #{asnStatus,jdbcType=CHAR}, #{asnSource,jdbcType=CHAR}, #{orderPrice,jdbcType=DECIMAL}, 
+      #{toShopId,jdbcType=VARCHAR}, #{toShopName,jdbcType=VARCHAR}, #{fromShopId,jdbcType=VARCHAR}, 
+      #{fromShopName,jdbcType=VARCHAR}, #{expectedTime,jdbcType=TIMESTAMP}, #{volume,jdbcType=DECIMAL}, 
+      #{memo,jdbcType=VARCHAR}, #{carrierId,jdbcType=VARCHAR}, #{carrierName,jdbcType=VARCHAR}, 
+      #{placeLoading,jdbcType=VARCHAR}, #{placeDischarge,jdbcType=VARCHAR}, #{payTerms,jdbcType=VARCHAR}, 
+      #{deliveryTerms,jdbcType=VARCHAR}, #{descr,jdbcType=VARCHAR}, #{vehicleNo,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{userDefine1,jdbcType=VARCHAR}, 
+      #{userDefine2,jdbcType=VARCHAR}, #{userDefine3,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, 
+      #{supplierId,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{supplierAddress,jdbcType=VARCHAR}, 
+      #{supplierZipCode,jdbcType=VARCHAR}, #{supplierContact,jdbcType=VARCHAR}, #{supplierTel,jdbcType=VARCHAR}, 
+      #{iId,jdbcType=VARCHAR}, #{iName,jdbcType=VARCHAR}, #{iAddress,jdbcType=VARCHAR}, 
+      #{iZipCode,jdbcType=VARCHAR}, #{iContact,jdbcType=VARCHAR}, #{iTel,jdbcType=VARCHAR}, 
+      #{receivingTime,jdbcType=TIMESTAMP}, #{createdName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedName,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsun.domain.model.DocAsnHeader" >
+    insert into doc_asn_header
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="asnNo != null" >
+        asn_no,
+      </if>
+      <if test="extOrderNo != null" >
+        ext_order_no,
+      </if>
+      <if test="deliveryTime != null" >
+        delivery_time,
+      </if>
+      <if test="checkUserId != null" >
+        check_user_id,
+      </if>
+      <if test="checkName != null" >
+        check_name,
+      </if>
+      <if test="checkStatus != null" >
+        check_status,
+      </if>
+      <if test="poNo != null" >
+        po_no,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="asnType != null" >
+        asn_type,
+      </if>
+      <if test="asnStatus != null" >
+        asn_status,
+      </if>
+      <if test="asnSource != null" >
+        asn_source,
+      </if>
+      <if test="orderPrice != null" >
+        order_price,
+      </if>
+      <if test="toShopId != null" >
+        to_shop_id,
+      </if>
+      <if test="toShopName != null" >
+        to_shop_name,
+      </if>
+      <if test="fromShopId != null" >
+        from_shop_id,
+      </if>
+      <if test="fromShopName != null" >
+        from_shop_name,
+      </if>
+      <if test="expectedTime != null" >
+        expected_time,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="carrierId != null" >
+        carrier_id,
+      </if>
+      <if test="carrierName != null" >
+        carrier_name,
+      </if>
+      <if test="placeLoading != null" >
+        place_loading,
+      </if>
+      <if test="placeDischarge != null" >
+        place_discharge,
+      </if>
+      <if test="payTerms != null" >
+        pay_terms,
+      </if>
+      <if test="deliveryTerms != null" >
+        delivery_terms,
+      </if>
+      <if test="descr != null" >
+        descr,
+      </if>
+      <if test="vehicleNo != null" >
+        vehicle_no,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="userDefine1 != null" >
+        user_define1,
+      </if>
+      <if test="userDefine2 != null" >
+        user_define2,
+      </if>
+      <if test="userDefine3 != null" >
+        user_define3,
+      </if>
+      <if test="zipCode != null" >
+        zip_code,
+      </if>
+      <if test="supplierId != null" >
+        supplier_id,
+      </if>
+      <if test="supplierName != null" >
+        supplier_name,
+      </if>
+      <if test="supplierAddress != null" >
+        supplier_address,
+      </if>
+      <if test="supplierZipCode != null" >
+        supplier_zip_code,
+      </if>
+      <if test="supplierContact != null" >
+        supplier_contact,
+      </if>
+      <if test="supplierTel != null" >
+        supplier_tel,
+      </if>
+      <if test="iId != null" >
+        i_id,
+      </if>
+      <if test="iName != null" >
+        i_name,
+      </if>
+      <if test="iAddress != null" >
+        i_address,
+      </if>
+      <if test="iZipCode != null" >
+        i_zip_code,
+      </if>
+      <if test="iContact != null" >
+        i_contact,
+      </if>
+      <if test="iTel != null" >
+        i_tel,
+      </if>
+      <if test="receivingTime != null" >
+        receiving_Time,
+      </if>
+      <if test="createdName != null" >
+        created_name,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedName != null" >
+        updated_name,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="asnNo != null" >
+        #{asnNo,jdbcType=VARCHAR},
+      </if>
+      <if test="extOrderNo != null" >
+        #{extOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryTime != null" >
+        #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkUserId != null" >
+        #{checkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkName != null" >
+        #{checkName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=CHAR},
+      </if>
+      <if test="poNo != null" >
+        #{poNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="asnType != null" >
+        #{asnType,jdbcType=CHAR},
+      </if>
+      <if test="asnStatus != null" >
+        #{asnStatus,jdbcType=CHAR},
+      </if>
+      <if test="asnSource != null" >
+        #{asnSource,jdbcType=CHAR},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="toShopId != null" >
+        #{toShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="toShopName != null" >
+        #{toShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="fromShopId != null" >
+        #{fromShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="fromShopName != null" >
+        #{fromShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="expectedTime != null" >
+        #{expectedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="volume != null" >
+        #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierId != null" >
+        #{carrierId,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierName != null" >
+        #{carrierName,jdbcType=VARCHAR},
+      </if>
+      <if test="placeLoading != null" >
+        #{placeLoading,jdbcType=VARCHAR},
+      </if>
+      <if test="placeDischarge != null" >
+        #{placeDischarge,jdbcType=VARCHAR},
+      </if>
+      <if test="payTerms != null" >
+        #{payTerms,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryTerms != null" >
+        #{deliveryTerms,jdbcType=VARCHAR},
+      </if>
+      <if test="descr != null" >
+        #{descr,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleNo != null" >
+        #{vehicleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine1 != null" >
+        #{userDefine1,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine2 != null" >
+        #{userDefine2,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine3 != null" >
+        #{userDefine3,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null" >
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierAddress != null" >
+        #{supplierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierZipCode != null" >
+        #{supplierZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierContact != null" >
+        #{supplierContact,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierTel != null" >
+        #{supplierTel,jdbcType=VARCHAR},
+      </if>
+      <if test="iId != null" >
+        #{iId,jdbcType=VARCHAR},
+      </if>
+      <if test="iName != null" >
+        #{iName,jdbcType=VARCHAR},
+      </if>
+      <if test="iAddress != null" >
+        #{iAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="iZipCode != null" >
+        #{iZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="iContact != null" >
+        #{iContact,jdbcType=VARCHAR},
+      </if>
+      <if test="iTel != null" >
+        #{iTel,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingTime != null" >
+        #{receivingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdName != null" >
+        #{createdName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedName != null" >
+        #{updatedName,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.DocAsnHeader" >
+    update doc_asn_header
+    <set >
+      <if test="extOrderNo != null" >
+        ext_order_no = #{extOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryTime != null" >
+        delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkUserId != null" >
+        check_user_id = #{checkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkName != null" >
+        check_name = #{checkName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=CHAR},
+      </if>
+      <if test="poNo != null" >
+        po_no = #{poNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="asnType != null" >
+        asn_type = #{asnType,jdbcType=CHAR},
+      </if>
+      <if test="asnStatus != null" >
+        asn_status = #{asnStatus,jdbcType=CHAR},
+      </if>
+      <if test="asnSource != null" >
+        asn_source = #{asnSource,jdbcType=CHAR},
+      </if>
+      <if test="orderPrice != null" >
+        order_price = #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="toShopId != null" >
+        to_shop_id = #{toShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="toShopName != null" >
+        to_shop_name = #{toShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="fromShopId != null" >
+        from_shop_id = #{fromShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="fromShopName != null" >
+        from_shop_name = #{fromShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="expectedTime != null" >
+        expected_time = #{expectedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierId != null" >
+        carrier_id = #{carrierId,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierName != null" >
+        carrier_name = #{carrierName,jdbcType=VARCHAR},
+      </if>
+      <if test="placeLoading != null" >
+        place_loading = #{placeLoading,jdbcType=VARCHAR},
+      </if>
+      <if test="placeDischarge != null" >
+        place_discharge = #{placeDischarge,jdbcType=VARCHAR},
+      </if>
+      <if test="payTerms != null" >
+        pay_terms = #{payTerms,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryTerms != null" >
+        delivery_terms = #{deliveryTerms,jdbcType=VARCHAR},
+      </if>
+      <if test="descr != null" >
+        descr = #{descr,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleNo != null" >
+        vehicle_no = #{vehicleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine1 != null" >
+        user_define1 = #{userDefine1,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine2 != null" >
+        user_define2 = #{userDefine2,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine3 != null" >
+        user_define3 = #{userDefine3,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        zip_code = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        supplier_id = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null" >
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierAddress != null" >
+        supplier_address = #{supplierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierZipCode != null" >
+        supplier_zip_code = #{supplierZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierContact != null" >
+        supplier_contact = #{supplierContact,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierTel != null" >
+        supplier_tel = #{supplierTel,jdbcType=VARCHAR},
+      </if>
+      <if test="iId != null" >
+        i_id = #{iId,jdbcType=VARCHAR},
+      </if>
+      <if test="iName != null" >
+        i_name = #{iName,jdbcType=VARCHAR},
+      </if>
+      <if test="iAddress != null" >
+        i_address = #{iAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="iZipCode != null" >
+        i_zip_code = #{iZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="iContact != null" >
+        i_contact = #{iContact,jdbcType=VARCHAR},
+      </if>
+      <if test="iTel != null" >
+        i_tel = #{iTel,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingTime != null" >
+        receiving_Time = #{receivingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdName != null" >
+        created_name = #{createdName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedName != null" >
+        updated_name = #{updatedName,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where asn_no = #{asnNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.DocAsnHeader" >
+    update doc_asn_header
+    set ext_order_no = #{extOrderNo,jdbcType=VARCHAR},
+      delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      check_user_id = #{checkUserId,jdbcType=VARCHAR},
+      check_name = #{checkName,jdbcType=VARCHAR},
+      check_status = #{checkStatus,jdbcType=CHAR},
+      po_no = #{poNo,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      asn_type = #{asnType,jdbcType=CHAR},
+      asn_status = #{asnStatus,jdbcType=CHAR},
+      asn_source = #{asnSource,jdbcType=CHAR},
+      order_price = #{orderPrice,jdbcType=DECIMAL},
+      to_shop_id = #{toShopId,jdbcType=VARCHAR},
+      to_shop_name = #{toShopName,jdbcType=VARCHAR},
+      from_shop_id = #{fromShopId,jdbcType=VARCHAR},
+      from_shop_name = #{fromShopName,jdbcType=VARCHAR},
+      expected_time = #{expectedTime,jdbcType=TIMESTAMP},
+      volume = #{volume,jdbcType=DECIMAL},
+      memo = #{memo,jdbcType=VARCHAR},
+      carrier_id = #{carrierId,jdbcType=VARCHAR},
+      carrier_name = #{carrierName,jdbcType=VARCHAR},
+      place_loading = #{placeLoading,jdbcType=VARCHAR},
+      place_discharge = #{placeDischarge,jdbcType=VARCHAR},
+      pay_terms = #{payTerms,jdbcType=VARCHAR},
+      delivery_terms = #{deliveryTerms,jdbcType=VARCHAR},
+      descr = #{descr,jdbcType=VARCHAR},
+      vehicle_no = #{vehicleNo,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      user_define1 = #{userDefine1,jdbcType=VARCHAR},
+      user_define2 = #{userDefine2,jdbcType=VARCHAR},
+      user_define3 = #{userDefine3,jdbcType=VARCHAR},
+      zip_code = #{zipCode,jdbcType=VARCHAR},
+      supplier_id = #{supplierId,jdbcType=VARCHAR},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
+      supplier_address = #{supplierAddress,jdbcType=VARCHAR},
+      supplier_zip_code = #{supplierZipCode,jdbcType=VARCHAR},
+      supplier_contact = #{supplierContact,jdbcType=VARCHAR},
+      supplier_tel = #{supplierTel,jdbcType=VARCHAR},
+      i_id = #{iId,jdbcType=VARCHAR},
+      i_name = #{iName,jdbcType=VARCHAR},
+      i_address = #{iAddress,jdbcType=VARCHAR},
+      i_zip_code = #{iZipCode,jdbcType=VARCHAR},
+      i_contact = #{iContact,jdbcType=VARCHAR},
+      i_tel = #{iTel,jdbcType=VARCHAR},
+      receiving_Time = #{receivingTime,jdbcType=TIMESTAMP},
+      created_name = #{createdName,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_name = #{updatedName,jdbcType=VARCHAR},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where asn_no = #{asnNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

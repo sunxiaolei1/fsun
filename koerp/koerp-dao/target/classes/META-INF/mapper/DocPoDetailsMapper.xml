@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.DocPoDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.DocPoDetails" >
+    <id column="po_detail_id" property="poDetailId" jdbcType="VARCHAR" />
+    <result column="po_no" property="poNo" jdbcType="VARCHAR" />
+    <result column="line_no" property="lineNo" jdbcType="INTEGER" />
+    <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+    <result column="brand_code" property="brandCode" jdbcType="VARCHAR" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="parent_sku" property="parentSku" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="line_status" property="lineStatus" jdbcType="VARCHAR" />
+    <result column="lot_num" property="lotNum" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="VARCHAR" />
+    <result column="sub_qty" property="subQty" jdbcType="DECIMAL" />
+    <result column="user_define1" property="userDefine1" jdbcType="VARCHAR" />
+    <result column="user_define2" property="userDefine2" jdbcType="VARCHAR" />
+    <result column="user_define3" property="userDefine3" jdbcType="VARCHAR" />
+    <result column="receive_time" property="receiveTime" jdbcType="TIMESTAMP" />
+    <result column="receive_qty" property="receiveQty" jdbcType="DECIMAL" />
+    <result column="expected_qty" property="expectedQty" jdbcType="DECIMAL" />
+    <result column="ordered_qty" property="orderedQty" jdbcType="DECIMAL" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="convert_qty" property="convertQty" jdbcType="DECIMAL" />
+    <result column="convert_unit" property="convertUnit" jdbcType="VARCHAR" />
+    <result column="is_gift" property="isGift" jdbcType="BIT" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="cost_price" property="costPrice" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="volume" property="volume" jdbcType="DECIMAL" />
+    <result column="rate_precent" property="ratePrecent" jdbcType="DECIMAL" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    po_detail_id, po_no, line_no, category_code, category_name, bar_code, brand_code, 
+    brand_name, goods_name, sku, parent_sku, property, line_status, lot_num, seq, sub_qty, 
+    user_define1, user_define2, user_define3, receive_time, receive_qty, expected_qty, 
+    ordered_qty, unit, convert_qty, convert_unit, is_gift, total_price, cost_price, price, 
+    volume, rate_precent, memo, created_time, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from doc_po_details
+    where po_detail_id = #{poDetailId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from doc_po_details
+    where po_detail_id = #{poDetailId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fsun.domain.model.DocPoDetails" >
+    insert into doc_po_details (po_detail_id, po_no, line_no, 
+      category_code, category_name, bar_code, 
+      brand_code, brand_name, goods_name, 
+      sku, parent_sku, property, 
+      line_status, lot_num, seq, 
+      sub_qty, user_define1, user_define2, 
+      user_define3, receive_time, receive_qty, 
+      expected_qty, ordered_qty, unit, 
+      convert_qty, convert_unit, is_gift, 
+      total_price, cost_price, price, 
+      volume, rate_precent, memo, 
+      created_time, updated_time)
+    values (#{poDetailId,jdbcType=VARCHAR}, #{poNo,jdbcType=VARCHAR}, #{lineNo,jdbcType=INTEGER}, 
+      #{categoryCode,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, 
+      #{brandCode,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
+      #{sku,jdbcType=VARCHAR}, #{parentSku,jdbcType=VARCHAR}, #{property,jdbcType=VARCHAR}, 
+      #{lineStatus,jdbcType=VARCHAR}, #{lotNum,jdbcType=VARCHAR}, #{seq,jdbcType=VARCHAR}, 
+      #{subQty,jdbcType=DECIMAL}, #{userDefine1,jdbcType=VARCHAR}, #{userDefine2,jdbcType=VARCHAR}, 
+      #{userDefine3,jdbcType=VARCHAR}, #{receiveTime,jdbcType=TIMESTAMP}, #{receiveQty,jdbcType=DECIMAL}, 
+      #{expectedQty,jdbcType=DECIMAL}, #{orderedQty,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
+      #{convertQty,jdbcType=DECIMAL}, #{convertUnit,jdbcType=VARCHAR}, #{isGift,jdbcType=BIT}, 
+      #{totalPrice,jdbcType=DECIMAL}, #{costPrice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
+      #{volume,jdbcType=DECIMAL}, #{ratePrecent,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsun.domain.model.DocPoDetails" >
+    insert into doc_po_details
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="poDetailId != null" >
+        po_detail_id,
+      </if>
+      <if test="poNo != null" >
+        po_no,
+      </if>
+      <if test="lineNo != null" >
+        line_no,
+      </if>
+      <if test="categoryCode != null" >
+        category_code,
+      </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="barCode != null" >
+        bar_code,
+      </if>
+      <if test="brandCode != null" >
+        brand_code,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="sku != null" >
+        sku,
+      </if>
+      <if test="parentSku != null" >
+        parent_sku,
+      </if>
+      <if test="property != null" >
+        property,
+      </if>
+      <if test="lineStatus != null" >
+        line_status,
+      </if>
+      <if test="lotNum != null" >
+        lot_num,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="subQty != null" >
+        sub_qty,
+      </if>
+      <if test="userDefine1 != null" >
+        user_define1,
+      </if>
+      <if test="userDefine2 != null" >
+        user_define2,
+      </if>
+      <if test="userDefine3 != null" >
+        user_define3,
+      </if>
+      <if test="receiveTime != null" >
+        receive_time,
+      </if>
+      <if test="receiveQty != null" >
+        receive_qty,
+      </if>
+      <if test="expectedQty != null" >
+        expected_qty,
+      </if>
+      <if test="orderedQty != null" >
+        ordered_qty,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="convertQty != null" >
+        convert_qty,
+      </if>
+      <if test="convertUnit != null" >
+        convert_unit,
+      </if>
+      <if test="isGift != null" >
+        is_gift,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="costPrice != null" >
+        cost_price,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="ratePrecent != null" >
+        rate_precent,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="poDetailId != null" >
+        #{poDetailId,jdbcType=VARCHAR},
+      </if>
+      <if test="poNo != null" >
+        #{poNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNo != null" >
+        #{lineNo,jdbcType=INTEGER},
+      </if>
+      <if test="categoryCode != null" >
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="barCode != null" >
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandCode != null" >
+        #{brandCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="sku != null" >
+        #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="parentSku != null" >
+        #{parentSku,jdbcType=VARCHAR},
+      </if>
+      <if test="property != null" >
+        #{property,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStatus != null" >
+        #{lineStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="lotNum != null" >
+        #{lotNum,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=VARCHAR},
+      </if>
+      <if test="subQty != null" >
+        #{subQty,jdbcType=DECIMAL},
+      </if>
+      <if test="userDefine1 != null" >
+        #{userDefine1,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine2 != null" >
+        #{userDefine2,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine3 != null" >
+        #{userDefine3,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveTime != null" >
+        #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveQty != null" >
+        #{receiveQty,jdbcType=DECIMAL},
+      </if>
+      <if test="expectedQty != null" >
+        #{expectedQty,jdbcType=DECIMAL},
+      </if>
+      <if test="orderedQty != null" >
+        #{orderedQty,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="convertQty != null" >
+        #{convertQty,jdbcType=DECIMAL},
+      </if>
+      <if test="convertUnit != null" >
+        #{convertUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="isGift != null" >
+        #{isGift,jdbcType=BIT},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="costPrice != null" >
+        #{costPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="volume != null" >
+        #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="ratePrecent != null" >
+        #{ratePrecent,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.DocPoDetails" >
+    update doc_po_details
+    <set >
+      <if test="poNo != null" >
+        po_no = #{poNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNo != null" >
+        line_no = #{lineNo,jdbcType=INTEGER},
+      </if>
+      <if test="categoryCode != null" >
+        category_code = #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null" >
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="barCode != null" >
+        bar_code = #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandCode != null" >
+        brand_code = #{brandCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="sku != null" >
+        sku = #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="parentSku != null" >
+        parent_sku = #{parentSku,jdbcType=VARCHAR},
+      </if>
+      <if test="property != null" >
+        property = #{property,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStatus != null" >
+        line_status = #{lineStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="lotNum != null" >
+        lot_num = #{lotNum,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq,jdbcType=VARCHAR},
+      </if>
+      <if test="subQty != null" >
+        sub_qty = #{subQty,jdbcType=DECIMAL},
+      </if>
+      <if test="userDefine1 != null" >
+        user_define1 = #{userDefine1,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine2 != null" >
+        user_define2 = #{userDefine2,jdbcType=VARCHAR},
+      </if>
+      <if test="userDefine3 != null" >
+        user_define3 = #{userDefine3,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveTime != null" >
+        receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveQty != null" >
+        receive_qty = #{receiveQty,jdbcType=DECIMAL},
+      </if>
+      <if test="expectedQty != null" >
+        expected_qty = #{expectedQty,jdbcType=DECIMAL},
+      </if>
+      <if test="orderedQty != null" >
+        ordered_qty = #{orderedQty,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="convertQty != null" >
+        convert_qty = #{convertQty,jdbcType=DECIMAL},
+      </if>
+      <if test="convertUnit != null" >
+        convert_unit = #{convertUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="isGift != null" >
+        is_gift = #{isGift,jdbcType=BIT},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="costPrice != null" >
+        cost_price = #{costPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="ratePrecent != null" >
+        rate_precent = #{ratePrecent,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where po_detail_id = #{poDetailId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.DocPoDetails" >
+    update doc_po_details
+    set po_no = #{poNo,jdbcType=VARCHAR},
+      line_no = #{lineNo,jdbcType=INTEGER},
+      category_code = #{categoryCode,jdbcType=VARCHAR},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      bar_code = #{barCode,jdbcType=VARCHAR},
+      brand_code = #{brandCode,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      sku = #{sku,jdbcType=VARCHAR},
+      parent_sku = #{parentSku,jdbcType=VARCHAR},
+      property = #{property,jdbcType=VARCHAR},
+      line_status = #{lineStatus,jdbcType=VARCHAR},
+      lot_num = #{lotNum,jdbcType=VARCHAR},
+      seq = #{seq,jdbcType=VARCHAR},
+      sub_qty = #{subQty,jdbcType=DECIMAL},
+      user_define1 = #{userDefine1,jdbcType=VARCHAR},
+      user_define2 = #{userDefine2,jdbcType=VARCHAR},
+      user_define3 = #{userDefine3,jdbcType=VARCHAR},
+      receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      receive_qty = #{receiveQty,jdbcType=DECIMAL},
+      expected_qty = #{expectedQty,jdbcType=DECIMAL},
+      ordered_qty = #{orderedQty,jdbcType=DECIMAL},
+      unit = #{unit,jdbcType=VARCHAR},
+      convert_qty = #{convertQty,jdbcType=DECIMAL},
+      convert_unit = #{convertUnit,jdbcType=VARCHAR},
+      is_gift = #{isGift,jdbcType=BIT},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      cost_price = #{costPrice,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      volume = #{volume,jdbcType=DECIMAL},
+      rate_precent = #{ratePrecent,jdbcType=DECIMAL},
+      memo = #{memo,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where po_detail_id = #{poDetailId,jdbcType=VARCHAR}
+  </update>
+</mapper>

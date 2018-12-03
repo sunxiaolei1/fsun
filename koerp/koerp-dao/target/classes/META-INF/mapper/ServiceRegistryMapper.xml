@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.ServiceRegistryMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.ServiceRegistry" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="evaluation_order" property="evaluationOrder" jdbcType="INTEGER" />
+    <result column="ignore_attributes" property="ignoreAttributes" jdbcType="BIT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="power_code" property="powerCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.fsun.domain.model.ServiceRegistryWithBLOBs" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+    <result column="img_path" property="imgPath" jdbcType="LONGVARCHAR" />
+    <result column="index_url" property="indexUrl" jdbcType="LONGVARCHAR" />
+    <result column="service_id" property="serviceId" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, evaluation_order, ignore_attributes, name, power_code
+  </sql>
+  <sql id="Blob_Column_List" >
+    description, img_path, index_url, service_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from service_registry
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_registry
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.fsun.domain.model.ServiceRegistryWithBLOBs" >
+    insert into service_registry (id, evaluation_order, ignore_attributes, 
+      name, power_code, description, 
+      img_path, index_url, service_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{evaluationOrder,jdbcType=INTEGER}, #{ignoreAttributes,jdbcType=BIT}, 
+      #{name,jdbcType=VARCHAR}, #{powerCode,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}, 
+      #{imgPath,jdbcType=LONGVARCHAR}, #{indexUrl,jdbcType=LONGVARCHAR}, #{serviceId,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsun.domain.model.ServiceRegistryWithBLOBs" >
+    insert into service_registry
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="evaluationOrder != null" >
+        evaluation_order,
+      </if>
+      <if test="ignoreAttributes != null" >
+        ignore_attributes,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="powerCode != null" >
+        power_code,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="imgPath != null" >
+        img_path,
+      </if>
+      <if test="indexUrl != null" >
+        index_url,
+      </if>
+      <if test="serviceId != null" >
+        service_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="evaluationOrder != null" >
+        #{evaluationOrder,jdbcType=INTEGER},
+      </if>
+      <if test="ignoreAttributes != null" >
+        #{ignoreAttributes,jdbcType=BIT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="powerCode != null" >
+        #{powerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="imgPath != null" >
+        #{imgPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="indexUrl != null" >
+        #{indexUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="serviceId != null" >
+        #{serviceId,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.ServiceRegistryWithBLOBs" >
+    update service_registry
+    <set >
+      <if test="evaluationOrder != null" >
+        evaluation_order = #{evaluationOrder,jdbcType=INTEGER},
+      </if>
+      <if test="ignoreAttributes != null" >
+        ignore_attributes = #{ignoreAttributes,jdbcType=BIT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="powerCode != null" >
+        power_code = #{powerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="imgPath != null" >
+        img_path = #{imgPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="indexUrl != null" >
+        index_url = #{indexUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="serviceId != null" >
+        service_id = #{serviceId,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.fsun.domain.model.ServiceRegistryWithBLOBs" >
+    update service_registry
+    set evaluation_order = #{evaluationOrder,jdbcType=INTEGER},
+      ignore_attributes = #{ignoreAttributes,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
+      power_code = #{powerCode,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR},
+      img_path = #{imgPath,jdbcType=LONGVARCHAR},
+      index_url = #{indexUrl,jdbcType=LONGVARCHAR},
+      service_id = #{serviceId,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.ServiceRegistry" >
+    update service_registry
+    set evaluation_order = #{evaluationOrder,jdbcType=INTEGER},
+      ignore_attributes = #{ignoreAttributes,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
+      power_code = #{powerCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

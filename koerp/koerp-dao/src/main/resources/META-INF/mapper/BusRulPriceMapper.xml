@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.BusRulPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusRulPrice" >
+    <id column="rul_id" property="rulId" jdbcType="VARCHAR" />
+    <result column="rul_name" property="rulName" jdbcType="VARCHAR" />
+    <result column="is_discount" property="isDiscount" jdbcType="BIT" />
+    <result column="discount" property="discount" jdbcType="DECIMAL" />
+    <result column="sort_code" property="sortCode" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_id" property="createdId" jdbcType="VARCHAR" />
+    <result column="updated_id" property="updatedId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    rul_id, rul_name, is_discount, discount, sort_code, created_time, updated_time, created_id, 
+    updated_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bus_rul_price
+    where rul_id = #{rulId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bus_rul_price
+    where rul_id = #{rulId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fsun.domain.model.BusRulPrice" >
+    insert into bus_rul_price (rul_id, rul_name, is_discount, 
+      discount, sort_code, created_time, 
+      updated_time, created_id, updated_id
+      )
+    values (#{rulId,jdbcType=VARCHAR}, #{rulName,jdbcType=VARCHAR}, #{isDiscount,jdbcType=BIT}, 
+      #{discount,jdbcType=DECIMAL}, #{sortCode,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP}, #{createdId,jdbcType=VARCHAR}, #{updatedId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsun.domain.model.BusRulPrice" >
+    insert into bus_rul_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rulId != null" >
+        rul_id,
+      </if>
+      <if test="rulName != null" >
+        rul_name,
+      </if>
+      <if test="isDiscount != null" >
+        is_discount,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="sortCode != null" >
+        sort_code,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="createdId != null" >
+        created_id,
+      </if>
+      <if test="updatedId != null" >
+        updated_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rulId != null" >
+        #{rulId,jdbcType=VARCHAR},
+      </if>
+      <if test="rulName != null" >
+        #{rulName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDiscount != null" >
+        #{isDiscount,jdbcType=BIT},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="sortCode != null" >
+        #{sortCode,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdId != null" >
+        #{createdId,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedId != null" >
+        #{updatedId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusRulPrice" >
+    update bus_rul_price
+    <set >
+      <if test="rulName != null" >
+        rul_name = #{rulName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDiscount != null" >
+        is_discount = #{isDiscount,jdbcType=BIT},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="sortCode != null" >
+        sort_code = #{sortCode,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdId != null" >
+        created_id = #{createdId,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedId != null" >
+        updated_id = #{updatedId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rul_id = #{rulId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusRulPrice" >
+    update bus_rul_price
+    set rul_name = #{rulName,jdbcType=VARCHAR},
+      is_discount = #{isDiscount,jdbcType=BIT},
+      discount = #{discount,jdbcType=DECIMAL},
+      sort_code = #{sortCode,jdbcType=INTEGER},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      created_id = #{createdId,jdbcType=VARCHAR},
+      updated_id = #{updatedId,jdbcType=VARCHAR}
+    where rul_id = #{rulId,jdbcType=VARCHAR}
+  </update>
+</mapper>

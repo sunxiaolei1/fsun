@@ -1,0 +1,5 @@
+com\fsun\exception\enums\SCMErrorEnum.class
+com\fsun\exception\common\SCMException.class
+com\fsun\exception\common\BasCodesException.class
+com\fsun\exception\bus\OrderException.class
+com\fsun\exception\sys\UserException.class

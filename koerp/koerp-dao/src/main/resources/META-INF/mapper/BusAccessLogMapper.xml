@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.BusAccessLogMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusAccessLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    <result column="request_json" property="requestJson" jdbcType="VARCHAR" />
+    <result column="error_msg" property="errorMsg" jdbcType="VARCHAR" />
+    <result column="request_status" property="requestStatus" jdbcType="SMALLINT" />
+    <result column="request_type" property="requestType" jdbcType="SMALLINT" />
+    <result column="spend_time" property="spendTime" jdbcType="SMALLINT" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="ext_0" property="ext0" jdbcType="VARCHAR" />
+    <result column="ext_1" property="ext1" jdbcType="VARCHAR" />
+    <result column="ext_2" property="ext2" jdbcType="VARCHAR" />
+    <result column="ext_3" property="ext3" jdbcType="VARCHAR" />
+    <result column="ext_4" property="ext4" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, request_id, request_json, error_msg, request_status, request_type, spend_time, 
+    ip, ext_0, ext_1, ext_2, ext_3, ext_4, created_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bus_access_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bus_access_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fsun.domain.model.BusAccessLog" >
+    insert into bus_access_log (id, request_id, request_json, 
+      error_msg, request_status, request_type, 
+      spend_time, ip, ext_0, 
+      ext_1, ext_2, ext_3, ext_4, 
+      created_time)
+    values (#{id,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{requestJson,jdbcType=VARCHAR}, 
+      #{errorMsg,jdbcType=VARCHAR}, #{requestStatus,jdbcType=SMALLINT}, #{requestType,jdbcType=SMALLINT}, 
+      #{spendTime,jdbcType=SMALLINT}, #{ip,jdbcType=VARCHAR}, #{ext0,jdbcType=VARCHAR}, 
+      #{ext1,jdbcType=VARCHAR}, #{ext2,jdbcType=VARCHAR}, #{ext3,jdbcType=VARCHAR}, #{ext4,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsun.domain.model.BusAccessLog" >
+    insert into bus_access_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="requestId != null" >
+        request_id,
+      </if>
+      <if test="requestJson != null" >
+        request_json,
+      </if>
+      <if test="errorMsg != null" >
+        error_msg,
+      </if>
+      <if test="requestStatus != null" >
+        request_status,
+      </if>
+      <if test="requestType != null" >
+        request_type,
+      </if>
+      <if test="spendTime != null" >
+        spend_time,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="ext0 != null" >
+        ext_0,
+      </if>
+      <if test="ext1 != null" >
+        ext_1,
+      </if>
+      <if test="ext2 != null" >
+        ext_2,
+      </if>
+      <if test="ext3 != null" >
+        ext_3,
+      </if>
+      <if test="ext4 != null" >
+        ext_4,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="requestId != null" >
+        #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="requestJson != null" >
+        #{requestJson,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMsg != null" >
+        #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="requestStatus != null" >
+        #{requestStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="requestType != null" >
+        #{requestType,jdbcType=SMALLINT},
+      </if>
+      <if test="spendTime != null" >
+        #{spendTime,jdbcType=SMALLINT},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="ext0 != null" >
+        #{ext0,jdbcType=VARCHAR},
+      </if>
+      <if test="ext1 != null" >
+        #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="ext2 != null" >
+        #{ext2,jdbcType=VARCHAR},
+      </if>
+      <if test="ext3 != null" >
+        #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="ext4 != null" >
+        #{ext4,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusAccessLog" >
+    update bus_access_log
+    <set >
+      <if test="requestId != null" >
+        request_id = #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="requestJson != null" >
+        request_json = #{requestJson,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMsg != null" >
+        error_msg = #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="requestStatus != null" >
+        request_status = #{requestStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="requestType != null" >
+        request_type = #{requestType,jdbcType=SMALLINT},
+      </if>
+      <if test="spendTime != null" >
+        spend_time = #{spendTime,jdbcType=SMALLINT},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="ext0 != null" >
+        ext_0 = #{ext0,jdbcType=VARCHAR},
+      </if>
+      <if test="ext1 != null" >
+        ext_1 = #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="ext2 != null" >
+        ext_2 = #{ext2,jdbcType=VARCHAR},
+      </if>
+      <if test="ext3 != null" >
+        ext_3 = #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="ext4 != null" >
+        ext_4 = #{ext4,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusAccessLog" >
+    update bus_access_log
+    set request_id = #{requestId,jdbcType=VARCHAR},
+      request_json = #{requestJson,jdbcType=VARCHAR},
+      error_msg = #{errorMsg,jdbcType=VARCHAR},
+      request_status = #{requestStatus,jdbcType=SMALLINT},
+      request_type = #{requestType,jdbcType=SMALLINT},
+      spend_time = #{spendTime,jdbcType=SMALLINT},
+      ip = #{ip,jdbcType=VARCHAR},
+      ext_0 = #{ext0,jdbcType=VARCHAR},
+      ext_1 = #{ext1,jdbcType=VARCHAR},
+      ext_2 = #{ext2,jdbcType=VARCHAR},
+      ext_3 = #{ext3,jdbcType=VARCHAR},
+      ext_4 = #{ext4,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

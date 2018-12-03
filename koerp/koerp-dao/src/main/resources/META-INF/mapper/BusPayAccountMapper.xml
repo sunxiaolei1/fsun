@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.BusPayAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusPayAccount" >
+    <id column="pay_id" property="payId" jdbcType="VARCHAR" />
+    <result column="line_no" property="lineNo" jdbcType="INTEGER" />
+    <result column="vip_id" property="vipId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+    <result column="pay_mode" property="payMode" jdbcType="SMALLINT" />
+    <result column="pay_type" property="payType" jdbcType="SMALLINT" />
+    <result column="point_fee" property="pointFee" jdbcType="DECIMAL" />
+    <result column="bank_account_name" property="bankAccountName" jdbcType="VARCHAR" />
+    <result column="bank_account_no" property="bankAccountNo" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="buyer_name" property="buyerName" jdbcType="VARCHAR" />
+    <result column="buyer_account" property="buyerAccount" jdbcType="VARCHAR" />
+    <result column="pay_price" property="payPrice" jdbcType="DECIMAL" />
+    <result column="recept_price" property="receptPrice" jdbcType="DECIMAL" />
+    <result column="dib_price" property="dibPrice" jdbcType="DECIMAL" />
+    <result column="over_amount" property="overAmount" jdbcType="DECIMAL" />
+    <result column="discount_amount" property="discountAmount" jdbcType="DECIMAL" />
+    <result column="currency" property="currency" jdbcType="VARCHAR" />
+    <result column="deposit_bank_no" property="depositBankNo" jdbcType="VARCHAR" />
+    <result column="account_log_id" property="accountLogId" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="other_account_email" property="otherAccountEmail" jdbcType="VARCHAR" />
+    <result column="other_account_fullname" property="otherAccountFullname" jdbcType="VARCHAR" />
+    <result column="other_user_id" property="otherUserId" jdbcType="VARCHAR" />
+    <result column="partner_id" property="partnerId" jdbcType="VARCHAR" />
+    <result column="seller_account" property="sellerAccount" jdbcType="VARCHAR" />
+    <result column="seller_name" property="sellerName" jdbcType="VARCHAR" />
+    <result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="trade_refund_amount" property="tradeRefundAmount" jdbcType="DECIMAL" />
+    <result column="trans_account" property="transAccount" jdbcType="VARCHAR" />
+    <result column="cash_name" property="cashName" jdbcType="VARCHAR" />
+    <result column="trans_code_msg" property="transCodeMsg" jdbcType="VARCHAR" />
+    <result column="trade_time" property="tradeTime" jdbcType="TIMESTAMP" />
+    <result column="src_order_id" property="srcOrderId" jdbcType="VARCHAR" />
+    <result column="src_trade_no" property="srcTradeNo" jdbcType="VARCHAR" />
+    <result column="src_pay_id" property="srcPayId" jdbcType="VARCHAR" />
+    <result column="activity_id" property="activityId" jdbcType="VARCHAR" />
+    <result column="flow_status" property="flowStatus" jdbcType="CHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pay_id, line_no, vip_id, shop_id, shop_name, card_no, pay_mode, pay_type, point_fee, 
+    bank_account_name, bank_account_no, bank_name, buyer_name, buyer_account, pay_price, 
+    recept_price, dib_price, over_amount, discount_amount, currency, deposit_bank_no, 
+    account_log_id, memo, order_id, other_account_email, other_account_fullname, other_user_id, 
+    partner_id, seller_account, seller_name, trade_no, trade_refund_amount, trans_account, 
+    cash_name, trans_code_msg, trade_time, src_order_id, src_trade_no, src_pay_id, activity_id, 
+    flow_status, created_time, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bus_pay_account
+    where pay_id = #{payId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bus_pay_account
+    where pay_id = #{payId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fsun.domain.model.BusPayAccount" >
+    insert into bus_pay_account (pay_id, line_no, vip_id, 
+      shop_id, shop_name, card_no, 
+      pay_mode, pay_type, point_fee, 
+      bank_account_name, bank_account_no, bank_name, 
+      buyer_name, buyer_account, pay_price, 
+      recept_price, dib_price, over_amount, 
+      discount_amount, currency, deposit_bank_no, 
+      account_log_id, memo, order_id, 
+      other_account_email, other_account_fullname, 
+      other_user_id, partner_id, seller_account, 
+      seller_name, trade_no, trade_refund_amount, 
+      trans_account, cash_name, trans_code_msg, 
+      trade_time, src_order_id, src_trade_no, 
+      src_pay_id, activity_id, flow_status, 
+      created_time, updated_time)
+    values (#{payId,jdbcType=VARCHAR}, #{lineNo,jdbcType=INTEGER}, #{vipId,jdbcType=VARCHAR}, 
+      #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, 
+      #{payMode,jdbcType=SMALLINT}, #{payType,jdbcType=SMALLINT}, #{pointFee,jdbcType=DECIMAL}, 
+      #{bankAccountName,jdbcType=VARCHAR}, #{bankAccountNo,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
+      #{buyerName,jdbcType=VARCHAR}, #{buyerAccount,jdbcType=VARCHAR}, #{payPrice,jdbcType=DECIMAL}, 
+      #{receptPrice,jdbcType=DECIMAL}, #{dibPrice,jdbcType=DECIMAL}, #{overAmount,jdbcType=DECIMAL}, 
+      #{discountAmount,jdbcType=DECIMAL}, #{currency,jdbcType=VARCHAR}, #{depositBankNo,jdbcType=VARCHAR}, 
+      #{accountLogId,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{otherAccountEmail,jdbcType=VARCHAR}, #{otherAccountFullname,jdbcType=VARCHAR}, 
+      #{otherUserId,jdbcType=VARCHAR}, #{partnerId,jdbcType=VARCHAR}, #{sellerAccount,jdbcType=VARCHAR}, 
+      #{sellerName,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, #{tradeRefundAmount,jdbcType=DECIMAL}, 
+      #{transAccount,jdbcType=VARCHAR}, #{cashName,jdbcType=VARCHAR}, #{transCodeMsg,jdbcType=VARCHAR}, 
+      #{tradeTime,jdbcType=TIMESTAMP}, #{srcOrderId,jdbcType=VARCHAR}, #{srcTradeNo,jdbcType=VARCHAR}, 
+      #{srcPayId,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR}, #{flowStatus,jdbcType=CHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsun.domain.model.BusPayAccount" >
+    insert into bus_pay_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="payId != null" >
+        pay_id,
+      </if>
+      <if test="lineNo != null" >
+        line_no,
+      </if>
+      <if test="vipId != null" >
+        vip_id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="cardNo != null" >
+        card_no,
+      </if>
+      <if test="payMode != null" >
+        pay_mode,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="pointFee != null" >
+        point_fee,
+      </if>
+      <if test="bankAccountName != null" >
+        bank_account_name,
+      </if>
+      <if test="bankAccountNo != null" >
+        bank_account_no,
+      </if>
+      <if test="bankName != null" >
+        bank_name,
+      </if>
+      <if test="buyerName != null" >
+        buyer_name,
+      </if>
+      <if test="buyerAccount != null" >
+        buyer_account,
+      </if>
+      <if test="payPrice != null" >
+        pay_price,
+      </if>
+      <if test="receptPrice != null" >
+        recept_price,
+      </if>
+      <if test="dibPrice != null" >
+        dib_price,
+      </if>
+      <if test="overAmount != null" >
+        over_amount,
+      </if>
+      <if test="discountAmount != null" >
+        discount_amount,
+      </if>
+      <if test="currency != null" >
+        currency,
+      </if>
+      <if test="depositBankNo != null" >
+        deposit_bank_no,
+      </if>
+      <if test="accountLogId != null" >
+        account_log_id,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="otherAccountEmail != null" >
+        other_account_email,
+      </if>
+      <if test="otherAccountFullname != null" >
+        other_account_fullname,
+      </if>
+      <if test="otherUserId != null" >
+        other_user_id,
+      </if>
+      <if test="partnerId != null" >
+        partner_id,
+      </if>
+      <if test="sellerAccount != null" >
+        seller_account,
+      </if>
+      <if test="sellerName != null" >
+        seller_name,
+      </if>
+      <if test="tradeNo != null" >
+        trade_no,
+      </if>
+      <if test="tradeRefundAmount != null" >
+        trade_refund_amount,
+      </if>
+      <if test="transAccount != null" >
+        trans_account,
+      </if>
+      <if test="cashName != null" >
+        cash_name,
+      </if>
+      <if test="transCodeMsg != null" >
+        trans_code_msg,
+      </if>
+      <if test="tradeTime != null" >
+        trade_time,
+      </if>
+      <if test="srcOrderId != null" >
+        src_order_id,
+      </if>
+      <if test="srcTradeNo != null" >
+        src_trade_no,
+      </if>
+      <if test="srcPayId != null" >
+        src_pay_id,
+      </if>
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="flowStatus != null" >
+        flow_status,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="payId != null" >
+        #{payId,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNo != null" >
+        #{lineNo,jdbcType=INTEGER},
+      </if>
+      <if test="vipId != null" >
+        #{vipId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payMode != null" >
+        #{payMode,jdbcType=SMALLINT},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=SMALLINT},
+      </if>
+      <if test="pointFee != null" >
+        #{pointFee,jdbcType=DECIMAL},
+      </if>
+      <if test="bankAccountName != null" >
+        #{bankAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccountNo != null" >
+        #{bankAccountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerName != null" >
+        #{buyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerAccount != null" >
+        #{buyerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="payPrice != null" >
+        #{payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="receptPrice != null" >
+        #{receptPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="dibPrice != null" >
+        #{dibPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="overAmount != null" >
+        #{overAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="discountAmount != null" >
+        #{discountAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="depositBankNo != null" >
+        #{depositBankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountLogId != null" >
+        #{accountLogId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="otherAccountEmail != null" >
+        #{otherAccountEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="otherAccountFullname != null" >
+        #{otherAccountFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="otherUserId != null" >
+        #{otherUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerId != null" >
+        #{partnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerAccount != null" >
+        #{sellerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerName != null" >
+        #{sellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeRefundAmount != null" >
+        #{tradeRefundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="transAccount != null" >
+        #{transAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="cashName != null" >
+        #{cashName,jdbcType=VARCHAR},
+      </if>
+      <if test="transCodeMsg != null" >
+        #{transCodeMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeTime != null" >
+        #{tradeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="srcOrderId != null" >
+        #{srcOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="srcTradeNo != null" >
+        #{srcTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="srcPayId != null" >
+        #{srcPayId,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowStatus != null" >
+        #{flowStatus,jdbcType=CHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusPayAccount" >
+    update bus_pay_account
+    <set >
+      <if test="lineNo != null" >
+        line_no = #{lineNo,jdbcType=INTEGER},
+      </if>
+      <if test="vipId != null" >
+        vip_id = #{vipId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payMode != null" >
+        pay_mode = #{payMode,jdbcType=SMALLINT},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=SMALLINT},
+      </if>
+      <if test="pointFee != null" >
+        point_fee = #{pointFee,jdbcType=DECIMAL},
+      </if>
+      <if test="bankAccountName != null" >
+        bank_account_name = #{bankAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccountNo != null" >
+        bank_account_no = #{bankAccountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerName != null" >
+        buyer_name = #{buyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerAccount != null" >
+        buyer_account = #{buyerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="payPrice != null" >
+        pay_price = #{payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="receptPrice != null" >
+        recept_price = #{receptPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="dibPrice != null" >
+        dib_price = #{dibPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="overAmount != null" >
+        over_amount = #{overAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="discountAmount != null" >
+        discount_amount = #{discountAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="currency != null" >
+        currency = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="depositBankNo != null" >
+        deposit_bank_no = #{depositBankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountLogId != null" >
+        account_log_id = #{accountLogId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="otherAccountEmail != null" >
+        other_account_email = #{otherAccountEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="otherAccountFullname != null" >
+        other_account_fullname = #{otherAccountFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="otherUserId != null" >
+        other_user_id = #{otherUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerId != null" >
+        partner_id = #{partnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerAccount != null" >
+        seller_account = #{sellerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerName != null" >
+        seller_name = #{sellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeRefundAmount != null" >
+        trade_refund_amount = #{tradeRefundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="transAccount != null" >
+        trans_account = #{transAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="cashName != null" >
+        cash_name = #{cashName,jdbcType=VARCHAR},
+      </if>
+      <if test="transCodeMsg != null" >
+        trans_code_msg = #{transCodeMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeTime != null" >
+        trade_time = #{tradeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="srcOrderId != null" >
+        src_order_id = #{srcOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="srcTradeNo != null" >
+        src_trade_no = #{srcTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="srcPayId != null" >
+        src_pay_id = #{srcPayId,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null" >
+        activity_id = #{activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowStatus != null" >
+        flow_status = #{flowStatus,jdbcType=CHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where pay_id = #{payId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusPayAccount" >
+    update bus_pay_account
+    set line_no = #{lineNo,jdbcType=INTEGER},
+      vip_id = #{vipId,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      pay_mode = #{payMode,jdbcType=SMALLINT},
+      pay_type = #{payType,jdbcType=SMALLINT},
+      point_fee = #{pointFee,jdbcType=DECIMAL},
+      bank_account_name = #{bankAccountName,jdbcType=VARCHAR},
+      bank_account_no = #{bankAccountNo,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      buyer_name = #{buyerName,jdbcType=VARCHAR},
+      buyer_account = #{buyerAccount,jdbcType=VARCHAR},
+      pay_price = #{payPrice,jdbcType=DECIMAL},
+      recept_price = #{receptPrice,jdbcType=DECIMAL},
+      dib_price = #{dibPrice,jdbcType=DECIMAL},
+      over_amount = #{overAmount,jdbcType=DECIMAL},
+      discount_amount = #{discountAmount,jdbcType=DECIMAL},
+      currency = #{currency,jdbcType=VARCHAR},
+      deposit_bank_no = #{depositBankNo,jdbcType=VARCHAR},
+      account_log_id = #{accountLogId,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      other_account_email = #{otherAccountEmail,jdbcType=VARCHAR},
+      other_account_fullname = #{otherAccountFullname,jdbcType=VARCHAR},
+      other_user_id = #{otherUserId,jdbcType=VARCHAR},
+      partner_id = #{partnerId,jdbcType=VARCHAR},
+      seller_account = #{sellerAccount,jdbcType=VARCHAR},
+      seller_name = #{sellerName,jdbcType=VARCHAR},
+      trade_no = #{tradeNo,jdbcType=VARCHAR},
+      trade_refund_amount = #{tradeRefundAmount,jdbcType=DECIMAL},
+      trans_account = #{transAccount,jdbcType=VARCHAR},
+      cash_name = #{cashName,jdbcType=VARCHAR},
+      trans_code_msg = #{transCodeMsg,jdbcType=VARCHAR},
+      trade_time = #{tradeTime,jdbcType=TIMESTAMP},
+      src_order_id = #{srcOrderId,jdbcType=VARCHAR},
+      src_trade_no = #{srcTradeNo,jdbcType=VARCHAR},
+      src_pay_id = #{srcPayId,jdbcType=VARCHAR},
+      activity_id = #{activityId,jdbcType=VARCHAR},
+      flow_status = #{flowStatus,jdbcType=CHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where pay_id = #{payId,jdbcType=VARCHAR}
+  </update>
+</mapper>

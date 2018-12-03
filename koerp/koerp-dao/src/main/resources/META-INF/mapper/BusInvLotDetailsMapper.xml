@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.BusInvLotDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusInvLotDetails" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="trade_type" property="tradeType" jdbcType="SMALLINT" />
+    <result column="trade_status" property="tradeStatus" jdbcType="SMALLINT" />
+    <result column="trade_order_no" property="tradeOrderNo" jdbcType="VARCHAR" />
+    <result column="trade_line_no" property="tradeLineNo" jdbcType="INTEGER" />
+    <result column="trade_time" property="tradeTime" jdbcType="TIMESTAMP" />
+    <result column="is_pull" property="isPull" jdbcType="SMALLINT" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="lot_num" property="lotNum" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="qty" property="qty" jdbcType="DECIMAL" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, trade_type, trade_status, trade_order_no, trade_line_no, trade_time, is_pull, 
+    shop_id, shop_name, sku, goods_name, lot_num, unit, qty, memo, created_time, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bus_inv_lot_details
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bus_inv_lot_details
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fsun.domain.model.BusInvLotDetails" >
+    insert into bus_inv_lot_details (id, trade_type, trade_status, 
+      trade_order_no, trade_line_no, trade_time, 
+      is_pull, shop_id, shop_name, 
+      sku, goods_name, lot_num, 
+      unit, qty, memo, created_time, 
+      updated_time)
+    values (#{id,jdbcType=VARCHAR}, #{tradeType,jdbcType=SMALLINT}, #{tradeStatus,jdbcType=SMALLINT}, 
+      #{tradeOrderNo,jdbcType=VARCHAR}, #{tradeLineNo,jdbcType=INTEGER}, #{tradeTime,jdbcType=TIMESTAMP}, 
+      #{isPull,jdbcType=SMALLINT}, #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
+      #{sku,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{lotNum,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsun.domain.model.BusInvLotDetails" >
+    insert into bus_inv_lot_details
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tradeType != null" >
+        trade_type,
+      </if>
+      <if test="tradeStatus != null" >
+        trade_status,
+      </if>
+      <if test="tradeOrderNo != null" >
+        trade_order_no,
+      </if>
+      <if test="tradeLineNo != null" >
+        trade_line_no,
+      </if>
+      <if test="tradeTime != null" >
+        trade_time,
+      </if>
+      <if test="isPull != null" >
+        is_pull,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="sku != null" >
+        sku,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="lotNum != null" >
+        lot_num,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="qty != null" >
+        qty,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null" >
+        #{tradeType,jdbcType=SMALLINT},
+      </if>
+      <if test="tradeStatus != null" >
+        #{tradeStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="tradeOrderNo != null" >
+        #{tradeOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeLineNo != null" >
+        #{tradeLineNo,jdbcType=INTEGER},
+      </if>
+      <if test="tradeTime != null" >
+        #{tradeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isPull != null" >
+        #{isPull,jdbcType=SMALLINT},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="sku != null" >
+        #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="lotNum != null" >
+        #{lotNum,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="qty != null" >
+        #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusInvLotDetails" >
+    update bus_inv_lot_details
+    <set >
+      <if test="tradeType != null" >
+        trade_type = #{tradeType,jdbcType=SMALLINT},
+      </if>
+      <if test="tradeStatus != null" >
+        trade_status = #{tradeStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="tradeOrderNo != null" >
+        trade_order_no = #{tradeOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeLineNo != null" >
+        trade_line_no = #{tradeLineNo,jdbcType=INTEGER},
+      </if>
+      <if test="tradeTime != null" >
+        trade_time = #{tradeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isPull != null" >
+        is_pull = #{isPull,jdbcType=SMALLINT},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="sku != null" >
+        sku = #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="lotNum != null" >
+        lot_num = #{lotNum,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="qty != null" >
+        qty = #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusInvLotDetails" >
+    update bus_inv_lot_details
+    set trade_type = #{tradeType,jdbcType=SMALLINT},
+      trade_status = #{tradeStatus,jdbcType=SMALLINT},
+      trade_order_no = #{tradeOrderNo,jdbcType=VARCHAR},
+      trade_line_no = #{tradeLineNo,jdbcType=INTEGER},
+      trade_time = #{tradeTime,jdbcType=TIMESTAMP},
+      is_pull = #{isPull,jdbcType=SMALLINT},
+      shop_id = #{shopId,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      sku = #{sku,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      lot_num = #{lotNum,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      qty = #{qty,jdbcType=DECIMAL},
+      memo = #{memo,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

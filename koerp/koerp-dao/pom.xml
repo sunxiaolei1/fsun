@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.fsun.koerp</groupId>
+    <artifactId>koerp</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>koerp-dao</artifactId>
+  <name>koerp-dao</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+		<groupId>com.fsun.koerp</groupId>
+		<artifactId>koerp-common</artifactId>
+	</dependency>	
+	
+	<dependency>
+		<groupId>com.fsun.koerp</groupId>
+		<artifactId>koerp-domain</artifactId>
+	</dependency>	
+	
+	<!-- 连接池及驱动 -->
+	<dependency>
+		  <groupId>com.alibaba</groupId>
+		  <artifactId>druid</artifactId>		 
+	</dependency>	
+	<dependency>
+  		<groupId>c3p0</groupId>
+  		<artifactId>c3p0</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>mysql</groupId>
+  		<artifactId>mysql-connector-java</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.oracle</groupId>
+  		<artifactId>ojdbc6</artifactId>
+  	</dependency>
+  	<dependency>
+	    <groupId>com.microsoft.sqlserver</groupId>
+	    <artifactId>mssql-jdbc</artifactId>	    
+	</dependency>
+	
+	<!-- aop -->
+  	<dependency>
+  		<groupId>aspectj</groupId>
+  		<artifactId>aspectjrt</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.aspectj</groupId>
+  		<artifactId>aspectjweaver</artifactId>
+  	</dependency>
+  	
+  	<!-- mybatis -->
+  	<dependency>
+  		<groupId>org.mybatis</groupId>
+  		<artifactId>mybatis</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.mybatis</groupId>
+  		<artifactId>mybatis-spring</artifactId> 		
+  	</dependency>
+  	
+  	<!-- spring -->
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-beans</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-jdbc</artifactId>  		
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-tx</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-aop</artifactId> 	
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-context</artifactId> 		
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework.data</groupId>
+  		<artifactId>spring-data-commons</artifactId> 		
+  	</dependency>
+    
+  </dependencies>
+  
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<!-- 复制mapper配置文件以及*.xml文件到指定目录 -->
+			<resource>
+				<directory>src/main/resources/META-INF</directory>
+				<targetPath>META-INF</targetPath>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/mapper/**</include>
+					<include>*.xml</include>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+			<!-- 根据不同的打包环境动态复制该环境下的jdbc文件到指定目录 
+			<resource>
+				<directory>src/main/resources/META-INF/${package.environment}</directory>
+				<excludes>
+					<exclude>**/prod/**</exclude>
+					<exclude>**/test/**</exclude>
+				</excludes>
+				<targetPath>META-INF</targetPath>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>-->
+		</resources>
+	</build>
+  
+</project>

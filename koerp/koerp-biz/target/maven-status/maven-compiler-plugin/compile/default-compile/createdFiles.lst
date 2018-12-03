@@ -1,0 +1,7 @@
+com\fsun\biz\sys\manage\SysUserManage.class
+com\fsun\biz\sys\manage\SysMenuManage.class
+com\fsun\biz\common\BasCodesManage.class
+com\fsun\biz\sys\manage\SysPowerManage.class
+com\fsun\biz\common\BaseManage.class
+com\fsun\biz\sys\manage\SysRoleManage.class
+com\fsun\biz\common\CrudManage.class
