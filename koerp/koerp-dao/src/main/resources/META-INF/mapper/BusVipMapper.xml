@@ -47,7 +47,7 @@
   			and vip.customer_code = #{customerCode}
   		</if>
   		
-  		<if test="enabled != null and enabled != ''">
+  		<if test="enabled != null">
   			and vip.enabled = #{enabled}
   		</if>
   		

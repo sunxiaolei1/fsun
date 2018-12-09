@@ -2,6 +2,10 @@
 var isEnableData = new Array();
 var busCustomerTypeData = new Array();
 var vipCardTypeData = new Array();
+var categoryCodeData = new Array();
+var brandCodeData = new Array();
+var unitCodeData = new Array();
+var productTypeData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -9,12 +13,20 @@ var isTrue = {'false': '否', 'true': '是'};
 var isEnable = {};
 var busCustomerType = {};
 var vipCardType = {};
+var categoryCode = {};
+var brandCode = {};
+var unitCode = {};
+var productType = {};
 
 $(function () {
 	synchronizeData();	
 	isEnable = formatterCodeType(isEnableData);
 	busCustomerType = formatterCodeType(busCustomerTypeData);
 	vipCardType = formatterCodeType(vipCardTypeData);
+	categoryCode = formatterCodeType(categoryCodeData);
+	brandCode = formatterCodeType(brandCodeData);
+	unitCode = formatterCodeType(unitCodeData);
+	productType = formatterCodeType(productTypeData);
 });
 
 function formatterCodeType(result) {
@@ -43,6 +55,14 @@ function synchronizeData() {
         				busCustomerTypeData.push(item);
         			}else if(item.codeType == 'VipCardType') {
         				vipCardTypeData.push(item);
+        			}else if(item.codeType == 'CategoryCode') {
+        				categoryCodeData.push(item);
+        			}else if(item.codeType == 'BrandCode') {
+        				brandCodeData.push(item);
+        			}else if(item.codeType == 'UnitCode') {
+        				unitCodeData.push(item);
+        			}else if(item.codeType == 'ProductType') {
+        				productTypeData.push(item);
         			}
         			
     	        });
@@ -58,6 +78,26 @@ function synchronizeData() {
 				});
         		
         		vipCardTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		categoryCodeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		brandCodeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		unitCodeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		productTypeData.unshift({
         			codeCode:"",
 					codeName:"请选择..."
 				});

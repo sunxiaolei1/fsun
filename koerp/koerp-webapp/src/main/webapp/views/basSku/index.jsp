@@ -22,30 +22,38 @@
 
 <script type="text/javascript">
 
+var frozenColumns = 
+	[[
+		{field:'sku_id',checkbox:true},
+		{field:'sku',title:'SKU',width:80,align:'center',sortable:true},	
+		{field:'goods_name',title:'商品名称',width:100,align:'center',sortable:true},
+		{field:'brand_code',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
+			return formatter(value, window.parent.brandCode); 
+		}},
+		{field:'category_code',title:'商品分类',width:80,align:'center',sortable:true, formatter:function(value, row){
+			return formatter(value, window.parent.categoryCode); 
+		}}			
+   	]];
+
 var columns = 
-    [[
-		{field:'id',checkbox:true},
-		{field:'customer_code',title:'所属客户',width:130,align:'center',sortable:true, formatter:function(value, row){
-			return row.customer_name; 
-		}},						
-		{field:'card_type',title:'卡级别',width:80,align:'center',sortable:true, formatter:function(value, row){
-			return formatter(value, window.parent.vipCardType); 
+    [[				
+		{field:'en_name',title:'英文名称',width:100,align:'center',sortable:true},
+		{field:'product_type',title:'商品类型',width:80,align:'center',sortable:true, formatter:function(value, row){
+			return formatter(value, window.parent.productType); 
 		}},
-		{field:'card_no',title:'卡号',width:140,align:'center',sortable:true},
-		{field:'mobile',title:'手机号',width:120,align:'center',sortable:true},					
-		{field:"cn_name",title:"持卡人",width:80, align:'center'},
-		{field:"vip_time",title:"开卡时间",width:120, align:'center'},
-		{field:"enable_price",title:"可用余额",width:80, align:'center',formatter:numBaseFormat},
-		{field:"neg_balance",title:"允许负余额",width:80, align:'center', formatter:function(value, row){
-			var neg_balance = '否';
-			if(row.card_type==2 || row.card_type==3){
-				neg_balance = '是';
-			}
-			return neg_balance;
-		}},
-		{field:"enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
+		{field:'bar_code',title:'条形码',width:120,align:'center',sortable:true},		
+		{field:'property',title:'规格',width:120,align:'center',sortable:true},
+		{field:'unit_name',title:'单位',width:60,align:'center',sortable:true},				
+		{field:"market_price",title:"市场价",width:80, align:'center',formatter:numBaseFormat},
+		{field:"cost_price",title:"成本价",width:80, align:'center',formatter:numBaseFormat},
+		{field:"is_enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
 			return formatter(value, window.parent.isEnable); 
 		}},
+		{field:'is_vip_appoint',title:'商品指定VIP',width:120,align:'center',sortable:true, formatter:function(value, row){
+			return formatter(value, window.parent.isTrue); 
+		}},	
+		{field:"created_time",title:"创建时间",width:130, align:'center'},
+		{field:"updated_time",title:"更新时间",width:130, align:'center'},
 		{field:'memo',title:'备注',width:150,align:'center',sortable:true}		
 	]];
 
@@ -64,7 +72,7 @@ $(function() {
 	    fit:true,//自动大小
 	    queryParams:{},
 	    remoteSort:true,
-	    sortName:"customer_code",
+	    sortName:"sku",
         sortOrder:"desc",
 	    //idField:"blackid",
 	    singleSelect:true,//是否单选
@@ -74,7 +82,8 @@ $(function() {
 	    pageSize: GLOBAL_PAGE_SIZE,
 	    pageList: GLOBAL_PAGE_SIZE_LIST,
 	    showFooter:true,
-	    fitColumns:true,
+	    fitColumns:false,
+	    frozenColumns:frozenColumns,
 	    columns:columns,
 	    loadMsg:"数据加载中请稍后……",
 	    emptyMsg:"没有符合条件的记录",

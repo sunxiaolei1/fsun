@@ -73,12 +73,12 @@ CREATE TABLE `bus_bas_sku` (
   `sku_id` varchar(32) NOT NULL COMMENT 'sku_id',
   `bar_code` varchar(32) DEFAULT NULL COMMENT '商品条码',
   `sku` varchar(32) NOT NULL COMMENT 'sku',
-  `parent_sku` varchar(32) NOT NULL COMMENT '上级sku',
+  `parent_sku` varchar(32) DEFAULT NULL COMMENT '上级sku',
   `category_code` varchar(32) DEFAULT NULL COMMENT '产品分类编码',
   `product_type` smallint(6) DEFAULT NULL COMMENT '产品类型 0 单品，1 组合',
   `brand_code` varchar(32) DEFAULT NULL COMMENT '品牌编码',
   `assist_id` varchar(32) DEFAULT NULL COMMENT '辅助编码',
-  `goods_name` varchar(200) DEFAULT NULL COMMENT '商品名称',
+  `goods_name` varchar(200) NOT NULL COMMENT '商品名称',
   `en_name` varchar(128) DEFAULT NULL COMMENT '英文名称',
   `property` varchar(64) DEFAULT NULL COMMENT '商品属性',
   `market_price` decimal(18,2) DEFAULT '0.00' COMMENT '市场价',
@@ -527,6 +527,7 @@ DROP TABLE IF EXISTS `bus_vip`;
 CREATE TABLE `bus_vip` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `customer_code` varchar(32) NOT NULL COMMENT '客户编号',
+  `card_type` int(11) DEFAULT NULL COMMENT '卡级别 1 普通会员 2 会员银卡 3 会员金卡',
   `card_no` varchar(32) NOT NULL COMMENT '会员卡号',
   `mobile` varchar(64) NOT NULL COMMENT '手机号',
   `wechat` varchar(32) DEFAULT NULL COMMENT '微信号',
@@ -546,19 +547,15 @@ CREATE TABLE `bus_vip` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员卡信息';
 
 -- ----------------------------
--- Records of bus_vip
--- ----------------------------
-
--- ----------------------------
 -- Table structure for bus_vip_unpaid
 -- ----------------------------
 DROP TABLE IF EXISTS `bus_vip_unpaid`;
 CREATE TABLE `bus_vip_unpaid` (
   `unpaid_id` varchar(32) NOT NULL COMMENT '挂账支付Id',
-  `customer_id` varchar(32) DEFAULT NULL COMMENT '会员Id',
+  `customer_code` varchar(32) DEFAULT NULL COMMENT '会员Id',
   `shop_id` varchar(32) DEFAULT NULL COMMENT '店仓编号',
   `pay_mode` smallint(6) DEFAULT NULL COMMENT '结款方式  1 银行卡，2 现金，3 支付宝，4 微信，5 会员(卡),6(券)，99 其他',
-  `trade_type` smallint(6) DEFAULT NULL COMMENT '交易类型  1 挂账，2 挂账结款 ',
+  `trade_type` smallint(6) DEFAULT NULL COMMENT '交易类型  1 挂账，2 挂账结款 3会员卡消费 4会员卡充值',
   `trade_status` smallint(6) DEFAULT NULL COMMENT '交易状态  1 交易成功，2 交易取消 ',
   `trade_time` datetime DEFAULT NULL COMMENT '订单交易时间',
   `trade_price` decimal(18,2) DEFAULT NULL COMMENT '交易金额',
@@ -566,12 +563,10 @@ CREATE TABLE `bus_vip_unpaid` (
   `order_id` varchar(64) DEFAULT NULL COMMENT '订单号',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `card_no` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`unpaid_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='挂账明细';
 
--- ----------------------------
--- Records of bus_vip_unpaid
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for doc_asn_details

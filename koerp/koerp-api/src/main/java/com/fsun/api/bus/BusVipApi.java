@@ -3,6 +3,7 @@ package com.fsun.api.bus;
 import com.fsun.api.base.BaseApi;
 import com.fsun.domain.entity.BusVipCondition;
 import com.fsun.domain.model.BusVip;
+import com.fsun.domain.model.SysUser;
 
 /**
  * 
@@ -23,6 +24,6 @@ public interface BusVipApi extends BaseApi<BusVip, BusVipCondition> {
 	 * @param ids
 	 * @param enabled
 	 */
-	public void changeStatus(String[] ids, Boolean enabled);
+	public void changeStatus(String[] ids, Boolean enabled, SysUser user);
 
 }

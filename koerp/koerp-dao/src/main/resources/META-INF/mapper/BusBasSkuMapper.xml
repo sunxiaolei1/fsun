@@ -48,6 +48,60 @@
     on_shelf_time, off_shelf_time, sort_code, is_enabled, ext_0, ext_1, rate_precent, 
     settle_type, created_time, updated_time, created_id, updated_id, is_vip_appoint
   </sql>
+  
+  
+   <sql id="conditions">
+  	<where>  	
+  		<if test="q != null and q != ''">
+  			and (sku like '%${q}%' 
+  				or goods_name like '%${q}%'
+  				or property like '%${q}%'
+  				)
+  		</if>
+  		
+  		<if test="barCode != null and barCode != ''">
+  			and bar_code like '%${barCode}%'
+  		</if>
+  		
+  		<if test="categoryCode != null and categoryCode != '' ">
+  			and category_code = #{categoryCode}
+  		</if>
+  		
+  		<if test="brandCode != null and brandCode != '' ">
+  			and brand_code = #{brandCode}
+  		</if>
+  		
+  		<if test="isEnabled != null">
+  			and is_enabled = #{isEnabled}
+  		</if>
+  		
+  		<if test="skuId != null and skuId != ''">
+  			and sku_id = #{skuId}
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and sku = #{sku}
+  		</if>
+  		
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusBasSkuCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_bas_sku
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusBasSkuCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_bas_sku
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

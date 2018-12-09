@@ -12,78 +12,72 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fsun.api.bus.BusCustomerApi;
+import com.fsun.api.bus.BusBasSkuApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
-import com.fsun.domain.entity.BusCustomerCondition;
-import com.fsun.domain.model.BusCustomer;
+import com.fsun.domain.entity.BusBasSkuCondition;
+import com.fsun.domain.model.BusBasSku;
 import com.fsun.domain.model.SysUser;
-import com.fsun.exception.bus.CustomerException;
+import com.fsun.exception.bus.BasSkuException;
 import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
 
-/**
- * 客户管理模块
- * @author sunxiaolei
- *
- */
 @Controller
-@RequestMapping("/bus/customer")
-public class CustomerController extends BaseController {
+@RequestMapping("/bus/basSku")
+public class BasSkuController extends BaseController {
 
 	@Autowired
-	private BusCustomerApi customerApi;
+	private BusBasSkuApi busBasSkuApi;
 
 	@RequestMapping("/index")
 	public String index() {
-		return "/busCustomer/index";
+		return "/basSku/index";
 	}
-
+	
 	@RequestMapping("/toDetailView")
-	public ModelAndView toDetailView(String id) {		
-		ModelAndView modelAndView = new ModelAndView("/busCustomer/detail");
-		modelAndView.addObject("id", id);
+	public ModelAndView toDetailView(String skuId) {		
+		ModelAndView modelAndView = new ModelAndView("/basSku/detail");
+		modelAndView.addObject("skuId", skuId);
 		return modelAndView;
 	}
 	
-	
-	/**
-	    * 根据客户名称判断是否已存在，不允许相同
-	    * @param id
-	    * @param sku
-	    * @return
-	    */
-	    @ResponseBody
-	    @RequestMapping(value = "/unique", method = {RequestMethod.POST})
-	    public HttpResult unique(@RequestBody BusCustomerCondition condition) {  
-	    	try {
-	    		boolean isUnique = customerApi.unique(condition);
-	    		return success(isUnique);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return failure(SCMErrorEnum.SYSTEM_ERROR);
-			}
-	    }
-	
-	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	@RequestMapping(value="/{skuId}", method = RequestMethod.GET)
 	@ResponseBody
-	public HttpResult load(@PathVariable("id") String id) {
+	public HttpResult load(@PathVariable("skuId") String skuId) {
 		try {
-			BusCustomer busCustomer = customerApi.load(id);
-			return success(busCustomer);
+			BusBasSku busBasSku = busBasSkuApi.load(skuId);
+			return success(busBasSku);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}
+	
+   /**
+    * 根据sku码判断是否已存在，不允许相同
+    * @param id
+    * @param sku
+    * @return
+    */
+    @ResponseBody
+    @RequestMapping(value = "/unique", method = {RequestMethod.GET})
+    public HttpResult unique(BusBasSkuCondition condition) {  
+    	try {
+    		boolean isUnique = busBasSkuApi.unique(condition);
+    		return success(isUnique);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+    }
 
 	@RequestMapping(value="/findPage", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public HttpResult findPage(BusCustomerCondition condition) {
+	public HttpResult findPage(BusBasSkuCondition condition) {
 		try {
-			PageModel pageModel = customerApi.findPage(condition);
+			PageModel pageModel = busBasSkuApi.findPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,24 +87,24 @@ public class CustomerController extends BaseController {
 
 	@RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public HttpResult list(BusCustomerCondition condition) {
+	public HttpResult list(BusBasSkuCondition condition) {
 		try {
-			List<BusCustomer> list = customerApi.list(condition);
+			List<BusBasSku> list = busBasSkuApi.list(condition);
 			return success(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}
-
+	
 	@RequestMapping(value="/save", method = {RequestMethod.POST})
 	@ResponseBody
-	public HttpResult save(@RequestBody BusCustomer busCustomer) {
+	public HttpResult save(@RequestBody BusBasSku busBasSku) {
 		try {
 			SysUser user = getCurrentUser();			
-			customerApi.save(busCustomer, user);
-			return success();
-		} catch(CustomerException e){
+			String skuId = busBasSkuApi.save(busBasSku, user);
+			return success(skuId);
+		} catch(BasSkuException e){
 			e.printStackTrace();
 			return failure(SCMException.CODE_SAVE, e.getMessage());
 		} catch (Exception e) {
@@ -119,14 +113,15 @@ public class CustomerController extends BaseController {
 		}		
 	}
 
+
 	@RequestMapping(value="/status/{enabled}", method = {RequestMethod.POST})
 	@ResponseBody
 	public HttpResult changeStatus(@PathVariable("enabled") Boolean enabled, 
-		@RequestParam("ids") String ids) {
+		@RequestParam("skuIds") String skuIds) {
 		try {
-			if (!StringUtils.isEmpty(ids)) {
+			if (!StringUtils.isEmpty(skuIds)) {
 				SysUser user = getCurrentUser();	
-				customerApi.changeStatus(ids.split(","), enabled, user);
+				busBasSkuApi.changeStatus(skuIds.split(","), enabled, user);
 				return success(SCMErrorEnum.SUCCESS.getErrorCode());
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
@@ -135,5 +130,5 @@ public class CustomerController extends BaseController {
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}
-
+	
 }

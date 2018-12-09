@@ -40,6 +40,10 @@
   			and a.customer_code = #{customerCode}
   		</if>
   		
+  		<if test="customerName != null and customerName != ''">
+  			and a.customer_name = #{customerName}
+  		</if>
+  		
   		<if test="customerType != null and customerType != ''">
   			and a.customer_type = #{customerType}
   		</if>

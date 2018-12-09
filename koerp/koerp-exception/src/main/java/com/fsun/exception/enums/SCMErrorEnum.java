@@ -24,31 +24,19 @@ public enum SCMErrorEnum {
 	USER_ILLEGAL(1004, "用户非法"),
 	
 	//单据异常信息-20
-	ORDER_NOT_EXIST(2001, "单据不存在"),
-	ORDER_DETAIL_NOT_EXIST(2002, "单据商品不存在"),
-	DIFF_ORDER_NOT_EXIST(2003, "差异单不存在"),
-	DIFF_ORDER_DETAIL_NOT_EXIST(2004, "差异单商品不存在"),
-	DIFF_ORDER_STATUS_ILLEGAL(2005, "差异单状态非法"),
-	ORDER_AMOUNT_ILLEGAL(2006, "单据金额非法"),
-	ORDER_STATUS_ILLEGAL(2007, "订单处理中，不能重审，请稍后再试!"),
-	ORDER_STATUS_INVALID(2008, "单据状态不可用"),
+	BUS_ORDER_NOT_EXIST(2001, "单据不存在"),
+	BUS_ORDER_DETAIL_NOT_EXIST(2002, "单据商品不存在"),
+	BUS_ORDER_STATUS_ILLEGAL(2007, "订单处理中，不能重审，请稍后再试!"),
+	BUS_ORDER_STATUS_INVALID(2008, "单据状态不可用"),
 	
-	//售后单异常信息-21
-	REFUND_ORDER_NOT_EXIST(2101, "退货单不存在"),
-	REFUND_ORDER_DETAIL_NOT_EXIST(2102, "退货单商品不存在"),
-	REISSUE_ORDER_NOT_EXIST(2103, "补发单不存在"),
-	REISSUE_ORDER_DETAIL_NOT_EXIST(2104, "补发单商品不存在"),
-	REFUND_ORDER_DETAIL_ILLEGAL(2105, "退货单商品非法"),
-	REFUND_ORDER_STATUS_ILLEGAL(2106, "退货单状态非法"),
-	
-	//活动信息异常-30
-	PROMO_NOT_EXIST(3001, "活动不存在"),
-	PROMO_SKU_DETAIL_NOT_EXIST(3002, "参与活动的商品不存在"),
-	PROMO_GIFT_SKU_NOT_EXIST(3003, "赠送商品不存在"),
-	PROMO_STATUS_ILLEGAL(3004, "活动状态非法"),
-	
-	//黑名单异常
-	BLACK_USER_EXIST(4001, "黑名单已存在");
+	BUS_SKU_NOT_EXIST(8011, "商品不存在"),
+	BUS_SKU_EXISTED(8012, "商品已存在"),
+	BUS_VIP_NOT_EXIST(8021, "会员卡不存在"),
+	BUS_VIP_EXISTED(8022, "会员卡已存在"),
+	BUS_CUSTOMER_NOT_EXIST(8031, "客户不存在"),
+	BUS_CUSTOMER_EXISTED(8032, "客户不存在"),
+	BUS_CODES_NOT_EXIST(8041, "要更新的数据不存在"),
+	BUS_CODES_EXISTED(8042, "对不起，该数据类别和编码已存在");
 
 	private int errorCode;
 	

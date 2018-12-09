@@ -29,7 +29,18 @@
 	
 <form id="orderfm">
 	<input id="id" name="id" hidden="true"/>									      
-   	<table class="nb-formTable" style="width:100%;">			   		
+   	<table class="nb-formTable" style="width:100%;">
+   		 <tr>					
+			<th width="12%">所属客户<span style="color:red;">*</span></th>
+			<td>
+				<input name="customerCode" id="vipCustomer" class="easyui-combogrid" required />
+			</td>
+			<th width="12%">本金比例<span style="color:red;">*</span></th>
+			<td>
+				<input name="originPrecent" id="originPrecent" class="easyui-numberspinner" 
+					data-options="min:1,max:2,precision:2,increment:0.01,value:1" required />
+			</td>							
+        </tr>			   		
         <tr>
         	<th width="12%">卡级别<span style="color:red;">*</span></th>
 			<td>
@@ -37,27 +48,27 @@
 			</td>
         	<th width="12%">卡号<span style="color:red;">*</span></th>
 			<td>	
-				<input id="cardNo" name="cardNo" class="easyui-textbox" required />
+				<input id="cardNo" name="cardNo" class="easyui-textbox" data-options="required:true,validType:'uniqueValue'" /> 
 			</td>			          			
-		</tr>
-        <tr>					
-			<th width="12%">所属客户<span style="color:red;">*</span></th>
-			<td>
-				<input name="customerCode" id="vipCustomer" class="easyui-combogrid" required />
-			</td>
-			<th width="12%">持卡人<span style="color:red;">*</span></th>
+		</tr>       
+        <tr>
+        	<th width="12%">持卡人<span style="color:red;">*</span></th>
 			<td>
 				<input name="cnName" id="cnName" class="easyui-textbox" required />
-			</td>							
-        </tr>
-        <tr>	
+			</td>	
         	<th width="12%">手机号<span style="color:red;">*</span></th>
 			<td>
 				<input name="mobile" id="mobile" class="easyui-textbox" required />
-			</td>			          															
-			<th width="12%">微信号</th>
+			</td>			          																				
+		</tr>		
+		<tr>	
+        	<th width="12%">微信号</th>
 			<td>
 				<input name="wechat" id="wechat" class="easyui-textbox" />
+			</td>				          															
+			<th width="12%">邮箱</th>
+			<td>
+				<input name="email" id="email" class="easyui-textbox" />
 			</td>			
 		</tr>
 		<tr>	
@@ -70,21 +81,11 @@
 				<input name="brithday" id="brithday" class="easyui-datebox" />
 			</td>			
 		</tr>
-		<tr>	
-        	<th width="12%">本金比例</th>
-			<td>
-				<input name="originPrecent" id="originPrecent" class="easyui-numberbox" />
-			</td>			          															
-			<th width="12%">邮箱</th>
-			<td>
-				<input name="email" id="email" class="easyui-textbox" />
-			</td>			
-		</tr>
         <tr>
         	<th width="12%">备注</th>
 			<td colspan="3">
 				<input id="memo" name="memo"  data-options="multiline:true" 
-					class="easyui-textbox" style="width:440px;height:50px;"/>
+					class="easyui-textbox" style="width:640px;height:75px;"/>
 			</td>		        	
         </tr>		        			       
 	</table>			
@@ -95,6 +96,27 @@
 <%@include file="../busCommon/vipCustomerSelect.jsp"%> 
 
 <script type="text/javascript">
+
+$.extend($.fn.validatebox.defaults.rules, { 
+	uniqueValue : {
+		validator : function(value) {				
+		    var success = false;	
+			$.ajax({
+	            type: "GET",
+	            dataType: "json",
+	            async: false,
+	            url: "${api}/bus/vip/unique",
+	            data: { 'cardNo':value },
+	            success: function(result) {
+	            	success = result.entry;
+	            }
+	        });
+	        return success;
+			
+		},
+		message : '会员卡已存在,请换一个！'
+	}          
+});
 
 var $orderfm;
 

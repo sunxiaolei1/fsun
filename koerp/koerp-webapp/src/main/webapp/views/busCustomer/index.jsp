@@ -34,7 +34,7 @@ var columns =
 		{field:'salesman',title:'所属销售代表',width:100,align:'center',sortable:true, formatter:function(value, row){
 			return row.salesman_name; 
 		}},						
-		{field:"credit_price",title:"信用额度(元)",width:80, align:'center'},
+		{field:"credit_price",title:"信用额度(元)",width:80, align:'center',formatter:numBaseFormat},
 		{field:"enabled",title:"状态", width:80,align:'center', formatter:function(value, row){
 			return formatter(value, window.parent.isEnable); 
 		}},

@@ -120,7 +120,8 @@ public class BusVipController extends BaseController {
 		@RequestParam("ids") String ids) {
 		try {
 			if (!StringUtils.isEmpty(ids)) {
-				busVipApi.changeStatus(ids.split(","), enabled);
+				SysUser user = getCurrentUser();	
+				busVipApi.changeStatus(ids.split(","), enabled, user);
 				return success(SCMErrorEnum.SUCCESS.getErrorCode());
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);

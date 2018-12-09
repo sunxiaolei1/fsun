@@ -1,10 +1,18 @@
-package com.fsun.domain.model;
+package com.fsun.domain.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class BusBasSku {
-    /**
+import com.fsun.domain.common.SortCondition;
+
+/**
+ * 
+ * @author sunxiaolei
+ *
+ */
+public class BusBasSkuCondition extends SortCondition {
+
+	/**
      * sku_id
      * 表字段 : bus_bas_sku.sku_id
      */
@@ -231,6 +239,11 @@ public class BusBasSku {
      * 表字段 : bus_bas_sku.is_vip_appoint
      */
     private Boolean isVipAppoint;
+    
+    /**
+     * 模糊查询
+     */
+    private String q;
 
     public String getSkuId() {
         return skuId;
@@ -535,4 +548,18 @@ public class BusBasSku {
     public void setIsVipAppoint(Boolean isVipAppoint) {
         this.isVipAppoint = isVipAppoint;
     }
+
+	/**
+	 * @return the q
+	 */
+	public String getQ() {
+		return q;
+	}
+
+	/**
+	 * @param q the q to set
+	 */
+	public void setQ(String q) {
+		this.q = q;
+	}
 }
