@@ -52,6 +52,11 @@ public class BusBasSkuService implements BusBasSkuApi {
 	public PageModel findPage(BusBasSkuCondition condition) {
 		return busBasSkuManage.findMapPage(condition);
 	}
+	
+	@Override
+	public PageModel findListForPage(BusBasSkuCondition condition) {
+		return busBasSkuManage.findPage(condition);
+	}
 
 	@Override
 	public List<BusBasSku> list(BusBasSkuCondition condition) {

@@ -244,6 +244,16 @@ public class BusBasSkuCondition extends SortCondition {
      * 模糊查询
      */
     private String q;
+    
+    /**
+     * 
+     */
+    private String notInSkusStr;
+    
+    /**
+     * 
+     */
+    private String[] notInSkus;
 
     public String getSkuId() {
         return skuId;
@@ -562,4 +572,25 @@ public class BusBasSkuCondition extends SortCondition {
 	public void setQ(String q) {
 		this.q = q;
 	}
+
+	public String getNotInSkusStr() {
+		return notInSkusStr;
+	}
+
+	public void setNotInSkusStr(String notInSkusStr) {
+		this.notInSkusStr = notInSkusStr;
+		if(notInSkusStr!=null && !notInSkusStr.equals("")){
+			this.notInSkus = notInSkusStr.split(",");
+		}
+	}
+
+	public String[] getNotInSkus() {
+		return notInSkus;
+	}
+
+	public void setNotInSkus(String[] notInSkus) {
+		this.notInSkus = notInSkus;
+	}
+
+	
 }

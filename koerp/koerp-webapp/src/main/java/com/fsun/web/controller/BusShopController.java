@@ -47,24 +47,29 @@ public class BusShopController extends BaseController {
 		return modelAndView;
 	}
 	
+	@RequestMapping("/toSelectList")
+	public String toSelectList() {		
+		return "/busCommon/commonShopList";
+	}
+	
 	
 	/**
-	    * 根据店仓编号判断是否已存在，不允许相同
-	    * @param id
-	    * @param shopCode
-	    * @return
-	    */
-	    @ResponseBody
-	    @RequestMapping(value = "/unique", method = {RequestMethod.GET})
-	    public HttpResult unique(BusShopCondition condition) {  
-	    	try {
-	    		boolean isUnique = shopApi.unique(condition);
-	    		return success(isUnique);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return failure(SCMErrorEnum.SYSTEM_ERROR);
-			}
-	    }
+    * 根据店仓编号判断是否已存在，不允许相同
+    * @param id
+    * @param shopCode
+    * @return
+    */
+    @ResponseBody
+    @RequestMapping(value = "/unique", method = {RequestMethod.GET})
+    public HttpResult unique(BusShopCondition condition) {  
+    	try {
+    		boolean isUnique = shopApi.unique(condition);
+    		return success(isUnique);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+    }
 	
 	@RequestMapping(value="/{shopId}", method = RequestMethod.GET)
 	@ResponseBody

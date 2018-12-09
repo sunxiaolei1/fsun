@@ -43,6 +43,13 @@ public class BasSkuController extends BaseController {
 		return modelAndView;
 	}
 	
+	@RequestMapping("/toChooseSku")
+	public String toChooseSku() {
+		return "/busCommon/commonChooseSku";
+	}
+	
+	
+	
 	@RequestMapping(value="/{skuId}", method = RequestMethod.GET)
 	@ResponseBody
 	public HttpResult load(@PathVariable("skuId") String skuId) {
@@ -85,6 +92,19 @@ public class BasSkuController extends BaseController {
 		}
 	}
 
+	@RequestMapping(value="/findListForPage", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findListForPage(BusBasSkuCondition condition) {
+		try {
+			PageModel pageModel = busBasSkuApi.findListForPage(condition);
+			return success(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	
 	@RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public HttpResult list(BusBasSkuCondition condition) {

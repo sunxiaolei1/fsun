@@ -45,6 +45,14 @@
   		<if test="enabled != null and enabled != ''">
   			and a.enabled = #{enabled}
   		</if>
+  		
+  		<!-- 用于查询黑名单用户对应的订单列表 -->
+		<if test="notInShopIds != null">	
+		    and shop_id not in
+			<foreach collection="notInShopIds" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>
+		</if>
 
 	</where>
   </sql>
