@@ -52,6 +52,11 @@ public class BusShopController extends BaseController {
 		return "/busCommon/commonShopList";
 	}
 	
+	@RequestMapping("/toSelect")
+	public String toSelect() {		
+		return "/busCommon/commonShopSelect";
+	}
+	
 	
 	/**
     * 根据店仓编号判断是否已存在，不允许相同

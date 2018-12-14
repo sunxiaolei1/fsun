@@ -8,7 +8,7 @@
 		<%@include file="./searchbar.jsp"%>
 		
 		<!-- table -->
-		<div id="gridDiv" data-options="region:'center'" style="height: 85%;">
+		<div id="gridDiv" data-options="region:'center'" style="height: 89%;">
 			<table id="ordersDataGrid"> 
 			</table>
 		</div>

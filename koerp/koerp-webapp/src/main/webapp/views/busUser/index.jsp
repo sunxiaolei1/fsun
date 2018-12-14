@@ -3,7 +3,7 @@
 <%@ include file="../headerJS.jsp" %>
 
 <div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="库存管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
+	<div title="用户管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
 		<!-- 查询条件 -->
 		<%@include file="./searchbar.jsp"%>
 		
@@ -22,30 +22,21 @@
 
 <script type="text/javascript">
 
-var frozenColumns = [[
-	{field:'id',checkbox:true},
-	{field:'sku',title:'SKU',width:80,align:'center',sortable:true},	
-	{field:'goods_name',title:'商品名称',width:140,align:'center',sortable:true},
-	{field:'ship_id',title:'所属店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
-		return row.shop_name; 
-	}},   
-	{field:'qty',title:'可用数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},	
-	{field:'lock_qty',title:'冻结数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},	
-	{field:'damaged_qty',title:'破损数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true}	
-]];
-
-var columns = [[			
-	{field:'bar_code',title:'条形码',width:120,align:'center',sortable:true},	
-	{field:'brand_code',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.brandCode); 
-	}},
-	{field:'category_code',title:'商品分类',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.categoryCode); 
-	}},	
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
-	{field:'unit_name',title:'单位',width:60,align:'center',sortable:true},							
-	{field:'memo',title:'备注',width:150,align:'center',sortable:true}		
-]];
+var columns = 
+    [[	
+		{field:'id',checkbox:true},
+		//{field:'code',title:'用户编码',width:80,align:'center',sortable:true},	
+		{field:'username',title:'账号',width:100,align:'center',sortable:true},
+		{field:'realname',title:'姓名',width:80,align:'center',sortable:true},
+		{field:"shop_id",title:"所属店仓", width:120,align:'center', formatter:function(value, row){
+			return row.shop_name; 
+		}},
+		{field:'email',title:'邮箱',width:120,align:'center',sortable:true},
+		{field:'telphone',title:'联系方式',width:120,align:'center',sortable:true},						
+		{field:"enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
+			return formatter(value, window.parent.isEnable); 
+		}}	
+	]];
 
 var currDataGrid;
 
@@ -62,7 +53,7 @@ $(function() {
 	    fit:true,//自动大小
 	    queryParams:{},
 	    remoteSort:true,
-	    sortName:"sku",
+	    sortName:"username",
         sortOrder:"desc",
 	    //idField:"blackid",
 	    singleSelect:true,//是否单选
@@ -72,8 +63,7 @@ $(function() {
 	    pageSize: GLOBAL_PAGE_SIZE,
 	    pageList: GLOBAL_PAGE_SIZE_LIST,
 	    showFooter:true,
-	    fitColumns:false,
-	    frozenColumns:frozenColumns,
+	    fitColumns:true,
 	    columns:columns,
 	    loadMsg:"数据加载中请稍后……",
 	    emptyMsg:"没有符合条件的记录",
@@ -84,7 +74,6 @@ $(function() {
 	    onDblClickRow:function(rowIndex, rowData){
 	    	$(this).datagrid("unselectAll");
 			$(this).datagrid("selectRow",rowIndex);
-			toDetailView();
 	    }
 	    
 	});

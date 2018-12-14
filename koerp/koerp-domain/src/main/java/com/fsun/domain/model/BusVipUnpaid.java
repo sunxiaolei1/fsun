@@ -23,7 +23,7 @@ public class BusVipUnpaid {
     private String shopId;
 
     /**
-     * 结款方式  1 银行卡，2 现金，3 支付宝，4 微信，5 会员(卡),6(券)，99 其他
+     * 结款方式  1 银行卡，2 现金，3 支付宝，4 微信，6、挂账，7 会员(卡),99 其他
      * 表字段 : bus_vip_unpaid.pay_mode
      */
     private Short payMode;
@@ -35,7 +35,7 @@ public class BusVipUnpaid {
     private Short tradeType;
 
     /**
-     * 交易状态  1 交易成功，2 交易取消 
+     * 交易状态  30 交易成功，40 交易取消 
      * 表字段 : bus_vip_unpaid.trade_status
      */
     private Short tradeStatus;
@@ -51,6 +51,12 @@ public class BusVipUnpaid {
      * 表字段 : bus_vip_unpaid.trade_price
      */
     private BigDecimal tradePrice;
+
+    /**
+     * 赠金
+     * 表字段 : bus_vip_unpaid.gift_price
+     */
+    private BigDecimal giftPrice;
 
     /**
      * 备注信息
@@ -144,6 +150,14 @@ public class BusVipUnpaid {
 
     public void setTradePrice(BigDecimal tradePrice) {
         this.tradePrice = tradePrice;
+    }
+
+    public BigDecimal getGiftPrice() {
+        return giftPrice;
+    }
+
+    public void setGiftPrice(BigDecimal giftPrice) {
+        this.giftPrice = giftPrice;
     }
 
     public String getMemo() {

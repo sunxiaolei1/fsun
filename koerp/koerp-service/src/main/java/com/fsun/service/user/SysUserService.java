@@ -1,6 +1,7 @@
 package com.fsun.service.user;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,6 +122,22 @@ public class SysUserService implements SysUserApi{
 		}
 		return list;
 	}
+	
+	@Transactional
+	@Override
+	public void assignShop(String[] ids, String shopId, SysUser user) {
+		Date now = new Date();
+		for (String id : ids) {
+			SysUser sysUser = sysUserManage.load(id);
+			if(sysUser!=null){
+				sysUser.setShopId(shopId);
+				sysUser.setUpdateTime(now);
+				sysUser.setUpdateManId(user.getId());
+				sysUserManage.update(sysUser);
+			}			
+		}		
+	}
+
 	
 	/***********************************  内部方法     *************************************/
 	

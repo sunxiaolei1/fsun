@@ -10,6 +10,7 @@
     <result column="trade_status" property="tradeStatus" jdbcType="SMALLINT" />
     <result column="trade_time" property="tradeTime" jdbcType="TIMESTAMP" />
     <result column="trade_price" property="tradePrice" jdbcType="DECIMAL" />
+    <result column="gift_price" property="giftPrice" jdbcType="DECIMAL" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
@@ -18,7 +19,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     unpaid_id, customer_code, shop_id, pay_mode, trade_type, trade_status, trade_time, 
-    trade_price, memo, order_id, created_time, updated_time, card_no
+    trade_price, gift_price, memo, order_id, created_time, updated_time, card_no
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -33,14 +34,14 @@
   <insert id="insert" parameterType="com.fsun.domain.model.BusVipUnpaid" >
     insert into bus_vip_unpaid (unpaid_id, customer_code, shop_id, 
       pay_mode, trade_type, trade_status, 
-      trade_time, trade_price, memo, 
-      order_id, created_time, updated_time, 
-      card_no)
+      trade_time, trade_price, gift_price, 
+      memo, order_id, created_time, 
+      updated_time, card_no)
     values (#{unpaidId,jdbcType=VARCHAR}, #{customerCode,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
       #{payMode,jdbcType=SMALLINT}, #{tradeType,jdbcType=SMALLINT}, #{tradeStatus,jdbcType=SMALLINT}, 
-      #{tradeTime,jdbcType=TIMESTAMP}, #{tradePrice,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, 
-      #{orderId,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
-      #{cardNo,jdbcType=VARCHAR})
+      #{tradeTime,jdbcType=TIMESTAMP}, #{tradePrice,jdbcType=DECIMAL}, #{giftPrice,jdbcType=DECIMAL}, 
+      #{memo,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP}, #{cardNo,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusVipUnpaid" >
     insert into bus_vip_unpaid
@@ -68,6 +69,9 @@
       </if>
       <if test="tradePrice != null" >
         trade_price,
+      </if>
+      <if test="giftPrice != null" >
+        gift_price,
       </if>
       <if test="memo != null" >
         memo,
@@ -110,6 +114,9 @@
       <if test="tradePrice != null" >
         #{tradePrice,jdbcType=DECIMAL},
       </if>
+      <if test="giftPrice != null" >
+        #{giftPrice,jdbcType=DECIMAL},
+      </if>
       <if test="memo != null" >
         #{memo,jdbcType=VARCHAR},
       </if>
@@ -151,6 +158,9 @@
       <if test="tradePrice != null" >
         trade_price = #{tradePrice,jdbcType=DECIMAL},
       </if>
+      <if test="giftPrice != null" >
+        gift_price = #{giftPrice,jdbcType=DECIMAL},
+      </if>
       <if test="memo != null" >
         memo = #{memo,jdbcType=VARCHAR},
       </if>
@@ -178,6 +188,7 @@
       trade_status = #{tradeStatus,jdbcType=SMALLINT},
       trade_time = #{tradeTime,jdbcType=TIMESTAMP},
       trade_price = #{tradePrice,jdbcType=DECIMAL},
+      gift_price = #{giftPrice,jdbcType=DECIMAL},
       memo = #{memo,jdbcType=VARCHAR},
       order_id = #{orderId,jdbcType=VARCHAR},
       created_time = #{createdTime,jdbcType=TIMESTAMP},

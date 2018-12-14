@@ -7,6 +7,12 @@ var brandCodeData = new Array();
 var unitCodeData = new Array();
 var productTypeData = new Array();
 var rackNoData = new Array();
+var flowStatusData = new Array();
+var orderStatusData = new Array();
+var tradeStatusData = new Array();
+var orderTypeData = new Array();
+var payModeData = new Array();
+var tradeFromData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -19,6 +25,12 @@ var brandCode = {};
 var unitCode = {};
 var productType = {};
 var rackNo = {};
+var flowStatus = {};
+var orderStatus = {};
+var tradeStatus = {};
+var orderType = {};
+var payMode = {};
+var tradeFrom = {};
 
 $(function () {
 	synchronizeData();	
@@ -30,6 +42,14 @@ $(function () {
 	unitCode = formatterCodeType(unitCodeData);
 	productType = formatterCodeType(productTypeData);
 	rackNo = formatterCodeType(rackNoData);
+	
+	flowStatus = formatterCodeType(flowStatusData);
+	orderStatus = formatterCodeType(orderStatusData);
+	tradeStatus = formatterCodeType(tradeStatusData);
+	orderType = formatterCodeType(orderTypeData);
+	payMode = formatterCodeType(payModeData);
+	tradeFrom = formatterCodeType(tradeFromData);
+
 });
 
 function formatterCodeType(result) {
@@ -68,6 +88,18 @@ function synchronizeData() {
         				productTypeData.push(item);
         			}else if(item.codeType == 'RackNo') {
         				rackNoData.push(item);
+        			}else if(item.codeType == 'FlowStatus') {
+        				flowStatusData.push(item);
+        			}else if(item.codeType == 'OrderStatus') {
+        				orderStatusData.push(item);
+        			}else if(item.codeType == 'TradeStatus') {
+        				tradeStatusData.push(item);
+        			}else if(item.codeType == 'OrderType') {
+        				orderTypeData.push(item);
+        			}else if(item.codeType == 'PayMode') {
+        				payModeData.push(item);
+        			}else if(item.codeType == 'TradeFrom') {
+        				tradeFromData.push(item);
         			}
         			
     	        });
@@ -108,6 +140,36 @@ function synchronizeData() {
 				});
         		
         		rackNoData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		flowStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+				orderStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				tradeStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				orderTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				payModeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				tradeFromData.unshift({
         			codeCode:"",
 					codeName:"请选择..."
 				});

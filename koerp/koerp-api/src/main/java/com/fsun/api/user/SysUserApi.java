@@ -52,4 +52,12 @@ public interface SysUserApi extends BaseApi<SysUser, SysUserCondition> {
 	 */
 	public List<MenuTreeDto> findModulesByUser(String userid);
 
+	/**
+	 * 用户批量分配门店
+	 * @param split
+	 * @param shopId
+	 * @param user
+	 */
+	public void assignShop(String[] ids, String shopId, SysUser user);
+
 }

@@ -555,18 +555,19 @@ CREATE TABLE `bus_vip_unpaid` (
   `unpaid_id` varchar(32) NOT NULL COMMENT '挂账支付Id',
   `customer_code` varchar(32) DEFAULT NULL COMMENT '会员Id',
   `shop_id` varchar(32) DEFAULT NULL COMMENT '店仓编号',
-  `pay_mode` smallint(6) DEFAULT NULL COMMENT '结款方式  1 银行卡，2 现金，3 支付宝，4 微信，5 会员(卡),6(券)，99 其他',
+  `pay_mode` smallint(6) DEFAULT NULL COMMENT '结款方式  1 银行卡，2 现金，3 支付宝，4 微信，6、挂账，7 会员(卡),99 其他',
   `trade_type` smallint(6) DEFAULT NULL COMMENT '交易类型  1 挂账，2 挂账结款 3会员卡消费 4会员卡充值',
-  `trade_status` smallint(6) DEFAULT NULL COMMENT '交易状态  1 交易成功，2 交易取消 ',
+  `trade_status` smallint(6) DEFAULT NULL COMMENT '交易状态  30 交易成功，40 交易取消 ',
   `trade_time` datetime DEFAULT NULL COMMENT '订单交易时间',
   `trade_price` decimal(18,2) DEFAULT NULL COMMENT '交易金额',
+  `gift_price` decimal(18,2) DEFAULT NULL COMMENT '赠金',
   `memo` varchar(256) DEFAULT NULL COMMENT '备注信息',
   `order_id` varchar(64) DEFAULT NULL COMMENT '订单号',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_time` datetime DEFAULT NULL COMMENT '更新时间',
   `card_no` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`unpaid_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='挂账明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='挂账会员卡交易明细';
 
 
 -- ----------------------------
@@ -1573,6 +1574,7 @@ CREATE TABLE `sys_user` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_man_id` char(32) DEFAULT NULL COMMENT '最后更新人',
   `update_time` datetime DEFAULT NULL COMMENT '最后更新时间',
+  `shop_id` varchar(32) DEFAULT NULL COMMENT '所属店仓',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统用户表';
 
