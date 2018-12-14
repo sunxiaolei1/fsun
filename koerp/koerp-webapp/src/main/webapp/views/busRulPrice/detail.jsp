@@ -75,7 +75,8 @@ var rulSkuColumns = [[
 			type:'numberbox',
 			options:{					
 				min:0,
-				precision:2						
+				precision:2,
+				required: true
 			}
 		}
 	},
@@ -88,7 +89,8 @@ var rulSkuColumns = [[
 			type:'numberbox',
 			options:{					
 				min:0,
-				precision:2						
+				precision:2,
+				required: true
 			}
 		}
 	},
@@ -282,18 +284,25 @@ function delOneShop(rowIndex){
  */
 function getRulPriceInfo(){
 	
-	var isValid = gridIsValidate("rulSkuDataGrid");
-	if (!isValid){
-		$.messager.alert("错误", "提交的数据不正确!", "error");  
-		return null;
+	if(!endRowEditing(currOrderDetailDataGrid)){
+		$.messager.alert({title: '消息', msg: '数据验证未通过!'});
+		return;
 	}
 	
 	currOrderDetailDataGrid.datagrid("acceptChanges");
-	$("#rulShopDataGrid").datagrid("acceptChanges");
+	
+	var rulShops = new Array();
+	$.each(currRulShops, function(){
+		rulShops.push({
+			shopId : this.shopId,
+			shopName : this.shopName
+		});
+	});
+	
 	var rulPriceDto = {
 		"rulId": currRulId,
 		"rulSkus":currSkusData,
-		"rulShops":currRulShops
+		"rulShops":rulShops
 	};	
 	return rulPriceDto;
 }

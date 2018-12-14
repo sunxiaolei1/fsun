@@ -83,7 +83,7 @@
   			and sku = #{sku}
   		</if>
   		
-  		<!-- 用于查询黑名单用户对应的订单列表 -->
+  		<!-- 用于价格策略列表查询 -->
 		<if test="notInSkus != null">	
 		    and sku not in
 			<foreach collection="notInSkus" index="index" item="item" open="(" separator="," close=")" >

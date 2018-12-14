@@ -31,14 +31,17 @@ public enum SCMErrorEnum {
 	
 	BUS_SKU_NOT_EXIST(8011, "商品不存在"),
 	BUS_SKU_EXISTED(8012, "商品已存在"),
+	BUS_SKU_ISNULL(8013, "商品sku是空"),
+	BUS_SKU_ILLEGAL(8014, "商品库存非法"),
 	BUS_VIP_NOT_EXIST(8021, "会员卡不存在"),
 	BUS_VIP_EXISTED(8022, "会员卡已存在"),
 	BUS_CUSTOMER_NOT_EXIST(8031, "客户不存在"),
 	BUS_CUSTOMER_EXISTED(8032, "客户已存在"),
 	BUS_CODES_NOT_EXIST(8041, "要更新的数据不存在"),
 	BUS_CODES_EXISTED(8042, "对不起，该数据类别和编码已存在"),
-	BUS_SHOP_NOT_EXIST(8051, "店仓不存在"),
-	BUS_SHOP_EXISTED(8052, "店仓已存在");
+	BUS_SHOP_NOT_EXIST(8051, "店仓不存在"),	
+	BUS_SHOP_EXISTED(8052, "店仓已存在"),
+	BUS_SHOP_ISNULL(8053, "店仓是空");
 
 	private int errorCode;
 	

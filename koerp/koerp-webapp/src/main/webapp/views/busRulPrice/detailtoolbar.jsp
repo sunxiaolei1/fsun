@@ -35,7 +35,7 @@ function saveRulPrice(){
         dataType: "json",
         contentType:"application/json;charset=utf-8",
         async:false,
-        url: "${api}/bus/rule/price/updateEntiy",
+        url: "${api}/bus/rule/price/updateEntity",
         data: JSON.stringify(rulPriceDto),
         beforeSend: function (jqXHR) {  
         	$.messager.progress({title: '请等待',msg: '保存中...',text: '',interval: 700});       	

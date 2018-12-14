@@ -2,8 +2,8 @@ package com.fsun.domain.dto;
 
 import java.util.List;
 
+import com.fsun.domain.model.BusRulShop;
 import com.fsun.domain.model.BusRulSku;
-import com.fsun.domain.model.BusShop;
 
 /**
  * 价格策略实体对象
@@ -18,7 +18,7 @@ public class RulPriceDto {
 	
 	private Integer sortCode;
 	
-	private List<BusShop> rulShops;
+	private List<BusRulShop> rulShops;
 	
 	private List<BusRulSku> rulSkus;
 
@@ -46,11 +46,11 @@ public class RulPriceDto {
 		this.sortCode = sortCode;
 	}
 
-	public List<BusShop> getRulShops() {
+	public List<BusRulShop> getRulShops() {
 		return rulShops;
 	}
 
-	public void setRulShops(List<BusShop> rulShops) {
+	public void setRulShops(List<BusRulShop> rulShops) {
 		this.rulShops = rulShops;
 	}
 

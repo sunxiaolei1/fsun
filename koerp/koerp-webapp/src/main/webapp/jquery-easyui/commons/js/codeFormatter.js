@@ -6,6 +6,7 @@ var categoryCodeData = new Array();
 var brandCodeData = new Array();
 var unitCodeData = new Array();
 var productTypeData = new Array();
+var rackNoData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -17,6 +18,7 @@ var categoryCode = {};
 var brandCode = {};
 var unitCode = {};
 var productType = {};
+var rackNo = {};
 
 $(function () {
 	synchronizeData();	
@@ -27,6 +29,7 @@ $(function () {
 	brandCode = formatterCodeType(brandCodeData);
 	unitCode = formatterCodeType(unitCodeData);
 	productType = formatterCodeType(productTypeData);
+	rackNo = formatterCodeType(rackNoData);
 });
 
 function formatterCodeType(result) {
@@ -63,6 +66,8 @@ function synchronizeData() {
         				unitCodeData.push(item);
         			}else if(item.codeType == 'ProductType') {
         				productTypeData.push(item);
+        			}else if(item.codeType == 'RackNo') {
+        				rackNoData.push(item);
         			}
         			
     	        });
@@ -98,6 +103,11 @@ function synchronizeData() {
 				});
         		
         		productTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		rackNoData.unshift({
         			codeCode:"",
 					codeName:"请选择..."
 				});

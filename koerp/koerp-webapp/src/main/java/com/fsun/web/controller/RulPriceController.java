@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -78,6 +79,18 @@ public class RulPriceController extends BaseController {
 		try {
 			List<BusRulPrice> list = rulPriceApi.list(condition);
 			return success(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/updateEntity", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult updateEntity(@RequestBody RulPriceDto rulPriceDto) {
+		try {
+			rulPriceApi.updateEntity(rulPriceDto);
+			return success();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);

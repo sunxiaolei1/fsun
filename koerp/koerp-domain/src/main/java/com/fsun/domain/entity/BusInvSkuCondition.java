@@ -1,10 +1,17 @@
-package com.fsun.domain.model;
+package com.fsun.domain.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class BusInvSku {
-    /**
+import com.fsun.domain.common.SortCondition;
+
+/**
+ * @author fsun
+ * @date 2018年12月13日
+ */
+public class BusInvSkuCondition extends SortCondition{
+	
+	 /**
      * 
      * 表字段 : bus_inv_sku.id
      */
@@ -57,14 +64,11 @@ public class BusInvSku {
      * 表字段 : bus_inv_sku.updated_time
      */
     private Date updatedTime;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
+    
+    /**
+     * 模糊查询字段
+     */
+    private String q;
 
     public String getSku() {
         return sku;
@@ -129,4 +133,32 @@ public class BusInvSku {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the q
+	 */
+	public String getQ() {
+		return q;
+	}
+
+	/**
+	 * @param q the q to set
+	 */
+	public void setQ(String q) {
+		this.q = q;
+	}
 }

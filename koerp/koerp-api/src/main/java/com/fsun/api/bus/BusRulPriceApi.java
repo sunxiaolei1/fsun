@@ -3,6 +3,7 @@ package com.fsun.api.bus;
 import java.util.HashMap;
 import java.util.List;
 
+import com.fsun.domain.dto.RulPriceDto;
 import com.fsun.domain.dto.RulPriceTreeDto;
 import com.fsun.domain.entity.BusRulPriceCondition;
 import com.fsun.domain.model.BusRulPrice;
@@ -33,5 +34,11 @@ public interface BusRulPriceApi {
 	 * @return
 	 */
 	public List<RulPriceTreeDto> getRulTree(BusRulPriceCondition condition);
+
+	/**
+	 * 更新价格策略
+	 * @param rulPriceDto
+	 */
+	public void updateEntity(RulPriceDto rulPriceDto);
 
 }

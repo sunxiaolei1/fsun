@@ -33,10 +33,17 @@
     from bus_rul_sku
     where sku_id = #{skuId,jdbcType=VARCHAR}
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from bus_rul_sku
     where sku_id = #{skuId,jdbcType=VARCHAR}
   </delete>
+  
+  <delete id="deleteByRulId" parameterType="java.lang.String" >
+    delete from bus_rul_sku
+    where rul_id = #{rulId,jdbcType=VARCHAR}
+  </delete>
+  
   <insert id="insert" parameterType="com.fsun.domain.model.BusRulSku" >
     insert into bus_rul_sku (sku_id, rul_id, category_code, 
       product_type, sku, brand_code, 

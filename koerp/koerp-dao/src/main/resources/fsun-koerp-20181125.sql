@@ -265,18 +265,19 @@ CREATE TABLE `bus_inv_lot_details` (
 -- ----------------------------
 DROP TABLE IF EXISTS `bus_inv_sku`;
 CREATE TABLE `bus_inv_sku` (
-  `id` varchar(32) NOT NULL COMMENT 'id',
-  `sku` varchar(32) DEFAULT NULL COMMENT 'sku',
-  `shop_id` varchar(32) DEFAULT NULL COMMENT '店铺id',
-  `shop_name` varchar(64) DEFAULT NULL COMMENT '店铺名称',
+  `id` varchar(32) NOT NULL,
+  `sku` varchar(32) NOT NULL COMMENT 'sku',
+  `shop_id` varchar(32) NOT NULL COMMENT '店铺id',
   `qty` decimal(18,2) DEFAULT '0.00' COMMENT '库存数量',
   `lock_qty` decimal(18,2) DEFAULT '0.00' COMMENT '锁定数量',
   `damaged_qty` decimal(18,2) DEFAULT '0.00' COMMENT '破损数量',
-  `memo` varchar(512) NOT NULL COMMENT '备注',
+  `memo` varchar(512) DEFAULT NULL COMMENT '备注',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存汇总表';
+
+
 
 -- ----------------------------
 -- Records of bus_inv_sku

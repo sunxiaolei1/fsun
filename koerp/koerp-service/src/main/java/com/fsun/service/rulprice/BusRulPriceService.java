@@ -1,18 +1,25 @@
 package com.fsun.service.rulprice;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.BusRulPriceApi;
 import com.fsun.biz.bus.manage.BusRulPriceManage;
+import com.fsun.biz.bus.manage.BusRulShopManage;
+import com.fsun.biz.bus.manage.BusRulSkuManage;
+import com.fsun.common.utils.PKMapping;
 import com.fsun.domain.dto.RulPriceDto;
 import com.fsun.domain.dto.RulPriceTreeDto;
 import com.fsun.domain.entity.BusRulPriceCondition;
 import com.fsun.domain.model.BusRulPrice;
+import com.fsun.domain.model.BusRulShop;
+import com.fsun.domain.model.BusRulSku;
 import com.fsun.service.common.AbstractService;
 
 /**
@@ -24,6 +31,12 @@ public class BusRulPriceService extends AbstractService implements BusRulPriceAp
 	
 	@Autowired
 	private BusRulPriceManage busRulPriceManage;
+	
+	@Autowired
+	private BusRulShopManage busRulShopManage;
+	
+	@Autowired
+	private BusRulSkuManage busRulSkuManage;
 
 	@Override
 	public HashMap<String, Object> loadEntity(String rulId) {
@@ -53,6 +66,38 @@ public class BusRulPriceService extends AbstractService implements BusRulPriceAp
 		return new ArrayList<>();
 	}
 	
+	
+	@Transactional
+	@Override
+	public void updateEntity(RulPriceDto rulPriceDto) {
+		String rulId = rulPriceDto.getRulId();
+		busRulShopManage.deleteByRulId(rulId);
+		busRulSkuManage.deleteByRulId(rulId);
+		
+		Date now = new Date();
+		List<BusRulShop> rulShops = rulPriceDto.getRulShops();
+		for (BusRulShop rulShop : rulShops) {
+			rulShop.setId(PKMapping.GUUID(PKMapping.bus_rul_shop));
+			rulShop.setRulId(rulId);
+			rulShop.setCreatedTime(now);
+			busRulShopManage.create(rulShop);
+		}
+		
+		List<BusRulSku> rulSkus = rulPriceDto.getRulSkus();
+		for (BusRulSku busRulSku : rulSkus) {
+			//主键(并不是bus_bas_sku的skuId)
+			busRulSku.setSkuId(PKMapping.GUUID(PKMapping.bus_rul_sku));
+			busRulSku.setRulId(rulId);
+			busRulSku.setCreatedTime(now);
+			busRulSkuManage.create(busRulSku);
+		}
+		
+	}
+	
+	
+	
+	/**********************************        私有方法          ************************************/
+	
 	/**
 	 * 初始化根节点获取所有策略
 	 * @return
@@ -65,5 +110,7 @@ public class BusRulPriceService extends AbstractService implements BusRulPriceAp
 		rootNode.setIconCls("icon-graph");
 		return rootNode;		
 	}
+
+	
 
 }
