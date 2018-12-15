@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2018-12-02 15:32:26
+Date: 2018-12-16 00:04:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,6 +64,63 @@ CREATE TABLE `bus_bas_codes` (
 -- ----------------------------
 -- Records of bus_bas_codes
 -- ----------------------------
+INSERT INTO `bus_bas_codes` VALUES ('062380926FCF412F9F1D4ED193A96DA7', 'BusCustomerType', 'VIP', '会员', '2', '客户类型', '', '', 'super', null, '2018-12-02 22:37:08', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072056156751002374180', 'CategoryCode', '10', '白酒', '1', '商品分类', '', '', 'super', null, '2018-12-07 20:56:15', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072056347771002567905', 'CategoryCode', '20', '红酒', '3', '商品分类', '', '', 'super', null, '2018-12-07 20:56:34', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072056544911002451407', 'CategoryCode', '30', '啤酒', '5', '商品分类', '', '', 'super', null, '2018-12-07 20:56:54', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072057391891002884556', 'CategoryCode', '110', '香烟', '100', '商品分类', '', '', 'super', null, '2018-12-07 20:57:39', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072058133821002701653', 'CategoryCode', '40', '饮料', '7', '商品分类', '', '', 'super', null, '2018-12-07 20:58:13', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072101147361002240555', 'BrandCode', '10', '杜康', '10', '品牌名称', '', '', 'super', null, '2018-12-07 21:01:14', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072102092351002701370', 'BrandCode', '20', '科乐克', '20', '品牌名称', '', '', 'super', null, '2018-12-07 21:02:09', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072103537261002598960', 'UnitCode', '10', '个', '10', '单位', '', '', 'super', 'super', '2018-12-07 21:03:53', '2018-12-07 21:07:22');
+INSERT INTO `bus_bas_codes` VALUES ('1812072104428921002933473', 'UnitCode', '20', '瓶', '20', '单位', '', '', 'super', null, '2018-12-07 21:04:42', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072105013181002583376', 'UnitCode', '30', '只', '30', '单位', '', '', 'super', null, '2018-12-07 21:05:01', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812072109588221002526860', 'ProductType', '0', '单品', '10', '商品类型', '', '', 'super', 'super', '2018-12-07 21:09:58', '2018-12-07 21:45:22');
+INSERT INTO `bus_bas_codes` VALUES ('1812072110463181002907186', 'ProductType', '1', '套餐', '20', '商品类型', '', '', 'super', 'super', '2018-12-07 21:10:46', '2018-12-07 21:45:32');
+INSERT INTO `bus_bas_codes` VALUES ('1812140207531181002944309', 'RackNo', '1', '1号', '1', '机架号', '', '', 'super', 'super', '2018-12-14 02:07:53', '2018-12-14 02:09:38');
+INSERT INTO `bus_bas_codes` VALUES ('1812140208225621002642242', 'RackNo', '2', '2号', '2', '机架号', '', '', 'super', 'super', '2018-12-14 02:08:22', '2018-12-14 02:09:32');
+INSERT INTO `bus_bas_codes` VALUES ('1812140208427551002641478', 'RackNo', '3', '3号', '3', '机架号', '', '', 'super', null, '2018-12-14 02:08:42', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812140209075041002322094', 'RackNo', '4', '4号', '4', '机架号', '', '', 'super', null, '2018-12-14 02:09:07', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812140209239011002070377', 'RackNo', '5', '5号', '5', '机架号', '', '', 'super', null, '2018-12-14 02:09:23', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141242050921002227960', 'OrderType', '1', '销售出库单', '1', '单据类型', '', '', 'super', null, '2018-12-14 12:42:05', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141243067211002598870', 'OrderType', '2', '销售寄存单', '3', '单据类型', '', '', 'super', null, '2018-12-14 12:43:06', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141246206201002709090', 'PayMode', '1', '银行卡', '1', '支付方式', '', '', 'super', 'super', '2018-12-14 12:46:20', '2018-12-14 12:49:08');
+INSERT INTO `bus_bas_codes` VALUES ('1812141248583661002360596', 'PayMode', '2', '现金', '3', '支付方式', '', '', 'super', null, '2018-12-14 12:48:58', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141249302601002553054', 'PayMode', '3', '支付宝', '5', '支付方式', '', '', 'super', null, '2018-12-14 12:49:30', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141250021541002914825', 'PayMode', '4', '微信', '7', '支付方式', '', '', 'super', null, '2018-12-14 12:50:02', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141250265351002697501', 'payMode', '6', '挂账', '9', '支付方式', '', '', 'super', null, '2018-12-14 12:50:26', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141250585371002694195', 'PayMode', '7', '会员卡', '11', '支付方式', '', '', 'super', null, '2018-12-14 12:50:58', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141251226411002686734', 'PayMode', '100', '活动优惠', '13', '支付方式', '', '', 'super', null, '2018-12-14 12:51:22', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141251459491002636306', 'PayMode', '900', '抹零', '15', '支付方式', '', '', 'super', null, '2018-12-14 12:51:45', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141304213621002791331', 'OrderStatus', '0', '未确认', '1', '订单状态', '', '', 'super', null, '2018-12-14 13:04:21', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141304589231002049382', 'OrderStatus', '1', '已确认', '3', '订单状态', '', '', 'super', null, '2018-12-14 13:04:58', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141305396321002278444', 'OrderStatus', '2', '已接配送', '5', '订单状态', '', '', 'super', null, '2018-12-14 13:05:39', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141306077591002415640', 'OrderStatus', '3', '已取货', '7', '订单状态', '', '', 'super', null, '2018-12-14 13:06:07', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141306466281002092335', 'OrderStatus', '4', '已配送成功', '9', '订单状态', '', '', 'super', null, '2018-12-14 13:06:46', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141307166751002373362', 'OrderStatus', '5', '已完结', '11', '订单状态', '', '', 'super', null, '2018-12-14 13:07:16', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141307523301002921649', 'OrderStatus', '6', '已取消', '13', '订单状态', '', '', 'super', null, '2018-12-14 13:07:52', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141308444061002199689', 'TradeStatus', '00', '已下单', '1', '交易状态', '', '', 'super', null, '2018-12-14 13:08:44', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141309208251002740722', 'TradeStatus', '10', '已付款', '3', '交易状态', '', '', 'super', null, '2018-12-14 13:09:20', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141309493831002613169', 'TradeStatus', '20', '已发货', '5', '交易状态', '', '', 'super', null, '2018-12-14 13:09:49', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141310195601002924355', 'TradeStatus', '30', '交易成功', '7', '交易状态', '', '', 'super', null, '2018-12-14 13:10:19', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141310407351002935683', 'TradeStatus', '40', '订单取消', '9', '交易状态', '', '', 'super', null, '2018-12-14 13:10:40', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141311134801002230197', 'TradeStatus', '60', '交易关闭', '11', '交易状态', '', '', 'super', null, '2018-12-14 13:11:13', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141619559781002320289', 'FlowStatus', '00', '创建完成', '1', '流转状态', '', '', 'super', null, '2018-12-14 16:19:55', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141620446761002472629', 'FlowStatus', '30', '已出库', '3', '流转状态', '', '', 'super', null, '2018-12-14 16:20:44', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141621346271002495761', 'FlowStatus', '40', '交易完成', '5', '流转状态', '', '', 'super', null, '2018-12-14 16:21:34', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141622061821002669432', 'FlowStatus', '99', '已回传', '7', '流转状态', '', '', 'super', null, '2018-12-14 16:22:06', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141628399041002906171', 'TradeFrom', 'pc', 'PC端', '1', '交易来源', '', '', 'super', null, '2018-12-14 16:28:39', null);
+INSERT INTO `bus_bas_codes` VALUES ('1812141629147651002015060', 'TradeFrom', 'app', '客户端', '3', '交易来源', '', '', 'super', null, '2018-12-14 16:29:14', null);
+INSERT INTO `bus_bas_codes` VALUES ('412288B0BBA94331993434FD407DF0D8', 'VipCardType', '2', '会员银卡', '2', '会员卡级别', '', '', 'super', null, '2018-12-04 02:31:46', null);
+INSERT INTO `bus_bas_codes` VALUES ('441D3AAA41004B67932D2406286548A6', 'BusCustomerType', 'JXS', '经销商', '6', '客户类型', '', '', 'super', null, '2018-12-02 22:36:21', null);
+INSERT INTO `bus_bas_codes` VALUES ('59D0292D74CB41E7A2F4C59DF7F639B3', 'BusCustomerType', 'GYS', '供应商', '8', '客户类型', '', '', 'super', null, '2018-12-02 22:35:45', null);
+INSERT INTO `bus_bas_codes` VALUES ('74B2AB07D6D44F1CB38CFD3AC9EC66C6', 'VipCardType', '1', '普通卡', '1', '会员卡级别', '', '', 'super', null, '2018-12-04 02:30:23', null);
+INSERT INTO `bus_bas_codes` VALUES ('7C0BD48AEA9D475EA5FA50ACDECC5437', 'BusCustomerType', 'YWY', '业务员', '10', '客户类型', '', '', 'super', null, '2018-12-02 22:35:19', null);
+INSERT INTO `bus_bas_codes` VALUES ('816358A5C538498ABCC12AEF7D7242E7', 'BusCustomerType', 'SK', '散客', '99', '客户类型', '', '', 'super', null, '2018-12-02 22:33:51', null);
+INSERT INTO `bus_bas_codes` VALUES ('917B839F2CE84FF9BA7D6D4FEEFCC8AB', 'BusCustomerType', 'GZ', '挂账单位', '4', '客户类型', '', '', 'super', null, '2018-12-02 22:36:47', null);
+INSERT INTO `bus_bas_codes` VALUES ('AD5470C071014553B9965220123A63D4', 'VipCardType', '3', '会员金卡', '3', '会员卡级别', '', '', 'super', null, '2018-12-04 02:32:06', null);
+INSERT INTO `bus_bas_codes` VALUES ('C38398B7DBF24891BEA67EC088E9DFD5', 'IsEnable', 'true', '启用', '1', '是否启用', '', '', 'super', null, '2018-12-02 22:42:38', null);
+INSERT INTO `bus_bas_codes` VALUES ('E7712D39B9924921B988BB2EDE3B91E0', 'IsEnable', 'false', '禁用', '2', '是否启用', '', '', 'super', null, '2018-12-02 22:42:58', null);
 
 -- ----------------------------
 -- Table structure for bus_bas_sku
@@ -114,6 +171,9 @@ CREATE TABLE `bus_bas_sku` (
 -- ----------------------------
 -- Records of bus_bas_sku
 -- ----------------------------
+INSERT INTO `bus_bas_sku` VALUES ('1812072138428741003432309', '123456', '1120', null, '20', '0', '20', null, '测试商品', '', '精装', '10.00', '5.00', '5.00', null, '1.00', '20', '瓶', null, null, null, '是', '12321', null, '\0', null, null, '1', '', null, null, null, null, '2018-12-07 21:49:24', '2018-12-09 18:21:26', '402882be46404313014640b7eb1c000f', '402882be46404313014640b7eb1c000f', '\0');
+INSERT INTO `bus_bas_sku` VALUES ('1812100030200621003226563', '', '1130', null, '10', '0', '10', null, '测试白酒', '', '精装', '200.00', '100.00', '180.00', null, '1.00', '20', '瓶', null, null, null, '', '', null, '\0', null, null, '6', '', null, null, null, null, '2018-12-10 00:30:20', null, '402882be46404313014640b7eb1c000f', null, '');
+INSERT INTO `bus_bas_sku` VALUES ('1812100031162331003740089', '', '1131', null, '10', '0', '10', null, '测试白酒1', '', '简装', '400.00', '200.00', '300.00', null, '1.00', '20', '瓶', null, null, null, '', '', null, '\0', null, null, '4', '', null, null, null, null, '2018-12-10 00:31:16', null, '402882be46404313014640b7eb1c000f', null, '');
 
 -- ----------------------------
 -- Table structure for bus_customer
@@ -141,6 +201,11 @@ CREATE TABLE `bus_customer` (
 -- ----------------------------
 -- Records of bus_customer
 -- ----------------------------
+INSERT INTO `bus_customer` VALUES ('1', 'YWY100001', 'YWY', '测试业务员', null, null, '18848384467', null, null, '0.00', '', null, null, null, null);
+INSERT INTO `bus_customer` VALUES ('2', 'JXS100001', 'JXS', '测试经销商', '', '', '13645736015', '', 'YWY100001', '1000.00', '', null, null, null, null);
+INSERT INTO `bus_customer` VALUES ('2E759B37865A4AE883B6D1B0EA39662E', 'JXS100002', 'JXS', '小王1', '', '', '13645736016', '', 'YWY100001', '0.00', '', '2018-12-03 02:49:52', null, 'super', null);
+INSERT INTO `bus_customer` VALUES ('3', 'SK100001', 'SK', '散客', null, null, null, null, null, '0.00', '', null, null, null, null);
+INSERT INTO `bus_customer` VALUES ('A8195E68183A48539FCD6DACEBAE520B', 'VIP100001', 'VIP', '王总', '', '', '123456', '', '', '0.00', '', '2018-12-04 02:33:09', null, 'super', null);
 
 -- ----------------------------
 -- Table structure for bus_goods
@@ -189,57 +254,39 @@ CREATE TABLE `bus_goods` (
 -- Records of bus_goods
 -- ----------------------------
 
-
-DROP TABLE IF EXISTS `bus_take_goods`;
-CREATE TABLE `bus_take_goods` (
-  `goods_id` varchar(32) NOT NULL COMMENT 'goods_id',
-  `order_id` varchar(32) DEFAULT NULL COMMENT '订单id',
-  `line_no` int(11) DEFAULT NULL COMMENT '行号',
-  `goods_name` varchar(128) DEFAULT NULL COMMENT '商品名称',
-  `sku` varchar(32) DEFAULT NULL COMMENT 'sku',
-  `qty` decimal(18,2) DEFAULT NULL COMMENT '自提数量',
-  `sale_price` decimal(18,2) NOT NULL COMMENT '实际销售价(销售价、会员价)',
-  `enabled` bit(1) DEFAULT NULL COMMENT '是否逻辑删除',
+-- ----------------------------
+-- Table structure for bus_inv_sku
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_inv_sku`;
+CREATE TABLE `bus_inv_sku` (
+  `id` varchar(32) NOT NULL,
+  `sku` varchar(32) NOT NULL COMMENT 'sku',
+  `shop_id` varchar(32) NOT NULL COMMENT '店铺id',
+  `qty` decimal(18,2) NOT NULL DEFAULT '0.00' COMMENT '库存数量',
+  `lock_qty` decimal(18,2) NOT NULL DEFAULT '0.00' COMMENT '锁定数量',
+  `damaged_qty` decimal(18,2) NOT NULL DEFAULT '0.00' COMMENT '破损数量',
   `memo` varchar(512) DEFAULT NULL COMMENT '备注',
-  `created_time` datetime DEFAULT NULL COMMENT '自提时间',
-  PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='交易商品寄存表';
-
--- ----------------------------
--- Table structure for bus_inv_lot
--- ----------------------------
-DROP TABLE IF EXISTS `bus_inv_lot`;
-CREATE TABLE `bus_inv_lot` (
-  `id` varchar(32) NOT NULL COMMENT 'id',
-  `sku` varchar(32) DEFAULT NULL COMMENT 'sku',
-  `goods_name` varchar(128) DEFAULT NULL COMMENT '商品名称',
-  `trade_type` smallint(6) DEFAULT NULL COMMENT '单据类型',
-  `trade_order_no` varchar(32) DEFAULT NULL COMMENT '交易单号',
-  `lot_num` varchar(32) DEFAULT '0' COMMENT '批次号',
-  `shop_id` varchar(32) DEFAULT NULL COMMENT '店铺id',
-  `shop_name` varchar(64) DEFAULT NULL COMMENT '店铺名称',
-  `qty` decimal(18,2) DEFAULT '0.00' COMMENT '库存数量',
-  `lock_qty` decimal(18,2) DEFAULT '0.00' COMMENT '锁定数量',
-  `damaged_qty` decimal(18,2) DEFAULT '0.00' COMMENT '破损数量',
-  `memo` varchar(512) NOT NULL COMMENT '备注',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='门店订单批次汇总表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存汇总表';
 
 -- ----------------------------
--- Records of bus_inv_lot
+-- Records of bus_inv_sku
 -- ----------------------------
+INSERT INTO `bus_inv_sku` VALUES ('1', '1131', '1812091925576891014843595', '100.00', '20.00', '10.00', null, '2018-12-14 01:47:11', null);
 
 -- ----------------------------
--- Table structure for bus_inv_lot_details
+-- Table structure for bus_inv_sku_details
 -- ----------------------------
-DROP TABLE IF EXISTS `bus_inv_lot_details`;
-CREATE TABLE `bus_inv_lot_details` (
+DROP TABLE IF EXISTS `bus_inv_sku_details`;
+CREATE TABLE `bus_inv_sku_details` (
   `id` varchar(32) NOT NULL COMMENT 'id',
-  `trade_type` smallint(6) DEFAULT NULL COMMENT '单据类型',
-  `trade_status` smallint(6) DEFAULT '0' COMMENT '交易状态',
+  `trade_type` char(3) DEFAULT NULL COMMENT '单据类型',
+  `trade_status` char(3) DEFAULT '0' COMMENT '交易状态',
   `trade_order_no` varchar(32) DEFAULT NULL COMMENT '交易单号',
+  `trade_relation_no` varchar(32) DEFAULT NULL COMMENT '交易单关联单号(1、采购入库->申请单号,2、调拨入库->调拨出库单号)',
+  `trade_order_detail_id` varchar(32) DEFAULT NULL COMMENT '交易商品明细主键',
   `trade_line_no` int(11) DEFAULT NULL COMMENT '单据行号',
   `trade_time` datetime DEFAULT NULL COMMENT '交易时间',
   `is_pull` smallint(6) DEFAULT '0' COMMENT '是否入库批次',
@@ -249,7 +296,9 @@ CREATE TABLE `bus_inv_lot_details` (
   `goods_name` varchar(128) DEFAULT NULL COMMENT '商品名称',
   `lot_num` varchar(32) DEFAULT '0' COMMENT '批次号',
   `unit` varchar(32) DEFAULT NULL COMMENT '单位',
-  `qty` decimal(18,2) DEFAULT '0.00' COMMENT '数量',
+  `qty` decimal(18,2) DEFAULT '0.00' COMMENT '可用数量',
+  `lock_qty` decimal(18,2) DEFAULT '0.00' COMMENT '锁定数量',
+  `damaged_qty` decimal(18,2) DEFAULT '0.00' COMMENT '破损数量',
   `memo` varchar(512) DEFAULT NULL COMMENT '备注',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -257,30 +306,7 @@ CREATE TABLE `bus_inv_lot_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='门店订单批次明细表';
 
 -- ----------------------------
--- Records of bus_inv_lot_details
--- ----------------------------
-
--- ----------------------------
--- Table structure for bus_inv_sku
--- ----------------------------
-DROP TABLE IF EXISTS `bus_inv_sku`;
-CREATE TABLE `bus_inv_sku` (
-  `id` varchar(32) NOT NULL,
-  `sku` varchar(32) NOT NULL COMMENT 'sku',
-  `shop_id` varchar(32) NOT NULL COMMENT '店铺id',
-  `qty` decimal(18,2) DEFAULT '0.00' COMMENT '库存数量',
-  `lock_qty` decimal(18,2) DEFAULT '0.00' COMMENT '锁定数量',
-  `damaged_qty` decimal(18,2) DEFAULT '0.00' COMMENT '破损数量',
-  `memo` varchar(512) DEFAULT NULL COMMENT '备注',
-  `created_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `updated_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存汇总表';
-
-
-
--- ----------------------------
--- Records of bus_inv_sku
+-- Records of bus_inv_sku_details
 -- ----------------------------
 
 -- ----------------------------
@@ -447,6 +473,7 @@ CREATE TABLE `bus_rul_price` (
 -- ----------------------------
 -- Records of bus_rul_price
 -- ----------------------------
+INSERT INTO `bus_rul_price` VALUES ('1', '普通店仓策略', '\0', null, '999999', '2018-12-09 23:21:20', null, '', null);
 
 -- ----------------------------
 -- Table structure for bus_rul_shop
@@ -465,6 +492,8 @@ CREATE TABLE `bus_rul_shop` (
 -- ----------------------------
 -- Records of bus_rul_shop
 -- ----------------------------
+INSERT INTO `bus_rul_shop` VALUES ('1812132302011361012185136', '1', '1812091930141101014954604', '嘉兴秀洲店仓', '2018-12-13 23:02:01', null);
+INSERT INTO `bus_rul_shop` VALUES ('1812132302011401012663455', '1', '1812100008460611014145244', '海宁店仓', '2018-12-13 23:02:01', null);
 
 -- ----------------------------
 -- Table structure for bus_rul_sku
@@ -496,6 +525,8 @@ CREATE TABLE `bus_rul_sku` (
 -- ----------------------------
 -- Records of bus_rul_sku
 -- ----------------------------
+INSERT INTO `bus_rul_sku` VALUES ('1812132302011421013594240', '1', '20', '0', '1120', '20', '测试商品', null, '精装', '10.00', '10.00', '8.00', '5.00', '8.00', '20', '瓶', null, '2018-12-13 23:02:01', null);
+INSERT INTO `bus_rul_sku` VALUES ('1812132302011471013300546', '1', '10', '0', '1130', '10', '测试白酒', '', '精装', '200.00', '180.00', null, '100.00', '100.00', '20', '瓶', null, '2018-12-13 23:02:01', null);
 
 -- ----------------------------
 -- Table structure for bus_shop
@@ -507,6 +538,7 @@ CREATE TABLE `bus_shop` (
   `shop_name` varchar(32) NOT NULL COMMENT '店仓名称',
   `position` varchar(32) DEFAULT NULL COMMENT '位置',
   `address` varchar(128) DEFAULT NULL COMMENT '地址',
+  `tel` varchar(32) DEFAULT NULL COMMENT '手机号',
   `contacts` varchar(16) DEFAULT NULL COMMENT '联系人',
   `memo` varchar(512) DEFAULT NULL COMMENT '备注',
   `enabled` bit(1) DEFAULT b'0' COMMENT '是否可用',
@@ -520,6 +552,31 @@ CREATE TABLE `bus_shop` (
 -- ----------------------------
 -- Records of bus_shop
 -- ----------------------------
+INSERT INTO `bus_shop` VALUES ('1812091925576891014843595', '1001', '沈荡店仓', null, '浙江海盐沈荡', '18868382345', '毛哥', '', '', '2018-12-09 19:25:57', '2018-12-09 19:26:09', 'super', '402882be46404313014640b7eb1c000f');
+INSERT INTO `bus_shop` VALUES ('1812091930141101014954604', '1002', '嘉兴秀洲店仓', null, '浙江嘉兴秀洲区丽丰新天地对面', '18878972131', '静姐', '测试', '', '2018-12-09 19:30:14', null, 'super', null);
+INSERT INTO `bus_shop` VALUES ('1812100008460611014145244', '1003', '海宁店仓', null, '', '19876784563', '小王', '', '', '2018-12-10 00:08:46', null, 'super', null);
+
+-- ----------------------------
+-- Table structure for bus_take_goods
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_take_goods`;
+CREATE TABLE `bus_take_goods` (
+  `goods_id` varchar(32) NOT NULL COMMENT 'goods_id',
+  `order_id` varchar(32) DEFAULT NULL COMMENT '订单id',
+  `line_no` int(11) DEFAULT NULL COMMENT '行号',
+  `goods_name` varchar(128) DEFAULT NULL COMMENT '商品名称',
+  `sku` varchar(32) DEFAULT NULL COMMENT 'sku',
+  `qty` decimal(18,2) DEFAULT NULL COMMENT '自提数量',
+  `sale_price` decimal(18,2) NOT NULL COMMENT '实际销售价(销售价、会员价)',
+  `enabled` bit(1) DEFAULT NULL COMMENT '是否逻辑删除',
+  `memo` varchar(512) DEFAULT NULL COMMENT '备注',
+  `created_time` datetime DEFAULT NULL COMMENT '自提时间',
+  PRIMARY KEY (`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='交易商品寄存表';
+
+-- ----------------------------
+-- Records of bus_take_goods
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for bus_vip
@@ -528,7 +585,7 @@ DROP TABLE IF EXISTS `bus_vip`;
 CREATE TABLE `bus_vip` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `customer_code` varchar(32) NOT NULL COMMENT '客户编号',
-  `card_type` int(11) DEFAULT NULL COMMENT '卡级别 1 普通会员 2 会员银卡 3 会员金卡',
+  `card_type` int(11) DEFAULT NULL,
   `card_no` varchar(32) NOT NULL COMMENT '会员卡号',
   `mobile` varchar(64) NOT NULL COMMENT '手机号',
   `wechat` varchar(32) DEFAULT NULL COMMENT '微信号',
@@ -546,6 +603,12 @@ CREATE TABLE `bus_vip` (
   `updated_name` varchar(64) DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员卡信息';
+
+-- ----------------------------
+-- Records of bus_vip
+-- ----------------------------
+INSERT INTO `bus_vip` VALUES ('1', 'VIP100001', '1', '1123131', '13645736211', '3', '3', '3', '2018-12-18 21:56:01', '3', '3.00', '2018-12-25 02:33:59', '0.00', '3', '', '2018-12-17 21:55:30', '', null);
+INSERT INTO `bus_vip` VALUES ('EE50A9B2BC894503968FA609A384DABF', 'VIP100001', '3', '1234567898765432', '13645739876', '', '小孙', '男', '2018-12-05 00:00:00', '', '1.00', '2018-12-04 03:19:34', '0.00', '测试', '', null, 'super', null);
 
 -- ----------------------------
 -- Table structure for bus_vip_unpaid
@@ -567,8 +630,11 @@ CREATE TABLE `bus_vip_unpaid` (
   `updated_time` datetime DEFAULT NULL COMMENT '更新时间',
   `card_no` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`unpaid_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='挂账会员卡交易明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='挂账明细';
 
+-- ----------------------------
+-- Records of bus_vip_unpaid
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for doc_asn_details
@@ -634,9 +700,9 @@ CREATE TABLE `doc_asn_header` (
   `check_status` char(2) NOT NULL COMMENT '审核状态 00 未审核，10 审核通过，20 审核不通过',
   `po_no` varchar(32) DEFAULT NULL COMMENT '关联要货单号',
   `order_no` varchar(32) DEFAULT NULL COMMENT '关联出库单号',
-  `asn_type` char(2) DEFAULT NULL COMMENT '单据类型',
-  `asn_status` char(2) NOT NULL COMMENT '单据状态',
-  `asn_source` char(2) DEFAULT NULL COMMENT '单据来源',
+  `asn_type` char(3) DEFAULT NULL COMMENT '单据类型',
+  `asn_status` char(3) NOT NULL COMMENT '单据状态',
+  `asn_source` char(10) DEFAULT NULL COMMENT '单据来源',
   `order_price` decimal(18,2) DEFAULT '0.00' COMMENT '订单总金额',
   `to_shop_id` varchar(32) DEFAULT NULL COMMENT '收货店仓id',
   `to_shop_name` varchar(64) DEFAULT NULL COMMENT '收货店仓名称',
@@ -671,7 +737,7 @@ CREATE TABLE `doc_asn_header` (
   `i_zip_code` varchar(32) DEFAULT NULL COMMENT '下单人邮编',
   `i_contact` varchar(32) DEFAULT NULL COMMENT '下单人联系人',
   `i_tel` varchar(32) DEFAULT NULL COMMENT '下单人电话',
-  `receiving_Time` datetime NOT NULL COMMENT '交付时间',
+  `receiving_time` datetime NOT NULL COMMENT '交付时间',
   `created_name` varchar(32) NOT NULL COMMENT '创建人',
   `created_time` datetime NOT NULL COMMENT '创建时间',
   `updated_name` varchar(32) NOT NULL COMMENT '更新人',
@@ -735,8 +801,10 @@ CREATE TABLE `doc_order_details` (
 DROP TABLE IF EXISTS `doc_order_header`;
 CREATE TABLE `doc_order_header` (
   `order_no` varchar(32) NOT NULL COMMENT '订单号',
-  `order_type` char(2) DEFAULT NULL COMMENT '单据类型',
-  `so_status` char(2) NOT NULL COMMENT '单据状态',
+  `order_type` char(3) DEFAULT NULL COMMENT '单据类型',
+  `order_status` char(3) NOT NULL COMMENT '单据状态',
+  `order_mode` char(3) DEFAULT NULL COMMENT '领用方式',
+  `order_source` char(10) DEFAULT NULL COMMENT '单据来源',
   `route_id` varchar(32) DEFAULT NULL COMMENT '发运路线id',
   `order_time` datetime NOT NULL COMMENT '订单创建时间',
   `order_price` decimal(18,2) DEFAULT '0.00' COMMENT '订单总金额',
@@ -842,9 +910,9 @@ CREATE TABLE `doc_po_details` (
 DROP TABLE IF EXISTS `doc_po_header`;
 CREATE TABLE `doc_po_header` (
   `po_no` varchar(32) NOT NULL COMMENT 'PO号',
-  `po_type` char(2) DEFAULT NULL COMMENT '单据类型',
-  `po_status` char(2) NOT NULL COMMENT '单据状态',
-  `po_source` char(2) DEFAULT NULL COMMENT '单据来源',
+  `po_type` char(3) DEFAULT NULL COMMENT '单据类型',
+  `po_status` char(3) NOT NULL COMMENT '单据状态',
+  `po_source` char(10) DEFAULT NULL COMMENT '单据来源',
   `to_shop_id` varchar(32) DEFAULT NULL COMMENT '收货店仓id',
   `to_shop_name` varchar(64) DEFAULT NULL COMMENT '收货店仓名称',
   `from_shop_id` varchar(32) DEFAULT NULL COMMENT '发货店仓id',
@@ -1274,7 +1342,7 @@ CREATE TABLE `sys_dictionary` (
   `enabled` bit(1) DEFAULT b'1',
   `sequence` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_dictionary
@@ -1329,7 +1397,7 @@ CREATE TABLE `sys_menu` (
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('402880f33e3ae38d013e3b2511250009', 'DICTIONARY_MANAGE', '数据字典', 'sys/dictionary/manage', null, '2013-04-24 00:00:00', null, '2013-12-16 16:17:11', null, null, null, '', null, '6', '297ea07f3df89479013df895251d0001', '297ea07f3da06a5e013da098bf150001');
-INSERT INTO `sys_menu` VALUES ('4028d981494f5aa601494f60ecfc000a', 'MARKET_MANAGE', '营销信息管理', null, 'images/icons/briefcase.png', '2014-10-27 10:13:12', '402882be46404313014640b7eb1c000f', '2014-12-21 23:03:33', null, null, null, null, null, '10', '402882be46404313014640b7eb1c000f', '297ea07f3f7e6920013f7e6b2e3c0002');
+INSERT INTO `sys_menu` VALUES ('4028d981494f5aa601494f60ecfc000a', 'MARKET_MANAGE', '营销管理', null, 'images/icons/briefcase.png', '2014-10-27 10:13:12', '402882be46404313014640b7eb1c000f', '2014-12-21 23:03:33', null, null, null, null, null, '10', '402882be46404313014640b7eb1c000f', '297ea07f3f7e6920013f7e6b2e3c0002');
 INSERT INTO `sys_menu` VALUES ('297ea07f3da06a5e013da09a94cf0004', 'MENU_MANAGE', '菜单管理', 'sys/menu/manage', 'images/icons/plugins48.png', '2013-03-25 04:11:58', '402882be46404313014640b7eb1c000f', '2014-12-21 23:08:52', null, null, null, '', null, '5', '测试', '297ea07f3da06a5e013da098bf150001');
 INSERT INTO `sys_menu` VALUES ('297ea07f3da06a5e013da099ebcd0003', 'ROLE_MANAGE', '角色管理', 'sys/role/manage', 'images/icons/themes8.png', '2013-03-25 04:11:14', '402882be46404313014640b7eb1c000f', '2014-12-21 23:08:36', null, null, null, '', null, '4', '测试', '297ea07f3da06a5e013da098bf150001');
 INSERT INTO `sys_menu` VALUES ('297ea07f3da06a5e013da09960e30002', 'USER_MANAGE', '用户管理', 'sys/user/manage', 'images/icons/46.png', '2013-03-25 00:00:00', '402882be46404313014640b7eb1c000f', '2014-12-21 23:08:26', null, null, null, '', null, '3', '测试', '297ea07f3da06a5e013da098bf150001');
@@ -1338,29 +1406,29 @@ INSERT INTO `sys_menu` VALUES ('297ea07f3e35f0a0013e35f8a5e00001', 'LOG_MANAGE',
 INSERT INTO `sys_menu` VALUES ('297ea07f3da06a5e013da0aee03e0005', 'POWER_MANAGE', '权限管理', 'sys/power/manage', 'images/icons/22.png', '2013-03-25 04:34:08', '402882be46404313014640b7eb1c000f', '2014-12-21 23:08:16', null, null, null, '', null, '2', '测试', '297ea07f3da06a5e013da098bf150001');
 INSERT INTO `sys_menu` VALUES ('297ea07f3f7e6920013f7e6b2e3c0002', 'SYSTEM', '业务系统', null, '&#xe6b8;', '2013-06-26 10:58:40', '402882be46404313014640b7eb1c000f', '2015-01-01 15:37:12', null, null, null, '', null, '1', '297ea07f3df89479013df895251d0001', null);
 INSERT INTO `sys_menu` VALUES ('402890f03feb8eb5013feb9598640003', 'OVERVIEW_MANAGE', '总览', 'bus/overview/manage', 'images/icons/sys_store.png', '2013-07-17 03:43:36', '402882be46404313014640b7eb1c000f', '2014-12-21 23:02:58', null, null, null, '', null, '1', '297ea07f3df89479013df895251d0001', '297ea07f3f7e6920013f7e6b2e3c0002');
-INSERT INTO `sys_menu` VALUES ('4028888e49cc3b620149cc5540ee00fa', 'FACTORYINFO_MANAGE', '厂家管理', 'bus/factoryInfo/manage', 'images/icons/rss.png', '2014-11-20 16:32:59', '402882be46404313014640b7eb1c000f', '2016-02-04 16:05:15', null, null, null, null, null, '2', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
-INSERT INTO `sys_menu` VALUES ('4028888e49cc3b620149cc56b64800fc', 'CLASSIFY_MANAGE', '分类管理', 'bus/classify/manage', 'images/icons/play.png', '2014-11-20 16:34:35', '402882be46404313014640b7eb1c000f', '2016-02-02 16:56:56', null, null, null, null, null, '4', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
+INSERT INTO `sys_menu` VALUES ('4028888e49cc3b620149cc5540ee00fa', 'FACTORYINFO_MANAGE', '客户管理', 'bus/customer/index', 'images/icons/rss.png', '2014-11-20 16:32:59', '402882be46404313014640b7eb1c000f', '2016-02-04 16:05:15', null, null, null, null, null, '2', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
+INSERT INTO `sys_menu` VALUES ('4028888e49cc3b620149cc56b64800fc', 'CLASSIFY_MANAGE', '员工管理', 'bus/user/index', 'images/icons/play.png', '2014-11-20 16:34:35', '402882be46404313014640b7eb1c000f', '2016-02-02 16:56:56', null, null, null, null, null, '4', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
 INSERT INTO `sys_menu` VALUES ('297ea07f40516d39014051bbae940001', 'ICON_MANAGE', '图标管理', 'sys/icon/manage', 'images/icons/comments8.png', '2013-08-06 11:46:28', '402882be46404313014640b7eb1c000f', '2015-01-08 23:03:55', null, null, null, '', null, '7', null, '297ea07f3da06a5e013da098bf150001');
-INSERT INTO `sys_menu` VALUES ('402882be464c0a0e01464c4f58ed0001', 'AUTH_MANAGE', '注册认证管理', 'sys/auth/manage', 'images/icons/article48.png', '2014-05-30 16:46:46', '402882be46404313014640b7eb1c000f', '2015-02-27 09:08:08', null, null, null, null, null, '10', '402882be46404313014640b7eb1c000f', '297ea07f3da06a5e013da098bf150001');
-INSERT INTO `sys_menu` VALUES ('4028888e49cc3b620149cc52cbc900f7', 'SUPPLY_GOOD_MANAGE', '货源信息管理', null, 'images/icons/l-jq.png', '2014-11-20 16:30:18', '402882be46404313014640b7eb1c000f', '2014-12-21 23:06:04', null, null, null, null, null, '15', '402882be46404313014640b7eb1c000f', '297ea07f3f7e6920013f7e6b2e3c0002');
-INSERT INTO `sys_menu` VALUES ('4028888e49cc3b620149cc4028dc0005', 'ORDER_MANAGE', '订单信息管理', 'bus/order/manage', 'images/icons/sale.png', '2014-11-20 16:09:57', '402882be46404313014640b7eb1c000f', '2015-01-21 22:53:25', null, null, null, null, null, '3', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
-INSERT INTO `sys_menu` VALUES ('4028888e49d058530149d05a687a0002', 'PRODUCT_MANAGE', '产品管理', 'bus/product/manage', 'images/icons/18.png', '2014-11-21 11:17:06', '402882be46404313014640b7eb1c000f', '2014-12-21 23:06:16', null, null, null, null, null, '1', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
+INSERT INTO `sys_menu` VALUES ('402882be464c0a0e01464c4f58ed0001', 'AUTH_MANAGE', '注册认证', 'sys/auth/manage', 'images/icons/article48.png', '2014-05-30 16:46:46', '402882be46404313014640b7eb1c000f', '2015-02-27 09:08:08', null, null, null, null, null, '10', '402882be46404313014640b7eb1c000f', '297ea07f3da06a5e013da098bf150001');
+INSERT INTO `sys_menu` VALUES ('4028888e49cc3b620149cc52cbc900f7', 'SUPPLY_GOOD_MANAGE', '基础资料', null, 'images/icons/l-jq.png', '2014-11-20 16:30:18', '402882be46404313014640b7eb1c000f', '2014-12-21 23:06:04', null, null, null, null, null, '15', '402882be46404313014640b7eb1c000f', '297ea07f3f7e6920013f7e6b2e3c0002');
+INSERT INTO `sys_menu` VALUES ('4028888e49cc3b620149cc4028dc0005', 'ORDER_MANAGE', '销售单管理', 'bus/order/index', 'images/icons/sale.png', '2014-11-20 16:09:57', '402882be46404313014640b7eb1c000f', '2015-01-21 22:53:25', null, null, null, null, null, '3', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
+INSERT INTO `sys_menu` VALUES ('4028888e49d058530149d05a687a0002', 'PRODUCT_MANAGE', '价格策略', 'bus/rule/price/index', 'images/icons/18.png', '2014-11-21 11:17:06', '402882be46404313014640b7eb1c000f', '2014-12-21 23:06:16', null, null, null, null, null, '1', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
 INSERT INTO `sys_menu` VALUES ('4028d9814a6d50f1014a6d56d4850074', 'MARKET_SUMMARY', '营销汇总', null, 'images/icons/chart.png', '2014-12-21 22:53:34', '402882be46404313014640b7eb1c000f', '2015-02-28 08:49:15', null, null, null, null, null, '16', '402882be46404313014640b7eb1c000f', '297ea07f3f7e6920013f7e6b2e3c0002');
 INSERT INTO `sys_menu` VALUES ('4028d9814a6d50f1014a6d5d00fb0077', 'ORDER_SUMMARY', '订单汇总', 'bus/summary/order/manage', 'images/icons/research.png', '2014-12-21 23:00:19', '402882be46404313014640b7eb1c000f', '2015-02-28 08:50:02', null, null, null, null, null, '1', '402882be46404313014640b7eb1c000f', '4028d9814a6d50f1014a6d56d4850074');
-INSERT INTO `sys_menu` VALUES ('4028d9814adc1ba0014adc1db9d90002', 'CUSTOMER_MANAGE', '客户信息管理', 'bus/customer/manage', 'images/icons/46.png', '2015-01-12 11:09:03', null, null, null, null, '', null, null, '5', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
-INSERT INTO `sys_menu` VALUES ('4028d9814af28328014af32663aa0006', 'PLUGIN_MANAGE', '插件下载管理', 'sys/plugin/manage', 'images/icons/43.png', '2015-01-16 22:29:46', null, null, null, null, '', null, null, '12', '402882be46404313014640b7eb1c000f', '297ea07f3da06a5e013da098bf150001');
-INSERT INTO `sys_menu` VALUES ('4028d9814b17de71014b17e6ec4b0003', 'MADE_MANAGE', '生产单管理', 'bus/madeOrder/manage', 'images/icons/transfer.png', '2015-01-24 01:46:24', '402882be46404313014640b7eb1c000f', '2017-08-21 21:59:06', null, null, null, null, null, '4', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
+INSERT INTO `sys_menu` VALUES ('4028d9814adc1ba0014adc1db9d90002', 'CUSTOMER_MANAGE', '会员卡管理', 'bus/vip/index', 'images/icons/46.png', '2015-01-12 11:09:03', null, null, null, null, '', null, null, '5', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
+INSERT INTO `sys_menu` VALUES ('4028d9814af28328014af32663aa0006', 'PLUGIN_MANAGE', '插件下载', 'sys/plugin/manage', 'images/icons/43.png', '2015-01-16 22:29:46', null, null, null, null, '', null, null, '12', '402882be46404313014640b7eb1c000f', '297ea07f3da06a5e013da098bf150001');
+INSERT INTO `sys_menu` VALUES ('4028d9814b17de71014b17e6ec4b0003', 'MADE_MANAGE', '入库单管理', 'bus/doc/asn/index', 'images/icons/transfer.png', '2015-01-24 01:46:24', '402882be46404313014640b7eb1c000f', '2017-08-21 21:59:06', null, null, null, null, null, '4', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
 INSERT INTO `sys_menu` VALUES ('4028d9814aa3d39e014aa3d617580002', 'SYSTEM_CONFIG_MANAGE', '数据字典', 'sys/codes/index', 'images/icons/5.png', '2015-01-01 12:52:04', '402882be46404313014640b7eb1c000f', '2015-01-01 15:47:18', null, null, null, null, null, '11', '402882be46404313014640b7eb1c000f', '297ea07f3da06a5e013da098bf150001');
 INSERT INTO `sys_menu` VALUES ('4028878d4cbc337b014cbc4346ea0003', 'ORDER_DETAIL_SUMMARY', '订单明细汇总', 'bus/summary/orderDetail/manage', 'images/icons/views8.png', '2015-04-15 16:47:47', null, null, null, null, '', null, null, '2', '402882be46404313014640b7eb1c000f', '4028d9814a6d50f1014a6d56d4850074');
 INSERT INTO `sys_menu` VALUES ('402887e64d4635eb014d463780db0002', 'MESSAGE_MANAGE', '消息管理', 'bus/message/manage', 'images/icons/comments8.png', '2015-05-12 11:42:32', null, null, null, null, '', null, null, '13', '402882be46404313014640b7eb1c000f', '297ea07f3da06a5e013da098bf150001');
-INSERT INTO `sys_menu` VALUES ('402887e64de145d5014de14829a40002', 'STOCK_MANAGE', '库存信息管理', 'bus/stock/manage', 'images/icons/25.png', '2015-06-11 14:21:52', null, null, null, null, '', null, null, '6', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
-INSERT INTO `sys_menu` VALUES ('402887e64e09c689014e09c9cd400003', 'STORE_MANAGE', '仓库信息管理', 'bus/store/manage', 'images/icons/sys_store.png', '2015-06-19 11:08:17', null, null, null, null, '', null, null, '7', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
-INSERT INTO `sys_menu` VALUES ('4028d981529b18f101529b1d05600002', 'PURCHASE_MANAGE', '采购单管理', 'bus/purchase/manage', 'images/icons/sys_delivery.png', '2016-02-01 12:35:16', null, null, null, null, '', null, null, '6', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
-INSERT INTO `sys_menu` VALUES ('4028d98152a12d8f0152a131ef810002', 'MATERIEL_MANAGE', '物料管理', 'bus/materiel/manage', 'images/icons/shipping.png', '2016-02-02 16:55:50', null, null, null, null, '', null, null, '2', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
+INSERT INTO `sys_menu` VALUES ('402887e64de145d5014de14829a40002', 'STOCK_MANAGE', '库存管理', 'bus/invSku/index', 'images/icons/25.png', '2015-06-11 14:21:52', null, null, null, null, '', null, null, '6', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
+INSERT INTO `sys_menu` VALUES ('402887e64e09c689014e09c9cd400003', 'STORE_MANAGE', '店仓管理', 'bus/shop/index', 'images/icons/sys_store.png', '2015-06-19 11:08:17', null, null, null, null, '', null, null, '7', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
+INSERT INTO `sys_menu` VALUES ('4028d981529b18f101529b1d05600002', 'PURCHASE_MANAGE', '申请单管理', 'bus/doc/po/index', 'images/icons/sys_delivery.png', '2016-02-01 12:35:16', null, null, null, null, '', null, null, '6', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
+INSERT INTO `sys_menu` VALUES ('4028d98152a12d8f0152a131ef810002', 'MATERIEL_MANAGE', '商品管理', 'bus/basSku/index', 'images/icons/shipping.png', '2016-02-02 16:55:50', null, null, null, null, '', null, null, '2', '402882be46404313014640b7eb1c000f', '4028888e49cc3b620149cc52cbc900f7');
 INSERT INTO `sys_menu` VALUES ('4028d981531790740153179356e60002', 'PURCHASE_DETAIL_SUMMARY', '物料采购明细汇总', 'bus/summary/buyDetail/manage', 'images/icons/calculator.png', '2016-02-25 16:37:25', '402882be46404313014640b7eb1c000f', '2016-02-26 00:16:20', null, null, null, null, null, '5', '402882be46404313014640b7eb1c000f', '4028d9814a6d50f1014a6d56d4850074');
-INSERT INTO `sys_menu` VALUES ('4028d9815e0511c1015e0516bf270002', 'DELIVERY_MANAGE', '送货单管理', 'bus/deliveryOrder/manage', 'images/icons/shipping.png', '2017-08-21 21:58:50', '402882be46404313014640b7eb1c000f', '2017-08-25 13:37:13', null, null, null, null, null, '5', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
+INSERT INTO `sys_menu` VALUES ('4028d9815e0511c1015e0516bf270002', 'DELIVERY_MANAGE', '出库单管理', 'bus/doc/order/index', 'images/icons/shipping.png', '2017-08-21 21:58:50', '402882be46404313014640b7eb1c000f', '2017-08-25 13:37:13', null, null, null, null, null, '5', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
 INSERT INTO `sys_menu` VALUES ('4028d9815e21e12a015e21e3a4050002', 'DELIVERY_ORDER_SUMMARY', '送货单明细汇总', 'bus/summary/deliveryDetail/manage', 'images/icons/16.png', '2017-08-27 12:12:00', null, null, null, null, '', null, null, '3', '402882be46404313014640b7eb1c000f', '4028d9814a6d50f1014a6d56d4850074');
-INSERT INTO `sys_menu` VALUES ('4028867462a4e9b90162a4ece0470002', 'PROXY_MANAGE', '加工单管理', 'bus/proxyOrder/manage', 'images/icons/22.png', '2018-04-08 19:03:30', null, null, null, null, '', null, null, '7', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
+INSERT INTO `sys_menu` VALUES ('4028867462a4e9b90162a4ece0470002', 'PROXY_MANAGE', '寄存单管理', 'bus/proxyOrder/manage', 'images/icons/22.png', '2018-04-08 19:03:30', null, null, null, null, '', null, null, '7', '402882be46404313014640b7eb1c000f', '4028d981494f5aa601494f60ecfc000a');
 INSERT INTO `sys_menu` VALUES ('402880e862aa57960162ab13c567001f', 'PORXY_ORDER_SUMMARY', '加工单明细汇总', 'bus/summary/proxyDetail/manage', 'images/icons/31.png', '2018-04-09 23:43:42', null, null, null, null, '', null, null, '4', '402882be46404313014640b7eb1c000f', '4028d9814a6d50f1014a6d56d4850074');
 
 -- ----------------------------
@@ -1574,13 +1642,13 @@ CREATE TABLE `sys_user` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_man_id` char(32) DEFAULT NULL COMMENT '最后更新人',
   `update_time` datetime DEFAULT NULL COMMENT '最后更新时间',
-  `shop_id` varchar(32) DEFAULT NULL COMMENT '所属店仓',
+  `shop_id` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统用户表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('402882be46404313014640b7eb1c000f', null, 'super', '7cf89929244d8c1ca0f053dfad7c34b4', '超级管理员', null, null, null, null, null, null, null, null, '402882be46404313014640b7eb1c000f', '2014-11-28 14:30:09');
-INSERT INTO `sys_user` VALUES ('f36328d24baff4d1014baff87a660012', null, 'zqh', '25c6ec51ff1722a99d27114487429296', '小周', null, null, null, null, null, null, null, null, '402882be46404313014640b7eb1c000f', '2015-05-26 10:44:21');
-INSERT INTO `sys_user` VALUES ('4028d98152e860080152e86ab6740114', null, 'xw', '89a2aa7952a18f8e2e13a75f1b7dc584', '小王', null, null, null, null, null, null, '402882be46404313014640b7eb1c000f', '2016-02-16 12:50:53', null, null);
+INSERT INTO `sys_user` VALUES ('402882be46404313014640b7eb1c000f', null, 'super', '7cf89929244d8c1ca0f053dfad7c34b4', '超级管理员', null, null, null, '', '', null, null, null, '402882be46404313014640b7eb1c000f', '2014-11-28 14:30:09', null);
+INSERT INTO `sys_user` VALUES ('f36328d24baff4d1014baff87a660012', null, 'zqh', '25c6ec51ff1722a99d27114487429296', '小周', null, null, null, '\0', '', null, null, null, '402882be46404313014640b7eb1c000f', '2018-12-14 22:01:50', '1812091930141101014954604');
+INSERT INTO `sys_user` VALUES ('4028d98152e860080152e86ab6740114', null, 'xw', '89a2aa7952a18f8e2e13a75f1b7dc584', '小王', null, null, null, '\0', '', null, '402882be46404313014640b7eb1c000f', '2016-02-16 12:50:53', '402882be46404313014640b7eb1c000f', '2018-12-15 00:20:05', '1812091925576891014843595');

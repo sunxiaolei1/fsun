@@ -1,10 +1,17 @@
-package com.fsun.domain.model;
+package com.fsun.domain.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class DocOrderHeader {
-    /**
+import com.fsun.domain.common.BaseOrderCondition;
+
+/**
+ * @author fsun
+ * @date 2018年12月15日
+ */
+public class DocOrderHeaderCondition extends BaseOrderCondition{
+
+	/**
      * 订单号
      * 表字段 : doc_order_header.order_no
      */
@@ -18,21 +25,9 @@ public class DocOrderHeader {
 
     /**
      * 单据状态
-     * 表字段 : doc_order_header.order_status
+     * 表字段 : doc_order_header.so_status
      */
-    private String orderStatus;
-
-    /**
-     * 领用方式(10 样品 20 品鉴 30 试饮 40 赠送 50 礼品 60 其他)
-     * 表字段 : doc_order_header.order_mode
-     */
-    private String orderMode;
-
-    /**
-     * 单据来源
-     * 表字段 : doc_order_header.order_source
-     */
-    private String orderSource;
+    private String soStatus;
 
     /**
      * 发运路线id
@@ -320,28 +315,12 @@ public class DocOrderHeader {
         this.orderType = orderType == null ? null : orderType.trim();
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
+    public String getSoStatus() {
+        return soStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus == null ? null : orderStatus.trim();
-    }
-
-    public String getOrderMode() {
-        return orderMode;
-    }
-
-    public void setOrderMode(String orderMode) {
-        this.orderMode = orderMode == null ? null : orderMode.trim();
-    }
-
-    public String getOrderSource() {
-        return orderSource;
-    }
-
-    public void setOrderSource(String orderSource) {
-        this.orderSource = orderSource == null ? null : orderSource.trim();
+    public void setSoStatus(String soStatus) {
+        this.soStatus = soStatus == null ? null : soStatus.trim();
     }
 
     public String getRouteId() {
@@ -703,4 +682,5 @@ public class DocOrderHeader {
     public void setRoute(String route) {
         this.route = route == null ? null : route.trim();
     }
+    
 }

@@ -13,6 +13,16 @@ var tradeStatusData = new Array();
 var orderTypeData = new Array();
 var payModeData = new Array();
 var tradeFromData = new Array();
+var tradeTypeData = new Array();
+var docAsnStatusData = new Array();
+var docAsnTypeData = new Array();
+var docOrderModeData = new Array();
+var docOrderStatusData = new Array();
+var docOrderTypeData = new Array();
+var docPoStatusData = new Array();
+var docPoTypeData = new Array();
+var docTradeStatusData = new Array();
+var docTradeTypeData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -31,6 +41,16 @@ var tradeStatus = {};
 var orderType = {};
 var payMode = {};
 var tradeFrom = {};
+var tradeType = {}
+var docAsnStatus = {}
+var docAsnType = {}
+var docOrderMode = {}
+var docOrderStatus = {}
+var docOrderType = {}
+var docPoStatus = {}
+var docPoType = {}
+var docTradeStatus = {}
+var docTradeType = {}
 
 $(function () {
 	synchronizeData();	
@@ -49,7 +69,18 @@ $(function () {
 	orderType = formatterCodeType(orderTypeData);
 	payMode = formatterCodeType(payModeData);
 	tradeFrom = formatterCodeType(tradeFromData);
-
+	
+	tradeType = formatterCodeType(tradeTypeData);
+	
+	docAsnStatus = formatterCodeType(docAsnStatusData);
+	docAsnType = formatterCodeType(docAsnTypeData);
+	docOrderMode = formatterCodeType(docOrderModeData);
+	docOrderStatus = formatterCodeType(docOrderStatusData);
+	docOrderType = formatterCodeType(docOrderTypeData);
+	docPoStatus = formatterCodeType(docPoStatusData);
+	docPoType = formatterCodeType(docPoTypeData);
+	docTradeStatus = formatterCodeType(docTradeStatusData);
+	docTradeType = formatterCodeType(docTradeTypeData);
 });
 
 function formatterCodeType(result) {
@@ -100,6 +131,26 @@ function synchronizeData() {
         				payModeData.push(item);
         			}else if(item.codeType == 'TradeFrom') {
         				tradeFromData.push(item);
+        			}else if(item.codeType == 'TradeType') {
+        				tradeTypeData.push(item);
+        			}else if(item.codeType == 'DocAsnStatus') {
+        				docAsnStatusData.push(item);
+        			}else if(item.codeType == 'DocAsnType') {
+        				docAsnTypeData.push(item);
+        			}else if(item.codeType == 'DocOrderMode') {
+        				docOrderModeData.push(item);
+        			}else if(item.codeType == 'DocOrderStatus') {
+        				docOrderStatusData.push(item);
+        			}else if(item.codeType == 'DocOrderType') {
+        				docOrderTypeData.push(item);
+        			}else if(item.codeType == 'DocPoStatus') {
+        				docPoStatusData.push(item);
+        			}else if(item.codeType == 'DocPoType') {
+        				docPoTypeData.push(item);
+        			}else if(item.codeType == 'DocTradeStatus') {
+        				docTradeStatusData.push(item);
+        			}else if(item.codeType == 'DocTradeType') {
+        				docTradeTypeData.push(item);
         			}
         			
     	        });
@@ -170,6 +221,57 @@ function synchronizeData() {
 				});
 				
 				tradeFromData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				
+				tradeTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				docAsnStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				docAsnTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				docOrderModeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				docOrderStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				docOrderTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				docPoStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				docPoTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				docTradeStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				docTradeTypeData.unshift({
         			codeCode:"",
 					codeName:"请选择..."
 				});

@@ -13,7 +13,7 @@ public enum TradeStatusEnum {
 	PAID("10", "已付款"),
 	DELIVERED("20", "已发货"),
 	COMPLETED("30", "交易成功"),
-	CANCEL("40", "订单取消"),
+	CANCEL("40", "交易取消"),
 	CLOSED("60", "交易关闭"),
 	UNKNOW(null,"未知");
 	

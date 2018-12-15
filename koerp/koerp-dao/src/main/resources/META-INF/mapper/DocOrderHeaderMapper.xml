@@ -4,7 +4,9 @@
   <resultMap id="BaseResultMap" type="com.fsun.domain.model.DocOrderHeader" >
     <id column="order_no" property="orderNo" jdbcType="VARCHAR" />
     <result column="order_type" property="orderType" jdbcType="CHAR" />
-    <result column="so_status" property="soStatus" jdbcType="CHAR" />
+    <result column="order_status" property="orderStatus" jdbcType="CHAR" />
+    <result column="order_mode" property="orderMode" jdbcType="CHAR" />
+    <result column="order_source" property="orderSource" jdbcType="CHAR" />
     <result column="route_id" property="routeId" jdbcType="VARCHAR" />
     <result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
     <result column="order_price" property="orderPrice" jdbcType="DECIMAL" />
@@ -52,13 +54,14 @@
     <result column="route" property="route" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    order_no, order_type, so_status, route_id, order_time, order_price, to_shop_id, to_shop_name, 
-    from_shop_id, from_shop_name, expected_time, user_define1, user_define2, user_define3, 
-    release_status, priority, carrier_id, carrier_name, place_discharge, zip_code, mobile, 
-    receive_address, vehicle_no, onsignee_id, onsign_name, descr, memo, i_shop_id, i_id, 
-    i_address, i_zip_code, i_contact, i_tel, supplier_id, supplier_name, supplier_address, 
-    supplier_zip_code, supplier_contact, supplier_tel, address, volume, delivery_time, 
-    created_name, created_time, updated_name, place_loading, updated_time, route
+    order_no, order_type, order_status, order_mode, order_source, route_id, order_time, 
+    order_price, to_shop_id, to_shop_name, from_shop_id, from_shop_name, expected_time, 
+    user_define1, user_define2, user_define3, release_status, priority, carrier_id, carrier_name, 
+    place_discharge, zip_code, mobile, receive_address, vehicle_no, onsignee_id, onsign_name, 
+    descr, memo, i_shop_id, i_id, i_address, i_zip_code, i_contact, i_tel, supplier_id, 
+    supplier_name, supplier_address, supplier_zip_code, supplier_contact, supplier_tel, 
+    address, volume, delivery_time, created_name, created_time, updated_name, place_loading, 
+    updated_time, route
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -71,40 +74,40 @@
     where order_no = #{orderNo,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.DocOrderHeader" >
-    insert into doc_order_header (order_no, order_type, so_status, 
-      route_id, order_time, order_price, 
-      to_shop_id, to_shop_name, from_shop_id, 
-      from_shop_name, expected_time, user_define1, 
-      user_define2, user_define3, release_status, 
-      priority, carrier_id, carrier_name, 
-      place_discharge, zip_code, mobile, 
-      receive_address, vehicle_no, onsignee_id, 
-      onsign_name, descr, memo, 
-      i_shop_id, i_id, i_address, 
-      i_zip_code, i_contact, i_tel, 
-      supplier_id, supplier_name, supplier_address, 
-      supplier_zip_code, supplier_contact, supplier_tel, 
-      address, volume, delivery_time, 
-      created_name, created_time, updated_name, 
-      place_loading, updated_time, route
-      )
-    values (#{orderNo,jdbcType=VARCHAR}, #{orderType,jdbcType=CHAR}, #{soStatus,jdbcType=CHAR}, 
-      #{routeId,jdbcType=VARCHAR}, #{orderTime,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=DECIMAL}, 
-      #{toShopId,jdbcType=VARCHAR}, #{toShopName,jdbcType=VARCHAR}, #{fromShopId,jdbcType=VARCHAR}, 
-      #{fromShopName,jdbcType=VARCHAR}, #{expectedTime,jdbcType=TIMESTAMP}, #{userDefine1,jdbcType=VARCHAR}, 
-      #{userDefine2,jdbcType=VARCHAR}, #{userDefine3,jdbcType=VARCHAR}, #{releaseStatus,jdbcType=CHAR}, 
-      #{priority,jdbcType=CHAR}, #{carrierId,jdbcType=VARCHAR}, #{carrierName,jdbcType=VARCHAR}, 
-      #{placeDischarge,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
-      #{receiveAddress,jdbcType=VARCHAR}, #{vehicleNo,jdbcType=VARCHAR}, #{onsigneeId,jdbcType=VARCHAR}, 
-      #{onsignName,jdbcType=VARCHAR}, #{descr,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
-      #{iShopId,jdbcType=VARCHAR}, #{iId,jdbcType=VARCHAR}, #{iAddress,jdbcType=VARCHAR}, 
-      #{iZipCode,jdbcType=VARCHAR}, #{iContact,jdbcType=VARCHAR}, #{iTel,jdbcType=VARCHAR}, 
-      #{supplierId,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{supplierAddress,jdbcType=VARCHAR}, 
-      #{supplierZipCode,jdbcType=VARCHAR}, #{supplierContact,jdbcType=VARCHAR}, #{supplierTel,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{volume,jdbcType=DECIMAL}, #{deliveryTime,jdbcType=TIMESTAMP}, 
-      #{createdName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedName,jdbcType=VARCHAR}, 
-      #{placeLoading,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, #{route,jdbcType=VARCHAR}
-      )
+    insert into doc_order_header (order_no, order_type, order_status, 
+      order_mode, order_source, route_id, 
+      order_time, order_price, to_shop_id, 
+      to_shop_name, from_shop_id, from_shop_name, 
+      expected_time, user_define1, user_define2, 
+      user_define3, release_status, priority, 
+      carrier_id, carrier_name, place_discharge, 
+      zip_code, mobile, receive_address, 
+      vehicle_no, onsignee_id, onsign_name, 
+      descr, memo, i_shop_id, 
+      i_id, i_address, i_zip_code, 
+      i_contact, i_tel, supplier_id, 
+      supplier_name, supplier_address, supplier_zip_code, 
+      supplier_contact, supplier_tel, address, 
+      volume, delivery_time, created_name, 
+      created_time, updated_name, place_loading, 
+      updated_time, route)
+    values (#{orderNo,jdbcType=VARCHAR}, #{orderType,jdbcType=CHAR}, #{orderStatus,jdbcType=CHAR}, 
+      #{orderMode,jdbcType=CHAR}, #{orderSource,jdbcType=CHAR}, #{routeId,jdbcType=VARCHAR}, 
+      #{orderTime,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=DECIMAL}, #{toShopId,jdbcType=VARCHAR}, 
+      #{toShopName,jdbcType=VARCHAR}, #{fromShopId,jdbcType=VARCHAR}, #{fromShopName,jdbcType=VARCHAR}, 
+      #{expectedTime,jdbcType=TIMESTAMP}, #{userDefine1,jdbcType=VARCHAR}, #{userDefine2,jdbcType=VARCHAR}, 
+      #{userDefine3,jdbcType=VARCHAR}, #{releaseStatus,jdbcType=CHAR}, #{priority,jdbcType=CHAR}, 
+      #{carrierId,jdbcType=VARCHAR}, #{carrierName,jdbcType=VARCHAR}, #{placeDischarge,jdbcType=VARCHAR}, 
+      #{zipCode,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{receiveAddress,jdbcType=VARCHAR}, 
+      #{vehicleNo,jdbcType=VARCHAR}, #{onsigneeId,jdbcType=VARCHAR}, #{onsignName,jdbcType=VARCHAR}, 
+      #{descr,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{iShopId,jdbcType=VARCHAR}, 
+      #{iId,jdbcType=VARCHAR}, #{iAddress,jdbcType=VARCHAR}, #{iZipCode,jdbcType=VARCHAR}, 
+      #{iContact,jdbcType=VARCHAR}, #{iTel,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, 
+      #{supplierName,jdbcType=VARCHAR}, #{supplierAddress,jdbcType=VARCHAR}, #{supplierZipCode,jdbcType=VARCHAR}, 
+      #{supplierContact,jdbcType=VARCHAR}, #{supplierTel,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{volume,jdbcType=DECIMAL}, #{deliveryTime,jdbcType=TIMESTAMP}, #{createdName,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedName,jdbcType=VARCHAR}, #{placeLoading,jdbcType=VARCHAR}, 
+      #{updatedTime,jdbcType=TIMESTAMP}, #{route,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.DocOrderHeader" >
     insert into doc_order_header
@@ -115,8 +118,14 @@
       <if test="orderType != null" >
         order_type,
       </if>
-      <if test="soStatus != null" >
-        so_status,
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderMode != null" >
+        order_mode,
+      </if>
+      <if test="orderSource != null" >
+        order_source,
       </if>
       <if test="routeId != null" >
         route_id,
@@ -261,8 +270,14 @@
       <if test="orderType != null" >
         #{orderType,jdbcType=CHAR},
       </if>
-      <if test="soStatus != null" >
-        #{soStatus,jdbcType=CHAR},
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderMode != null" >
+        #{orderMode,jdbcType=CHAR},
+      </if>
+      <if test="orderSource != null" >
+        #{orderSource,jdbcType=CHAR},
       </if>
       <if test="routeId != null" >
         #{routeId,jdbcType=VARCHAR},
@@ -407,8 +422,14 @@
       <if test="orderType != null" >
         order_type = #{orderType,jdbcType=CHAR},
       </if>
-      <if test="soStatus != null" >
-        so_status = #{soStatus,jdbcType=CHAR},
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderMode != null" >
+        order_mode = #{orderMode,jdbcType=CHAR},
+      </if>
+      <if test="orderSource != null" >
+        order_source = #{orderSource,jdbcType=CHAR},
       </if>
       <if test="routeId != null" >
         route_id = #{routeId,jdbcType=VARCHAR},
@@ -551,7 +572,9 @@
   <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.DocOrderHeader" >
     update doc_order_header
     set order_type = #{orderType,jdbcType=CHAR},
-      so_status = #{soStatus,jdbcType=CHAR},
+      order_status = #{orderStatus,jdbcType=CHAR},
+      order_mode = #{orderMode,jdbcType=CHAR},
+      order_source = #{orderSource,jdbcType=CHAR},
       route_id = #{routeId,jdbcType=VARCHAR},
       order_time = #{orderTime,jdbcType=TIMESTAMP},
       order_price = #{orderPrice,jdbcType=DECIMAL},

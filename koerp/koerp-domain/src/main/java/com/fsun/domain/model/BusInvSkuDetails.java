@@ -3,106 +3,130 @@ package com.fsun.domain.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class BusInvLotDetails {
+public class BusInvSkuDetails {
     /**
      * id
-     * 表字段 : bus_inv_lot_details.id
+     * 表字段 : bus_inv_sku_details.id
      */
     private String id;
 
     /**
      * 单据类型
-     * 表字段 : bus_inv_lot_details.trade_type
+     * 表字段 : bus_inv_sku_details.trade_type
      */
-    private Short tradeType;
+    private String tradeType;
 
     /**
      * 交易状态
-     * 表字段 : bus_inv_lot_details.trade_status
+     * 表字段 : bus_inv_sku_details.trade_status
      */
-    private Short tradeStatus;
+    private String tradeStatus;
 
     /**
      * 交易单号
-     * 表字段 : bus_inv_lot_details.trade_order_no
+     * 表字段 : bus_inv_sku_details.trade_order_no
      */
     private String tradeOrderNo;
 
     /**
+     * 交易单关联单号(1、采购入库->申请单号,2、调拨入库->调拨出库单号)
+     * 表字段 : bus_inv_sku_details.trade_relation_no
+     */
+    private String tradeRelationNo;
+
+    /**
+     * 交易商品明细主键
+     * 表字段 : bus_inv_sku_details.trade_order_detail_id
+     */
+    private String tradeOrderDetailId;
+
+    /**
      * 单据行号
-     * 表字段 : bus_inv_lot_details.trade_line_no
+     * 表字段 : bus_inv_sku_details.trade_line_no
      */
     private Integer tradeLineNo;
 
     /**
      * 交易时间
-     * 表字段 : bus_inv_lot_details.trade_time
+     * 表字段 : bus_inv_sku_details.trade_time
      */
     private Date tradeTime;
 
     /**
      * 是否入库批次
-     * 表字段 : bus_inv_lot_details.is_pull
+     * 表字段 : bus_inv_sku_details.is_pull
      */
     private Short isPull;
 
     /**
      * 店铺id
-     * 表字段 : bus_inv_lot_details.shop_id
+     * 表字段 : bus_inv_sku_details.shop_id
      */
     private String shopId;
 
     /**
      * 店铺名称
-     * 表字段 : bus_inv_lot_details.shop_name
+     * 表字段 : bus_inv_sku_details.shop_name
      */
     private String shopName;
 
     /**
      * sku
-     * 表字段 : bus_inv_lot_details.sku
+     * 表字段 : bus_inv_sku_details.sku
      */
     private String sku;
 
     /**
      * 商品名称
-     * 表字段 : bus_inv_lot_details.goods_name
+     * 表字段 : bus_inv_sku_details.goods_name
      */
     private String goodsName;
 
     /**
      * 批次号
-     * 表字段 : bus_inv_lot_details.lot_num
+     * 表字段 : bus_inv_sku_details.lot_num
      */
     private String lotNum;
 
     /**
      * 单位
-     * 表字段 : bus_inv_lot_details.unit
+     * 表字段 : bus_inv_sku_details.unit
      */
     private String unit;
 
     /**
-     * 数量
-     * 表字段 : bus_inv_lot_details.qty
+     * 可用数量
+     * 表字段 : bus_inv_sku_details.qty
      */
     private BigDecimal qty;
 
     /**
+     * 锁定数量
+     * 表字段 : bus_inv_sku_details.lock_qty
+     */
+    private BigDecimal lockQty;
+
+    /**
+     * 破损数量
+     * 表字段 : bus_inv_sku_details.damaged_qty
+     */
+    private BigDecimal damagedQty;
+
+    /**
      * 备注
-     * 表字段 : bus_inv_lot_details.memo
+     * 表字段 : bus_inv_sku_details.memo
      */
     private String memo;
 
     /**
      * 创建时间
-     * 表字段 : bus_inv_lot_details.created_time
+     * 表字段 : bus_inv_sku_details.created_time
      */
     private Date createdTime;
 
     /**
      * 更新时间
-     * 表字段 : bus_inv_lot_details.updated_time
+     * 表字段 : bus_inv_sku_details.updated_time
      */
     private Date updatedTime;
 
@@ -114,20 +138,20 @@ public class BusInvLotDetails {
         this.id = id == null ? null : id.trim();
     }
 
-    public Short getTradeType() {
+    public String getTradeType() {
         return tradeType;
     }
 
-    public void setTradeType(Short tradeType) {
-        this.tradeType = tradeType;
+    public void setTradeType(String tradeType) {
+        this.tradeType = tradeType == null ? null : tradeType.trim();
     }
 
-    public Short getTradeStatus() {
+    public String getTradeStatus() {
         return tradeStatus;
     }
 
-    public void setTradeStatus(Short tradeStatus) {
-        this.tradeStatus = tradeStatus;
+    public void setTradeStatus(String tradeStatus) {
+        this.tradeStatus = tradeStatus == null ? null : tradeStatus.trim();
     }
 
     public String getTradeOrderNo() {
@@ -136,6 +160,22 @@ public class BusInvLotDetails {
 
     public void setTradeOrderNo(String tradeOrderNo) {
         this.tradeOrderNo = tradeOrderNo == null ? null : tradeOrderNo.trim();
+    }
+
+    public String getTradeRelationNo() {
+        return tradeRelationNo;
+    }
+
+    public void setTradeRelationNo(String tradeRelationNo) {
+        this.tradeRelationNo = tradeRelationNo == null ? null : tradeRelationNo.trim();
+    }
+
+    public String getTradeOrderDetailId() {
+        return tradeOrderDetailId;
+    }
+
+    public void setTradeOrderDetailId(String tradeOrderDetailId) {
+        this.tradeOrderDetailId = tradeOrderDetailId == null ? null : tradeOrderDetailId.trim();
     }
 
     public Integer getTradeLineNo() {
@@ -216,6 +256,22 @@ public class BusInvLotDetails {
 
     public void setQty(BigDecimal qty) {
         this.qty = qty;
+    }
+
+    public BigDecimal getLockQty() {
+        return lockQty;
+    }
+
+    public void setLockQty(BigDecimal lockQty) {
+        this.lockQty = lockQty;
+    }
+
+    public BigDecimal getDamagedQty() {
+        return damagedQty;
+    }
+
+    public void setDamagedQty(BigDecimal damagedQty) {
+        this.damagedQty = damagedQty;
     }
 
     public String getMemo() {
