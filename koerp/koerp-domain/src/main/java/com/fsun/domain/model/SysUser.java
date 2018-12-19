@@ -231,4 +231,5 @@ public class SysUser {
 	public void setShopId(String shopId) {
 		this.shopId = shopId;
 	}
+
 }

@@ -129,4 +129,21 @@ public class BusInvSku {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+	public BusInvSku() {
+		super();
+	}
+
+	public BusInvSku(String sku, String shopId, BigDecimal qty, 
+		BigDecimal lockQty, BigDecimal damagedQty) {
+		super();
+		this.sku = sku;
+		this.shopId = shopId;
+		this.qty = qty;
+		this.lockQty = lockQty;
+		this.damagedQty = damagedQty;
+	}
+    
+    
+    
 }

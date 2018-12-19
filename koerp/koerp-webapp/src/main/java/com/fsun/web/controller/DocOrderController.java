@@ -101,7 +101,7 @@ public class DocOrderController extends BaseController {
 			return failure(SCMErrorEnum.INVALID_PARAMS);
 		}catch(DocOrderException e){
 			e.printStackTrace();
-			return failure(SCMException.CODE_SAVE, e.getMessage());
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
 		}catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -130,7 +130,7 @@ public class DocOrderController extends BaseController {
 			return success(orderNo);
 		} catch(DocOrderException e){
 			e.printStackTrace();
-			return failure(SCMException.CODE_SAVE, e.getMessage());
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);

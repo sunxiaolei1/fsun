@@ -26,6 +26,7 @@ public enum SCMErrorEnum {
 	//单据异常信息-20
 	BUS_ORDER_NOT_EXIST(2001, "单据不存在"),
 	BUS_ORDER_DETAIL_NOT_EXIST(2002, "单据商品不存在"),
+	BUS_ORDER_EXISTED(2003, "单据已存在"),
 	BUS_ORDER_STATUS_ILLEGAL(2007, "订单处理中，不能重审，请稍后再试!"),
 	BUS_ORDER_STATUS_INVALID(2008, "单据状态不可用"),
 	

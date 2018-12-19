@@ -227,7 +227,7 @@
 		o.address as o_address,
 		o.mobile as o_mobile,
 		o.supplier_id as o_supplier_id,
-		o.supplier_name as o_supplier_name
+		o.supplier_name as o_supplier_name,
 		o.supplier_address as o_supplier_address,
 		o.supplier_contact as o_supplier_contact,
 		o.supplier_tel as o_supplier_tel,
@@ -257,7 +257,7 @@
 		d.order_qty as d_order_qty,
 		d.expected_qty as d_expected_qty,
 		d.damaged_qty as d_damaged_qty,
-		d_expected_time as d_expected_time,
+		d.expected_time as d_expected_time,
 		d.rejected_qty as d_rejected_qty,
 		d.rejected_time as d_rejected_time,
 		d.unit as d_unit,
@@ -265,7 +265,7 @@
 		d.convert_unit as d_convert_unit,
 		d.total_price as d_total_price,
 		d.cost_price as d_cost_price,
-		d_lot_num as d_lot_num,
+		d.lot_num as d_lot_num,
 		d.price as d_price,
 		d.goods_type as d_goods_type,
 		d.volume as d_volume,
@@ -278,6 +278,13 @@
     where o.asn_no = #{asnNo,jdbcType=VARCHAR}
   </select>
   
+   <select id="getMaxAsnNo" resultType="java.lang.String" parameterType="java.lang.String" >    
+	select 
+		asn_no 
+	from doc_asn_header 
+	where asn_no like concat(#{asnNo},'%')
+	order by asn_no desc 
+  </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 

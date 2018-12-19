@@ -4,17 +4,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fsun.api.bus.BusInvSkuApi;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
-import com.fsun.domain.dto.InvSkuDto;
 import com.fsun.domain.entity.BusInvSkuCondition;
+import com.fsun.domain.entity.BusInvSkuDetailsCondition;
 import com.fsun.domain.model.BusInvSku;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
@@ -36,19 +36,26 @@ public class BusInvSkuController extends BaseController {
 	}
 	
 	@RequestMapping("/toDetailView")
-	public ModelAndView toDetailView(String sku) {		
-		ModelAndView modelAndView = new ModelAndView("/busInvSku/detail");
+	public ModelAndView toDetailView(@RequestParam("sku") String sku,
+		@RequestParam("shopId") String shopId) {		
+		ModelAndView modelAndView = new ModelAndView("/busInvSku/operate/detail");
 		modelAndView.addObject("sku", sku);
+		modelAndView.addObject("shopId", shopId);
 		return modelAndView;
 	}
 	
 
-	@RequestMapping(value="/{sku}", method = RequestMethod.GET)
+	/**
+	 * 通过sku和门店id获取商品库存明细
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/findDetailsPage", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public HttpResult loadEntity(@PathVariable("sku") String sku) {
+	public HttpResult findDetailsPage(BusInvSkuDetailsCondition condition) {
 		try {
-			InvSkuDto invSkuDto = busInvSkuApi.loadEntity(sku);
-			return success(invSkuDto);
+			PageModel pageModel = busInvSkuApi.findDetailsPage(condition);
+			return success(pageModel);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);

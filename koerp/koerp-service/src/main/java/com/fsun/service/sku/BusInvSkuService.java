@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fsun.api.bus.BusInvSkuApi;
+import com.fsun.biz.bus.manage.BusInvSkuDetailsManage;
 import com.fsun.biz.bus.manage.BusInvSkuManage;
 import com.fsun.domain.common.PageModel;
-import com.fsun.domain.dto.InvSkuDto;
 import com.fsun.domain.entity.BusInvSkuCondition;
+import com.fsun.domain.entity.BusInvSkuDetailsCondition;
 import com.fsun.domain.model.BusInvSku;
 import com.fsun.domain.model.SysUser;
 
@@ -22,6 +23,9 @@ public class BusInvSkuService implements BusInvSkuApi {
 	
 	@Autowired
 	private BusInvSkuManage busInvSkuManage;
+	
+	@Autowired
+	private BusInvSkuDetailsManage busInvSkuDetailsManage; 
 	
 	@Override
 	public boolean unique(String sku) {
@@ -57,14 +61,14 @@ public class BusInvSkuService implements BusInvSkuApi {
 		return 0;
 	}
 
-	@Override
-	public InvSkuDto loadEntity(String id) {
-		return busInvSkuManage.loadEntity(id);
-	}
 
 	@Override
 	public PageModel findListForPage(BusInvSkuCondition condition) {
 		return busInvSkuManage.findPage(condition);
 	}
 
+	@Override
+	public PageModel findDetailsPage(BusInvSkuDetailsCondition condition) {
+		return busInvSkuDetailsManage.findMapPage(condition);
+	}
 }

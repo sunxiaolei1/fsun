@@ -29,12 +29,47 @@
     trade_line_no, trade_time, is_pull, shop_id, shop_name, sku, goods_name, lot_num, 
     unit, qty, lock_qty, damaged_qty, memo, created_time, updated_time
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="tradeType != null and tradeType != ''">
+  			and trade_type = #{tradeType}
+  		</if>
+  		
+  		<if test="tradeStatus != null and tradeStatus != ''">
+  			and trade_status = #{tradeStatus}
+  		</if>
+  		
+  		<if test="tradeOrderNo != null and tradeOrderNo != ''">
+  			and trade_order_no like concat(concat('%',#{tradeOrderNo}),'%')
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and sku = #{sku}
+  		</if>
+  		
+  		<if test="shopId != null and shopId != ''">
+  			and shop_id = #{shopId}
+  		</if>		
+	</where>
+  </sql>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusInvSkuDetailsCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_inv_sku_details
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from bus_inv_sku_details
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from bus_inv_sku_details
     where id = #{id,jdbcType=VARCHAR}

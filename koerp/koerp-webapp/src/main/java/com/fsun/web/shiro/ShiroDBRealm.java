@@ -15,11 +15,15 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fsun.api.bus.BusShopApi;
 import com.fsun.api.user.SysUserApi;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.SysUserCondition;
+import com.fsun.domain.model.BusShop;
 import com.fsun.domain.model.SysRole;
 import com.fsun.domain.model.SysUser;
 
@@ -28,6 +32,9 @@ public class ShiroDBRealm extends AuthorizingRealm {
 
 	@Autowired
 	private SysUserApi userApi;
+	
+	@Autowired
+	private BusShopApi shopApi;
 
 	public static final String SESSION_USER_KEY = "user";
 
@@ -88,7 +95,17 @@ public class ShiroDBRealm extends AuthorizingRealm {
 			if (list != null && list.size() == 1) {
 				SysUser user = list.get(0);
 				if (user != null) {
-					this.setSession(SESSION_USER_KEY, user);
+					BusUserDto currUser = new BusUserDto();
+					BeanUtils.copyProperties(user, currUser);
+					
+					String shopId = user.getShopId();
+					if(shopId!=null && !"".equals(shopId)){
+						BusShop currShop = shopApi.load(shopId);
+						currUser.setShopCode(currShop.getShopCode());
+						currUser.setShopName(currShop.getShopName());
+					}
+					currUser.setPassword(null);
+					this.setSession(SESSION_USER_KEY, currUser);
 					return new SimpleAuthenticationInfo(user.getUsername(),
 							user.getPassword(), getName());
 				}

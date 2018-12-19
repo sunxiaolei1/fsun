@@ -19,9 +19,11 @@ function toDetailView(){
 	if (rows.length != 1) {
 		$.messager.alert("提示","只能选择一行数据！");
 		return;
-	}
-	commonDialog("ordersDialog", "店仓("+ rows[0].shop_name +")对应的商品("+ rows[0].goods_name +")明细", "75%", "85%", 
-		"${api}/bus/invSku/toDetailView?id="+ rows[0].id, "icon-edit");
+	}	
+	var url = "${api}/bus/invSku/toDetailView?sku="+ rows[0].sku+"&shopId="+ rows[0].shop_id;
+	var icon = "icon-edit";
+	var subtitle = rows[0].shop_name +"("+ rows[0].goods_name +")";
+	parent.addTab(subtitle, url, icon);	
 }
 
 

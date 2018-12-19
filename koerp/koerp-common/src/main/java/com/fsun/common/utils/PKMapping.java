@@ -19,9 +19,8 @@ public class PKMapping {
   public static int bus_bas_sku = 1003;
   public static int bus_customer = 1004;
   public static int bus_goods = 1005;
-  public static int bus_inv_lot = 1006;
-  public static int bus_inv_lot_details = 1007;
-  public static int bus_inv_sku = 1008;
+  public static int bus_inv_sku = 1006;
+  public static int bus_inv_sku_details = 1007;
   public static int bus_order = 1009;
   public static int bus_pay_account = 1010;
   public static int bus_rul_price = 1011;

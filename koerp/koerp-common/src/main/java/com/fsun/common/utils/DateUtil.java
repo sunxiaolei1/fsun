@@ -134,6 +134,15 @@ public class DateUtil {
 	public static Date getNowDate() {
 		return DateUtil.getDateFormat(dateFormat.format(new Date()));
 	}
+	
+	/**
+	 * 获取当前日期(yyyy-MM-dd)
+	 * @param date
+	 * @return
+	 */
+	public static String getNowDateStr() {
+		return dateFormat.format(new Date());
+	}
 
 	/**
 	 * 获取当前日期星期一日期

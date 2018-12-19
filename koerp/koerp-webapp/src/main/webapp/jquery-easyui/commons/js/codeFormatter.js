@@ -41,16 +41,16 @@ var tradeStatus = {};
 var orderType = {};
 var payMode = {};
 var tradeFrom = {};
-var tradeType = {}
-var docAsnStatus = {}
-var docAsnType = {}
-var docOrderMode = {}
-var docOrderStatus = {}
-var docOrderType = {}
-var docPoStatus = {}
-var docPoType = {}
-var docTradeStatus = {}
-var docTradeType = {}
+var tradeType = {};
+var docAsnStatus = {};
+var docAsnType = {};
+var docOrderMode = {};
+var docOrderStatus = {};
+var docOrderType = {};
+var docPoStatus = {};
+var docPoType = {};
+var docTradeStatus = {};
+var docTradeType = {};
 
 $(function () {
 	synchronizeData();	

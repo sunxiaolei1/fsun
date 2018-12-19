@@ -54,7 +54,7 @@ public class BusUserController extends BaseController {
 			if (!StringUtils.isEmpty(ids)) {
 				SysUser user = getCurrentUser();	
 				userApi.assignShop(ids.split(","), shopId, user);
-				return success(SCMErrorEnum.SUCCESS.getErrorCode());
+				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
 		} catch (Exception e) {

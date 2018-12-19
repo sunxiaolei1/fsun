@@ -8,7 +8,7 @@
 		<%@include file="./searchbar.jsp"%>
 		
 		<!-- table -->
-		<div id="gridDiv" data-options="region:'center'" style="height: 89%;">
+		<div id="gridDiv" data-options="region:'center'" style="height: 84%;">
 			<table id="ordersDataGrid"> 
 			</table>
 		</div>
@@ -23,28 +23,33 @@
 <script type="text/javascript">
 
 var frozenColumns = [[
-	{field:'id',checkbox:true},
-	{field:'sku',title:'SKU',width:80,align:'center',sortable:true},	
-	{field:'goods_name',title:'商品名称',width:140,align:'center',sortable:true},
-	{field:'ship_id',title:'所属店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
-		return row.shop_name; 
-	}},   
-	{field:'qty',title:'可用数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},	
-	{field:'lock_qty',title:'冻结数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},	
-	{field:'damaged_qty',title:'破损数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true}	
+	{field:'ck',checkbox:true},
+	{field:'asn_no',title:'单据编号',width:140,align:'center',sortable:true},	
+	{field:'asn_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.docAsnType); 
+	}},
+	{field:'asn_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.docAsnStatus); 
+	}}
 ]];
 
-var columns = [[			
-	{field:'bar_code',title:'条形码',width:120,align:'center',sortable:true},	
-	{field:'brand_code',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.brandCode); 
+var columns = [[	
+	{field:'receiving_time',title:'单据时间',width:130,align:'center',sortable:true},
+	{field:'from_shop_id',title:'出库店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
+		return row.from_shop_name; 
 	}},
-	{field:'category_code',title:'商品分类',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.categoryCode); 
-	}},	
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
-	{field:'unit_name',title:'单位',width:60,align:'center',sortable:true},							
-	{field:'memo',title:'备注',width:150,align:'center',sortable:true}		
+	{field:'to_shop_id',title:'入库店仓',width:120,align:'center',sortable:true, formatter:function(value, row){
+		return row.to_shop_name; 
+	}}, 
+	{field:'delivery_time',title:'出库时间',width:130,align:'center',sortable:true},
+	{field:'expected_time',title:'预期入库时间',width:130,align:'center',sortable:true},	
+	{field:'supplier_name',title:'供应商名称',width:100,align:'center',sortable:true},	
+	{field:'created_name',title:'制单人',width:80,align:'center',sortable:true},
+	{field:'memo',title:'备注',width:150,align:'center',sortable:true},	
+	{field:'ext_order_no',title:'外部订单号',width:120,align:'center',sortable:true},
+	{field:'po_no',title:'申请单号',width:120,align:'center',sortable:true},
+	{field:'order_no',title:'出库单号',width:120,align:'center',sortable:true}
+		
 ]];
 
 var currDataGrid;
@@ -62,7 +67,7 @@ $(function() {
 	    fit:true,//自动大小
 	    queryParams:{},
 	    remoteSort:true,
-	    sortName:"sku",
+	    sortName:"asn_no",
         sortOrder:"desc",
 	    //idField:"blackid",
 	    singleSelect:true,//是否单选

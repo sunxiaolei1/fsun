@@ -2,6 +2,34 @@
 
 /*******************************    EC订单操作实现        **********************************/
 
+$.extend($.fn.validatebox.defaults.rules, {
+ 	startDate: {// 验证
+    	validator: function (value) {
+ 			var endDate =  $('#endDate').datebox('getValue');
+ 			if(endDate!=null && endDate!=''){
+				if(value > endDate){
+					return false;
+				}
+     		}
+     		return true;
+     	},
+     	message: '开始日期不能晚于结束日期'
+ 	},
+ 	endDate: {// 验证
+    	validator: function (value) {
+     		var startDate =  $('#startDate').datebox('getValue');
+ 			if(startDate!=null && startDate!=''){
+				if(value < startDate){
+					return false;
+				}
+     		}
+     		return true;
+     	},
+     	message: '结束日期不能早于开始日期'
+		}
+});
+
+
 /**
  * 隐藏查询条件
  * queryDiv 查询条件DIV对象ID

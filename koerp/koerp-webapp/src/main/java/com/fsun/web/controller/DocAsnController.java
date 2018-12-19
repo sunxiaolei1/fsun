@@ -17,6 +17,7 @@ import com.fsun.api.bus.DocAsnApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocAsnDto;
 import com.fsun.domain.entity.DocAsnHeaderCondition;
 import com.fsun.domain.model.DocAsnHeader;
@@ -39,15 +40,36 @@ public class DocAsnController extends BaseController {
 
 	@RequestMapping("/index")
 	public String index() {
-		return "/basSku/index";
+		return "/docAsn/index";
 	}
+	
+	@RequestMapping("/toAddOverSIView")
+	public String toAddOverSIView() {
+		return "/docAsn/operate/toAddOverSIView";
+	}
+	
 	
 	@RequestMapping("/toDetailView")
 	public ModelAndView toDetailView(String asnNo) {		
-		ModelAndView modelAndView = new ModelAndView("/basSku/detail");
+		ModelAndView modelAndView = new ModelAndView("/docAsn/operate/toEditOverSIView");
 		modelAndView.addObject("asnNo", asnNo);
 		return modelAndView;
 	}	
+	
+	
+	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getInitData(@RequestParam("asnNo") String asnNo, 
+			@RequestParam("asnType") String asnType){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = docAsnApi.getInitData(asnNo, asnType, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 	
 	@RequestMapping(value="/findPage", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
@@ -89,17 +111,17 @@ public class DocAsnController extends BaseController {
 	@RequestMapping(value="/status/{status}", method = {RequestMethod.POST})
 	@ResponseBody
 	public HttpResult changeStatus(@PathVariable("status") String status, 
-		@RequestParam("asnNos") String asnNos) {
+		@RequestParam("asnNos") String asnNos, @RequestBody DocAsnHeaderCondition condition) {
 		try {
 			if (!StringUtils.isEmpty(asnNos)) {
 				SysUser user = getCurrentUser();	
-				docAsnApi.changeStatus(asnNos.split(","), status, user);
-				return success(SCMErrorEnum.SUCCESS.getErrorCode());
+				docAsnApi.changeStatus(asnNos.split(","), status, user, condition);
+				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
 		} catch(DocAsnException e){
 			e.printStackTrace();
-			return failure(SCMException.CODE_SAVE, e.getMessage());
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -123,12 +145,12 @@ public class DocAsnController extends BaseController {
 	@ResponseBody
 	public HttpResult saveEntity(@RequestBody DocAsnDto docAsnDto) {
 		try {
-			SysUser user = getCurrentUser();			
-			String asnNo = docAsnApi.saveEntity(docAsnDto, user);
+			docAsnDto.setCurrentUser(getCurrentUser());
+			String asnNo = docAsnApi.saveEntity(docAsnDto);
 			return success(asnNo);
 		} catch(DocAsnException e){
 			e.printStackTrace();
-			return failure(SCMException.CODE_SAVE, e.getMessage());
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);

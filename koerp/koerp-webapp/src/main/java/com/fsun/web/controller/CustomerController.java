@@ -112,7 +112,7 @@ public class CustomerController extends BaseController {
 			return success();
 		} catch(CustomerException e){
 			e.printStackTrace();
-			return failure(SCMException.CODE_SAVE, e.getMessage());
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -127,7 +127,7 @@ public class CustomerController extends BaseController {
 			if (!StringUtils.isEmpty(ids)) {
 				SysUser user = getCurrentUser();	
 				customerApi.changeStatus(ids.split(","), enabled, user);
-				return success(SCMErrorEnum.SUCCESS.getErrorCode());
+				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
 		} catch (Exception e) {

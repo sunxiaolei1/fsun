@@ -50,6 +50,29 @@
     price, user_define1, user_define2, user_define3, goods_type, volume, rate_precent, 
     memo, created_time, updated_time
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="asnNo != null and asnNo != ''">
+  			and asn_no = #{asnNo}
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and sku = #{sku}
+  		</if>
+  				
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.DocAsnDetailsCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM doc_asn_details
+    	<include refid="conditions" />
+  </select>
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

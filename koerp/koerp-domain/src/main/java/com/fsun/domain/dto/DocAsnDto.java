@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
-import com.fsun.domain.model.SysUser;
 
 /**
  * @author fsun
@@ -18,7 +17,7 @@ public class DocAsnDto {
 	
 	private List<DocAsnDetails> details;
 	
-	private SysUser currentUser;
+	private BusUserDto currentUser;
 
 	public DocAsnHeader getHeader() {
 		return header;
@@ -39,14 +38,14 @@ public class DocAsnDto {
 	/**
 	 * @return the currentUser
 	 */
-	public SysUser getCurrentUser() {
+	public BusUserDto getCurrentUser() {
 		return currentUser;
 	}
 
 	/**
 	 * @param currentUser the currentUser to set
 	 */
-	public void setCurrentUser(SysUser currentUser) {
+	public void setCurrentUser(BusUserDto currentUser) {
 		this.currentUser = currentUser;
 	}
 
