@@ -803,21 +803,22 @@ CREATE TABLE `doc_order_header` (
   `order_no` varchar(32) NOT NULL COMMENT '订单号',
   `order_type` char(3) DEFAULT NULL COMMENT '单据类型',
   `order_status` char(3) NOT NULL COMMENT '单据状态',
-  `order_mode` char(3) DEFAULT NULL COMMENT '领用方式',
+  `order_mode` char(3) DEFAULT NULL COMMENT '领用方式(10 样品 20 品鉴 30 试饮 40 赠送 50 礼品 60 其他)',
   `order_source` char(10) DEFAULT NULL COMMENT '单据来源',
+  `po_no` varchar(32) DEFAULT NULL,
   `route_id` varchar(32) DEFAULT NULL COMMENT '发运路线id',
-  `order_time` datetime NOT NULL COMMENT '订单创建时间',
+  `order_time` datetime DEFAULT NULL COMMENT '订单创建时间',
   `order_price` decimal(18,2) DEFAULT '0.00' COMMENT '订单总金额',
   `to_shop_id` varchar(32) DEFAULT NULL COMMENT '收货店仓id',
   `to_shop_name` varchar(64) DEFAULT NULL COMMENT '收货店仓名称',
   `from_shop_id` varchar(32) DEFAULT NULL COMMENT '发货店仓id',
   `from_shop_name` varchar(64) DEFAULT NULL COMMENT '发货店仓名称',
-  `expected_time` datetime NOT NULL COMMENT '预期发货时间',
+  `expected_time` datetime DEFAULT NULL COMMENT '预期发货时间',
   `user_define1` varchar(64) DEFAULT NULL COMMENT '用户自定义1',
   `user_define2` varchar(64) DEFAULT NULL COMMENT '用户自定义2',
   `user_define3` varchar(64) DEFAULT NULL COMMENT '用户自定义3',
-  `release_status` char(2) NOT NULL COMMENT '释放状态',
-  `priority` char(2) NOT NULL COMMENT '订单优先级别',
+  `release_status` char(2) DEFAULT NULL COMMENT '释放状态',
+  `priority` char(2) DEFAULT NULL COMMENT '订单优先级别',
   `carrier_id` varchar(32) DEFAULT NULL COMMENT '承运人id',
   `carrier_name` varchar(32) DEFAULT NULL COMMENT '承运人姓名',
   `place_discharge` varchar(32) DEFAULT NULL COMMENT '卸货地',
@@ -834,6 +835,7 @@ CREATE TABLE `doc_order_header` (
   `i_address` varchar(128) DEFAULT NULL COMMENT '下单人地址',
   `i_zip_code` varchar(32) DEFAULT NULL COMMENT '下单人邮编',
   `i_contact` varchar(32) DEFAULT NULL COMMENT '下单人联系人',
+  `i_name` varchar(32) DEFAULT NULL,
   `i_tel` varchar(32) DEFAULT NULL COMMENT '下单人电话',
   `supplier_id` varchar(32) DEFAULT NULL COMMENT '供应商id',
   `supplier_name` varchar(32) DEFAULT NULL COMMENT '供应商名称',
@@ -844,18 +846,15 @@ CREATE TABLE `doc_order_header` (
   `address` varchar(512) DEFAULT NULL COMMENT '收货人街道(地址)',
   `volume` decimal(18,2) DEFAULT NULL COMMENT '体积',
   `delivery_time` datetime DEFAULT NULL COMMENT '发货时间',
-  `created_name` varchar(32) NOT NULL COMMENT '创建人',
-  `created_time` datetime NOT NULL COMMENT '创建时间',
-  `updated_name` varchar(32) NOT NULL COMMENT '更新人',
+  `created_name` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `updated_name` varchar(32) DEFAULT NULL COMMENT '更新人',
   `place_loading` varchar(32) DEFAULT NULL COMMENT '装货地',
-  `updated_time` datetime NOT NULL COMMENT '更新时间',
+  `updated_time` datetime DEFAULT NULL COMMENT '更新时间',
   `route` varchar(512) DEFAULT NULL COMMENT '路径',
   PRIMARY KEY (`order_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发货订单';
 
--- ----------------------------
--- Records of doc_order_header
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for doc_po_details

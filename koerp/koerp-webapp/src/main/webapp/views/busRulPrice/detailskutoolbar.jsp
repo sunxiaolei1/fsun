@@ -59,7 +59,8 @@ function defindInitNewSku(checkedSku){
  */
 function addSkuRow() {
 	
-	if(!endRowEditing(currOrderDetailDataGrid)){
+	var isValid0 = currOrderDetailDataGrid.datagrid("isValid");	
+	if(!isValid0){
 		$.messager.alert({title: '消息', msg: '数据验证未通过!'});
 		return;
 	}

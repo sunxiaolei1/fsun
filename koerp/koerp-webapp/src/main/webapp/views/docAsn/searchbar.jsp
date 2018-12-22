@@ -15,11 +15,11 @@
 					<td>
 						<input id="asnStatusCombo" name="asnStatus"  class="easyui-combobox" />
 					</td>
-					<td  width="6%">发货店仓:</td>
+					<td  width="6%">出库店仓:</td>
 					<td>
 						<input id="fromShopCombo" name="fromShopId"  class="easyui-combogrid" style="width:200px"/>
 					</td>					
-					<td  width="6%">收货店仓:</td>
+					<td  width="6%">入库店仓:</td>
 					<td>
 						<input id="toShopCombo" name="toShopId"  class="easyui-combogrid" style="width:200px"/>
 					</td>																			

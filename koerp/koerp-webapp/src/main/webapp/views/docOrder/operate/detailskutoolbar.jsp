@@ -37,7 +37,7 @@ function addSkuRow() {
 		$.messager.alert({title: '消息', msg: '数据验证未通过!'});
 		return;
 	}
-	
+		
 	var toShopId = $("#toShopId").val();
 	
     $("<div></div>").dialog({

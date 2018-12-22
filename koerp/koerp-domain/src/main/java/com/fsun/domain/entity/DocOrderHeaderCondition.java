@@ -25,9 +25,27 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
 
     /**
      * 单据状态
-     * 表字段 : doc_order_header.so_status
+     * 表字段 : doc_order_header.order_status
      */
-    private String soStatus;
+    private String orderStatus;
+
+    /**
+     * 领用方式(10 样品 20 品鉴 30 试饮 40 赠送 50 礼品 60 其他)
+     * 表字段 : doc_order_header.order_mode
+     */
+    private String orderMode;
+
+    /**
+     * 单据来源
+     * 表字段 : doc_order_header.order_source
+     */
+    private String orderSource;
+
+    /**
+     * 申请单号
+     * 表字段 : doc_order_header.po_no
+     */
+    private String poNo;
 
     /**
      * 发运路线id
@@ -72,7 +90,7 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
     private String fromShopName;
 
     /**
-     * 预期发货时间
+     * 预期收货时间
      * 表字段 : doc_order_header.expected_time
      */
     private Date expectedTime;
@@ -204,6 +222,12 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
     private String iContact;
 
     /**
+     * 
+     * 表字段 : doc_order_header.i_name
+     */
+    private String iName;
+
+    /**
      * 下单人电话
      * 表字段 : doc_order_header.i_tel
      */
@@ -315,12 +339,36 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
         this.orderType = orderType == null ? null : orderType.trim();
     }
 
-    public String getSoStatus() {
-        return soStatus;
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setSoStatus(String soStatus) {
-        this.soStatus = soStatus == null ? null : soStatus.trim();
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus == null ? null : orderStatus.trim();
+    }
+
+    public String getOrderMode() {
+        return orderMode;
+    }
+
+    public void setOrderMode(String orderMode) {
+        this.orderMode = orderMode == null ? null : orderMode.trim();
+    }
+
+    public String getOrderSource() {
+        return orderSource;
+    }
+
+    public void setOrderSource(String orderSource) {
+        this.orderSource = orderSource == null ? null : orderSource.trim();
+    }
+
+    public String getPoNo() {
+        return poNo;
+    }
+
+    public void setPoNo(String poNo) {
+        this.poNo = poNo == null ? null : poNo.trim();
     }
 
     public String getRouteId() {
@@ -553,6 +601,14 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
 
     public void setiContact(String iContact) {
         this.iContact = iContact == null ? null : iContact.trim();
+    }
+
+    public String getiName() {
+        return iName;
+    }
+
+    public void setiName(String iName) {
+        this.iName = iName == null ? null : iName.trim();
     }
 
     public String getiTel() {

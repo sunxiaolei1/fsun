@@ -17,21 +17,6 @@
 
 <script type="text/javascript">
 
-var shopColumns = 
-	   [[
-		{field:'shopId',checkbox:true},
-		{field:'shopCode',title:'店仓编码',width:80,align:'center',sortable:true},	
-		{field:'shopName',title:'店仓名称',width:120,align:'center',sortable:true},
-		{field:'address',title:'地址',width:180,align:'center',sortable:true},		
-		{field:'contacts',title:'联系人',width:80,align:'center',sortable:true},
-		{field:'tel',title:'联系方式',width:120,align:'center',sortable:true},						
-		{field:"enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
-			return formatter(value, window.parent.isEnable); 
-		}},		
-		{field:'memo',title:'备注',width:160,align:'center',sortable:true}
-	]];
-
-
 $(function() {
 	
 	initFromShopComboGrid();
@@ -63,7 +48,13 @@ function initFromShopComboGrid() {
         toolbar:'#fromShopComboToolbar', 
         pageSize: GLOBAL_PAGE_SIZE,
         pageList: GLOBAL_PAGE_SIZE_LIST,
-        columns: shopColumns,
+        columns: [[
+          	{field:'shop_id',checkbox:true},
+       		{field:'shop_code',title:'店仓编码',width:80,align:'center',sortable:true},	
+       		{field:'shop_name',title:'店仓名称',width:120,align:'center',sortable:true},	
+       		{field:'contacts',title:'联系人',width:80,align:'center',sortable:true},
+       		{field:'tel',title:'联系方式',width:120,align:'center',sortable:true}
+       	]],
         loadMsg: "数据加载中请稍后……",
         emptyMsg: "没有符合条件的记录",
         onShowPanel: function () {
@@ -111,7 +102,13 @@ function initToShopComboGrid() {
         toolbar:'#toShopComboToolbar', 
         pageSize: GLOBAL_PAGE_SIZE,
         pageList: GLOBAL_PAGE_SIZE_LIST,
-        columns: shopColumns,
+        columns: [[
+          	{field:'shop_id',checkbox:true},
+       		{field:'shop_code',title:'店仓编码',width:80,align:'center',sortable:true},	
+       		{field:'shop_name',title:'店仓名称',width:120,align:'center',sortable:true},	
+       		{field:'contacts',title:'联系人',width:80,align:'center',sortable:true},
+       		{field:'tel',title:'联系方式',width:120,align:'center',sortable:true}
+       	]],
         loadMsg: "数据加载中请稍后……",
         emptyMsg: "没有符合条件的记录",
         onShowPanel: function () {

@@ -17,8 +17,12 @@ import com.fsun.api.bus.DocOrderApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
+import com.fsun.domain.enums.DocOrderStatusEnum;
+import com.fsun.domain.enums.DocOrderTypeEnum;
+import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocOrderException;
@@ -42,11 +46,36 @@ public class DocOrderController extends BaseController {
 		return "/docOrder/index";
 	}
 	
-	@RequestMapping("/toDetailView")
-	public ModelAndView toDetailView(String orderNo) {		
-		ModelAndView modelAndView = new ModelAndView("/docOrder/detail");
-		modelAndView.addObject("orderNo", orderNo);
+	@RequestMapping("/toAddView")
+	public ModelAndView toAddView(@RequestParam("orderType") String orderType) {
+		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.ADD.getCode());
+		ModelAndView modelAndView = new ModelAndView(url);		
+		modelAndView.addObject("orderType", orderType);		
 		return modelAndView;
+	}	
+	
+	@RequestMapping("/toDetailView")
+	public ModelAndView toDetailView(@RequestParam("orderNo") String orderNo, 
+			@RequestParam("orderType") String orderType) {				
+		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.EDIT.getCode());
+		ModelAndView modelAndView = new ModelAndView(url);
+		modelAndView.addObject("orderNo", orderNo);
+		modelAndView.addObject("cancelStatus", DocOrderStatusEnum.SO_CKQX.getCode());	
+		return modelAndView;
+	}		
+	
+	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getInitData(@RequestParam("orderNo") String orderNo, 
+			@RequestParam("orderType") String orderType){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = docOrderApi.getInitData(orderNo, orderType, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
 	}
 	
 	
@@ -91,11 +120,11 @@ public class DocOrderController extends BaseController {
 	@RequestMapping(value="/status/{status}", method = {RequestMethod.POST})
 	@ResponseBody
 	public HttpResult changeStatus(@PathVariable("status") String status, 
-		@RequestParam("orderNos") String orderNos) {
+		@RequestParam("orderNos") String orderNos, @RequestBody DocOrderHeaderCondition condition) {
 		try {
 			if (!StringUtils.isEmpty(orderNos)) {
 				SysUser user = getCurrentUser();	
-				docOrderApi.changeStatus(orderNos.split(","), status, user);
+				docOrderApi.changeStatus(orderNos.split(","), status, user, condition);
 				return success(SCMErrorEnum.SUCCESS.getErrorCode());
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
@@ -125,8 +154,8 @@ public class DocOrderController extends BaseController {
 	@ResponseBody
 	public HttpResult saveEntity(@RequestBody DocOrderDto docOrderDto) {
 		try {
-			SysUser user = getCurrentUser();			
-			String orderNo = docOrderApi.saveEntity(docOrderDto, user);
+			docOrderDto.setCurrentUser(getCurrentUser());			
+			String orderNo = docOrderApi.saveEntity(docOrderDto);
 			return success(orderNo);
 		} catch(DocOrderException e){
 			e.printStackTrace();
@@ -136,4 +165,58 @@ public class DocOrderController extends BaseController {
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}		
 	}
+	
+/****************************       私有方法            *************************************/
+	
+	/**
+	 * 通过出库类型和操作类型获取对应的查看地址
+	 * @param orderType
+	 * @param operateType
+	 * @return
+	 */
+	private String getUrlByType(String orderType, String operateType){
+		String url = "";
+		switch (OrderOperateTypeEnum.getByCode(operateType)) {
+			case ADD:	
+				switch (DocOrderTypeEnum.getByName(orderType)) {
+					case ALLOT_SO:				
+						break;		
+					case SHORTAGE_SO:	
+						url = "/docOrder/operate/toAddShortageSoView";
+						break;	
+					case PURCHASE_SO:			
+						break;
+					case LOSE_SO:			
+						break;
+					case USE_SO:			
+						break;
+					default:
+						break;
+				}
+				break;		
+			case EDIT:
+				switch (DocOrderTypeEnum.getByName(orderType)) {
+					case ALLOT_SO:				
+						break;		
+					case SHORTAGE_SO:	
+						url = "/docOrder/operate/toEditShortageSoView";
+						break;	
+					case PURCHASE_SO:			
+						break;
+					case LOSE_SO:			
+						break;
+					case USE_SO:			
+						break;
+					default:
+						break;
+				}
+				break;	
+			case VIEW:			
+				break;
+			default:
+				break;
+		}
+		return url;
+	}
+	
 }

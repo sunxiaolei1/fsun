@@ -217,37 +217,4 @@ function pagerFilter($grid, data, fields, totalcolumn){
     return data;
 }
 
-
-
-/**************************          私有方法                        ******************************/
-
-
-/**
- * 初始化补发单
- */
-function initReissueDetails(currDetail){
-	var reissueDetail = {};
-	reissueDetail.aftersalestatus = currDetail.aftersalestatus;
-	reissueDetail.bandid = currDetail.bandid;
-	reissueDetail.bandname = currDetail.bandname;
-	reissueDetail.categoryid = currDetail.categoryid;
-	reissueDetail.categoryname = currDetail.categoryname;
-	reissueDetail.companycode = currDetail.companycode;
-	reissueDetail.discountprice = currDetail.discountprice;
-	reissueDetail.giftsid = currDetail.giftsid;
-	reissueDetail.isbuy = currDetail.isbuy;
-	reissueDetail.materialcode = currDetail.materialcode;
-	reissueDetail.materialname = currDetail.materialname;
-	reissueDetail.materialproperty = currDetail.materialproperty;
-	reissueDetail.materialweight = currDetail.materialweight;
-	reissueDetail.memo = currDetail.memo;
-	reissueDetail.orderlineid = currDetail.orderlineid;
-	reissueDetail.orderqty = currDetail.orderqty;
-	reissueDetail.payprice = currDetail.payprice;
-	reissueDetail.saleprice = currDetail.saleprice;
-	reissueDetail.sku = currDetail.sku;
-	reissueDetail.totalprice = currDetail.totalprice;	
-	return reissueDetail;
-}
-
 </script>

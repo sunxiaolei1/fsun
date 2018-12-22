@@ -20,6 +20,9 @@ import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocAsnDto;
 import com.fsun.domain.entity.DocAsnHeaderCondition;
+import com.fsun.domain.enums.DocAsnStatusEnum;
+import com.fsun.domain.enums.DocAsnTypeEnum;
+import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocAsnException;
@@ -43,19 +46,25 @@ public class DocAsnController extends BaseController {
 		return "/docAsn/index";
 	}
 	
-	@RequestMapping("/toAddOverSIView")
-	public String toAddOverSIView() {
-		return "/docAsn/operate/toAddOverSIView";
-	}
-	
-	
-	@RequestMapping("/toDetailView")
-	public ModelAndView toDetailView(String asnNo) {		
-		ModelAndView modelAndView = new ModelAndView("/docAsn/operate/toEditOverSIView");
-		modelAndView.addObject("asnNo", asnNo);
+	@RequestMapping("/toAddView")
+	public ModelAndView toAddView(@RequestParam("asnType") String asnType) {
+		String url = this.getUrlByType(asnType, OrderOperateTypeEnum.ADD.getCode());
+		ModelAndView modelAndView = new ModelAndView(url);		
+		modelAndView.addObject("asnType", asnType);		
 		return modelAndView;
 	}	
 	
+	@RequestMapping("/toDetailView")
+	public ModelAndView toDetailView(@RequestParam("asnNo") String asnNo, 
+			@RequestParam("asnType") String asnType) {		
+		
+		String url = this.getUrlByType(asnType, OrderOperateTypeEnum.EDIT.getCode());
+		ModelAndView modelAndView = new ModelAndView(url);
+		modelAndView.addObject("asnNo", asnNo);
+		modelAndView.addObject("asnType", asnType);
+		modelAndView.addObject("cancelStatus", DocAsnStatusEnum.SI_SHQX.getCode());
+		return modelAndView;
+	}		
 	
 	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
 	@ResponseBody
@@ -157,4 +166,62 @@ public class DocAsnController extends BaseController {
 		}		
 	}
 
+	
+	
+	
+	
+	
+	/****************************       私有方法            *************************************/
+	
+	/**
+	 * 通过入库类型和操作类型获取对应的查看地址
+	 * @param asnType
+	 * @param operateType
+	 * @return
+	 */
+	private String getUrlByType(String asnType, String operateType){
+		String url = "";
+		switch (OrderOperateTypeEnum.getByCode(operateType)) {
+			case ADD:	
+				switch (DocAsnTypeEnum.getByName(asnType)) {
+					case ALLOT_SI:				
+						break;		
+					case OVER_SI:	
+						url = "/docAsn/operate/toAddOverSIView";
+						break;	
+					case PURCHASE_SI:			
+						break;
+					case BACK_SI:			
+						break;
+					case SUNDRY_SI:			
+						break;
+					default:
+						break;
+				}
+				break;		
+			case EDIT:
+				switch (DocAsnTypeEnum.getByName(asnType)) {
+					case ALLOT_SI:				
+						break;		
+					case OVER_SI:	
+						url = "/docAsn/operate/toEditOverSIView";
+						break;	
+					case PURCHASE_SI:			
+						break;
+					case BACK_SI:			
+						break;
+					case SUNDRY_SI:			
+						break;
+					default:
+						break;
+				}
+				break;	
+			case VIEW:			
+				break;
+			default:
+				break;
+		}
+		return url;
+	}
+	
 }

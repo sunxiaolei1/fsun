@@ -68,7 +68,8 @@
   	<where>  	
   		<if test="q != null and q != ''">
   			and (a.order_no like concat(concat('%',#{q}),'%')  
-  				or a.asn_no like concat(concat('%',#{q}),'%')  
+  				or a.asn_no like concat(concat('%',#{q}),'%') 
+  				or a.po_no like concat(concat('%',#{q}),'%')  
   				)
   		</if>
   		
@@ -101,10 +102,10 @@
 		</if>
   		
   		<if test="startTime != null">
-			and a.created_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+			and a.receiving_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
 		</if>
 		<if test="endTime != null">
-			and a.created_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+			and a.receiving_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
 		</if>
   		
 	</where>

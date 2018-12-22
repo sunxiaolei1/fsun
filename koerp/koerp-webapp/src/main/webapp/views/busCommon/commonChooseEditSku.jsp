@@ -58,7 +58,7 @@ $(function() {
 	var obj = $('#chooseSkuDialog').dialog('options');		
 	var queryParams = obj["view"];		
 	if(typeof(queryParams) != "undefined") {
-		currCheckedSkus = queryParams.checkedSkus;		
+		currCheckedSkus = queryParams.checkedSkus;	
 	}
 	
 	currDatagrid = $("#skusDatagrid");
@@ -122,12 +122,12 @@ $(function() {
 		]],
 		showFooter: true,
 		loadFilter: function(data){				
-			$.each(data.rows, function(){					
-				this.receiveQty = 1;
+			$.each(data.rows, function(){
+				this.qty = 1;
 				this.selected = false;
 				var seletedSku = getSeletedSku(this.sku, currCheckedSkus);				
 				if(seletedSku!=null){						
-					this.qty = seletedSku.receiveQty;				
+					this.qty = getSkuQty(seletedSku);				
 					this.selected = true;				
 				}	
 			});
@@ -220,16 +220,6 @@ function addSkuOne(rowIndex){
 
 /**********************************    公共方法        ******************************************/
 
-/**
- * 补发商品列表中是否存在该sku对应的商品
- */
-function existSku(skuData, sku){		
-	if(skuData.sku == sku) {		
-		return true;				
-	}
-	return false;
-}
-
 
 /**
  * 获取存在于被补发的商品中的sku
@@ -247,29 +237,6 @@ function getSeletedSku(sku, currCheckedSkus){
 }
 
 
-/**
- * 初始化新增商品
- */
-function initAddSku(rowData){
-	var skuDto = {};		
-	skuDto.goodsName = rowData.goodsName;
-	skuDto.sku = rowData.sku; 
-	skuDto.property = rowData.property;
-	skuDto.receiveQty = 1; 
-	skuDto.damagedQty = 0; 
-	skuDto.rejectedQty = 0; 
-	skuDto.unit = rowData.unit;
-	skuDto.totalPrice = rowData.originSalePrice;
-	skuDto.costPrice = rowData.costPrice;
-	skuDto.price = rowData.originSalePrice;
-	
-	skuDto.barCode = rowData.barCode;  
-	skuDto.categoryCode = rowData.categoryCode;  
-	skuDto.categoryName = formatter(rowData.categoryCode, window.parent.categoryCode); 
-	skuDto.brandCode = rowData.brandCode;
-	skuDto.brandName = formatter(rowData.brandCode, window.parent.brandCode); 
-	skuDto.memo = "";      	
-	return skuDto;
-}
+
 	
 </script>

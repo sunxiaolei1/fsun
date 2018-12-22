@@ -178,6 +178,9 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		}
 	}
 	
+	
+	/************************************        私有方法              ************************************/
+	
 	/**
 	 * 验证入库单单状态是否可用
 	 * @param currAsnStatus
@@ -198,7 +201,8 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 				break;					
 			case SI_SHQX:						
 				if(DocAsnStatusEnum.SI_SHQX.getCode().equals(oldStatus)
-					|| DocAsnStatusEnum.SI_SHQX.getCode().equals(oldStatus)){
+					|| DocAsnStatusEnum.SI_SHQX.getCode().equals(oldStatus)
+					   || DocAsnStatusEnum.SI_SHWC.getCode().equals(oldStatus)){
 					isTrue = false;
 				}
 				break;
@@ -210,9 +214,6 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		return isTrue;
 	}
 	
-	
-	
-	/******************************************        私有方法              ***********************************************/
 	
 	/**
 	 * 初始化入库单头信息

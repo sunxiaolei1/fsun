@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.fsun.api.base.BaseApi;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
 import com.fsun.domain.model.DocOrderHeader;
@@ -15,6 +16,15 @@ import com.fsun.domain.model.SysUser;
  */
 public interface DocOrderApi extends BaseApi<DocOrderHeader, DocOrderHeaderCondition> {
 
+	/**
+	 * 获取编辑界面初始数据
+	 * @param orderNo
+	 * @param orderType
+	 * @param currUser
+	 * @return
+	 */
+	public HashMap<String, Object> getInitData(String orderNo, String orderType, BusUserDto currUser);
+	
 	/***
 	 * 分页查询
 	 * @param condition
@@ -27,8 +37,10 @@ public interface DocOrderApi extends BaseApi<DocOrderHeader, DocOrderHeaderCondi
 	 * @param orderNos
 	 * @param status
 	 * @param user
+	 * @param condition 
 	 */
-	public void changeStatus(String[] orderNos, String status, SysUser user);
+	public void changeStatus(String[] orderNos, String status, 
+		SysUser user, DocOrderHeaderCondition condition);
 
 	/**
 	 * 查询单个出库单实体
@@ -43,6 +55,6 @@ public interface DocOrderApi extends BaseApi<DocOrderHeader, DocOrderHeaderCondi
 	 * @param user
 	 * @return
 	 */
-	public String saveEntity(DocOrderDto docOrderDto, SysUser user);
+	public String saveEntity(DocOrderDto docOrderDto);
 
 }

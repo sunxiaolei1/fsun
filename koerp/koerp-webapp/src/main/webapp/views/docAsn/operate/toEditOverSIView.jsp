@@ -51,16 +51,53 @@
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>
 
+<!-- datagrid操作公共方法 -->
+<%@include file="./baseSIView.jsp"%>
+
 <script type="text/javascript">
 
 var currDetailData = []; 
-var currOrderDetailDataGrid;
-var $orderfm ;
+var currOrderDetailDataGrid  = $("#orderDetailDataGrid");
+var $orderfm = $("#orderfm");
+var siColumns = [[
+	{field:'ck',checkbox:true},
+	{field:"sku",title:"SKU", width:80,align:"center"},
+	{field:"goodsName",title:"商品名称", width:140,align:"center"},
+	{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.brandCode); 
+	}},
+	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
+		return formatter(value, window.parent.categoryCode); 
+	}},
+	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	//{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
+	{field:"price",title:"单价", width:80,align:"center",formatter:numBaseFormat},
+	{field:"receiveQty",title:"数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:intNumBaseFormat,
+		editor:{
+			type:'numberbox',
+			options:{					
+				min:1,
+				precision:0,
+				required: true
+			}
+		}
+	},
+	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
+		return formatter(value, window.parent.unitCode); 
+	}},
+	{field:"stockIn",title:"操作",width:80,align:"center", 
+		formatter: function(value, row, index){						
+			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
+		}
+	}
+]];
 
 $(function () { 
-	
-	$orderfm = $("#orderfm");   		
-	currOrderDetailDataGrid = $("#orderDetailDataGrid");
 	
 	$('#asnType', $orderfm).combobox({  
 		prompt: '请选择...',
@@ -72,80 +109,12 @@ $(function () {
 	//去除默认的请选择项
 	editInitComboxParams($orderfm, "");
 	
-	currOrderDetailDataGrid.datagrid({
-		width:"auto",
-	    height:"auto",
-	    nowrap:false,
-	    striped:true,
-	    border:true,
-	    collapsible:false,//是否可折叠的
-	    fit:true,//自动大小	   
-	    remoteSort:false,
-	    idField:"sku",
-	    sortName:"sku",
-        sortOrder:"asc",	
-        pagination:true,
-        pageNumber:currPageNumber,
-        pageSize: currPageSize,
-	    pageList: GLOBAL_PAGE_SIZE_LIST,
-	    singleSelect:false,//是否单选   
-	    rownumbers:true,//行号
-	    fitColumns:true,
-	    showFooter:true,
-	    toolbar: "#detailskutoolbar",
-	    columns:[[
-			{field:'ck',checkbox:true},
-			{field:"sku",title:"SKU", width:80,align:"center"},
-			{field:"goodsName",title:"商品名称", width:140,align:"center"},
-			{field:"barCode",title:"条形码", width:140,align:"center"},
-			{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
-				return formatter(value, window.parent.brandCode); 
-			}},
-			{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
-				return formatter(value, window.parent.categoryCode); 
-			}},
-			{field:'property',title:'规格',width:120,align:'center',sortable:true},
-			//{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
-			{field:"price",title:"单价", width:80,align:"center",formatter:numBaseFormat},
-			{field:"receiveQty",title:"数量", width:80,align:"center",
-				styler: function(value, rowData, rowIndex){
-			    	return 'font-weight:bold;color:green;';
-			    },
-			    formatter:intNumBaseFormat,
-				editor:{
-					type:'numberbox',
-					options:{					
-						min:1,
-						precision:0,
-						required: true
-					}
-				}
-			},
-			{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
-				return formatter(value, window.parent.unitCode); 
-			}},
-			{field:"stockIn",title:"操作",width:80,align:"center", 
-				formatter: function(value, row, index){						
-					return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
-				}
-			}
-	    ]],
-	    loadFilter:function(data) { 
-	    	//排序拦截器
-    		sortFilter($(this), data);
-    		//分页拦截器
-    		return pagerFilter($(this), data);   
-        },
-	    loadMsg:"数据加载中请稍后……",
-	    emptyMsg:"没有符合条件的记录"
-	});
-	
 	$.ajax({
 		type : "GET",
 		url : "${api}/doc/asn/getInitData",
 		data:{
 			"asnNo": "${asnNo}",
-			"asnType": "22"
+			"asnType": "${asnType}"
 		},
 		contentType:"application/json;charset=utf-8",	   
 		dataType : "json",
@@ -173,68 +142,36 @@ $(function () {
      
 });
 
-/**
- * 删除单个
- */
-function delOne(rowIndex){	
-	var rowData = currOrderDetailDataGrid.datagrid('getRows')[rowIndex];	
-	for(var i in currDetailData) {	
-		if(existSku(currDetailData[i], rowData.sku)) {
-			currDetailData.splice(i,1);	
-			break;
-		}
-	}	
-	currOrderDetailDataGrid.datagrid("deleteRow",rowIndex).datagrid("loadData", currDetailData);
-}
+/******************************    供选择商品的子页面使用      ********************************/
 
-//商品列表刷新
-function skuListReLoad() {
-	currOrderDetailDataGrid.datagrid("loadData", currDetailData);
-}
+
 
 /**
- * 校验并组装保存的数据 
+ * 初始化新增商品
  */
-function getSaveData(){
+function initAddSku(rowData){
+	var skuDto = {};		
+	skuDto.goodsName = rowData.goodsName;
+	skuDto.sku = rowData.sku; 
+	skuDto.property = rowData.property;
+	skuDto.receiveQty = 1; 
+	skuDto.damagedQty = 0; 
+	skuDto.rejectedQty = 0; 
+	skuDto.unit = rowData.unit;
+	skuDto.costPrice = rowData.costPrice;
+	skuDto.price = rowData.originSalePrice;
+	skuDto.totalPrice = rowData.originSalePrice * skuDto.receiveQty;
 	
-	var isValid0 = currOrderDetailDataGrid.datagrid("isValid");		
-	var isValid = $orderfm.form('validate');
-	if (!isValid || !isValid0){
-		$.messager.alert("错误", "提交的数据不正确!", "error");  
-		return null;
-	}			
-	currOrderDetailDataGrid.datagrid("acceptChanges");
-	var baseInfo = formJson($orderfm);
 	
-	var saveData = {
-	     "params": {
-	    	 "asnNos": $("#asnNo",$orderfm).textbox("getValue"),
-			 "header": baseInfo,
-			 "details": currDetailData
-			},
-	     "saveUrl": "${api}/doc/asn/saveEntity?"
-	}
-	return saveData;
+	skuDto.barCode = rowData.barCode;  
+	skuDto.categoryCode = rowData.categoryCode;  
+	skuDto.categoryName = formatter(rowData.categoryCode, window.parent.categoryCode); 
+	skuDto.brandCode = rowData.brandCode;
+	skuDto.brandName = formatter(rowData.brandCode, window.parent.brandCode); 
+	skuDto.memo = "";      	
+	return skuDto;
 }
 
-//获取取消订单的参数
-function getOrderCancelData(){
-	var saveData = {
-	     "params": {
-	    	"memo":  $("#memo",$orderfm).textbox("getValue")
-	      },
-	     "saveUrl": "${api}/doc/asn/status/A90?asnNos="+ $("#asnNo",$orderfm).textbox("getValue")
-	}
-	return saveData;
-	
-}
-
-/**
- * 保存成功后触发
- */
-function afterSaveFunc(){
-	parent.closeCurrTab("reflushDataGrid");
-}
 
 </script>
 

@@ -35,6 +35,12 @@ public class DocOrderHeader {
     private String orderSource;
 
     /**
+     * 申请单号
+     * 表字段 : doc_order_header.po_no
+     */
+    private String poNo;
+
+    /**
      * 发运路线id
      * 表字段 : doc_order_header.route_id
      */
@@ -77,7 +83,7 @@ public class DocOrderHeader {
     private String fromShopName;
 
     /**
-     * 预期发货时间
+     * 预期收货时间
      * 表字段 : doc_order_header.expected_time
      */
     private Date expectedTime;
@@ -207,6 +213,12 @@ public class DocOrderHeader {
      * 表字段 : doc_order_header.i_contact
      */
     private String iContact;
+
+    /**
+     * 
+     * 表字段 : doc_order_header.i_name
+     */
+    private String iName;
 
     /**
      * 下单人电话
@@ -342,6 +354,14 @@ public class DocOrderHeader {
 
     public void setOrderSource(String orderSource) {
         this.orderSource = orderSource == null ? null : orderSource.trim();
+    }
+
+    public String getPoNo() {
+        return poNo;
+    }
+
+    public void setPoNo(String poNo) {
+        this.poNo = poNo == null ? null : poNo.trim();
     }
 
     public String getRouteId() {
@@ -574,6 +594,14 @@ public class DocOrderHeader {
 
     public void setiContact(String iContact) {
         this.iContact = iContact == null ? null : iContact.trim();
+    }
+
+    public String getiName() {
+        return iName;
+    }
+
+    public void setiName(String iName) {
+        this.iName = iName == null ? null : iName.trim();
     }
 
     public String getiTel() {

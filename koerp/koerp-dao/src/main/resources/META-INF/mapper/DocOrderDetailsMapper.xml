@@ -44,6 +44,29 @@
     sub_qty, unit, convert_qty, convert_unit, total_price, cost_price, price, volume, 
     rate_precent, memo, created_time, updated_time
   </sql>
+  
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="orderNo != null and orderNo != ''">
+  			and order_no = #{orderNo}
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and sku = #{sku}
+  		</if>
+  				
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.DocOrderDetailsCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM doc_order_details
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

@@ -5,8 +5,6 @@
 	request.setAttribute("api", basePath);
 %>
 
-<script type="text/javascript" src="${api}/jquery-easyui/jquery.edatagrid.js"></script> 
-
 <style type="text/css">
 
 .fsun-wrap {
@@ -119,7 +117,7 @@ $(function () {
 	currRulId = '${rulId}';
 	currOrderDetailDataGrid = $("#rulSkuDataGrid");
 	
-	currOrderDetailDataGrid.edatagrid({		
+	currOrderDetailDataGrid.datagrid({		
 		width:"auto",
 	    height:"auto",
 	    nowrap:false,

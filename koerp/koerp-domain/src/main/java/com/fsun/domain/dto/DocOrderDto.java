@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.fsun.domain.model.DocOrderDetails;
 import com.fsun.domain.model.DocOrderHeader;
-import com.fsun.domain.model.SysUser;
 
 /**
  * @author fsun
@@ -18,7 +17,7 @@ public class DocOrderDto {
 	
 	private List<DocOrderDetails> details;
 	
-	private SysUser currentUser;
+	private BusUserDto currentUser;
 
 	public DocOrderHeader getHeader() {
 		return header;
@@ -39,14 +38,14 @@ public class DocOrderDto {
 	/**
 	 * @return the currentUser
 	 */
-	public SysUser getCurrentUser() {
+	public BusUserDto getCurrentUser() {
 		return currentUser;
 	}
 
 	/**
 	 * @param currentUser the currentUser to set
 	 */
-	public void setCurrentUser(SysUser currentUser) {
+	public void setCurrentUser(BusUserDto currentUser) {
 		this.currentUser = currentUser;
 	}
 
