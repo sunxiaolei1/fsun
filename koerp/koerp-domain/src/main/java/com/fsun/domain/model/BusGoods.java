@@ -23,10 +23,28 @@ public class BusGoods {
     private Integer lineNo;
 
     /**
-     * 分类id
-     * 表字段 : bus_goods.category_id
+     * 商品类型
+     * 表字段 : bus_goods.goods_type
      */
-    private String categoryId;
+    private Short goodsType;
+
+    /**
+     * 
+     * 表字段 : bus_goods.category_name
+     */
+    private String categoryName;
+
+    /**
+     * 分类id
+     * 表字段 : bus_goods.category_code
+     */
+    private String categoryCode;
+
+    /**
+     * 
+     * 表字段 : bus_goods.brand_name
+     */
+    private String brandName;
 
     /**
      * 品牌编码
@@ -238,12 +256,36 @@ public class BusGoods {
         this.lineNo = lineNo;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public Short getGoodsType() {
+        return goodsType;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId == null ? null : categoryId.trim();
+    public void setGoodsType(Short goodsType) {
+        this.goodsType = goodsType;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName == null ? null : categoryName.trim();
+    }
+
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode == null ? null : categoryCode.trim();
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName == null ? null : brandName.trim();
     }
 
     public String getBrandCode() {

@@ -3,6 +3,7 @@
 <mapper namespace="com.fsun.dao.mapper.DocAsnHeaderMapper" >
   <resultMap id="BaseResultMap" type="com.fsun.domain.model.DocAsnHeader" >
     <id column="asn_no" property="asnNo" jdbcType="VARCHAR" />
+    <result column="print_count" property="printCount" jdbcType="INTEGER" />
     <result column="ext_order_no" property="extOrderNo" jdbcType="VARCHAR" />
     <result column="delivery_time" property="deliveryTime" jdbcType="TIMESTAMP" />
     <result column="check_user_id" property="checkUserId" jdbcType="VARCHAR" />
@@ -54,7 +55,7 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    asn_no, ext_order_no, delivery_time, check_user_id, check_name, check_status, po_no, 
+    asn_no, print_count, ext_order_no, delivery_time, check_user_id, check_name, check_status, po_no, 
     order_no, asn_type, asn_status, asn_source, order_price, to_shop_id, to_shop_name, 
     from_shop_id, from_shop_name, expected_time, volume, memo, carrier_id, carrier_name, 
     place_loading, place_discharge, pay_terms, delivery_terms, descr, vehicle_no, address, 
@@ -129,6 +130,7 @@
   
   <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
     <result column="o_asn_no" property="asnNo"/> 
+    <result column="o_print_count" property="printCount"/>    
     <result column="o_ext_order_no" property="extOrderNo"/>
     <result column="o_delivery_time" property="deliveryTime"/> 
     <result column="o_check_name" property="checkName"/> 
@@ -208,6 +210,7 @@
   <select id="loadEntity" resultMap="DefinedResultMap" parameterType="java.lang.String" >
     select 
     	o.asn_no as o_asn_no,
+    	o.print_count as o_print_count,
 		o.ext_order_no as o_ext_order_no,
 		o.delivery_time as o_delivery_time,
 		o.check_name as o_check_name,
@@ -300,7 +303,7 @@
   </delete>
   
   <insert id="insert" parameterType="com.fsun.domain.model.DocAsnHeader" >
-    insert into doc_asn_header (asn_no, ext_order_no, delivery_time, 
+    insert into doc_asn_header (asn_no, print_count, ext_order_no, delivery_time, 
       check_user_id, check_name, check_status, 
       po_no, order_no, asn_type, 
       asn_status, asn_source, order_price, 
@@ -317,7 +320,8 @@
       i_zip_code, i_contact, i_tel, 
       receiving_time, created_name, created_time, 
       updated_name, updated_time)
-    values (#{asnNo,jdbcType=VARCHAR}, #{extOrderNo,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=TIMESTAMP}, 
+    values (#{asnNo,jdbcType=VARCHAR}, #{printCount,jdbcType=INTEGER}, 
+      #{extOrderNo,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=TIMESTAMP}, 
       #{checkUserId,jdbcType=VARCHAR}, #{checkName,jdbcType=VARCHAR}, #{checkStatus,jdbcType=CHAR}, 
       #{poNo,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{asnType,jdbcType=CHAR}, 
       #{asnStatus,jdbcType=CHAR}, #{asnSource,jdbcType=CHAR}, #{orderPrice,jdbcType=DECIMAL}, 
@@ -340,6 +344,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="asnNo != null" >
         asn_no,
+      </if>
+      <if test="printCount != null">
+      	print_count,
       </if>
       <if test="extOrderNo != null" >
         ext_order_no,
@@ -493,6 +500,9 @@
       <if test="asnNo != null" >
         #{asnNo,jdbcType=VARCHAR},
       </if>
+      <if test="printCount != null" >
+        #{printCount,jdbcType=INTEGER}, 
+      </if>     
       <if test="extOrderNo != null" >
         #{extOrderNo,jdbcType=VARCHAR},
       </if>
@@ -645,6 +655,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.DocAsnHeader" >
     update doc_asn_header
     <set >
+      <if test="printCount != null" >
+        print_count = #{printCount,jdbcType=INTEGER}, 
+      </if> 
       <if test="extOrderNo != null" >
         ext_order_no = #{extOrderNo,jdbcType=VARCHAR},
       </if>
@@ -797,7 +810,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.DocAsnHeader" >
     update doc_asn_header
-    set ext_order_no = #{extOrderNo,jdbcType=VARCHAR},
+    set print_count = #{printCount,jdbcType=INTEGER}, 
+      ext_order_no = #{extOrderNo,jdbcType=VARCHAR},
       delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
       check_user_id = #{checkUserId,jdbcType=VARCHAR},
       check_name = #{checkName,jdbcType=VARCHAR},

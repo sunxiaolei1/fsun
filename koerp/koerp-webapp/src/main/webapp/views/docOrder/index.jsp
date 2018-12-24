@@ -45,6 +45,9 @@ var columns = [[
 	{field:'order_mode',title:'出库事由',width:100,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docOrderMode); 
 	}},
+	{field:'print_count',title:'是否打印',width:80,align:'center',sortable:true, formatter:function(value, row){
+		return (row.print_count>0?"<span style='color:red;'>是</span>":"否"); 
+	}},
 	{field:'created_name',title:'制单人',width:80,align:'center',sortable:true},
 	{field:'memo',title:'备注',width:150,align:'center',sortable:true},	
 	//{field:'created_time',title:'单据时间',width:130,align:'center',sortable:true},

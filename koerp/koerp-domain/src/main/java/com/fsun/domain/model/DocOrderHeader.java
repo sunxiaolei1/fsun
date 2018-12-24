@@ -141,6 +141,12 @@ public class DocOrderHeader {
      * 表字段 : doc_order_header.zip_code
      */
     private String zipCode;
+      
+    /**
+     * 联系人
+     * 表字段 : doc_order_header.contacts
+     */
+    private String contacts;
 
     /**
      * 收货人手机
@@ -731,4 +737,18 @@ public class DocOrderHeader {
     public void setRoute(String route) {
         this.route = route == null ? null : route.trim();
     }
+
+	/**
+	 * @return the contacts
+	 */
+	public String getContacts() {
+		return contacts;
+	}
+
+	/**
+	 * @param contacts the contacts to set
+	 */
+	public void setContacts(String contacts) {
+		this.contacts = contacts;
+	}
 }

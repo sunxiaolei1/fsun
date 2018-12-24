@@ -11,6 +11,8 @@
     <result column="card_type" property="cardType" jdbcType="CHAR" />
     <result column="buyer_id" property="buyerId" jdbcType="VARCHAR" />
     <result column="buyer_name" property="buyerName" jdbcType="VARCHAR" />
+    <result column="carrier_id" property="carrierId" jdbcType="VARCHAR" />
+    <result column="carrier_name" property="carrierName" jdbcType="VARCHAR" />
     <result column="plat_id" property="platId" jdbcType="VARCHAR" />
     <result column="plat_name" property="platName" jdbcType="VARCHAR" />
     <result column="plat_shop_id" property="platShopId" jdbcType="VARCHAR" />
@@ -66,14 +68,7 @@
     <result column="print_count" property="printCount" jdbcType="INTEGER" />
     <result column="cash_id" property="cashId" jdbcType="VARCHAR" />
     <result column="cash_name" property="cashName" jdbcType="VARCHAR" />
-    <result column="logistics_plat" property="logisticsPlat" jdbcType="VARCHAR" />
-    <result column="logistics_type" property="logisticsType" jdbcType="SMALLINT" />
-    <result column="logistics" property="logistics" jdbcType="VARCHAR" />
-    <result column="logistics_phone" property="logisticsPhone" jdbcType="VARCHAR" />
     <result column="settle_time" property="settleTime" jdbcType="TIMESTAMP" />
-    <result column="logistics_time" property="logisticsTime" jdbcType="TIMESTAMP" />
-    <result column="logistics_pick_time" property="logisticsPickTime" jdbcType="TIMESTAMP" />
-    <result column="logistics_receive_time" property="logisticsReceiveTime" jdbcType="TIMESTAMP" />
     <result column="shift" property="shift" jdbcType="SMALLINT" />
     <result column="is_read" property="isRead" jdbcType="SMALLINT" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
@@ -84,16 +79,15 @@
   </resultMap>
   <sql id="Base_Column_List" >
     order_id, order_type, pay_type, sys_order_id, ext_order_id, pos_no, card_type, buyer_id, 
-    buyer_name, plat_id, plat_name, plat_shop_id, shop_id, shop_name, trade_from, trade_status, 
-    order_status, refund_status, refund_time, refund_sponsor, refund_type, refund_reason, 
-    flow_status, is_valid, origin_price, order_price, ship_price, discount_price, to_zero_price, 
-    pay_price, dib_price, recept_price, package_price, point_fee, bonus_price, rate_price, 
-    is_settlemented, receive_name, province_id, province, city_id, city, district_id, 
-    district, address, longitude_address, latitude_address, mobile, zip_code, memo, buyer_notes, 
-    seller_notes, is_invoice, is_trave, invoice_type, invoice_title, invoice_content, 
-    order_time, pay_time, delivery_time, confirm_time, print_count, cash_id, cash_name, 
-    logistics_plat, logistics_type, logistics, logistics_phone, settle_time, logistics_time, 
-    logistics_pick_time, logistics_receive_time, shift, is_read, created_time, updated_time
+    buyer_name, carrier_id, carrier_name, plat_id, plat_name, plat_shop_id, shop_id, 
+    shop_name, trade_from, trade_status, order_status, refund_status, refund_time, refund_sponsor, 
+    refund_type, refund_reason, flow_status, is_valid, origin_price, order_price, ship_price, 
+    discount_price, to_zero_price, pay_price, dib_price, recept_price, package_price, 
+    point_fee, bonus_price, rate_price, is_settlemented, receive_name, province_id, province, 
+    city_id, city, district_id, district, address, longitude_address, latitude_address, 
+    mobile, zip_code, memo, buyer_notes, seller_notes, is_invoice, is_trave, invoice_type, 
+    invoice_title, invoice_content, order_time, pay_time, delivery_time, confirm_time, 
+    print_count, cash_id, cash_name, settle_time, shift, is_read, created_time, updated_time
   </sql>
   <sql id="Blob_Column_List" >
     extra
@@ -114,55 +108,53 @@
     insert into bus_order (order_id, order_type, pay_type, 
       sys_order_id, ext_order_id, pos_no, 
       card_type, buyer_id, buyer_name, 
-      plat_id, plat_name, plat_shop_id, 
-      shop_id, shop_name, trade_from, 
-      trade_status, order_status, refund_status, 
-      refund_time, refund_sponsor, refund_type, 
-      refund_reason, flow_status, is_valid, 
-      origin_price, order_price, ship_price, 
-      discount_price, to_zero_price, pay_price, 
-      dib_price, recept_price, package_price, 
-      point_fee, bonus_price, rate_price, 
-      is_settlemented, receive_name, province_id, 
-      province, city_id, city, 
-      district_id, district, address, 
-      longitude_address, latitude_address, mobile, 
-      zip_code, memo, buyer_notes, 
-      seller_notes, is_invoice, is_trave, 
-      invoice_type, invoice_title, invoice_content, 
-      order_time, pay_time, delivery_time, 
-      confirm_time, print_count, cash_id, 
-      cash_name, logistics_plat, logistics_type, 
-      logistics, logistics_phone, settle_time, 
-      logistics_time, logistics_pick_time, logistics_receive_time, 
-      shift, is_read, created_time, 
-      updated_time, extra)
+      carrier_id, carrier_name, plat_id, 
+      plat_name, plat_shop_id, shop_id, 
+      shop_name, trade_from, trade_status, 
+      order_status, refund_status, refund_time, 
+      refund_sponsor, refund_type, refund_reason, 
+      flow_status, is_valid, origin_price, 
+      order_price, ship_price, discount_price, 
+      to_zero_price, pay_price, dib_price, 
+      recept_price, package_price, point_fee, 
+      bonus_price, rate_price, is_settlemented, 
+      receive_name, province_id, province, 
+      city_id, city, district_id, 
+      district, address, longitude_address, 
+      latitude_address, mobile, zip_code, 
+      memo, buyer_notes, seller_notes, 
+      is_invoice, is_trave, invoice_type, 
+      invoice_title, invoice_content, order_time, 
+      pay_time, delivery_time, confirm_time, 
+      print_count, cash_id, cash_name, 
+      settle_time, shift, is_read, 
+      created_time, updated_time, extra
+      )
     values (#{orderId,jdbcType=VARCHAR}, #{orderType,jdbcType=SMALLINT}, #{payType,jdbcType=SMALLINT}, 
       #{sysOrderId,jdbcType=VARCHAR}, #{extOrderId,jdbcType=VARCHAR}, #{posNo,jdbcType=VARCHAR}, 
       #{cardType,jdbcType=CHAR}, #{buyerId,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, 
-      #{platId,jdbcType=VARCHAR}, #{platName,jdbcType=VARCHAR}, #{platShopId,jdbcType=VARCHAR}, 
-      #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, #{tradeFrom,jdbcType=VARCHAR}, 
-      #{tradeStatus,jdbcType=CHAR}, #{orderStatus,jdbcType=CHAR}, #{refundStatus,jdbcType=CHAR}, 
-      #{refundTime,jdbcType=TIMESTAMP}, #{refundSponsor,jdbcType=INTEGER}, #{refundType,jdbcType=INTEGER}, 
-      #{refundReason,jdbcType=VARCHAR}, #{flowStatus,jdbcType=CHAR}, #{isValid,jdbcType=BIT}, 
-      #{originPrice,jdbcType=DECIMAL}, #{orderPrice,jdbcType=DECIMAL}, #{shipPrice,jdbcType=DECIMAL}, 
-      #{discountPrice,jdbcType=DECIMAL}, #{toZeroPrice,jdbcType=DECIMAL}, #{payPrice,jdbcType=DECIMAL}, 
-      #{dibPrice,jdbcType=DECIMAL}, #{receptPrice,jdbcType=DECIMAL}, #{packagePrice,jdbcType=DECIMAL}, 
-      #{pointFee,jdbcType=INTEGER}, #{bonusPrice,jdbcType=DECIMAL}, #{ratePrice,jdbcType=DECIMAL}, 
-      #{isSettlemented,jdbcType=BIT}, #{receiveName,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, 
-      #{province,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{districtId,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{longitudeAddress,jdbcType=VARCHAR}, #{latitudeAddress,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
-      #{zipCode,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{buyerNotes,jdbcType=VARCHAR}, 
-      #{sellerNotes,jdbcType=VARCHAR}, #{isInvoice,jdbcType=BIT}, #{isTrave,jdbcType=BIT}, 
-      #{invoiceType,jdbcType=SMALLINT}, #{invoiceTitle,jdbcType=VARCHAR}, #{invoiceContent,jdbcType=VARCHAR}, 
-      #{orderTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, #{deliveryTime,jdbcType=TIMESTAMP}, 
-      #{confirmTime,jdbcType=TIMESTAMP}, #{printCount,jdbcType=INTEGER}, #{cashId,jdbcType=VARCHAR}, 
-      #{cashName,jdbcType=VARCHAR}, #{logisticsPlat,jdbcType=VARCHAR}, #{logisticsType,jdbcType=SMALLINT}, 
-      #{logistics,jdbcType=VARCHAR}, #{logisticsPhone,jdbcType=VARCHAR}, #{settleTime,jdbcType=TIMESTAMP}, 
-      #{logisticsTime,jdbcType=TIMESTAMP}, #{logisticsPickTime,jdbcType=TIMESTAMP}, #{logisticsReceiveTime,jdbcType=TIMESTAMP}, 
-      #{shift,jdbcType=SMALLINT}, #{isRead,jdbcType=SMALLINT}, #{createdTime,jdbcType=TIMESTAMP}, 
-      #{updatedTime,jdbcType=TIMESTAMP}, #{extra,jdbcType=LONGVARCHAR})
+      #{carrierId,jdbcType=VARCHAR}, #{carrierName,jdbcType=VARCHAR}, #{platId,jdbcType=VARCHAR}, 
+      #{platName,jdbcType=VARCHAR}, #{platShopId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
+      #{shopName,jdbcType=VARCHAR}, #{tradeFrom,jdbcType=VARCHAR}, #{tradeStatus,jdbcType=CHAR}, 
+      #{orderStatus,jdbcType=CHAR}, #{refundStatus,jdbcType=CHAR}, #{refundTime,jdbcType=TIMESTAMP}, 
+      #{refundSponsor,jdbcType=INTEGER}, #{refundType,jdbcType=INTEGER}, #{refundReason,jdbcType=VARCHAR}, 
+      #{flowStatus,jdbcType=CHAR}, #{isValid,jdbcType=BIT}, #{originPrice,jdbcType=DECIMAL}, 
+      #{orderPrice,jdbcType=DECIMAL}, #{shipPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
+      #{toZeroPrice,jdbcType=DECIMAL}, #{payPrice,jdbcType=DECIMAL}, #{dibPrice,jdbcType=DECIMAL}, 
+      #{receptPrice,jdbcType=DECIMAL}, #{packagePrice,jdbcType=DECIMAL}, #{pointFee,jdbcType=INTEGER}, 
+      #{bonusPrice,jdbcType=DECIMAL}, #{ratePrice,jdbcType=DECIMAL}, #{isSettlemented,jdbcType=BIT}, 
+      #{receiveName,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{cityId,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{districtId,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{longitudeAddress,jdbcType=VARCHAR}, 
+      #{latitudeAddress,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{buyerNotes,jdbcType=VARCHAR}, #{sellerNotes,jdbcType=VARCHAR}, 
+      #{isInvoice,jdbcType=BIT}, #{isTrave,jdbcType=BIT}, #{invoiceType,jdbcType=SMALLINT}, 
+      #{invoiceTitle,jdbcType=VARCHAR}, #{invoiceContent,jdbcType=VARCHAR}, #{orderTime,jdbcType=TIMESTAMP}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{deliveryTime,jdbcType=TIMESTAMP}, #{confirmTime,jdbcType=TIMESTAMP}, 
+      #{printCount,jdbcType=INTEGER}, #{cashId,jdbcType=VARCHAR}, #{cashName,jdbcType=VARCHAR}, 
+      #{settleTime,jdbcType=TIMESTAMP}, #{shift,jdbcType=SMALLINT}, #{isRead,jdbcType=SMALLINT}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{extra,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusOrder" >
     insert into bus_order
@@ -193,6 +185,12 @@
       </if>
       <if test="buyerName != null" >
         buyer_name,
+      </if>
+      <if test="carrierId != null" >
+        carrier_id,
+      </if>
+      <if test="carrierName != null" >
+        carrier_name,
       </if>
       <if test="platId != null" >
         plat_id,
@@ -359,29 +357,8 @@
       <if test="cashName != null" >
         cash_name,
       </if>
-      <if test="logisticsPlat != null" >
-        logistics_plat,
-      </if>
-      <if test="logisticsType != null" >
-        logistics_type,
-      </if>
-      <if test="logistics != null" >
-        logistics,
-      </if>
-      <if test="logisticsPhone != null" >
-        logistics_phone,
-      </if>
       <if test="settleTime != null" >
         settle_time,
-      </if>
-      <if test="logisticsTime != null" >
-        logistics_time,
-      </if>
-      <if test="logisticsPickTime != null" >
-        logistics_pick_time,
-      </if>
-      <if test="logisticsReceiveTime != null" >
-        logistics_receive_time,
       </if>
       <if test="shift != null" >
         shift,
@@ -426,6 +403,12 @@
       </if>
       <if test="buyerName != null" >
         #{buyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierId != null" >
+        #{carrierId,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierName != null" >
+        #{carrierName,jdbcType=VARCHAR},
       </if>
       <if test="platId != null" >
         #{platId,jdbcType=VARCHAR},
@@ -592,29 +575,8 @@
       <if test="cashName != null" >
         #{cashName,jdbcType=VARCHAR},
       </if>
-      <if test="logisticsPlat != null" >
-        #{logisticsPlat,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsType != null" >
-        #{logisticsType,jdbcType=SMALLINT},
-      </if>
-      <if test="logistics != null" >
-        #{logistics,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsPhone != null" >
-        #{logisticsPhone,jdbcType=VARCHAR},
-      </if>
       <if test="settleTime != null" >
         #{settleTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="logisticsTime != null" >
-        #{logisticsTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="logisticsPickTime != null" >
-        #{logisticsPickTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="logisticsReceiveTime != null" >
-        #{logisticsReceiveTime,jdbcType=TIMESTAMP},
       </if>
       <if test="shift != null" >
         #{shift,jdbcType=SMALLINT},
@@ -659,6 +621,12 @@
       </if>
       <if test="buyerName != null" >
         buyer_name = #{buyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierId != null" >
+        carrier_id = #{carrierId,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierName != null" >
+        carrier_name = #{carrierName,jdbcType=VARCHAR},
       </if>
       <if test="platId != null" >
         plat_id = #{platId,jdbcType=VARCHAR},
@@ -825,29 +793,8 @@
       <if test="cashName != null" >
         cash_name = #{cashName,jdbcType=VARCHAR},
       </if>
-      <if test="logisticsPlat != null" >
-        logistics_plat = #{logisticsPlat,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsType != null" >
-        logistics_type = #{logisticsType,jdbcType=SMALLINT},
-      </if>
-      <if test="logistics != null" >
-        logistics = #{logistics,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsPhone != null" >
-        logistics_phone = #{logisticsPhone,jdbcType=VARCHAR},
-      </if>
       <if test="settleTime != null" >
         settle_time = #{settleTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="logisticsTime != null" >
-        logistics_time = #{logisticsTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="logisticsPickTime != null" >
-        logistics_pick_time = #{logisticsPickTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="logisticsReceiveTime != null" >
-        logistics_receive_time = #{logisticsReceiveTime,jdbcType=TIMESTAMP},
       </if>
       <if test="shift != null" >
         shift = #{shift,jdbcType=SMALLINT},
@@ -877,6 +824,8 @@
       card_type = #{cardType,jdbcType=CHAR},
       buyer_id = #{buyerId,jdbcType=VARCHAR},
       buyer_name = #{buyerName,jdbcType=VARCHAR},
+      carrier_id = #{carrierId,jdbcType=VARCHAR},
+      carrier_name = #{carrierName,jdbcType=VARCHAR},
       plat_id = #{platId,jdbcType=VARCHAR},
       plat_name = #{platName,jdbcType=VARCHAR},
       plat_shop_id = #{platShopId,jdbcType=VARCHAR},
@@ -932,14 +881,7 @@
       print_count = #{printCount,jdbcType=INTEGER},
       cash_id = #{cashId,jdbcType=VARCHAR},
       cash_name = #{cashName,jdbcType=VARCHAR},
-      logistics_plat = #{logisticsPlat,jdbcType=VARCHAR},
-      logistics_type = #{logisticsType,jdbcType=SMALLINT},
-      logistics = #{logistics,jdbcType=VARCHAR},
-      logistics_phone = #{logisticsPhone,jdbcType=VARCHAR},
       settle_time = #{settleTime,jdbcType=TIMESTAMP},
-      logistics_time = #{logisticsTime,jdbcType=TIMESTAMP},
-      logistics_pick_time = #{logisticsPickTime,jdbcType=TIMESTAMP},
-      logistics_receive_time = #{logisticsReceiveTime,jdbcType=TIMESTAMP},
       shift = #{shift,jdbcType=SMALLINT},
       is_read = #{isRead,jdbcType=SMALLINT},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
@@ -957,6 +899,8 @@
       card_type = #{cardType,jdbcType=CHAR},
       buyer_id = #{buyerId,jdbcType=VARCHAR},
       buyer_name = #{buyerName,jdbcType=VARCHAR},
+      carrier_id = #{carrierId,jdbcType=VARCHAR},
+      carrier_name = #{carrierName,jdbcType=VARCHAR},
       plat_id = #{platId,jdbcType=VARCHAR},
       plat_name = #{platName,jdbcType=VARCHAR},
       plat_shop_id = #{platShopId,jdbcType=VARCHAR},
@@ -1012,14 +956,7 @@
       print_count = #{printCount,jdbcType=INTEGER},
       cash_id = #{cashId,jdbcType=VARCHAR},
       cash_name = #{cashName,jdbcType=VARCHAR},
-      logistics_plat = #{logisticsPlat,jdbcType=VARCHAR},
-      logistics_type = #{logisticsType,jdbcType=SMALLINT},
-      logistics = #{logistics,jdbcType=VARCHAR},
-      logistics_phone = #{logisticsPhone,jdbcType=VARCHAR},
       settle_time = #{settleTime,jdbcType=TIMESTAMP},
-      logistics_time = #{logisticsTime,jdbcType=TIMESTAMP},
-      logistics_pick_time = #{logisticsPickTime,jdbcType=TIMESTAMP},
-      logistics_receive_time = #{logisticsReceiveTime,jdbcType=TIMESTAMP},
       shift = #{shift,jdbcType=SMALLINT},
       is_read = #{isRead,jdbcType=SMALLINT},
       created_time = #{createdTime,jdbcType=TIMESTAMP},

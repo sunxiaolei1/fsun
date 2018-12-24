@@ -46,31 +46,37 @@
 					<input hidden=true id="carrierName" name="carrierName" />								
 				</td>
 	        	<th width="12%">领用人<span style="color:red;">*</span></th>
-				<td>
+				<td colspan="3">
 					<input id="iName" name="iName" class="easyui-textbox" data-options="prompt:'请先选择客户或经办人'" readOnly required/>
 					<input hidden=true id="iId" name="iId" />									
+				</td>					        
+	        </tr>
+	        <tr>
+	        	<th width="12%">联系人</th>
+				<td>
+					<input id="contacts" name="contacts" class="easyui-textbox" />								
 				</td>
-				<th width="12%">客户手机号</th>
+	        	<th width="12%">客户手机号</th>
 				<td>
 					<input id="mobile" name="mobile" class="easyui-textbox" />								
-				</td>	        
-	        </tr>
-	        <tr>	        	
+				</td>	        	
 				<th width="12%">收货地址</th>
 				<td colspan="3">
-					<input id="receiveAddress" name="receiveAddress" data-options="multiline:true" 
-						class="easyui-textbox" style="width:400px;height:50px;"/>
-				</td>
-	        	<th width="12%">备注</th>
-				<td colspan="3">
-					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:400px;height:50px;"/>
-				</td>	        	
+					<input id="receiveAddress" name="receiveAddress" class="easyui-textbox" style="width:480px;"/>
+				</td>	        		        	
 	        </tr>
+	        <tr>
+	        	<th width="12%">备注</th>
+				<td colspan="7">
+					<input id="memo" name="memo"  data-options="multiline:true" 
+						class="easyui-textbox" style="width:800px;height:50px;"/>
+				</td>
+	        </tr>
+	        
 		</table>
 	</form>			
 </div>	
-<div style="height: 310px; width: 100%;">
+<div style="height: 275px; width: 100%;">
 	<div id="detailskutoolbar" style="display:none;">
 		<%@include file="./detailskutoolbar.jsp"%>
 	</div>
@@ -177,12 +183,10 @@ $(function () {
 				$('#iId', $orderfm).val(data.salesman);
 	        	$("#iName", $orderfm).textbox("setValue", data.salesman_name);
 			} 
-			if(data.tel!=null && data.tel!=''){
-				$("#mobile", $orderfm).textbox("setValue", data.tel);
-			}
-			if(data.address!=null && data.address!=''){
-				$("#receiveAddress", $orderfm).textbox("setValue", data.address);
-			}
+			
+			$("#contacts", $orderfm).textbox("setValue", data.contacts!=null?data.contacts:"");			
+			$("#mobile", $orderfm).textbox("setValue", data.tel!=null?data.tel:"");			
+			$("#receiveAddress", $orderfm).textbox("setValue", data.address!=null?data.address:"");			
         }
     });
 

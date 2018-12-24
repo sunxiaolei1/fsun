@@ -16,6 +16,11 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
      * 表字段 : doc_order_header.order_no
      */
     private String orderNo;
+    
+    /**
+     * 打印次数
+     */
+    private Integer printCount;
 
     /**
      * 单据类型
@@ -148,6 +153,11 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
      * 表字段 : doc_order_header.zip_code
      */
     private String zipCode;
+    
+    /**
+     * 联系人
+     */
+    private String contacts;
 
     /**
      * 收货人手机
@@ -738,5 +748,33 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
     public void setRoute(String route) {
         this.route = route == null ? null : route.trim();
     }
+
+	/**
+	 * @return the printCount
+	 */
+	public Integer getPrintCount() {
+		return printCount;
+	}
+
+	/**
+	 * @param printCount the printCount to set
+	 */
+	public void setPrintCount(Integer printCount) {
+		this.printCount = printCount;
+	}
+
+	/**
+	 * @return the contacts
+	 */
+	public String getContacts() {
+		return contacts;
+	}
+
+	/**
+	 * @param contacts the contacts to set
+	 */
+	public void setContacts(String contacts) {
+		this.contacts = contacts;
+	}
     
 }

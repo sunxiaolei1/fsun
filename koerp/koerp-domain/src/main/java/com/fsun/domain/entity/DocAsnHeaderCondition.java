@@ -16,6 +16,11 @@ public class DocAsnHeaderCondition extends BaseOrderCondition{
      * 表字段 : doc_asn_header.asn_no
      */
     private String asnNo;
+    
+    /**
+     * 打印次数
+     */
+    private Integer printCount;
 
     /**
      * 外部订单id
@@ -710,5 +715,19 @@ public class DocAsnHeaderCondition extends BaseOrderCondition{
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+	/**
+	 * @return the printCount
+	 */
+	public Integer getPrintCount() {
+		return printCount;
+	}
+
+	/**
+	 * @param printCount the printCount to set
+	 */
+	public void setPrintCount(Integer printCount) {
+		this.printCount = printCount;
+	}
     
 }

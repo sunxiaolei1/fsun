@@ -44,22 +44,27 @@
 					<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly />								
 				</td>
 	        	<th width="12%">领用人<span style="color:red;">*</span></th>
-				<td>
+				<td colspan="3">
 					<input id="iName" name="iName" class="easyui-textbox" readOnly />														
+				</td>					        
+	        </tr>
+	        <tr>
+	        	<th width="12%">联系人</th>
+				<td>
+					<input id="contacts" name="contacts" class="easyui-textbox" readOnly />								
 				</td>
-				<th width="12%">客户手机号</th>
+	        	<th width="12%">客户手机号</th>
 				<td>
 					<input id="mobile" name="mobile" class="easyui-textbox" readOnly />								
-				</td>	        
-	        </tr>
-	        <tr>	        	
+				</td>	        	
 				<th width="12%">收货地址</th>
 				<td colspan="3">
-					<input id="receiveAddress" name="receiveAddress" data-options="multiline:true" 
-						class="easyui-textbox" style="width:400px;height:50px;" readOnly/>
-				</td>
+					<input id="receiveAddress" name="receiveAddress" class="easyui-textbox" style="width:480px;" readOnly/>
+				</td>	        		        	
+	        </tr>
+	        <tr>	        					
 	        	<th width="12%">备注</th>
-				<td colspan="3">
+				<td colspan="7">
 					<input id="memo" name="memo"  data-options="multiline:true" 
 						class="easyui-textbox" style="width:400px;height:50px;"/>
 				</td>	        	
@@ -67,7 +72,7 @@
 		</table>
 	</form>			
 </div>	
-<div style="height: 350px; width: 100%;">
+<div style="height: 275px; width: 100%;">
 	<div id="detailskutoolbar" style="display:none;">
 		<%@include file="./detailskutoolbar.jsp"%>
 	</div>
