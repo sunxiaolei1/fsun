@@ -42,7 +42,7 @@ var columns = [[
 	}}, 
 	{field:'delivery_time',title:'出库时间',width:130,align:'center',sortable:true},
 	{field:'expected_time',title:'预期入库时间',width:130,align:'center',sortable:true},
-	{field:'order_mode',title:'领用事由',width:100,align:'center',sortable:true, formatter:function(value, row){
+	{field:'order_mode',title:'出库事由',width:100,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docOrderMode); 
 	}},
 	{field:'created_name',title:'制单人',width:80,align:'center',sortable:true},
@@ -67,7 +67,7 @@ $(function() {
 	    fit:true,//自动大小
 	    queryParams:{},
 	    remoteSort:true,
-	    sortName:"order_no",
+	    sortName:"delivery_time",
         sortOrder:"desc",
 	    //idField:"blackid",
 	    singleSelect:true,//是否单选

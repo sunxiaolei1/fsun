@@ -79,7 +79,7 @@ public class BusBasSkuCondition extends SortCondition {
     private String property;
 
     /**
-     * 市场价
+     * 市场价(作为批发价使用)
      * 表字段 : bus_bas_sku.market_price
      */
     private BigDecimal marketPrice;

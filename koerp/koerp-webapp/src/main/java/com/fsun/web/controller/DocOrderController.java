@@ -186,9 +186,11 @@ public class DocOrderController extends BaseController {
 						break;	
 					case PURCHASE_SO:			
 						break;
-					case LOSE_SO:			
+					case LOSE_SO:	
+						url = "/docOrder/operate/toAddShortageSoView";
 						break;
-					case USE_SO:			
+					case USE_SO:
+						url = "/docOrder/operate/toAddUseSoView";
 						break;
 					default:
 						break;
@@ -203,9 +205,11 @@ public class DocOrderController extends BaseController {
 						break;	
 					case PURCHASE_SO:			
 						break;
-					case LOSE_SO:			
+					case LOSE_SO:
+						url = "/docOrder/operate/toEditShortageSoView";
 						break;
-					case USE_SO:			
+					case USE_SO:
+						url = "/docOrder/operate/toEditUseSoView";
 						break;
 					default:
 						break;

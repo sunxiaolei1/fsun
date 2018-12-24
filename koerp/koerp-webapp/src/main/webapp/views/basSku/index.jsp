@@ -43,8 +43,9 @@ var columns =
 		}},
 		{field:'bar_code',title:'条形码',width:120,align:'center',sortable:true},		
 		{field:'property',title:'规格',width:120,align:'center',sortable:true},
-		{field:'unit_name',title:'单位',width:60,align:'center',sortable:true},				
-		{field:"market_price",title:"市场价",width:80, align:'center',formatter:numBaseFormat},
+		{field:'unit_name',title:'单位',width:60,align:'center',sortable:true},		
+		{field:"origin_sale_price",title:"原销售价",width:80, align:'center',formatter:numBaseFormat},
+		{field:"market_price",title:"批发价",width:80, align:'center',formatter:numBaseFormat},
 		{field:"cost_price",title:"成本价",width:80, align:'center',formatter:numBaseFormat},
 		{field:"is_enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
 			return formatter(value, window.parent.isEnable); 

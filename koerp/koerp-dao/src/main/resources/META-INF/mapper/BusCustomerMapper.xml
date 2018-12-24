@@ -55,6 +55,15 @@
   		<if test="enabled != null and enabled != ''">
   			and a.enabled = #{enabled}
   		</if>
+  		
+  		<!-- 用于领用出库查询 -->
+		<if test="inCustomerType != null">	
+		    and a.customer_type in
+			<foreach collection="inCustomerType" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>
+		</if>
+  		
 
 	</where>
   </sql>

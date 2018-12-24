@@ -35,7 +35,7 @@
 	        	<th width="12%">备注</th>
 				<td colspan="7">
 					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:800px;height:50px;"/>
+						class="easyui-textbox" style="width:800px;height:50px;" />
 				</td>	        	
 	        </tr>
 		</table>

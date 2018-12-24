@@ -20,6 +20,7 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
 import com.fsun.domain.entity.DocOrderDetailsCondition;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
+import com.fsun.domain.enums.DocOrderModeEnum;
 import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.TradeFromEnum;
@@ -128,9 +129,11 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		DocOrderHeader header = docOrderDto.getHeader();		
 		//入参基本的校验
 		String iId = header.getiId();
-		if(!currUser.getId().equals(iId)){
-			throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
-		}
+		if(!DocOrderTypeEnum.USE_SO.getCode().equals(header.getOrderType())){
+			if(!currUser.getId().equals(iId)){
+				throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
+			}
+		}		
 		if(this.load(orderNo)!=null){
 			throw new DocOrderException(SCMErrorEnum.BUS_ORDER_EXISTED);
 		}			
@@ -229,9 +232,17 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 				break;
 			case PURCHASE_SO:					
 				break;
-			case LOSE_SO:					
+			case LOSE_SO:	
+				header.setOrderType(orderType);
+				header.setiId(currUser.getId());
+				header.setFromShopId(currUser.getShopId());
+				header.setFromShopName(currUser.getShopName());
 				break;
-			case USE_SO:					
+			case USE_SO:
+				header.setOrderType(orderType);				
+				header.setFromShopId(currUser.getShopId());
+				header.setFromShopName(currUser.getShopName());
+				header.setOrderMode(DocOrderModeEnum.YP.getCode());
 				break;
 			default:
 				break;

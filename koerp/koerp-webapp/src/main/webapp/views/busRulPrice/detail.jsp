@@ -60,10 +60,23 @@ var rulSkuColumns = [[
 	}},			
 	{field:"productType",title:"商品类型", width:80,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.productType); 
-	}},
-	{field:"marketPrice",title:"市场价", width:80,align:"center",formatter:numBaseFormat},
-	//{field:"lastSalePrice",title:"上次修改售价", width:80,align:"center"},
+	}},	
+	//{field:"lastSalePrice",title:"上次修改售价", width:80,align:"center"},	
 	{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
+	{field:"marketPrice",title:"批发价", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:numBaseFormat,
+		editor:{
+			type:'numberbox',
+			options:{					
+				min:0,
+				precision:2,
+				required: true
+			}
+		}
+	},
 	{field:"salePrice",title:"销售价", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';

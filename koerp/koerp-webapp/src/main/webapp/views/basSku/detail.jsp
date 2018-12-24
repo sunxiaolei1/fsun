@@ -66,7 +66,7 @@
 			<td>
 				<input name="barCode" id="barCode" class="easyui-textbox" />
 			</td>					
-			<th width="12%">市场价</th>
+			<th width="12%">批发价</th>
 			<td>
 				<input name="marketPrice" id="marketPrice" class="easyui-numberspinner" 
 					data-options="min:0, precision:2,increment:1,value:0" required />
