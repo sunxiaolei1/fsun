@@ -23,6 +23,7 @@ var docPoStatusData = new Array();
 var docPoTypeData = new Array();
 var docTradeStatusData = new Array();
 var docTradeTypeData = new Array();
+var busGoodsTypeData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -51,6 +52,7 @@ var docPoStatus = {};
 var docPoType = {};
 var docTradeStatus = {};
 var docTradeType = {};
+var busGoodsType = {};
 
 $(function () {
 	synchronizeData();	
@@ -81,6 +83,8 @@ $(function () {
 	docPoType = formatterCodeType(docPoTypeData);
 	docTradeStatus = formatterCodeType(docTradeStatusData);
 	docTradeType = formatterCodeType(docTradeTypeData);
+	
+	busGoodsType = formatterCodeType(busGoodsTypeData); 
 });
 
 function formatterCodeType(result) {
@@ -151,6 +155,8 @@ function synchronizeData() {
         				docTradeStatusData.push(item);
         			}else if(item.codeType == 'DocTradeType') {
         				docTradeTypeData.push(item);
+        			}else if(item.codeType == 'BusGoodsType'){
+        				busGoodsTypeData.push(item);
         			}
         			
     	        });
@@ -275,6 +281,12 @@ function synchronizeData() {
         			codeCode:"",
 					codeName:"请选择..."
 				});
+				
+				busGoodsTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
         	}
        	}
 	});
