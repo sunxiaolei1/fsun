@@ -35,6 +35,16 @@ public class BusInvSkuController extends BaseController {
 		return "/busInvSku/index";
 	}
 	
+	@RequestMapping("/toChooseSku")
+	public String toChooseSku() {
+		return "/busCommon/commonChooseInvSku";
+	}
+	
+	@RequestMapping("/toChooseEditSku")
+	public String toChooseEditSku() {
+		return "/busCommon/commonChooseEditInvSku";
+	}	
+	
 	@RequestMapping("/toDetailView")
 	public ModelAndView toDetailView(@RequestParam("sku") String sku,
 		@RequestParam("shopId") String shopId) {		

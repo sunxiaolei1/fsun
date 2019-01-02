@@ -69,6 +69,16 @@ public class BusInvSkuCondition extends SortCondition{
      * 模糊查询字段
      */
     private String q;
+    
+    /**
+     * 客户编号
+     */
+    private String customerCode;
+    
+    /**
+     * 可用库存
+     */
+    private Boolean enabled;
 
     public String getSku() {
         return sku;
@@ -161,4 +171,27 @@ public class BusInvSkuCondition extends SortCondition{
 	public void setQ(String q) {
 		this.q = q;
 	}
+
+	/**
+	 * @return the customerCode
+	 */
+	public String getCustomerCode() {
+		return customerCode;
+	}
+
+	/**
+	 * @param customerCode the customerCode to set
+	 */
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+	
 }

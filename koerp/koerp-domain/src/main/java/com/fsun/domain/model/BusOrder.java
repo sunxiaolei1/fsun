@@ -11,7 +11,7 @@ public class BusOrder {
     private String orderId;
 
     /**
-     * 订单类型 1 pos销售订单，2 盘亏出库，3 外卖销售订单
+     * 订单类型 1 pos销售订单，2 销售寄存单
      * 表字段 : bus_order.order_type
      */
     private Short orderType;
@@ -177,9 +177,15 @@ public class BusOrder {
      * 表字段 : bus_order.ship_price
      */
     private BigDecimal shipPrice;
+    
+    /**
+     * 表字段 : bus_order.coupon_price
+	 * 商品优惠
+	 */
+    private BigDecimal couponPrice;
 
     /**
-     * 优惠金额
+     * 商家优惠
      * 表字段 : bus_order.discount_price
      */
     private BigDecimal discountPrice;
@@ -431,10 +437,16 @@ public class BusOrder {
     private Date updatedTime;
 
     /**
-     * 订单额外信息
-     * 表字段 : bus_order.extra
+     * 
+     * 表字段 : bus_order.updated_name
      */
-    private String extra;
+    private String updatedName;
+
+    /**
+     * 
+     * 表字段 : bus_order.created_name
+     */
+    private String createdName;
 
     public String getOrderId() {
         return orderId;
@@ -1004,11 +1016,34 @@ public class BusOrder {
         this.updatedTime = updatedTime;
     }
 
-    public String getExtra() {
-        return extra;
+    public String getUpdatedName() {
+        return updatedName;
     }
 
-    public void setExtra(String extra) {
-        this.extra = extra == null ? null : extra.trim();
+    public void setUpdatedName(String updatedName) {
+        this.updatedName = updatedName == null ? null : updatedName.trim();
     }
+
+    public String getCreatedName() {
+        return createdName;
+    }
+
+    public void setCreatedName(String createdName) {
+        this.createdName = createdName == null ? null : createdName.trim();
+    }
+
+	/**
+	 * @return the couponPrice
+	 */
+	public BigDecimal getCouponPrice() {
+		return couponPrice;
+	}
+
+	/**
+	 * @param couponPrice the couponPrice to set
+	 */
+	public void setCouponPrice(BigDecimal couponPrice) {
+		this.couponPrice = couponPrice;
+	}
+    
 }

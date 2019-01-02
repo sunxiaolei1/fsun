@@ -64,7 +64,7 @@ public class BusInvSkuService implements BusInvSkuApi {
 
 	@Override
 	public PageModel findListForPage(BusInvSkuCondition condition) {
-		return busInvSkuManage.findPage(condition);
+		return busInvSkuManage.selectInvSkuList(condition);
 	}
 
 	@Override

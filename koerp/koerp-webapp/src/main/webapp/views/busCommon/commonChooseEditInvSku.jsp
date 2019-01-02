@@ -50,6 +50,8 @@
 
 var currCheckedSkus = [];	
 var currDatagrid;
+var currCustomerCode;
+var currShopId;
 
 $(function() {
 	
@@ -57,7 +59,9 @@ $(function() {
 	var obj = $('#chooseSkuDialog').dialog('options');		
 	var queryParams = obj["view"];		
 	if(typeof(queryParams) != "undefined") {
-		currCheckedSkus = queryParams.checkedSkus;	
+		currCheckedSkus = queryParams.checkedSkus;
+		currCustomerCode = queryParams.customerCode;
+		currShopId = queryParams.currShopId;			
 	}
 	
 	currDatagrid = $("#skusDatagrid");
@@ -67,7 +71,8 @@ $(function() {
 		striped: true,
 		fit: true, //自动大小		
 		queryParams : {
-			"enabled": 1
+			"shopId": currShopId,
+			"customerCode": currCustomerCode
 	    },
 		pagination: true, //分页控件
 		rownumbers: true, //行号			
@@ -90,7 +95,8 @@ $(function() {
 			}},
 			{field: "property", title: "规格", width: 120, align: "center"},
 			{field: "qty", title: "数量", width: 60, align: "center"},
-			{field: "originSalePrice", title: "单价", width: 60, align: "center",formatter:numBaseFormat},						
+			{field: "originSalePrice", title: "原价", width: 60, align: "center",formatter:numBaseFormat},
+			{field: "salePrice", title: "单价", width: 60, align: "center",formatter:numBaseFormat},
 			{field:"unit",title:"单位", width:60,align:"center", formatter:function(value, row){
 				return formatter(value, window.parent.unitCode); 
 			}},
@@ -126,7 +132,8 @@ $(function() {
 				this.selected = false;
 				var seletedSku = getSeletedSku(this.sku, currCheckedSkus);				
 				if(seletedSku!=null){						
-					this.qty = getSkuQty(seletedSku);				
+					this.qty = getSkuQty(seletedSku);	
+					this.salePrice = getSkuSalePrice(seletedSku);	
 					this.selected = true;				
 				}	
 			});
@@ -157,7 +164,7 @@ $(function() {
 	    	}			
 			$("#skutitle").html(node.text);
 			currDatagrid.datagrid("clearSelections");
-			currDatagrid.datagrid('options').url = "${api}/bus/basSku/findListForPage";  
+			currDatagrid.datagrid('options').url = "${api}/bus/invSku/findListForPage";  
 			currDatagrid.datagrid("reload");	   			
 		}
 	);
@@ -235,7 +242,4 @@ function getSeletedSku(sku, currCheckedSkus){
 	return skuData;
 }
 
-
-
-	
 </script>

@@ -24,9 +24,9 @@ public class BusBasSku {
 
     /**
      * 上级sku
-     * 表字段 : bus_bas_sku.parent_sku
+     * 表字段 : bus_bas_sku.parent_sku_id
      */
-    private String parentSku;
+    private String parentSkuId;
 
     /**
      * 产品分类编码
@@ -256,12 +256,12 @@ public class BusBasSku {
         this.sku = sku == null ? null : sku.trim();
     }
 
-    public String getParentSku() {
-        return parentSku;
+    public String getParentSkuId() {
+        return parentSkuId;
     }
 
-    public void setParentSku(String parentSku) {
-        this.parentSku = parentSku == null ? null : parentSku.trim();
+    public void setParentSkuId(String parentSkuId) {
+        this.parentSkuId = parentSkuId == null ? null : parentSkuId.trim();
     }
 
     public String getCategoryCode() {

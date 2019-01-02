@@ -1,0 +1,212 @@
+package com.fsun.web.controller;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.fsun.api.bus.BusOrderApi;
+import com.fsun.common.utils.StringUtils;
+import com.fsun.domain.common.HttpResult;
+import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusOrderDto;
+import com.fsun.domain.dto.BusUserDto;
+import com.fsun.domain.entity.BusOrderCondition;
+import com.fsun.domain.enums.OrderOperateTypeEnum;
+import com.fsun.domain.enums.OrderStatusEnum;
+import com.fsun.domain.enums.OrderTypeEnum;
+import com.fsun.domain.model.BusOrder;
+import com.fsun.domain.model.SysUser;
+import com.fsun.exception.bus.OrderException;
+import com.fsun.exception.common.SCMException;
+import com.fsun.exception.enums.SCMErrorEnum;
+import com.fsun.web.controller.base.BaseController;
+
+/**
+ * @author fsun
+ * @date 2018年12月15日
+ */
+@Controller
+@RequestMapping("/bus/order")
+public class BusOrderController extends BaseController {
+
+	@Autowired
+	private BusOrderApi busOrderApi;
+
+	@RequestMapping("/index")
+	public String index() {
+		return "/busOrder/index";
+	}
+	
+	@RequestMapping("/toAddView")
+	public ModelAndView toAddView(@RequestParam("orderType") Short orderType) {
+		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.ADD.getCode());
+		ModelAndView modelAndView = new ModelAndView(url);		
+		modelAndView.addObject("orderType", orderType);		
+		return modelAndView;
+	}	
+	
+	@RequestMapping("/toDetailView")
+	public ModelAndView toDetailView(@RequestParam("orderId") String orderId, 
+			@RequestParam("orderType") Short orderType) {				
+		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.EDIT.getCode());
+		ModelAndView modelAndView = new ModelAndView(url);
+		modelAndView.addObject("orderId", orderId);
+		modelAndView.addObject("cancelStatus", OrderStatusEnum.CANCEL.getCode());	
+		return modelAndView;
+	}		
+	
+	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getInitData(@RequestParam("orderId") String orderId, 
+			@RequestParam("orderType") String orderType){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = busOrderApi.getInitData(orderId, orderType, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	
+	@RequestMapping(value="/findPage", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findPage(BusOrderCondition condition) {
+		try {
+			PageModel pageModel = busOrderApi.findPage(condition);
+			return success(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+
+	@RequestMapping(value="/findListForPage", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findListForPage(BusOrderCondition condition) {
+		try {
+			PageModel pageModel = busOrderApi.findListForPage(condition);
+			return success(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	
+	@RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public HttpResult list(BusOrderCondition condition) {
+		try {
+			List<BusOrder> list = busOrderApi.list(condition);
+			return success(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+
+
+	@RequestMapping(value="/status/{status}", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult changeStatus(@PathVariable("status") String status, 
+		@RequestParam("orderIds") String orderIds, @RequestBody BusOrderCondition condition) {
+		try {
+			if (!StringUtils.isEmpty(orderIds)) {
+				SysUser user = getCurrentUser();	
+				busOrderApi.changeStatus(orderIds.split(","), status, user, condition);
+				return success(SCMErrorEnum.SUCCESS.getErrorCode());
+			}
+			return failure(SCMErrorEnum.INVALID_PARAMS);
+		}catch(OrderException e){
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	
+	@RequestMapping(value="/loadEntity/{orderId}", method = RequestMethod.GET)
+	@ResponseBody
+	public HttpResult loadEntity(@PathVariable("orderId") String orderId) {
+		try {
+			HashMap<String, Object> map = busOrderApi.loadEntity(orderId);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/saveEntity", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult saveEntity(@RequestBody BusOrderDto busOrderDto) {
+		try {
+			busOrderDto.setCurrentUser(getCurrentUser());			
+			String orderId = busOrderApi.saveEntity(busOrderDto);
+			return success(orderId);
+		} catch(OrderException e){
+			e.printStackTrace();
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}		
+	}
+	
+/****************************       私有方法            *************************************/
+	
+	/**
+	 * 通过单据类型和操作类型获取对应的查看地址
+	 * @param orderType
+	 * @param operateType
+	 * @return
+	 */
+	private String getUrlByType(Short orderType, String operateType){
+		String url = "";
+		switch (OrderOperateTypeEnum.getByCode(operateType)) {
+			case ADD:	
+				switch (OrderTypeEnum.getByValue(orderType)) {					
+					case ORDER:	
+						url = "/busOrder/operate/toAddOrderView";
+						break;						
+					case TAKE_ORDER:	
+						url = "/busOrder/operate/toAddTakeOrderView";
+						break;					
+					default:
+						break;
+				}
+				break;		
+			case EDIT:
+				switch (OrderTypeEnum.getByValue(orderType)) {
+					case ORDER:	
+						url = "/busOrder/operate/toEditOrderView";
+						break;						
+					case TAKE_ORDER:	
+						url = "/busOrder/operate/toEditTakeOrderView";
+						break;	
+					default:
+						break;
+				}
+				break;	
+			case VIEW:			
+				break;
+			default:
+				break;
+		}
+		return url;
+	}
+	
+}

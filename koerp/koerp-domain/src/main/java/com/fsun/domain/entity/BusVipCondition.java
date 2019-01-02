@@ -129,6 +129,11 @@ public class BusVipCondition extends SortCondition {
 	 * 客户类型
 	 */
 	private String customerType;
+	
+	/**
+	 * 有无余额
+	 */
+	boolean hasBalance;
 
 	public String getQ() {
 		return q;
@@ -288,6 +293,14 @@ public class BusVipCondition extends SortCondition {
 
 	public void setCardType(Integer cardType) {
 		this.cardType = cardType;
+	}
+
+	public boolean isHasBalance() {
+		return hasBalance;
+	}
+
+	public void setHasBalance(boolean hasBalance) {
+		this.hasBalance = hasBalance;
 	}
 	
 	

@@ -30,7 +30,8 @@
     <result column="is_valid" property="isValid" jdbcType="BIT" />
     <result column="origin_price" property="originPrice" jdbcType="DECIMAL" />
     <result column="order_price" property="orderPrice" jdbcType="DECIMAL" />
-    <result column="ship_price" property="shipPrice" jdbcType="DECIMAL" />
+    <result column="ship_price" property="shipPrice" jdbcType="DECIMAL" />   
+    <result column="coupon_price" property="couponPrice" jdbcType="DECIMAL" />
     <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
     <result column="to_zero_price" property="toZeroPrice" jdbcType="DECIMAL" />
     <result column="pay_price" property="payPrice" jdbcType="DECIMAL" />
@@ -73,30 +74,277 @@
     <result column="is_read" property="isRead" jdbcType="SMALLINT" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.fsun.domain.model.BusOrder" extends="BaseResultMap" >
-    <result column="extra" property="extra" jdbcType="LONGVARCHAR" />
+    <result column="updated_name" property="updatedName" jdbcType="VARCHAR" />
+    <result column="created_name" property="createdName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     order_id, order_type, pay_type, sys_order_id, ext_order_id, pos_no, card_type, buyer_id, 
     buyer_name, carrier_id, carrier_name, plat_id, plat_name, plat_shop_id, shop_id, 
     shop_name, trade_from, trade_status, order_status, refund_status, refund_time, refund_sponsor, 
     refund_type, refund_reason, flow_status, is_valid, origin_price, order_price, ship_price, 
-    discount_price, to_zero_price, pay_price, dib_price, recept_price, package_price, 
+    coupon_price, discount_price, to_zero_price, pay_price, dib_price, recept_price, package_price, 
     point_fee, bonus_price, rate_price, is_settlemented, receive_name, province_id, province, 
     city_id, city, district_id, district, address, longitude_address, latitude_address, 
     mobile, zip_code, memo, buyer_notes, seller_notes, is_invoice, is_trave, invoice_type, 
     invoice_title, invoice_content, order_time, pay_time, delivery_time, confirm_time, 
-    print_count, cash_id, cash_name, settle_time, shift, is_read, created_time, updated_time
+    print_count, cash_id, cash_name, settle_time, shift, is_read, created_time, updated_time, 
+    updated_name, created_name
   </sql>
-  <sql id="Blob_Column_List" >
-    extra
+  
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="q != null and q != ''">
+  			and a.order_id like concat(concat('%',#{q}),'%')
+  		</if>
+  		
+  		<if test="orderId != null and orderId != ''">
+  			and a.order_id = #{orderId}
+  		</if>
+  		
+  		<if test="shopId != null and shopId != ''">
+  			and a.shop_id = #{shopId}
+  		</if>
+  		
+  		<if test="orderStatus != null and orderStatus != ''">
+  			and a.order_status = #{orderStatus}
+  		</if>
+  		
+  		<if test="orderType != null and orderType != ''">
+			and a.order_type = #{orderType,jdbcType=VARCHAR}
+		</if>
+  		
+  		<if test="startTime != null">
+			and a.order_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			and a.order_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+		</if>
+  		
+	</where>
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusOrderCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_order a
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusOrderCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_order a 
+    	<include refid="conditions" />
+  </select>
+  
+  <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
+    <result column="o_order_id" property="orderId" />
+    <result column="o_order_type" property="orderType"/> 
+    <result column="o_pay_type" property="payType" />    
+    <result column="o_pos_no" property="posNo"/> 
+    <result column="o_buyer_id" property="buyerId"/>
+    <result column="o_buyer_name" property="buyerName"/>
+    <result column="o_carrier_id" property="carrierId"/>
+    <result column="o_carrier_name" property="carrierName"/>
+    <result column="o_shop_id" property="shopId"/>
+    <result column="o_shop_name" property="shopName"/>
+    <result column="o_trade_from" property="tradeFrom"/>
+    <result column="o_trade_status" property="tradeStatus"/>
+    <result column="o_order_status" property="orderStatus"/>
+    <result column="o_flow_status" property="flowStatus"/>
+    <result column="o_origin_price" property="originPrice"/>
+    <result column="o_order_price" property="orderPrice"/>
+    <result column="o_coupon_price" property="couponPrice"/>    
+    <result column="o_discount_price" property="discountPrice"/>
+    <result column="o_to_zero_price" property="toZeroPrice"/>
+    <result column="o_pay_price" property="payPrice"/>
+    <result column="o_dib_price" property="dibPrice"/>
+    <result column="o_recept_price" property="receptPrice"/>
+    <result column="o_is_settlemented" property="isSettlemented"/>
+    <result column="o_receive_name" property="receiveName"/>
+    <result column="o_address" property="address"/>
+    <result column="o_mobile" property="mobile"/>
+    <result column="o_memo" property="memo"/>
+    <result column="o_order_time" property="orderTime"/>
+    <result column="o_delivery_time" property="deliveryTime"/>
+    <result column="o_print_count" property="printCount"/>
+    <result column="o_cash_id" property="cashId"/>
+    <result column="o_cash_name" property="cashName"/>
+    <result column="o_settle_time" property="settleTime"/>
+  </resultMap>
+  
+  <resultMap id="DefinedResultMap" type="java.util.Map"> 	
+  	<id column="o_order_id" property="orderId"/>  
+  	<association property="header" resultMap="HeaderMap" />   	   
+    <collection property="details" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="d_goods_id" property="goodsId"/>
+      <result column="d_order_id" property="orderId"/> 
+      <result column="d_line_no" property="lineNo"/> 
+      <result column="d_goods_type" property="goodsType"/> 
+      <result column="d_product_type" property="productType"/> 
+      <result column="d_category_code" property="categoryCode"/> 
+      <result column="d_category_name" property="categoryName"/> 
+      <result column="d_bar_code" property="barCode"/> 
+      <result column="d_brand_code" property="brandCode"/> 
+      <result column="d_brand_name" property="brandName"/> 
+      <result column="d_goods_name" property="goodsName"/> 
+      <result column="d_sku" property="sku"/> 
+      <result column="d_parent_sku" property="parentSku"/> 
+      <result column="d_sku_id" property="skuId"/> 
+      <result column="d_parent_sku_id" property="parentSkuId"/>
+      <result column="d_en_unit" property="enUnit"/> 
+      <result column="d_qty" property="qty"/>
+      <result column="d_unit" property="unit"/>
+      <result column="d_convert_qty" property="convertQty"/>
+      <result column="d_convert_unit" property="convertUnit"/>
+      <result column="d_market_price" property="marketPrice"/>
+      <result column="d_origin_sale_price" property="originSalePrice"/>
+      <result column="d_sale_price" property="salePrice"/>
+      <result column="d_part_price" property="partPrice"/>
+      <result column="d_discount_price" property="discountPrice"/>
+      <result column="d_total_price" property="totalPrice"/>
+      <result column="d_cost_price" property="costPrice"/>    
+      <result column="d_rate_precent" property="ratePrecent"/>
+      <result column="d_is_gift" property="isGift"/>
+      <result column="d_gift_count" property="giftCount"/>
+      <result column="d_gift_price" property="giftPrice"/>
+      <result column="d_is_show" property="isShow"/>
+      <result column="d_property" property="property"/> 
+      <result column="d_memo" property="memo"/>
+      <result column="d_created_time" property="createdTime"/>
+      <result column="d_updated_time" property="updatedTime"/>
+    </collection>
+    <collection property="payAccounts" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="p_pay_id" property="payId"/>
+      <result column="p_order_id" property="orderId"/> 
+      <result column="p_line_no" property="lineNo"/> 
+      <result column="p_vip_id" property="vipId"/>
+      <result column="p_shop_id" property="shopId"/>
+      <result column="p_shop_name" property="shopName"/>
+      <result column="p_card_no" property="cardNo"/>
+      <result column="p_pay_mode" property="payMode"/>
+      <result column="p_pay_type" property="payType"/>
+      <result column="p_point_fee" property="pointFee"/>
+      <result column="p_bank_account_name" property="bankAccountName"/>
+      <result column="p_bank_account_no" property="bankAccountNo"/>
+      <result column="p_bank_name" property="bankName"/>
+      <result column="p_buyer_name" property="buyerName"/>
+      <result column="p_buyer_account" property="buyerAccount"/>
+      <result column="p_pay_price" property="payPrice"/>
+      <result column="p_recept_price" property="receptPrice"/>
+      <result column="p_dib_price" property="dibPrice"/>
+      <result column="p_over_amount" property="overAmount"/>
+      <result column="p_discount_amount" property="discountAmount"/>
+      <result column="p_memo" property="memo"/>
+      <result column="p_trade_time" property="tradeTime"/>
+    </collection>   
+  </resultMap>
+  
+  <select id="loadEntity" resultMap="DefinedResultMap" parameterType="java.lang.String" >
+    select 
+    	o.order_id as o_order_id,
+		o.order_type as o_order_type,
+		o.pay_type as o_pay_type ,
+		o.pos_no as o_pos_no,
+		o.buyer_id as o_buyer_id,
+		o.buyer_name as o_buyer_name,
+		o.carrier_id as o_carrier_id,
+		o.carrier_name as o_carrier_name,
+		o.shop_id as o_shop_id,
+		o.shop_name as o_shop_name,
+		o.trade_from as o_trade_from,
+		o.trade_status as o_trade_status,
+		o.order_status as o_order_status,
+		o.flow_status as o_flow_status,
+		o.origin_price as o_origin_price,
+		o.order_price as o_order_price,
+		o.coupon_price as o_coupon_price,
+		o.discount_price as o_discount_price,
+		o.to_zero_price as o_to_zero_price,
+		o.pay_price as o_pay_price,
+		o.dib_price as o_dib_price,
+		o.recept_price as o_recept_price,
+		o.is_settlemented as o_is_settlemented,
+		o.receive_name as o_receive_name,
+		o.address as o_address,
+		o.mobile as o_mobile,
+		o.memo as o_memo,
+		o.order_time as o_order_time,
+		o.delivery_time as o_delivery_time,
+		o.print_count as o_print_count,
+		o.cash_id as o_cash_id,
+		o.cash_name as o_cash_name,
+		o.settle_time as o_settle_time,
+		d.goods_id as d_goods_id,
+		d.order_id as d_order_id ,
+		d.line_no as d_line_no,
+		d.goods_type as d_goods_type,
+		d.product_type as d_product_type,
+		d.category_code as d_category_code,
+		d.category_name as d_category_name, 
+		d.bar_code as d_bar_code,
+		d.brand_code as d_brand_code,
+		d.brand_name as d_brand_name,
+		d.goods_name as d_goods_name,
+		d.sku as d_sku,
+		d.parent_sku as d_parent_sku, 
+		d.sku_id as d_sku_id,
+		d.parent_sku_id as d_parent_sku_id,
+		d.en_unit as d_en_unit ,
+		d.qty as d_qty,
+		d.unit as d_unit,
+		d.convert_qty as d_convert_qty,
+		d.convert_unit as d_convert_unit,
+		d.market_price as d_market_price,
+		d.origin_sale_price as d_origin_sale_price,
+		d.sale_price as d_sale_price,
+		d.part_price as d_part_price,
+		d.discount_price as d_discount_price,
+		d.total_price as d_total_price,
+		d.cost_price as d_cost_price,
+		d.rate_precent as d_rate_precent,
+		d.is_gift as d_is_gift,
+		d.gift_count as d_gift_count,
+		d.gift_price as d_gift_price,
+		d.is_show as d_is_show,
+		d.property as d_property,
+		d.memo as d_memo,
+		d.created_time as d_created_time,
+		d.updated_time as d_updated_time,
+		p.pay_id as p_pay_id,
+		p.order_id as p_order_id ,
+		p.line_no as p_line_no ,
+		p.vip_id as p_vip_id,
+		p.shop_id as p_shop_id,
+		p.shop_name as p_shop_name,
+		p.card_no as p_card_no,
+		p.pay_mode as p_pay_mode,
+		p.pay_type as p_pay_type,
+		p.bank_account_name as p_bank_account_name,
+		p.bank_account_no as p_bank_account_no,
+		p.bank_name as p_bank_name,
+		p.buyer_name as p_buyer_name,
+		p.buyer_account as p_buyer_account,
+		p.pay_price as p_pay_price,
+		p.recept_price as p_recept_price,
+		p.dib_price as p_dib_price,
+		p.over_amount as p_over_amount,
+		p.discount_amount as p_discount_amount,
+		p.memo as p_memo,
+		p.trade_time as p_trade_time
+    from bus_order o
+    left join bus_goods d on d.order_id = o.order_id
+    left join bus_pay_account p on p.order_id = o.order_id
+    where o.order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from bus_order
     where order_id = #{orderId,jdbcType=VARCHAR}
   </select>
@@ -114,7 +362,7 @@
       order_status, refund_status, refund_time, 
       refund_sponsor, refund_type, refund_reason, 
       flow_status, is_valid, origin_price, 
-      order_price, ship_price, discount_price, 
+      order_price, ship_price, coupon_price, discount_price, 
       to_zero_price, pay_price, dib_price, 
       recept_price, package_price, point_fee, 
       bonus_price, rate_price, is_settlemented, 
@@ -128,8 +376,8 @@
       pay_time, delivery_time, confirm_time, 
       print_count, cash_id, cash_name, 
       settle_time, shift, is_read, 
-      created_time, updated_time, extra
-      )
+      created_time, updated_time, updated_name, 
+      created_name)
     values (#{orderId,jdbcType=VARCHAR}, #{orderType,jdbcType=SMALLINT}, #{payType,jdbcType=SMALLINT}, 
       #{sysOrderId,jdbcType=VARCHAR}, #{extOrderId,jdbcType=VARCHAR}, #{posNo,jdbcType=VARCHAR}, 
       #{cardType,jdbcType=CHAR}, #{buyerId,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, 
@@ -139,7 +387,7 @@
       #{orderStatus,jdbcType=CHAR}, #{refundStatus,jdbcType=CHAR}, #{refundTime,jdbcType=TIMESTAMP}, 
       #{refundSponsor,jdbcType=INTEGER}, #{refundType,jdbcType=INTEGER}, #{refundReason,jdbcType=VARCHAR}, 
       #{flowStatus,jdbcType=CHAR}, #{isValid,jdbcType=BIT}, #{originPrice,jdbcType=DECIMAL}, 
-      #{orderPrice,jdbcType=DECIMAL}, #{shipPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
+      #{orderPrice,jdbcType=DECIMAL}, #{shipPrice,jdbcType=DECIMAL}, #{couponPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
       #{toZeroPrice,jdbcType=DECIMAL}, #{payPrice,jdbcType=DECIMAL}, #{dibPrice,jdbcType=DECIMAL}, 
       #{receptPrice,jdbcType=DECIMAL}, #{packagePrice,jdbcType=DECIMAL}, #{pointFee,jdbcType=INTEGER}, 
       #{bonusPrice,jdbcType=DECIMAL}, #{ratePrice,jdbcType=DECIMAL}, #{isSettlemented,jdbcType=BIT}, 
@@ -153,8 +401,8 @@
       #{payTime,jdbcType=TIMESTAMP}, #{deliveryTime,jdbcType=TIMESTAMP}, #{confirmTime,jdbcType=TIMESTAMP}, 
       #{printCount,jdbcType=INTEGER}, #{cashId,jdbcType=VARCHAR}, #{cashName,jdbcType=VARCHAR}, 
       #{settleTime,jdbcType=TIMESTAMP}, #{shift,jdbcType=SMALLINT}, #{isRead,jdbcType=SMALLINT}, 
-      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{extra,jdbcType=LONGVARCHAR}
-      )
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{updatedName,jdbcType=VARCHAR}, 
+      #{createdName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusOrder" >
     insert into bus_order
@@ -245,6 +493,9 @@
       </if>
       <if test="shipPrice != null" >
         ship_price,
+      </if>
+      <if test="couponPrice != null" >
+        coupon_price,
       </if>
       <if test="discountPrice != null" >
         discount_price,
@@ -372,8 +623,11 @@
       <if test="updatedTime != null" >
         updated_time,
       </if>
-      <if test="extra != null" >
-        extra,
+      <if test="updatedName != null" >
+        updated_name,
+      </if>
+      <if test="createdName != null" >
+        created_name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -463,6 +717,9 @@
       </if>
       <if test="shipPrice != null" >
         #{shipPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="couponPrice != null" >
+        #{couponPrice,jdbcType=DECIMAL},
       </if>
       <if test="discountPrice != null" >
         #{discountPrice,jdbcType=DECIMAL},
@@ -590,8 +847,11 @@
       <if test="updatedTime != null" >
         #{updatedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="extra != null" >
-        #{extra,jdbcType=LONGVARCHAR},
+      <if test="updatedName != null" >
+        #{updatedName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdName != null" >
+        #{createdName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -681,6 +941,9 @@
       </if>
       <if test="shipPrice != null" >
         ship_price = #{shipPrice,jdbcType=DECIMAL},
+      </if>      
+      <if test="couponPrice != null" >
+        coupon_price = #{couponPrice,jdbcType=DECIMAL},
       </if>
       <if test="discountPrice != null" >
         discount_price = #{discountPrice,jdbcType=DECIMAL},
@@ -808,13 +1071,16 @@
       <if test="updatedTime != null" >
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="extra != null" >
-        extra = #{extra,jdbcType=LONGVARCHAR},
+      <if test="updatedName != null" >
+        updated_name = #{updatedName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdName != null" >
+        created_name = #{createdName,jdbcType=VARCHAR},
       </if>
     </set>
     where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.fsun.domain.model.BusOrder" >
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusOrder" >
     update bus_order
     set order_type = #{orderType,jdbcType=SMALLINT},
       pay_type = #{payType,jdbcType=SMALLINT},
@@ -844,6 +1110,7 @@
       origin_price = #{originPrice,jdbcType=DECIMAL},
       order_price = #{orderPrice,jdbcType=DECIMAL},
       ship_price = #{shipPrice,jdbcType=DECIMAL},
+      coupon_price = #{couponPrice,jdbcType=DECIMAL},
       discount_price = #{discountPrice,jdbcType=DECIMAL},
       to_zero_price = #{toZeroPrice,jdbcType=DECIMAL},
       pay_price = #{payPrice,jdbcType=DECIMAL},
@@ -886,81 +1153,8 @@
       is_read = #{isRead,jdbcType=SMALLINT},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
-      extra = #{extra,jdbcType=LONGVARCHAR}
-    where order_id = #{orderId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusOrder" >
-    update bus_order
-    set order_type = #{orderType,jdbcType=SMALLINT},
-      pay_type = #{payType,jdbcType=SMALLINT},
-      sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
-      ext_order_id = #{extOrderId,jdbcType=VARCHAR},
-      pos_no = #{posNo,jdbcType=VARCHAR},
-      card_type = #{cardType,jdbcType=CHAR},
-      buyer_id = #{buyerId,jdbcType=VARCHAR},
-      buyer_name = #{buyerName,jdbcType=VARCHAR},
-      carrier_id = #{carrierId,jdbcType=VARCHAR},
-      carrier_name = #{carrierName,jdbcType=VARCHAR},
-      plat_id = #{platId,jdbcType=VARCHAR},
-      plat_name = #{platName,jdbcType=VARCHAR},
-      plat_shop_id = #{platShopId,jdbcType=VARCHAR},
-      shop_id = #{shopId,jdbcType=VARCHAR},
-      shop_name = #{shopName,jdbcType=VARCHAR},
-      trade_from = #{tradeFrom,jdbcType=VARCHAR},
-      trade_status = #{tradeStatus,jdbcType=CHAR},
-      order_status = #{orderStatus,jdbcType=CHAR},
-      refund_status = #{refundStatus,jdbcType=CHAR},
-      refund_time = #{refundTime,jdbcType=TIMESTAMP},
-      refund_sponsor = #{refundSponsor,jdbcType=INTEGER},
-      refund_type = #{refundType,jdbcType=INTEGER},
-      refund_reason = #{refundReason,jdbcType=VARCHAR},
-      flow_status = #{flowStatus,jdbcType=CHAR},
-      is_valid = #{isValid,jdbcType=BIT},
-      origin_price = #{originPrice,jdbcType=DECIMAL},
-      order_price = #{orderPrice,jdbcType=DECIMAL},
-      ship_price = #{shipPrice,jdbcType=DECIMAL},
-      discount_price = #{discountPrice,jdbcType=DECIMAL},
-      to_zero_price = #{toZeroPrice,jdbcType=DECIMAL},
-      pay_price = #{payPrice,jdbcType=DECIMAL},
-      dib_price = #{dibPrice,jdbcType=DECIMAL},
-      recept_price = #{receptPrice,jdbcType=DECIMAL},
-      package_price = #{packagePrice,jdbcType=DECIMAL},
-      point_fee = #{pointFee,jdbcType=INTEGER},
-      bonus_price = #{bonusPrice,jdbcType=DECIMAL},
-      rate_price = #{ratePrice,jdbcType=DECIMAL},
-      is_settlemented = #{isSettlemented,jdbcType=BIT},
-      receive_name = #{receiveName,jdbcType=VARCHAR},
-      province_id = #{provinceId,jdbcType=VARCHAR},
-      province = #{province,jdbcType=VARCHAR},
-      city_id = #{cityId,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR},
-      district_id = #{districtId,jdbcType=VARCHAR},
-      district = #{district,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      longitude_address = #{longitudeAddress,jdbcType=VARCHAR},
-      latitude_address = #{latitudeAddress,jdbcType=VARCHAR},
-      mobile = #{mobile,jdbcType=VARCHAR},
-      zip_code = #{zipCode,jdbcType=VARCHAR},
-      memo = #{memo,jdbcType=VARCHAR},
-      buyer_notes = #{buyerNotes,jdbcType=VARCHAR},
-      seller_notes = #{sellerNotes,jdbcType=VARCHAR},
-      is_invoice = #{isInvoice,jdbcType=BIT},
-      is_trave = #{isTrave,jdbcType=BIT},
-      invoice_type = #{invoiceType,jdbcType=SMALLINT},
-      invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
-      invoice_content = #{invoiceContent,jdbcType=VARCHAR},
-      order_time = #{orderTime,jdbcType=TIMESTAMP},
-      pay_time = #{payTime,jdbcType=TIMESTAMP},
-      delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
-      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
-      print_count = #{printCount,jdbcType=INTEGER},
-      cash_id = #{cashId,jdbcType=VARCHAR},
-      cash_name = #{cashName,jdbcType=VARCHAR},
-      settle_time = #{settleTime,jdbcType=TIMESTAMP},
-      shift = #{shift,jdbcType=SMALLINT},
-      is_read = #{isRead,jdbcType=SMALLINT},
-      created_time = #{createdTime,jdbcType=TIMESTAMP},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      updated_name = #{updatedName,jdbcType=VARCHAR},
+      created_name = #{createdName,jdbcType=VARCHAR}
     where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
 </mapper>
