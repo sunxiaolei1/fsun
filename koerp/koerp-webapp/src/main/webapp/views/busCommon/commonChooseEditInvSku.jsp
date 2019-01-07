@@ -87,13 +87,14 @@ $(function() {
 		selectOnCheck: true,
 	    checkOnSelect: true,
 		columns: [[
-			{field: 'skuId', checkbox: true},						
+			{field: 'skuId', hidden: true},						
 			{field: "sku", title: "SKU", width: 80, align: "center"},
 			{field: "goodsName", title: "名称", width: 160, align: "center"},
 			{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
 				return formatter(value, window.parent.categoryCode); 
 			}},
 			{field: "property", title: "规格", width: 120, align: "center"},
+			{field: "stockQty", title: "库存", width: 60, align: "center"},
 			{field: "qty", title: "数量", width: 60, align: "center"},
 			{field: "originSalePrice", title: "原价", width: 60, align: "center",formatter:numBaseFormat},
 			{field: "salePrice", title: "单价", width: 60, align: "center",formatter:numBaseFormat},

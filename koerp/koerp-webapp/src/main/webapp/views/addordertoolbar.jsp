@@ -33,7 +33,7 @@
 </style>
 
 <div id="addtoolbar" class="toolbar" data-options="region:'center'">	
-	<a href="#" class="easyui-linkbutton" iconCls="icon-cog_add" plain="true" onclick="previewOrder()">结帐</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cog_add" plain="true" onclick="toPayAccount()">结帐</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="cancel()">取消</a>			
 </div> 
 
@@ -42,190 +42,100 @@
 /**
  * 预览单据
  */
-function previewOrder(){
+function toPayAccount(){
 	
 	var saveData = getSaveData();
 	if(saveData!=null){
-		var isTrue = updatePreviewOrder(saveData.params);
+		var isTrue = toPayAccountWin(saveData.params);
 		if(isTrue){
-			$("#editDiffOrderWin").window("open");
+			$("#payAccountWin").window("open");
 		}		
 	}
 	
 }
 
 /**
- * 初始化预览单据
+ * 初始化支付信息
  */
-function updatePreviewOrder(paramsData){
-	
-	//差异单商品列表
-	var diffSkus = [];
-	//出现在被替换商品列表的商品
-	var deleteSkus = [];
-	//所有商品(包含新增的和被替换的商品)
-	var diffOrderDetails = paramsData.diffOrderDetails;
-	//被替换商品列表
-	var deleteSkuDetails = paramsData.deleteSkuDetails;	
-	var neworderprice = 0;
-	var newpayprice = 0;
-	
-	var hasAddSku = false;
-	$.each(diffOrderDetails, function(){
-		if(typeof(this.orderlineid)=="undefined"){
-			neworderprice += this.orderqty * this.saleprice;
-			newpayprice += this.totalprice;	
-			diffSkus.push(this);	
-			hasAddSku = true;
-		}else{
-			//未被替换
-			if(10 == this.aftersalestatus){												
-				neworderprice += this.orderqty * this.saleprice;
-				newpayprice += this.totalprice;
-				diffSkus.push(this);
-			}else{
-				deleteSkus.push(this);
-			}
-		}
-	});	
-	
-	if(!hasAddSku){
-		$.messager.alert("错误", "不存在新增的商品!", "error");  
-		return false;
+function initPayAccountData(paramsData){
+	//清空
+	currPayAccountData = [];	
+	var header = paramsData.header;
+	var toZeroPrice = header.toZeroPrice;	
+	if(toZeroPrice!=null && toZeroPrice>0){
+        currPayAccountData.push({
+        	"payMode": 900,
+        	"receptPrice": toZeroPrice,
+        	"dibPrice": 0,
+        	"payPrice": 0,
+        	"discountAmount": toZeroPrice
+        });
 	}	
-	if(deleteSkus.length==0){
-		$.messager.alert("错误", "不存在被替换的商品!", "error");  		
-		return false;
-	}
 	
-	var diffqtyError = false;
-	$.each(deleteSkuDetails, function(){	
-		var diffqty = this.oldorderqty-this.orderqty;
-		if(diffqty<0){
-			diffqtyError = true;
-			return false;
-		}	
-		if(diffqty>0){		
-			neworderprice += this.diffqty * this.saleprice;
-			newpayprice += this.diffqty * this.payprice;
-			var orderlineid = this.orderlineid;	
-			$.each(deleteSkus, function(){			
-				if(this.orderlineid==orderlineid){
-					var that = cloneObj(this);
-					that.orderqty = diffqty;
-					that.totalprice = diffqty * that.payprice; 
-					that.discountprice = diffqty * that.saleprice - that.totalprice;
-					diffSkus.push(that);	
-					return false;
-				}				
-			});			
-		}
-		var row = cloneObj(this);
-		var totalprice = row.totalprice;
-		row.totalprice = (totalprice>0?-totalprice:totalprice);
-		diffSkus.push(row);				
-	});
+}
+
+/**
+ * 打开结帐界面
+ */
+function toPayAccountWin(paramsData){
+
+	//初始化支付信息
+	initPayAccountData(paramsData);
 	
-	if(diffqtyError){
-		$.messager.alert("错误", "被替换商品数不能大于下单数量!", "error");  
-		return false;
-	}
+	var header = paramsData.header;
+	$payAccountfm.form("load", header);
+	//初始支付余额
+	$("#balancePrice",$payAccountfm).val(header.orderPrice-header.toZeroPrice);
 	
-	//新订单商品总金额
-	$("#neworderprice", $diffOrderfm).numberbox("setValue", neworderprice);	
-	//新订单商品优惠
-	var discountprice = neworderprice - newpayprice;
-	$("#discountprice", $diffOrderfm).numberbox("setValue", discountprice);	
-	
-	//新订单优惠
-	var sellercouponprice = $("#sellercouponprice", $diffOrderfm).numberbox("getValue");
-	var couponfee = discountprice + Number(sellercouponprice);
-	$("#couponfee", $diffOrderfm).val(couponfee);
-	
-	//新订单实收金额
-	var shippingfee = $("#shippingfee", $diffOrderfm).numberbox("getValue");	
-	newpayprice = newpayprice + Number(shippingfee) - Number(sellercouponprice);
-	$("#newpayprice", $diffOrderfm).numberbox("setValue",newpayprice);
-	
-	//补退金额
-	var originalpayprice = $("#originalpayprice", $diffOrderfm).numberbox("getValue");
-	var integralamount = $("#integralamount", $diffOrderfm).numberbox("getValue");
-	var bonusamount =  $("#bonusamount", $diffOrderfm).numberbox("getValue");
-	var changeprice = newpayprice - Number(originalpayprice) + Number(integralamount/100) + Number(bonusamount) ;
-	$("#changeprice", $diffOrderfm).numberbox("setValue",changeprice);
-	$("#difforderprice", $diffOrderfm).val(changeprice);
-	
-	diffOrderSkuDataGrid.datagrid({
+	currPayAccountDataGrid.datagrid({
 		view:footerStyleView,
-		title:'差异商品明细',
 		width:"auto",
 	    height:"auto",
 	    nowrap:false,
 	    striped:true,
 	    border:true,
 	    collapsible:false,//是否可折叠的
-	    fit:true,//自动大小	    
+	    fit:true,//自动大小	   
 	    remoteSort:false,
-	    sortName:"sku",
-        sortOrder:"desc",	  
-	    singleSelect:true,//是否单选	    
-	    rownumbers:true,//行号	   
-	    fitColumns:true,	    
-	    columns:[[
-          	//{field:'ck',checkbox:true},	    		
-        	{field:"sku",title:"SKU",width:120,align:"center",sortable:true},
-        	{field:"materialname",title:"商品名称",width:220,align:"center"},
-        	{field:"materialcode",title:"商品货号",width:80,align:"center"},	
-        	{field:"isbuy",title:"商品类型",width:60,align:"center", 
-        		formatter:function(value, row){
-        			return formatter(value, window.parent.ecIsbuy); 
-        		}
-        	},
-        	{field:"materialproperty",title:"商品属性",width:140,align:"center"},
-        	{field:"orderlineid",title:"交易类型",width:60,align:"center",
-        		formatter:function(value, row){
-        			var value = "";
-        			if(row.sku!='合计'){
-        				if(typeof(row.orderlineid)=="undefined"){
-        					value = "变更";
-        				}else{
-        					if(row.oldorderqty!=null && row.oldorderqty>0){
-        						value = "回退";
-        					}else{
-        						value = "销售";
-        					}
-        				}
-        			} 
-        			return value;       		 	
-        		}
-        	},
-        	{field:"orderqty",title:"交易数量",width:60,align:"center",formatter:numBaseFormat},
-        	{field:"saleprice",title:"销售单价",width:60,align:"center",formatter:numBaseFormat},
-        	{field:"payprice",title:"实付单价",width:60,align:"center",formatter:numBaseFormat},	      	
-        	{field:"totalprice",title:"交易总价",width:60,align:"center",formatter:numBaseFormat}
-	    ]],
+	    sortName:"payMode",
+        sortOrder:"asc",	
+        //pagination:true,
+        pageNumber:currPageNumber,
+        pageSize: currPageSize,
+	    pageList: GLOBAL_PAGE_SIZE_LIST,
+	    singleSelect:false,//是否单选   
+	    rownumbers:true,//行号
+	    fitColumns:true,
+	    showFooter:true,
+	    toolbar: "#payAccountToolbar",
+	    columns: payAccountColumns,
+	    loadFilter:function(data) {     		
+    		var fields = ["receptPrice","payPrice","dibPrice","discountAmount"];       		
+    		//排序拦截器
+    		sortFilter($(this), data);		
+    	    //分页拦截器
+    	    var data = pagerFilter($(this), data, fields, "payMode"); 
+
+    	    //同步订单头金额信息   	       	    		
+   	    	$("#payPrice", $payAccountfm).numberbox("setValue", Number(data.footer[0].payPrice));
+   	    	$("#dibPrice", $payAccountfm).numberbox("setValue", Number(data.footer[0].dibPrice));
+    	    $("#discountPrice", $payAccountfm).numberbox("setValue", 
+   	    		Number(data.footer[0].discountAmount) - $("#toZeroPrice", $payAccountfm).numberbox("getValue"));   	    	
+   	    	$("#receptPrice", $payAccountfm).numberbox("setValue", 
+   	    		Number(data.footer[0].receptPrice)-Number(data.footer[0].discountAmount));
+			return data; 
+        },
+        rowStyler:function(index,row){	    		    	
+    		if (row.payMode=="合计"){//这里是判断哪些行
+                return 'font-weight:bold;';  
+            }	
+    		return "";
+		},
 	    loadMsg:"数据加载中请稍后……",
 	    emptyMsg:"没有符合条件的记录",
-	    showFooter:true,
-	    rowStyler:function(index,row){
-	    	if (row.sku=="合计"){//这里是判断哪些行
-                return 'font-weight:bold;';  
-            }	    	
-	    	var value = "";
-	    	if(typeof(row.orderlineid)=="undefined"){
-				value = "background-color:#42cc06;";
-			}else{
-				if(row.oldorderqty!=null && row.oldorderqty>0){
-					value = "background-color:#FF9933;";
-				}
-			}
-	    	return value;	    	 	
-		},
-	    loadFilter:function(data) {
-	    	var fields = ["totalprice"];
-	    	return commonListFormat(data, fields, "sku");
-        }
-	}).datagrid("loadData", diffSkus);
+	    selectOnCheck: true,
+	    checkOnSelect: true
+	}).datagrid("loadData", currPayAccountData);
 	
 	return true;
 }

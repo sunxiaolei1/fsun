@@ -76,7 +76,7 @@
 		bas_sku.origin_sale_price as originSalePrice,
 		bas_sku.assist_id as assistId,
 		bas_sku.warning_qty as warningQty,
-		bas_sku.qty as qty,
+		inv_sku.qty as qty,
 		bas_sku.convert_qty as convertQty,
 		bas_sku.convert_unit as convertUnit,	
 		bas_sku.is_vip_appoint as isVipAppoint

@@ -63,7 +63,8 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 				map.put("property", invSkuDto.getProperty());				
 				map.put("unit", invSkuDto.getUnit());
 				map.put("assistId", invSkuDto.getAssistId());
-				map.put("warningQty", invSkuDto.getWarningQty());
+				map.put("warningQty", invSkuDto.getWarningQty());			
+				map.put("stockQty", invSkuDto.getQty());
 				map.put("qty", 1);
 				map.put("convertQty", invSkuDto.getConvertQty());
 				map.put("convertUnit", invSkuDto.getConvertUnit());

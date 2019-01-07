@@ -204,6 +204,7 @@
       <result column="d_origin_sale_price" property="originSalePrice"/>
       <result column="d_sale_price" property="salePrice"/>
       <result column="d_part_price" property="partPrice"/>
+      <result column="d_coupon_price" property="couponPrice"/>
       <result column="d_discount_price" property="discountPrice"/>
       <result column="d_total_price" property="totalPrice"/>
       <result column="d_cost_price" property="costPrice"/>    
@@ -302,6 +303,7 @@
 		d.origin_sale_price as d_origin_sale_price,
 		d.sale_price as d_sale_price,
 		d.part_price as d_part_price,
+		d.coupon_price as d_coupon_price,
 		d.discount_price as d_discount_price,
 		d.total_price as d_total_price,
 		d.cost_price as d_cost_price,

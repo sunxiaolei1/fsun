@@ -322,6 +322,11 @@ public class DocOrderHeader {
      */
     private String route;
 
+    /**
+     * 打印次数
+     */
+    private Integer printCount;
+    
     public String getOrderNo() {
         return orderNo;
     }
@@ -750,5 +755,19 @@ public class DocOrderHeader {
 	 */
 	public void setContacts(String contacts) {
 		this.contacts = contacts;
+	}
+
+	/**
+	 * @return the printCount
+	 */
+	public Integer getPrintCount() {
+		return printCount;
+	}
+
+	/**
+	 * @param printCount the printCount to set
+	 */
+	public void setPrintCount(Integer printCount) {
+		this.printCount = printCount;
 	}
 }

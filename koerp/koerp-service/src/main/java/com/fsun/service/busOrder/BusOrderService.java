@@ -17,6 +17,7 @@ import com.fsun.biz.bus.manage.BusGoodsManage;
 import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusPayAccountManage;
 import com.fsun.biz.bus.manage.DocOrderHeaderManage;
+import com.fsun.common.utils.DateUtil;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
@@ -186,6 +187,8 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		header.setCashId(cashId);
 		header.setCashName(cashName);*/
 		
+		header.setPosNo("1");
+		header.setSettleTime(DateUtil.getNowDate());
 		header.setTradeFrom(TradeFromEnum.PC.getCode());
 		header.setTradeStatus(TradeStatusEnum.COMPLETED.getCode());
 		header.setOrderStatus(OrderStatusEnum.CONFIRMED.getCode());

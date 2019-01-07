@@ -303,6 +303,11 @@ public class DocAsnHeader {
      * 表字段 : doc_asn_header.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 打印次数
+     */
+    private Integer printCount;
 
     public String getAsnNo() {
         return asnNo;
@@ -703,4 +708,18 @@ public class DocAsnHeader {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+	/**
+	 * @return the printCount
+	 */
+	public Integer getPrintCount() {
+		return printCount;
+	}
+
+	/**
+	 * @param printCount the printCount to set
+	 */
+	public void setPrintCount(Integer printCount) {
+		this.printCount = printCount;
+	}
 }

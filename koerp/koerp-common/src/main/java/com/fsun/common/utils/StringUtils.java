@@ -37,7 +37,7 @@ public class StringUtils {
 	 * @return true/false
 	 */
 	public static boolean isEmpty(String value) {
-		int strLen;
+		int strLen = 0;
 		if (value == null || (strLen = value.length()) == 0) {
 			return true;
 		}

@@ -15,6 +15,7 @@
     <result column="origin_precent" property="originPrecent" jdbcType="DECIMAL" />
     <result column="vip_time" property="vipTime" jdbcType="TIMESTAMP" />
     <result column="enable_price" property="enablePrice" jdbcType="DECIMAL" />
+    <result column="gift_price" property="giftPrice" jdbcType="DECIMAL" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="enabled" property="enabled" jdbcType="BIT" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
@@ -23,7 +24,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     vip.id, vip.customer_code, vip.card_type, vip.card_no, vip.mobile, vip.wechat, vip.cn_name, vip.sex, 
-    vip.brithday, vip.email, vip.origin_precent, vip.vip_time, vip.enable_price, vip.memo, 
+    vip.brithday, vip.email, vip.origin_precent, vip.vip_time, vip.enable_price, vip.gift_price, vip.memo, 
     vip.enabled, vip.updated_time, vip.created_name, vip.updated_name
   </sql>
   
@@ -94,6 +95,7 @@
     	vip.origin_precent as origin_precent, 
     	vip.vip_time as vip_time, 
     	vip.enable_price as enable_price, 
+    	vip.gift_price as gift_price,
     	vip.memo as memo, 
     	vip.enabled as enabled, 
     	vip.updated_time as updated_time, 
@@ -116,14 +118,14 @@
       mobile, wechat, cn_name, 
       sex, brithday, email, 
       origin_precent, vip_time, enable_price, 
-      memo, enabled, updated_time, 
+      gift_price, memo, enabled, updated_time, 
       created_name, updated_name)
     values (#{id,jdbcType=VARCHAR}, #{customerCode,jdbcType=VARCHAR}, #{cardType,jdbcType=INTEGER},
       #{cardNo,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, #{cnName,jdbcType=VARCHAR}, 
       #{sex,jdbcType=VARCHAR}, #{brithday,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, 
       #{originPrecent,jdbcType=DECIMAL}, #{vipTime,jdbcType=TIMESTAMP}, #{enablePrice,jdbcType=DECIMAL}, 
-      #{memo,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{giftPrice,jdbcType=DECIMAL},#{memo,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{updatedTime,jdbcType=TIMESTAMP}, 
       #{createdName,jdbcType=VARCHAR}, #{updatedName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusVip" >
@@ -164,6 +166,9 @@
       </if>
       <if test="vipTime != null" >
         vip_time,
+      </if>    
+      <if test="giftPrice != null" >
+        gift_price,
       </if>
       <if test="enablePrice != null" >
         enable_price,
@@ -220,6 +225,9 @@
       </if>
       <if test="vipTime != null" >
         #{vipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="giftPrice != null" >
+      	#{giftPrice,jdbcType=DECIMAL},
       </if>
       <if test="enablePrice != null" >
         #{enablePrice,jdbcType=DECIMAL},
@@ -280,6 +288,9 @@
       <if test="enablePrice != null" >
         enable_price = #{enablePrice,jdbcType=DECIMAL},
       </if>
+      <if test="giftPrice != null" >
+        gift_price = #{giftPrice,jdbcType=DECIMAL},
+      </if>      
       <if test="memo != null" >
         memo = #{memo,jdbcType=VARCHAR},
       </if>
@@ -312,6 +323,7 @@
       origin_precent = #{originPrecent,jdbcType=DECIMAL},
       vip_time = #{vipTime,jdbcType=TIMESTAMP},
       enable_price = #{enablePrice,jdbcType=DECIMAL},
+      gift_price = #{giftPrice,jdbcType=DECIMAL},
       memo = #{memo,jdbcType=VARCHAR},
       enabled = #{enabled,jdbcType=BIT},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},

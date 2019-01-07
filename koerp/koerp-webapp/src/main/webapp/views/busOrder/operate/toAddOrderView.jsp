@@ -35,7 +35,7 @@
 				</td>
 				<th width="12%">经办人<span style="color:red;">*</span></th>
 				<td>
-					<input id="salesman" name="carrierId" class="easyui-combogrid" required/>	
+					<input id="salesman" name="carrierId" class="easyui-combogrid" />	
 					<input hidden=true id="carrierName" name="carrierName" />								
 				</td>								
 	        </tr>
@@ -45,17 +45,17 @@
 					<input id="allCustomer" name="buyerId" class="easyui-combogrid" required/>
 					<input hidden=true id="buyerName" name="buyerName" />									
 				</td>
-	        	<th width="12%">订单金额<span style="color:red;">*</span></th>
+	        	<th width="12%">订单金额</th>
 				<td>
 					<input id="orderPrice" name="orderPrice" class="easyui-numberbox" readOnly required
 						data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
 				</td>
-	        	<th width="12%">商品优惠<span style="color:red;">*</span></th>
+	        	<th width="12%">商品优惠</th>
 				<td>
 					<input id="couponPrice" name="couponPrice" class="easyui-numberbox" readOnly required
 						data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
 				</td>
-	        	<th width="12%">抹零金额<span style="color:red;">*</span></th>
+	        	<th width="12%">抹零金额</th>
 				<td>
 					<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" readOnly required
 						data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
@@ -90,7 +90,88 @@
 		<%@include file="./detailskutoolbar.jsp"%>
 	</div>
 	<table id="orderDetailDataGrid"></table>
-</div>					
+</div>	
+
+<div id="payAccountWin" class="easyui-window" title="结帐信息" closed="true" align="center" style="display:none;width:90%;height:85%;top:40px;" modal="true">  
+   	 <div class="easyui-layout" fit=true  id='base_layout'>	
+   	 	<div data-options="region:'north'" style="height:280px;">
+   	 		<div id="payAccountToolbar" style="display:none;">
+				<%@include file="./payAccountToolbar.jsp"%>
+			</div>
+   	 		<table id="payAccountDataGrid"></table>
+   	 	</div> 		 	
+   	 	<div data-options="region:'center'" >
+   	 	    <form id="payAccountfm">	
+				<table class="nb-formTable" style="width:100%;margin-top:2px;">
+			        <tr>
+			            <th width="12%">单据编号</th>
+						<td>
+							<input id="orderId" name="orderId" class="easyui-textbox" readOnly />
+						</td>
+						<th width="12%">单据类型</th>
+						<td>
+							<input id="orderType" name="orderType" class="easyui-combobox" readOnly />								
+						</td>										
+						<th width="12%">所属店仓</th>
+						<td>
+							<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
+						</td>
+						<th width="12%">经办人</th>
+						<td>
+							<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly />								
+						</td>								
+			        </tr>
+			        <tr>
+			        	<th width="12%">客户名称</th>
+						<td>
+							<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly/>
+							<input id="buyerId" name="buyerId" hidden="true" />									
+						</td>
+			        	<th width="12%">订单金额</th>
+						<td>
+							<input id="orderPrice" name="orderPrice" class="easyui-numberbox" readOnly
+								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+						    <input id="balancePrice" hidden="true" />	
+						</td>
+			        	<th width="12%">商品优惠</th>
+						<td>
+							<input id="couponPrice" name="couponPrice" class="easyui-numberbox" readOnly
+								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+						</td>
+			        	<th width="12%">抹零金额</th>
+						<td>
+							<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" readOnly
+								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+						</td>	        						        		        	
+			        </tr>
+			        <tr>
+			        	<th width="12%">实收金额</th>
+						<td>
+							<input id="receptPrice" name="receptPrice" class="easyui-numberbox" readOnly
+								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+						</td>		        	
+			        	<th width="12%">实付金额</th>
+						<td>
+							<input id="payPrice" name="payPrice" class="easyui-numberbox" readOnly
+								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+						</td>
+						<th width="12%">找零金额</th>
+						<td>
+							<input id="dibPrice" name="dibPrice" class="easyui-numberbox" readOnly
+								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+						</td>
+			        	<th width="12%">商家优惠</th>
+						<td>
+							<input id="discountPrice" name="discountPrice" class="easyui-numberbox" readOnly
+								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+						</td>		        		        						        		        	
+			        </tr>        
+				</table>
+			</form> 		   	
+   	 	</div> 	
+   	 </div>	 
+</div>
+				
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>
@@ -105,8 +186,11 @@
 <script type="text/javascript">
 
 var currDetailData = []; 
+var currPayAccountData = [];
 var currOrderDetailDataGrid = $("#orderDetailDataGrid");
+var currPayAccountDataGrid = $("#payAccountDataGrid");
 var $orderfm = $("#orderfm");   
+var $payAccountfm = $("#payAccountfm"); 
 var soColumns = [[
 	{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
@@ -158,17 +242,42 @@ var soColumns = [[
 	},
 	{field:"costPrice",title:"成本价", width:80, hidden:true},
 	{field:"totalPrice",title:"实付金额", width:80,align:"center",formatter:numBaseFormat},
+	{field:"totalPartPrice",title:"分摊金额", width:80, hidden:true},
 	{field:"couponPrice",title:"商品优惠", width:80,hidden:true},
 	{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}},
 	{field:"stockOut",title:"操作",width:80,align:"center", 
-		formatter: function(value, row, index){						
+		formatter: function(value, row, index){	
+			if (row.sku=="合计"){//这里是判断哪些行
+                return '';  
+            }	
 			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
 		}
 	}
 ]];
 
+
+var payAccountColumns = [[
+	{field:'ck',checkbox:true},             		
+	{field:"payMode",title:"支付方式", width:80,align:"center",formatter:function(value, row){
+		return formatter(value, window.parent.payMode); 
+	}},            	         	
+	{field:"receptPrice",title:"应收金额", width:80, align:"center",formatter:numBaseFormat},
+	{field:"payPrice",title:"实付金额", width:80, align:"center",formatter:numBaseFormat},
+	{field:"dibPrice",title:"找零金额", width:80, align:"center",formatter:numBaseFormat},
+	{field:"discountAmount",title:"优惠金额", width:80, align:"center",formatter:numBaseFormat},  
+	{field:"tradeNo",title:"支付流水号", width:150, align:"center"},  
+	{field:"cardNo",title:"支付卡号", width:150, align:"center"},  
+	{field:"operate",title:"操作",width:60, align:"center", 
+		formatter: function(value, row, index){	
+			if (row.payMode==900 || row.payMode=="合计"){//这里是判断哪些行
+                return '';  
+            }	
+			return commonAssemBottonHtml('delPayAccountOne', index, '删除', 'icon-script_delete');													
+		}
+	}
+]];
 
 $(function () { 
 	
@@ -178,6 +287,13 @@ $(function () {
    	  	textField: 'codeName',
    	  	data: window.parent.orderTypeData
    	});			
+	
+	$('#orderType', $payAccountfm).combobox({  
+		prompt: '请选择...',
+   	 	valueField: 'codeCode',
+   	  	textField: 'codeName',
+   	  	data: window.parent.orderTypeData
+   	});	
 	
 	//去除默认的请选择项
 	editInitComboxParams($orderfm, "");
@@ -260,6 +376,7 @@ function initAddSku(rowData){
 	skuDto.salePrice = rowData.salePrice;
 	skuDto.totalPrice = skuDto.salePrice * (skuDto.qty - skuDto.giftCount);
 	skuDto.couponPrice = skuDto.giftPrice + (skuDto.qty-skuDto.giftCount)*(skuDto.originSalePrice-skuDto.salePrice);
+	skuDto.totalPartPrice = skuDto.totalPrice;
 		
 	skuDto.barCode = rowData.barCode;  
 	skuDto.categoryCode = rowData.categoryCode;  

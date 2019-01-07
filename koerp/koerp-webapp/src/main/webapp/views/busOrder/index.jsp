@@ -38,12 +38,13 @@ var frozenColumns = [[
 ]];
 
 var columns = [[		 
-	{field:'order_price',title:'订单金额',width:80,align:'center'},
-	{field:'discount_price',title:'优惠金额',width:80,align:'center'},
-	{field:'to_zero_price',title:'抹零金额',width:80,align:'center'},
-	{field:'pay_price',title:'实付金额',width:80,align:'center'},
-	{field:'dib_price',title:'找零金额',width:80,align:'center'},
-	{field:'recept_price',title:'实收金额',width:80,align:'center'},		
+	{field:'order_price',title:'订单金额',width:80,align:'center',formatter:numBaseFormat},
+	{field:'coupon_price',title:'商品优惠',width:80,align:'center',formatter:numBaseFormat},
+	{field:'discount_price',title:'商家优惠',width:80,align:'center',formatter:numBaseFormat},
+	{field:'to_zero_price',title:'抹零金额',width:80,align:'center',formatter:numBaseFormat},
+	{field:'pay_price',title:'实付金额',width:80,align:'center',formatter:numBaseFormat},
+	{field:'dib_price',title:'找零金额',width:80,align:'center',formatter:numBaseFormat},
+	{field:'recept_price',title:'实收金额',width:80,align:'center',formatter:numBaseFormat},		
 	{field:'buyer_name',title:'买家名称',width:100,align:'center',sortable:true},
 	{field:'carrier_name',title:'经办人',width:100,align:'center',sortable:true},
 	{field:'print_count',title:'是否打印',width:80,align:'center', formatter:function(value, row){

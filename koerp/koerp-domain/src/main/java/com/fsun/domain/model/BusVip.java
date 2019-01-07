@@ -80,6 +80,12 @@ public class BusVip {
      * 表字段 : bus_vip.enable_price
      */
     private BigDecimal enablePrice;
+    
+    /**
+     * 赠金
+     * 表字段 : bus_vip.gift_price
+     */
+    private BigDecimal giftPrice;
 
     /**
      * 备注
@@ -253,6 +259,20 @@ public class BusVip {
 
 	public void setCardType(Integer cardType) {
 		this.cardType = cardType;
+	}
+
+	/**
+	 * @return the giftPrice
+	 */
+	public BigDecimal getGiftPrice() {
+		return giftPrice;
+	}
+
+	/**
+	 * @param giftPrice the giftPrice to set
+	 */
+	public void setGiftPrice(BigDecimal giftPrice) {
+		this.giftPrice = giftPrice;
 	}
     
     

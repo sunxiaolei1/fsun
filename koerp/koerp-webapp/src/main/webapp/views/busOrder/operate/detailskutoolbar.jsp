@@ -4,7 +4,7 @@
 <span style="float:right;margin-top:2px;">	
 	<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
 </span>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addSkuRow()">添加正品 </a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addSkuRow()">添加商品 </a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="addGiftSkuRow()">设为赠品 </a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="delGiftSkuRow()">取消赠品 </a>
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="delSkus()">删除</a> -->
@@ -72,6 +72,109 @@ function addSkuRow() {
         }
     });
 }
+
+/**
+ * 打开设为赠品控件
+ */
+function addGiftSkuRow() {	
+
+	var rows = currOrderDetailDataGrid.datagrid("getSelections");	
+	if(rows!=null && rows.length==1){
+		 var row = rows[0];
+		 $("<div></div>").dialog({
+	        id: "giftSkuDialog",
+	        title: "商品设为赠品",
+	        width: 600,
+	        height: 200,
+	        iconCls: "icon-edit",
+	        closed: false,
+	        cache: false,
+	        href: "${api}/bus/order/toSetGiftsView",	       
+	        modal: true,
+	        minimizable: false,
+	        maximizable: false,
+	        closable: true,
+	        collapsible: false,
+	        resizable: true,
+	        buttons:[
+             	{
+             		text:"确定",iconCls:"icon-disk",
+                     handler: function (data) {                     	
+	                  	if ($setGiftsfm.form('validate')) {
+	                  		var data = formJson($setGiftsfm);
+	        	    		$.each(currDetailData, function(){
+	        	    			if(row.sku == this.sku){
+	        	    				this.isGift = data.isGift;
+	        	    				this.goodsType = data.goodsType;
+	        	    				this.giftCount = data.giftCount;
+	        	    				this.giftPrice = Number(this.giftCount) * Number(this.originSalePrice);
+	        	    				this.totalPrice = this.salePrice * (this.qty - this.giftCount);
+	        	    				this.couponPrice = this.giftPrice + (this.qty - this.giftCount)*(this.originSalePrice - this.salePrice);	    	        	    		
+	    	        	    		return;
+	        	    			}
+	        	    		});
+	        	    		currOrderDetailDataGrid.datagrid("loadData", currDetailData);	
+	                  		$('#giftSkuDialog').dialog("destroy");
+	                  	}
+                     }
+                 },
+                 {
+                     text:"取消",
+                     iconCls:"icon-cancel",
+                     handler:function(){
+                     	$('#giftSkuDialog').dialog("destroy");
+                     }
+                 }
+             ],
+             onLoad:function(){
+             	$('#giftSkuDialog').window('center');        	
+             	$("#goodsName", $setGiftsfm).text(row.goodsName);
+             	$('#goodsType', $setGiftsfm).combobox("setValue",2);
+             	$("#sku", $setGiftsfm).textbox("setValue",row.sku);
+             	$('#qty', $setGiftsfm).numberbox("setValue",row.qty);                	   
+             	$('#giftCount', $setGiftsfm).numberspinner({
+            	    min: 1,
+            	    max: row.qty
+            	}).numberspinner("setValue",1);
+ 			},
+	        onClose: function () {
+	            $(this).dialog("destroy");
+	        }
+	    });
+		
+	}else{
+		$.messager.alert({title: '消息', msg: '请选中一行明细'});
+	}
+	
+   
+}
+
+//取消赠品
+function delGiftSkuRow(){
+	
+	var rows = currOrderDetailDataGrid.datagrid("getSelections");	
+	if(rows!=null && rows.length>0){
+		var skus = new Array(); 
+		$.each(rows, function(){
+			skus.push(this.sku);	
+		});		
+		$.each(currDetailData, function(){
+			if(skus.contains(this.sku)){
+				this.isGift = false;
+				this.goodsType = "";
+		  		this.giftCount = 0;
+		  		this.giftPrice = 0; 
+		  		this.totalPrice = this.salePrice * (this.qty - this.giftCount);
+		  		this.couponPrice = this.giftPrice + (this.qty - this.giftCount)*(this.originSalePrice - this.salePrice);
+			}
+		});
+  		currOrderDetailDataGrid.datagrid("loadData", currDetailData);	
+	}else{
+		$.messager.alert({title: '消息', msg: '请至少选中一行明细'});
+	}
+	
+}
+
 
 /**
  * 删除商品

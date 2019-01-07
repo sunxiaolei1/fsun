@@ -97,15 +97,27 @@ function getSaveData(){
 	if (!isValid || !isValid0){
 		$.messager.alert("错误", "提交的数据不正确!", "error");  
 		return null;
-	}			
+	}	
+	
+	if(currDetailData==null || currDetailData.length==0){
+		$.messager.alert("错误", "请选择订单商品!", "error");  
+		return null;
+	}
+	currOrderDetailDataGrid.datagrid("acceptChanges");	
 
 	var baseInfo = formJson($orderfm);
+	var payAccountInfo = formJson($payAccountfm);
 	
+	baseInfo.receptPrice = payAccountInfo.receptPrice;
+	baseInfo.payPrice = payAccountInfo.payPrice;
+	baseInfo.dibPrice = payAccountInfo.dibPrice;
+	baseInfo.discountPrice = payAccountInfo.discountPrice;	
 	var saveData = {
 	     "params": {
 	    	 "orderId": $("#orderId",$orderfm).textbox("getValue"),
 			 "header": baseInfo,
-			 "details": currDetailData
+			 "details": currDetailData,
+			 "payAccounts": currPayAccountData
 			},
 	     "saveUrl": "${api}/bus/order/saveEntity"
 	}

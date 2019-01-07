@@ -23,6 +23,7 @@ import com.fsun.domain.entity.BusOrderCondition;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
 import com.fsun.domain.enums.OrderTypeEnum;
+import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.OrderException;
@@ -46,6 +47,24 @@ public class BusOrderController extends BaseController {
 		return "/busOrder/index";
 	}
 	
+	@RequestMapping("/toSetGiftsView")
+	public String toSetGiftsView() {
+		return "/busOrder/operate/toSetGiftsView";
+	}
+	
+	@RequestMapping("/toPreviewOrder")
+	public String toPreviewOrder() {
+		return "/busOrder/operate/toPreviewOrder";
+	}
+	
+	@RequestMapping("/toPayModeView")
+	public ModelAndView toPayModeView(@RequestParam("payMode") Short payMode) {
+		String url = this.getUrlByPayMode(payMode);
+		ModelAndView modelAndView = new ModelAndView(url);		
+		modelAndView.addObject("payMode", payMode);		
+		return modelAndView;
+	}
+
 	@RequestMapping("/toAddView")
 	public ModelAndView toAddView(@RequestParam("orderType") Short orderType) {
 		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.ADD.getCode());
@@ -203,6 +222,41 @@ public class BusOrderController extends BaseController {
 				break;	
 			case VIEW:			
 				break;
+			default:
+				break;
+		}
+		return url;
+	}
+	
+	/**
+	 * 根据不同的支付方式获取对应的支付页面
+	 * @param payMode
+	 * @return
+	 */
+	private String getUrlByPayMode(Short payMode) {
+		String url = "";
+		switch (PayModeEnum.getByValue(payMode)) {					
+			case UNOIN_PAY:	
+				url = "/busOrder/operate/toPayModeView";
+				break;						
+			case CASH_PAY:	
+				url = "/busOrder/operate/toCashPayView";
+				break;		
+			case ALI_PAY:	
+				url = "/busOrder/operate/toPayModeView";
+				break;		
+			case WECHAT_PAY:	
+				url = "/busOrder/operate/toPayModeView";
+				break;		
+			case UNPAY:	
+				url = "/busOrder/operate/toUnPayView";
+				break;		
+			case VIP_PAY:	
+				url = "/busOrder/operate/toVipPayView";
+				break;	
+			case DISCOUNT:	
+				url = "/busOrder/operate/toPayModeView";
+				break;				
 			default:
 				break;
 		}

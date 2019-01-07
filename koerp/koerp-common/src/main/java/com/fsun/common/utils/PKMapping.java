@@ -54,37 +54,35 @@ public class PKMapping {
    * @Description: 生成表的PK
    */
 
-  public static String GUUID(int code) {
-    if (code < 1) {
-      return null;
-    }
+	public static String GUUID(int code) {
+		if (code < 1) {
+			return null;
+		}
 
-      int hashCodeV = UUID.randomUUID().toString().hashCode();
+		int hashCodeV = UUID.randomUUID().toString().hashCode();
 
-    
+		if (hashCodeV < 0) {// 负转正
+			hashCodeV = -hashCodeV;
+		}
+		String subHashcodeV = ZERO + hashCodeV;
+		subHashcodeV = subHashcodeV.substring(subHashcodeV.length() - 6, subHashcodeV.length());
+		Date d = new Date();
+		String s = sdf.format(d);
+		// System.out.println(s + code + subHashcodeV);
+		set.add(s + code + subHashcodeV);
+		if (set.size() == size || set.size() % 500000 == 0) {// 出现数据重复或者set容器达500000，时间加1毫秒，set清空
+			long addS = Long.parseLong(s) + 2;
+			String newtest = String.valueOf(addS) + code + subHashcodeV;
+			set.clear();
+			// System.out.println("set内存已清空++++++++++++++++++++++++++++++++++++++++++++++++++++++"+set.size());
+			set.add(newtest);
+			size = set.size();
+			return newtest;
+		} else {
 
-             if(hashCodeV < 0) {//负转正
-                 hashCodeV = - hashCodeV;
-             }
-		    String subHashcodeV=ZERO+hashCodeV;
-		    subHashcodeV=subHashcodeV.substring(subHashcodeV.length() - 6, subHashcodeV.length());
-		    Date d = new Date();
-		    String s = sdf.format(d);
-		    //System.out.println(s + code + subHashcodeV);
-		    set.add(s + code + subHashcodeV);
-			    if(set.size()==size||set.size()%500000==0){//出现数据重复或者set容器达500000，时间加1毫秒，set清空
-			    	long addS=Long.parseLong(s)+2;
-			    	String newtest=String.valueOf(addS)+code+subHashcodeV;
-			    	set.clear();
-			    	//System.out.println("set内存已清空++++++++++++++++++++++++++++++++++++++++++++++++++++++"+set.size());
-			    	set.add(newtest);
-			    	size=set.size(); 
-			    	return newtest;
-			    }else{
-			    	
-			    	size=set.size(); 
-			    }
-		    //System.out.println("hashset的长度"+set.size());
-        return s + code + subHashcodeV;
-  }
+			size = set.size();
+		}
+		// System.out.println("hashset的长度"+set.size());
+		return s + code + subHashcodeV;
+	}
 }

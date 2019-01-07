@@ -159,6 +159,12 @@ public class BusGoods {
      * 表字段 : bus_goods.part_price
      */
     private BigDecimal partPrice;
+    
+    /**
+     * 商品优惠
+     * 表字段 : bus_goods.coupon_price
+     */
+    private BigDecimal couponPrice;
 
     /**
      * 商品折价 销售价-分摊价=折扣价
@@ -535,4 +541,18 @@ public class BusGoods {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+	/**
+	 * @return the couponPrice
+	 */
+	public BigDecimal getCouponPrice() {
+		return couponPrice;
+	}
+
+	/**
+	 * @param couponPrice the couponPrice to set
+	 */
+	public void setCouponPrice(BigDecimal couponPrice) {
+		this.couponPrice = couponPrice;
+	}
 }
