@@ -36,7 +36,7 @@
       <result column="sku_property" property="property"/> 
       <result column="sku_market_price" property="marketPrice"/> 
       <result column="sku_sale_price" property="salePrice"/> 
-      <result column="sku_last_sale_price" property="lastSalePrice"/> 
+      <result column="sku_supply_price" property="supplyPrice"/> 
       <result column="sku_cost_price" property="costPrice"/> 
       <result column="sku_vip_price" property="vipPrice"/> 
       <result column="sku_unit" property="unit"/> 
@@ -88,7 +88,7 @@
         c.property as sku_property,  
         c.market_price as sku_market_price, 
         c.sale_price as sku_sale_price,  
-        c.last_sale_price as sku_last_sale_price,  
+        c.supply_price as sku_supply_price,  
         c.cost_price as sku_cost_price, 
         c.vip_price as sku_vip_price,  
         c.unit as sku_unit, 

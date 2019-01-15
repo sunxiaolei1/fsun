@@ -9,6 +9,7 @@ import java.util.List;
  */
 public enum CustomerTypeEnum {
 
+	NG("NG", "内供客户"),
 	VIP("VIP", "会员"),
 	JXS("JXS", "经销商"),
 	GYS("GYS", "供应商"),

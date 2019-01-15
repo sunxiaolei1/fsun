@@ -45,7 +45,7 @@ function defindInitNewSku(checkedSku){
     sku.property = checkedSku.property;     
     sku.marketPrice = checkedSku.marketPrice;
     sku.salePrice = checkedSku.originSalePrice;
-    sku.lastSalePrice = null;
+    sku.supplyPrice = checkedSku.marketPrice;
     sku.vipPrice = checkedSku.originSalePrice;
     sku.costPrice = checkedSku.costPrice;
     sku.unit = checkedSku.unit;

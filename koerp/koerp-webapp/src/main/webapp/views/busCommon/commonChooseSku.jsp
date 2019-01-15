@@ -418,7 +418,7 @@
 	    sku.property = checkedSku.property;     
 	    sku.marketPrice = checkedSku.marketPrice;
 	    sku.salePrice = checkedSku.salePrice;
-	    sku.lastSalePrice = null;
+	    sku.supplyPrice = checkedSku.marketPrice;
 	    sku.vipPrice = checkedSku.salePrice;
 	    sku.unit = checkedSku.unit;
 	    sku.unitName = checkedSku.unitName;

@@ -180,18 +180,23 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 	 * @return
 	 */
 	private BigDecimal getSalePriceByCustomer(BusCustomer busCustomer, InvSkuDto invSkuDto, BusVipCondition busVipCondition){
-		BigDecimal realSalePrice = null;
-		//批发价
+		BigDecimal realSalePrice = null;		
+		//内供价
+		BigDecimal supplyPrice = invSkuDto.getSupplyPrice();		
+		//分销价
 		BigDecimal marketPrice = invSkuDto.getMarketPrice();
-		//普通价
+		//零售价
 		BigDecimal salePrice = invSkuDto.getSalePrice();
-		//会员价
+		//VIP价
 		BigDecimal vipPrice = invSkuDto.getVipPrice();	
 		//是否是外部会员指定vip价商品
 		boolean isVipAppoint = invSkuDto.getIsVipAppoint();
 		
 		if(busCustomer!=null){
 			switch (CustomerTypeEnum.getByCode(busCustomer.getCustomerType())) {
+				case NG:	
+					realSalePrice = supplyPrice;
+					break;
 				case VIP:	
 					//会员卡类型
 					Integer vipCardType = busVipCondition.getCardType();

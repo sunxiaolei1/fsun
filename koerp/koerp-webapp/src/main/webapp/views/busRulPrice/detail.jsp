@@ -31,7 +31,7 @@
 <form id="fm"> 
  	<div class="fsun-wrap" style="margin-top: 14px">
 	    <span class="title" style="top: 69px;">关联商品价格</span>		    	
-		<div style="height: 210px;width: 100%;">
+		<div style="height: 240px;width: 100%;">
 			<div id="skutoolbar" style="display:none;">
 				<%@include file="./detailskutoolbar.jsp"%>
 			</div>
@@ -39,8 +39,8 @@
 		</div>
 	</div>
 	<div class="fsun-wrap">
-	    <span class="title" style="top: 310px;">关联店仓</span>		
-		<div style="height: 171px;width: 100%;">
+	    <span class="title" style="top: 340px;">关联店仓</span>		
+		<div style="height: 141px;width: 100%;">
 			<table id="rulShopDataGrid"></table>
 		</div>
 	</div>
@@ -54,16 +54,15 @@
 var rulSkuColumns = [[		    		
 	{field:"skuId",checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
-	{field:"goodsName",title:"商品名称", width:140,align:"center"},
+	{field:"goodsName",title:"商品名称", width:160,align:"center"},
 	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.categoryCode); 
 	}},			
 	{field:"productType",title:"商品类型", width:80,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.productType); 
 	}},	
-	//{field:"lastSalePrice",title:"上次修改售价", width:80,align:"center"},	
 	{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
-	{field:"marketPrice",title:"批发价", width:80,align:"center",
+	{field:"supplyPrice",title:"內供价", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },
@@ -77,7 +76,21 @@ var rulSkuColumns = [[
 			}
 		}
 	},
-	{field:"salePrice",title:"销售价", width:80,align:"center",
+	{field:"marketPrice",title:"分销价", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:numBaseFormat,
+		editor:{
+			type:'numberbox',
+			options:{					
+				min:0,
+				precision:2,
+				required: true
+			}
+		}
+	},	
+	{field:"vipPrice",title:"VIP价", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },
@@ -91,7 +104,7 @@ var rulSkuColumns = [[
 			}
 		}
 	},
-	{field:"vipPrice",title:"会员价", width:80,align:"center",
+	{field:"salePrice",title:"零售价", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },

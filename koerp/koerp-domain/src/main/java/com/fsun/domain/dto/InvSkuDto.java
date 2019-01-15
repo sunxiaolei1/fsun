@@ -11,9 +11,20 @@ import com.fsun.domain.model.BusBasSku;
  */
 public class InvSkuDto extends BusBasSku {
 
+	/**
+	 * 零售价
+	 */
 	private BigDecimal salePrice;
 	
+	/**
+	 * VIP价
+	 */
 	private BigDecimal vipPrice;
+	
+	/**
+	 * 内供价
+	 */
+	private BigDecimal supplyPrice;
 
 	public BigDecimal getSalePrice() {
 		return salePrice;
@@ -29,6 +40,20 @@ public class InvSkuDto extends BusBasSku {
 
 	public void setVipPrice(BigDecimal vipPrice) {
 		this.vipPrice = vipPrice;
+	}
+
+	/**
+	 * @return the supplyPrice
+	 */
+	public BigDecimal getSupplyPrice() {
+		return supplyPrice;
+	}
+
+	/**
+	 * @param supplyPrice the supplyPrice to set
+	 */
+	public void setSupplyPrice(BigDecimal supplyPrice) {
+		this.supplyPrice = supplyPrice;
 	}
 	
 }

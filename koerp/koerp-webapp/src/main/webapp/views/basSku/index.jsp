@@ -26,7 +26,7 @@ var frozenColumns =
 	[[
 		{field:'sku_id',checkbox:true},
 		{field:'sku',title:'SKU',width:80,align:'center',sortable:true},	
-		{field:'goods_name',title:'商品名称',width:100,align:'center',sortable:true},
+		{field:'goods_name',title:'商品名称',width:150,align:'center',sortable:true},
 		{field:'brand_code',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 			return formatter(value, window.parent.brandCode); 
 		}},
@@ -37,16 +37,17 @@ var frozenColumns =
 
 var columns = 
     [[				
-		{field:'en_name',title:'英文名称',width:100,align:'center',sortable:true},
+		//{field:'en_name',title:'英文名称',width:100,align:'center',sortable:true},
 		{field:'product_type',title:'商品类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 			return formatter(value, window.parent.productType); 
 		}},
-		{field:'bar_code',title:'条形码',width:120,align:'center',sortable:true},		
+		//{field:'bar_code',title:'条形码',width:120,align:'center',sortable:true},		
 		{field:'property',title:'规格',width:120,align:'center',sortable:true},
 		{field:'unit_name',title:'单位',width:60,align:'center',sortable:true},		
 		{field:"origin_sale_price",title:"原销售价",width:80, align:'center',formatter:numBaseFormat},
-		{field:"market_price",title:"批发价",width:80, align:'center',formatter:numBaseFormat},
+		{field:"market_price",title:"分销价",width:80, align:'center',formatter:numBaseFormat},
 		{field:"cost_price",title:"成本价",width:80, align:'center',formatter:numBaseFormat},
+		{field:"sort_code",title:"排序码",width:80, align:'center',sortable:true},		
 		{field:"is_enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
 			return formatter(value, window.parent.isEnable); 
 		}},
@@ -73,8 +74,8 @@ $(function() {
 	    fit:true,//自动大小
 	    queryParams:{},
 	    remoteSort:true,
-	    sortName:"sku",
-        sortOrder:"desc",
+	    sortName:"sort_code",
+        sortOrder:"asc",
 	    //idField:"blackid",
 	    singleSelect:true,//是否单选
 	    pagination:true,//分页控件

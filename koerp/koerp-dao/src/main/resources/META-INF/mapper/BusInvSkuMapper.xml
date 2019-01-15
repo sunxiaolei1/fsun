@@ -68,11 +68,12 @@
 		rul_sku.property as property,
 		rul_sku.market_price as marketPrice,
 		rul_sku.cost_price as costPrice,
+		rul_sku.supply_price as supplyPrice,		
 	    rul_sku.unit as unit,
  
 	  	rul_sku.sale_price as salePrice,
 	  	rul_sku.vip_price as vipPrice,
-
+		
 		bas_sku.origin_sale_price as originSalePrice,
 		bas_sku.assist_id as assistId,
 		bas_sku.warning_qty as warningQty,
