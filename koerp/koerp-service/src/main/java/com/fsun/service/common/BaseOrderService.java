@@ -1,11 +1,15 @@
-package com.fsun.biz.bus.manage;
+package com.fsun.service.common;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fsun.biz.bus.manage.BusInvSkuDetailsManage;
+import com.fsun.biz.bus.manage.BusInvSkuManage;
 import com.fsun.common.utils.PKMapping;
+import com.fsun.domain.enums.DocTradeStatusEnum;
+import com.fsun.domain.enums.DocTradeTypeEnum;
 import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusInvSku;
 import com.fsun.domain.model.BusInvSkuDetails;
@@ -243,11 +247,17 @@ public abstract class BaseOrderService {
     	//交易头信息
     	busInvSkuDetails.setShopId(orderHeader.getShopId());
     	busInvSkuDetails.setShopName(orderHeader.getShopName());
-    	busInvSkuDetails.setTradeOrderNo(orderHeader.getOrderId());
-    	busInvSkuDetails.setTradeStatus(orderHeader.getOrderStatus());
-    	busInvSkuDetails.setTradeTime(orderHeader.getDeliveryTime());
-    	busInvSkuDetails.setTradeType(orderHeader.getOrderType()+"");
-    	//busInvSkuDetails.setTradeRelationNo(tradeRelnullationNo);   	
+    	busInvSkuDetails.setTradeOrderNo(orderHeader.getOrderId());    	
+    	busInvSkuDetails.setTradeTime(orderHeader.getOrderTime());
+    	
+    	String tradeStatus = orderHeader.getTradeStatus();
+    	busInvSkuDetails.setTradeStatus(tradeStatus);
+    	if(tradeStatus!=null && tradeStatus.equals(DocTradeStatusEnum.COMPLETED.getCode())){
+        	busInvSkuDetails.setTradeType(DocTradeTypeEnum.SALE_SO.getCode());
+    	}else{    		
+        	busInvSkuDetails.setTradeType(DocTradeTypeEnum.BACK_SI.getCode());
+    	}
+    	busInvSkuDetails.setTradeRelationNo(orderHeader.getExtOrderId());   	
     	busInvSkuDetails.setCreatedTime(new Date());
     	//交易商品明细
     	busInvSkuDetails.setDamagedQty(BigDecimal.ZERO);

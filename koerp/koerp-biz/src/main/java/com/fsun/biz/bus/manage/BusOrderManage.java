@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.fsun.biz.common.CrudManage;
+import com.fsun.common.utils.DateUtil;
 import com.fsun.dao.mapper.BusOrderMapper;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusOrderDto;
@@ -27,6 +28,24 @@ import com.fsun.exception.enums.SCMErrorEnum;
  */
 @Component
 public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
+	
+	/**
+	 * 根据出库类型生成销售单号
+	 * @param orderType
+	 * @param shopCode
+	 * @return
+	 */
+	public String initOrderId(String orderType, String shopCode) {
+		String prefix = DateUtil.getNowDateStr().replace("-", "") + "0"+ orderType + shopCode;
+		List<String> list = mapper.getMaxOrderId(prefix);
+		if(list!=null && list.size()>0){
+			String maxOrderNo = list.get(0);
+			return (Long.parseLong(maxOrderNo) + 1) + "";
+		}else{	
+			return prefix + "00001";
+		}
+	}
+
 
 	/**
 	 * 获取订单实体(头信息、商品明细、账单信息)
@@ -325,4 +344,6 @@ public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
 	    priceMap.put("oldTotalPartPrice", oldTotalPartPrice);
 	    return totalPrice;
 	  }
+
+	
 }

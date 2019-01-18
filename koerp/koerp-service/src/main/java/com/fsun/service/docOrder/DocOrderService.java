@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.DocOrderApi;
-import com.fsun.biz.bus.manage.BaseOrderService;
 import com.fsun.biz.bus.manage.DocOrderDetailsManage;
 import com.fsun.biz.bus.manage.DocOrderHeaderManage;
 import com.fsun.common.utils.PKMapping;
@@ -29,6 +28,7 @@ import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocOrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
+import com.fsun.service.common.BaseOrderService;
 
 /**
  * 出库单操作接口

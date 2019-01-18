@@ -1,6 +1,7 @@
 package com.fsun.dao.mapper;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.fsun.dao.config.Mapper;
 import com.fsun.domain.model.BusOrder;
@@ -14,5 +15,12 @@ public interface BusOrderMapper extends BaseMySqlMapper<BusOrder>{
 	 * @return
 	 */
 	public HashMap<String, Object> loadEntity(String orderId);
+
+	/**
+	 * 
+	 * @param prefix
+	 * @return
+	 */
+	public List<String> getMaxOrderId(String prefix);
 	
 }

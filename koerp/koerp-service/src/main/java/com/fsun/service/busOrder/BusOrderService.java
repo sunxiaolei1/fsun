@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.BusOrderApi;
-import com.fsun.biz.bus.manage.BaseOrderService;
 import com.fsun.biz.bus.manage.BusGoodsManage;
 import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusPayAccountManage;
@@ -36,6 +35,7 @@ import com.fsun.domain.model.BusPayAccount;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
+import com.fsun.service.common.BaseOrderService;
 
 /**
  * 销售订单接口
@@ -294,8 +294,8 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	 */
 	private BusOrder getInitHeader(String orderType, BusUserDto currUser){
 		BusOrder header = new BusOrder();
-		String orderNo = docOrderHeaderManage.initOrderNo(orderType, currUser.getShopCode());
-		header.setOrderId(orderNo);		
+		String orderId = busOrderManage.initOrderId(orderType, currUser.getShopCode());
+		header.setOrderId(orderId);		
 		header.setOrderType(Short.valueOf(orderType));
 		header.setShopId(currUser.getShopId());
 		header.setShopName(currUser.getShopName());

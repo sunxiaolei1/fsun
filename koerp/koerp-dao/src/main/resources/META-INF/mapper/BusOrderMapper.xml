@@ -124,6 +124,14 @@
 	</where>
   </sql>
   
+  <select id="getMaxOrderId" resultType="java.lang.String" parameterType="java.lang.String" >    
+	select 
+		order_id 
+	from bus_order 
+	where order_id like concat(#{orderId},'%')
+	order by order_id desc 
+  </select> 
+  
   <select id="selectList" resultMap="BaseResultMap" 
   	parameterType="com.fsun.domain.entity.BusOrderCondition" >    
 	SELECT 

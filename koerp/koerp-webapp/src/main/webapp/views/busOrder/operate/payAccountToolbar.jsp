@@ -19,8 +19,9 @@
  */
 function addPayRow(payMode) {	
 	 
-	 var balancePrice = $("#balancePrice", $payAccountfm).val();
-	 if(balancePrice==0){
+	 var balancePrice0 = Number($("#balancePrice", $payAccountfm).val());
+	 console.log(balancePrice0);
+	 if(balancePrice0==0){
 		 $.messager.alert("提示", "已全额结算!", "info");
 		 return ;
 	 }
@@ -28,7 +29,7 @@ function addPayRow(payMode) {
         id: "payModeDialog",
         title: "支付信息",
         width: 600,
-        height: 240,
+        height: 260,
         iconCls: "icon-edit",
         closed: false,
         cache: false,
@@ -43,14 +44,24 @@ function addPayRow(payMode) {
         	{
         		text:"确定",iconCls:"icon-disk",
                 handler: function (data) {                     	             		
-           			var row = formJson($paymodefm);  
-           			if(row.payMode>=99){
-           				row.discountAmount = row.payPrice;
+           			var row = formJson($paymodefm);           			
+           			var payMode = row.payMode;
+           			var receptPrice = Number(row.receptPrice);
+           			var payPrice = Number(row.payPrice);
+           			var balancePrice = Number($("#balancePrice", $payAccountfm).val());
+           			
+           			//实付金额小于应付金额
+           			if(payPrice<receptPrice){            					
+       					row.receptPrice = payPrice;
+       				}   
+           			//商家优惠逻辑
+           			if(payMode>=99){           				
+           				row.discountAmount = payPrice;
            				row.payPrice = 0;
-           			}
+           			}           			
            			currPayAccountData.push(row);
            			currPayAccountDataGrid.datagrid("loadData", currPayAccountData);
-           			$("#balancePrice", $payAccountfm).val($("#balancePrice", $payAccountfm).val()-row.receptPrice);
+           			$("#balancePrice", $payAccountfm).val(balancePrice - row.receptPrice);
            			$('#payModeDialog').dialog("destroy");              		
                 }
             },
@@ -64,22 +75,15 @@ function addPayRow(payMode) {
         ],
         onLoad:function(){
             $('#payModeDialog').window('center');              
-            var balancePrice = $("#balancePrice", $payAccountfm).val();
-            if(payMode!=2){
-            	$("#payPrice", $paymodefm).numberbox({
-            	   min: 0.1,
-            	   precision:2,
-             	   max: balancePrice
-                 }).numberbox("setValue", balancePrice);
-            }else{
-            	$("#payPrice", $paymodefm).numberbox({
-             	   min: 0.1,
-             	   precision:2
-                }).numberbox("setValue", balancePrice);
-            }
+            var balancePrice = Number($("#balancePrice", $payAccountfm).val());
             $("#payMode", $paymodefm).combobox("setValue", payMode);
-            $("#receptPrice", $paymodefm).val(balancePrice);  
-            
+            $("#receptPrice", $paymodefm).numberbox("setValue", balancePrice);
+            if(payMode!=2){
+            	$("#payPrice", $paymodefm).numberbox({           	   
+             	   max: balancePrice
+                 }).numberbox("setValue", balancePrice); 
+            }
+            $("#payPrice", $paymodefm).numberbox("setValue", balancePrice);                                 
 		},
         onClose: function () {
             $(this).dialog("destroy");
@@ -90,7 +94,9 @@ function addPayRow(payMode) {
 
 //删除一条账单
 function delPayAccountOne(rowIndex){
-	$("#balancePrice", $payAccountfm).val($("#balancePrice", $payAccountfm).val() + currPayAccountData[rowIndex].receptPrice);
+	var receptPrice = Number(currPayAccountData[rowIndex].receptPrice);
+	var balancePrice = Number($("#balancePrice", $payAccountfm).val());
+	$("#balancePrice", $payAccountfm).val(balancePrice + receptPrice);
 	currPayAccountData.splice(rowIndex,1);
 	currPayAccountDataGrid.datagrid("loadData", currPayAccountData);
 	

@@ -7,8 +7,7 @@
 
 
 <form id="paymodefm">	
-    <input id="discountAmount" name="discountAmount" value=0 hidden=true />	
-    <input id="dibPrice" name="dibPrice" value=0 hidden=true />	
+    <input id="discountAmount" name="discountAmount" value=0 hidden=true />	    		
 	<table class="nb-formTable" style="width:100%;margin-top:2px;">
         <tr>	            
 			<th width="12%">支付方式<span style="color:red;">*</span></th>
@@ -20,8 +19,8 @@
         <tr>	        	
         	<th width="12%">应付金额</th>
 			<td>
-				<input id="receptPrice" name="receptPrice" class="easyui-numberbox" required
-					data-options="precision:2,formatter: numBaseFormat" readOnly/>									
+				<input id="receptPrice" name="receptPrice" class="easyui-numberbox" readOnly 
+					required data-options="precision:2,formatter: numBaseFormat"/>									
 			</td>	        						        		        	
         </tr>
         <tr>	        	
@@ -32,17 +31,12 @@
 			</td>	        						        		        	
         </tr>
         <tr>	        	
-        	<th width="12%">支付流水号</th>
+        	<th width="12%">找零金额</th>
 			<td>
-				<input id="tradeNo" name="tradeNo" class="easyui-textbox" />									
+				<input id="dibPrice" name="dibPrice" class="easyui-numberbox" readOnly required
+					data-options="precision:2,formatter: numBaseFormat"/>									
 			</td>	        						        		        	
-        </tr>  
-        <tr>	        	
-        	<th width="12%">支付卡号</th>
-			<td>
-				<input id="cardNo" name="cardNo" class="easyui-textbox" />									
-			</td>	        						        		        	
-        </tr>        
+        </tr>   
 	</table>
 </form>			
 	
@@ -52,7 +46,7 @@
 var $paymodefm = $("#paymodefm"); 
 var currPayMode = '${payMode}';
 
-$(function () { 
+$(function () {
 	
 	$('#payMode', $paymodefm).combobox({  
 		prompt: '请选择...',
@@ -60,19 +54,21 @@ $(function () {
    	 	valueField: 'codeCode',
    	  	textField: 'codeName',
    	  	data: window.parent.payModeData
-   	});		
-	
-	if(currPayMode==1 || currPayMode==3 || currPayMode==4){
-		$("#tradeNo", $paymodefm).textbox({disabled:false});
-		$("#cardNo", $paymodefm).textbox({disabled:false});
-	}else{
-		$("#tradeNo", $paymodefm).textbox({disabled:true});
-		$("#cardNo", $paymodefm).textbox({disabled:true});
-	}
+   	});	
 	
 	//去除默认的请选择项
 	editInitComboxParams($paymodefm, "");
-     
+
+	$("#payPrice", $paymodefm).numberbox({
+		onChange:function(newValue,oldValue){	
+			var receptPrice = $("#receptPrice", $paymodefm).numberbox("getValue");
+			if(Number(newValue)>Number(receptPrice)){
+				$("#dibPrice", $paymodefm).numberbox("setValue",Number(newValue)-Number(receptPrice));
+			}else{
+				$("#dibPrice", $paymodefm).numberbox("setValue",0);
+			}     
+	    }
+   	});	
 });
 
 
