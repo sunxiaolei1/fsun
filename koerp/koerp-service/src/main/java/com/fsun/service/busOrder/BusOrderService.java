@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.BusOrderApi;
+import com.fsun.biz.bus.manage.BusCustomerManage;
 import com.fsun.biz.bus.manage.BusGoodsManage;
 import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusPayAccountManage;
+import com.fsun.biz.bus.manage.BusVipUnpaidManage;
 import com.fsun.biz.bus.manage.DocOrderHeaderManage;
 import com.fsun.common.utils.DateUtil;
 import com.fsun.common.utils.PKMapping;
@@ -24,14 +26,19 @@ import com.fsun.domain.dto.BusOrderDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusGoodsCondition;
 import com.fsun.domain.entity.BusOrderCondition;
+import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
+import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.PayTypeEnum;
 import com.fsun.domain.enums.TradeFromEnum;
 import com.fsun.domain.enums.TradeStatusEnum;
+import com.fsun.domain.enums.TradeTypeEnum;
+import com.fsun.domain.model.BusCustomer;
 import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusPayAccount;
+import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -56,6 +63,12 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	
 	@Autowired
 	private DocOrderHeaderManage docOrderHeaderManage;
+	
+	@Autowired
+	private BusCustomerManage busCustomerManage;
+	
+	@Autowired
+	private BusVipUnpaidManage busVipUnpaidManage;
 	
 	@Override
 	public BusOrder load(String id) {
@@ -101,6 +114,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		return busOrderManage.findPage(condition);
 	}
 
+	@Transactional
 	@Override
 	public void changeStatus(String[] orderIds, String status, SysUser user, BusOrderCondition condition) {		
 		Date now = new Date();
@@ -113,7 +127,8 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 				throw new OrderException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
 			}
 			
-			if(TradeStatusEnum.getByCode(status)==TradeStatusEnum.CANCEL){				
+			header.setUpdatedTime(now);
+			if(OrderStatusEnum.getByCode(status)==OrderStatusEnum.CANCEL){				
 				header.setTradeStatus(TradeStatusEnum.CANCEL.getCode());
 				header.setFlowStatus(FlowStatusEnum.COMPLETED.getCode());
 				BusGoodsCondition condition0 = new BusGoodsCondition();
@@ -125,9 +140,8 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 			}
 			
 			//更新头的状态
-			header.setOrderStatus(status);			
+			header.setOrderStatus(status);
 			header.setUpdatedName(user.getRealname());
-			header.setUpdatedTime(now);
 			header.setMemo(condition.getMemo());
 			busOrderManage.update(header);
 			
@@ -153,7 +167,14 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 				
 		if(this.load(orderId)!=null){
 			throw new OrderException(SCMErrorEnum.BUS_ORDER_EXISTED);
-		}			
+		}	
+		
+		String buyerId = header.getBuyerId();
+		BusCustomer busCustomer = busCustomerManage.loadByCode(buyerId);
+		if(busCustomer==null){
+			throw new OrderException(SCMErrorEnum.BUS_CUSTOMER_NOT_EXIST);
+		}
+		
 		List<BusGoods> details = busOrderDto.getDetails();
 		if(details==null || details.size()==0){
 			throw new OrderException(SCMErrorEnum.BUS_ORDER_DETAIL_NOT_EXIST);
@@ -213,6 +234,20 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 			payAccount.setLineNo(lineNo++);			
 			payAccount.setCreatedTime(now);
 			payAccount.setTradeTime(now);
+			Short payMode = payAccount.getPayMode();
+			if(PayModeEnum.UNPAY.getValue().equals(payMode)){
+				if(CustomerTypeEnum.SK.getCode().equals(busCustomer.getCustomerType())){
+					throw new OrderException(SCMErrorEnum.BUS_CUSTOMER_UNPAY_DISABLED);
+				}
+				BusVipUnpaid busVipUnpaid = this.initOrderUnPay(header, payAccount, TradeTypeEnum.UNPAY_CONSUME.getValue());
+				busVipUnpaidManage.create(busVipUnpaid);
+			}else if(PayModeEnum.VIP_PAY.getValue().equals(payMode)){
+				if(!CustomerTypeEnum.VIP.getCode().equals(busCustomer.getCustomerType())){
+					throw new OrderException(SCMErrorEnum.BUS_CUSTOMER_NO_VIP);
+				}
+				BusVipUnpaid busVipUnpaid = this.initOrderUnPay(header, payAccount, TradeTypeEnum.VIP_CONSUME.getValue());
+				busVipUnpaidManage.create(busVipUnpaid);
+			}
 			busPayAccountManage.create(payAccount);
 		}		
 		
@@ -249,6 +284,29 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	
 	/****************************    私有方法          ******************************/
 	
+	/**
+	 * 初始化挂账信息
+	 * @param header
+	 * @param payAccount
+	 * @return
+	 */
+	private BusVipUnpaid initOrderUnPay(BusOrder header, BusPayAccount payAccount, Short tradeType) {
+		BusVipUnpaid busVipUnpaid = new BusVipUnpaid();
+		busVipUnpaid.setUnpaidId(PKMapping.GUUID(PKMapping.bus_vip_unpaid));		
+		busVipUnpaid.setCustomerCode(header.getBuyerId());
+		busVipUnpaid.setGiftPrice(payAccount.getDiscountAmount());
+		busVipUnpaid.setOrderId(header.getOrderId());
+		busVipUnpaid.setPayMode(payAccount.getPayMode());
+		busVipUnpaid.setShopId(header.getShopId());
+		busVipUnpaid.setTradePrice(header.getReceptPrice());	
+		busVipUnpaid.setTradeTime(payAccount.getTradeTime());
+		busVipUnpaid.setCreatedTime(new Date());
+		busVipUnpaid.setCardNo(payAccount.getCardNo());
+		busVipUnpaid.setTradeType(tradeType);	
+		busVipUnpaid.setTradeStatus(Short.valueOf(TradeStatusEnum.COMPLETED.getCode()));
+		return busVipUnpaid;
+	}
+
 	/**
 	 * 验证销售单状态是否可用
 	 * @param currAsnStatus

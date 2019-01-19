@@ -20,11 +20,23 @@
 function addPayRow(payMode) {	
 	 
 	 var balancePrice0 = Number($("#balancePrice", $payAccountfm).val());
-	 console.log(balancePrice0);
 	 if(balancePrice0==0){
 		 $.messager.alert("提示", "已全额结算!", "info");
 		 return ;
 	 }
+	 if(payMode=='6'){
+		 currPayAccountData.push({
+			 payMode: payMode,
+			 receptPrice: balancePrice0,
+			 payPrice: balancePrice0,
+			 discountAmount: 0,
+			 dibPrice: 0
+		 });
+		 console.log(currPayAccountData);
+		currPayAccountDataGrid.datagrid("loadData", currPayAccountData);
+		$("#balancePrice", $payAccountfm).val(0);
+		 return ;
+	 }	 
 	 $("<div></div>").dialog({
         id: "payModeDialog",
         title: "支付信息",
@@ -48,8 +60,7 @@ function addPayRow(payMode) {
            			var payMode = row.payMode;
            			var receptPrice = Number(row.receptPrice);
            			var payPrice = Number(row.payPrice);
-           			var balancePrice = Number($("#balancePrice", $payAccountfm).val());
-           			
+           			var balancePrice = Number($("#balancePrice", $payAccountfm).val());           			
            			//实付金额小于应付金额
            			if(payPrice<receptPrice){            					
        					row.receptPrice = payPrice;
@@ -58,11 +69,15 @@ function addPayRow(payMode) {
            			if(payMode>=99){           				
            				row.discountAmount = payPrice;
            				row.payPrice = 0;
-           			}           			
-           			currPayAccountData.push(row);
-           			currPayAccountDataGrid.datagrid("loadData", currPayAccountData);
-           			$("#balancePrice", $payAccountfm).val(balancePrice - row.receptPrice);
-           			$('#payModeDialog').dialog("destroy");              		
+           			} 
+           			//应收金额大于0时进行记账
+           			if(Number(row.receptPrice)>0){
+           				currPayAccountData.push(row);
+               			currPayAccountDataGrid.datagrid("loadData", currPayAccountData);
+               			$("#balancePrice", $payAccountfm).val(balancePrice - row.receptPrice);
+               			$('#payModeDialog').dialog("destroy");   
+           			}          			
+           			           		
                 }
             },
             {
@@ -74,14 +89,19 @@ function addPayRow(payMode) {
             }
         ],
         onLoad:function(){
-            $('#payModeDialog').window('center');              
+            $("#payModeDialog").window('center');              
             var balancePrice = Number($("#balancePrice", $payAccountfm).val());
             $("#payMode", $paymodefm).combobox("setValue", payMode);
             $("#receptPrice", $paymodefm).numberbox("setValue", balancePrice);
             if(payMode!=2){
-            	$("#payPrice", $paymodefm).numberbox({           	   
-             	   max: balancePrice
-                 }).numberbox("setValue", balancePrice); 
+            	//当支付方式是会员卡时初始化信息
+            	if(payMode==7){ 
+            		initVipInfo(balancePrice0);               	                    
+            	}else{
+            		$("#payPrice", $paymodefm).numberbox({           	   
+                  	   max: balancePrice
+                    }).numberbox("setValue", balancePrice);
+            	}
             }
             $("#payPrice", $paymodefm).numberbox("setValue", balancePrice);                                 
 		},
@@ -101,5 +121,53 @@ function delPayAccountOne(rowIndex){
 	currPayAccountDataGrid.datagrid("loadData", currPayAccountData);
 	
 }
+
+//初始化信息
+function initVipInfo(balancePrice){
+	
+	$("#payPrice", $paymodefm).numberbox({           	   
+ 	   	max: 0
+   	}).numberbox("setValue", 0);
+	
+	var buyerId = $("#buyerId", $payAccountfm).val();
+	$.ajax({
+		type : "GET",
+		url : "${api}/bus/vip/list?customerCode="+ buyerId,
+		dataType : "json",
+		success : function(result) {		
+			var cardNoList = result.entry;
+			if(cardNoList!=null && cardNoList.length>0){
+				$.each(cardNoList,function(){
+					this.name = this.cardNo +"[余额:"+ this.enablePrice +"元]"
+				});
+				$("#cardNo", $paymodefm).combobox({  
+					width: "260px",
+               		panelHeight: 'auto',
+               	 	valueField: 'cardNo',
+               	  	textField: 'name',
+               	  	data: cardNoList,
+               	  	onSelect:function(data){
+               	  		var enablePrice = data.enablePrice;
+               	  		if(enablePrice!=null){
+               	  			if(enablePrice>=balancePrice){               	  		
+	               	  			$("#payPrice", $paymodefm).numberbox({           	   
+	                       	   		max: balancePrice
+	                         	}).numberbox("setValue", balancePrice);
+               	  			}else{
+    	               	  		$("#payPrice", $paymodefm).numberbox({           	   
+    	                   	   		max: enablePrice
+    	                     	}).numberbox("setValue", enablePrice);
+                   	  		}
+               	  		}              	  		
+               	  	}
+                }).combobox("setValue", cardNoList[0].cardNo);
+			}          				 	           		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			$.messager.alert("错误", errorThrown, "error");
+		}
+	});  	
+}
+
 
 </script>		

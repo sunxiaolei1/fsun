@@ -24,6 +24,7 @@ import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
 import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.PayModeEnum;
+import com.fsun.domain.enums.TradeStatusEnum;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.OrderException;

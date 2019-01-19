@@ -40,6 +40,8 @@ public enum SCMErrorEnum {
 	BUS_VIP_EXISTED(8022, "会员卡已存在"),
 	BUS_CUSTOMER_NOT_EXIST(8031, "客户不存在"),
 	BUS_CUSTOMER_EXISTED(8032, "客户已存在"),
+	BUS_CUSTOMER_UNPAY_DISABLED(8033, "当前客户没有挂账权限"),
+	BUS_CUSTOMER_NO_VIP(8034, "当前客户不是会员"),
 	BUS_CODES_NOT_EXIST(8041, "要更新的数据不存在"),
 	BUS_CODES_EXISTED(8042, "对不起，该数据类别和编码已存在"),
 	BUS_SHOP_NOT_EXIST(8051, "店仓不存在"),	

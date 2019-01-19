@@ -269,7 +269,7 @@ var payAccountColumns = [[
 	{field:"discountAmount",title:"优惠金额", width:80, align:"center",formatter:numBaseFormat},  
 	{field:"tradeNo",title:"支付流水号", width:150, align:"center"},  
 	{field:"cardNo",title:"支付卡号", width:150, align:"center"},  
-	{field:"operate",title:"操作",width:60, align:"center", 
+	{field:"operate",title:"操作",width:80, align:"center", 
 		formatter: function(value, row, index){	
 			if (row.payMode==900 || row.payMode=="合计"){//这里是判断哪些行
                 return '';  

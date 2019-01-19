@@ -248,7 +248,7 @@ public abstract class BaseOrderService {
     	busInvSkuDetails.setShopId(orderHeader.getShopId());
     	busInvSkuDetails.setShopName(orderHeader.getShopName());
     	busInvSkuDetails.setTradeOrderNo(orderHeader.getOrderId());    	
-    	busInvSkuDetails.setTradeTime(orderHeader.getOrderTime());
+    	busInvSkuDetails.setTradeTime(orderHeader.getUpdatedTime());
     	
     	String tradeStatus = orderHeader.getTradeStatus();
     	busInvSkuDetails.setTradeStatus(tradeStatus);
@@ -258,7 +258,7 @@ public abstract class BaseOrderService {
         	busInvSkuDetails.setTradeType(DocTradeTypeEnum.BACK_SI.getCode());
     	}
     	busInvSkuDetails.setTradeRelationNo(orderHeader.getExtOrderId());   	
-    	busInvSkuDetails.setCreatedTime(new Date());
+    	busInvSkuDetails.setCreatedTime(orderHeader.getUpdatedTime());
     	//交易商品明细
     	busInvSkuDetails.setDamagedQty(BigDecimal.ZERO);
     	busInvSkuDetails.setGoodsName(busGoods.getGoodsName());

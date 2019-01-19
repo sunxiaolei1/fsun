@@ -50,6 +50,28 @@
     rate_precent, is_gift, gift_count, gift_price, is_show, property, memo, created_time, 
     updated_time
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="orderId != null and orderId != ''">
+  			and order_id = #{orderId}
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and sku = #{sku}
+  		</if>
+  				
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusGoodsCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_goods
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
