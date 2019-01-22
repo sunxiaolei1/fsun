@@ -157,6 +157,23 @@ public class BusOrderController extends BaseController {
 		}
 	}
 	
+	@RequestMapping(value="/signPrint/{orderId}", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult signPrint(@PathVariable("orderId") String orderId) {
+		try {
+			if (!StringUtils.isEmpty(orderId)) {		
+				busOrderApi.signPrint(orderId);
+				return success(SCMErrorEnum.SUCCESS.getErrorCode());
+			}
+			return failure(SCMErrorEnum.INVALID_PARAMS);
+		}catch(OrderException e){
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 	
 	@RequestMapping(value="/loadEntity/{orderId}", method = RequestMethod.GET)
 	@ResponseBody

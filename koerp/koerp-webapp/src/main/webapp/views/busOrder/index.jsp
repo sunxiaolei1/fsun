@@ -25,12 +25,14 @@
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
 	{field:'order_id',title:'单据编号',width:140,align:'center',sortable:true},
-	{field:'order_time',title:'单据时间',width:130,align:'center',sortable:true},
 	{field:'order_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.orderType); 
 	}},
 	{field:'trade_status',title:'交易状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeStatus); 
+	}},
+	{field:'print_count',title:'已打印',width:60,align:'center', sortable:true, formatter:function(value, row){
+		return (row.print_count>0?"<span style='color:red;'>是</span>":"否"); 
 	}},
 	{field:'shop_id',title:'所属店仓',width:130,align:'center',sortable:true, formatter:function(value, row){
 		return row.shop_name; 
@@ -45,12 +47,10 @@ var columns = [[
 	{field:'pay_price',title:'实付金额',width:80,align:'center',formatter:numBaseFormat},
 	{field:'dib_price',title:'找零金额',width:80,align:'center',formatter:numBaseFormat},
 	{field:'recept_price',title:'实收金额',width:80,align:'center',formatter:numBaseFormat},		
-	{field:'buyer_name',title:'买家名称',width:100,align:'center',sortable:true},
+	{field:'buyer_name',title:'客户名称',width:100,align:'center',sortable:true},
 	{field:'carrier_name',title:'经办人',width:100,align:'center',sortable:true},
-	{field:'print_count',title:'是否打印',width:80,align:'center', formatter:function(value, row){
-		return (row.print_count>0?"<span style='color:red;'>是</span>":"否"); 
-	}},
-	{field:'cash_name',title:'收银员',width:80,align:'center'},
+	{field:'order_time',title:'单据时间',width:130,align:'center',sortable:true},
+	{field:'cash_name',title:'制单人',width:80,align:'center'},
 	{field:'memo',title:'备注',width:150,align:'center'}		
 ]];
 

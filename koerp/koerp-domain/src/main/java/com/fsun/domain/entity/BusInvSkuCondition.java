@@ -79,6 +79,11 @@ public class BusInvSkuCondition extends SortCondition{
      * 可用库存
      */
     private Boolean enabled;
+    
+    /**
+     * 商品分类
+     */
+    private String categoryCode;
 
     public String getSku() {
         return sku;
@@ -192,6 +197,20 @@ public class BusInvSkuCondition extends SortCondition{
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	/**
+	 * @return the categoryCode
+	 */
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	/**
+	 * @param categoryCode the categoryCode to set
+	 */
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
 	}
 	
 }

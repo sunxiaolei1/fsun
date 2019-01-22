@@ -21,7 +21,7 @@
 					</td>
 					<td  width="6%">所属店仓:</td>
 					<td>
-						<input id="shopText" name="shopCombo"  class="easyui-combogrid" />
+						<input id="shopText" name="shopId"  class="easyui-combogrid" />
 					</td>																													
 				</tr>
 				<tr>

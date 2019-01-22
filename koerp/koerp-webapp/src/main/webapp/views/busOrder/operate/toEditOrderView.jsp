@@ -98,6 +98,8 @@
 				<td colspan="7">
 					<input id="memo" name="memo"  data-options="multiline:true" 
 						class="easyui-textbox" style="width:800px;height:50px;"/>
+					<a href="#" class="easyui-linkbutton" iconCls="icon-money" style="margin-left:90px;"
+						plain="false" onclick="openPayAccountView()">账单明细</a>			
 				</td>	        	
 	        </tr>
 		</table>
@@ -108,6 +110,15 @@
 		<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
 	</span>
 	<table id="orderDetailDataGrid"></table>
+</div>
+
+<div id="payAccountWin" class="easyui-window" title="账单明细" closed="true" align="center" 
+	style="display:none;width:80%;height:65%;top:100px;" modal="true">  
+   	 <div class="easyui-layout" fit=true  id='base_layout'>	
+   	 	<div data-options="region:'center'" style="height:280px;">
+   	 		<table id="payAccountDataGrid"></table>
+   	 	</div> 		 	
+   	 </div>	 
 </div>					
 
 <!-- datagrid可编辑单元格 -->
@@ -119,7 +130,9 @@
 <script type="text/javascript">
 
 var currDetailData = []; 
+var currPayAccountData = [];
 var currOrderDetailDataGrid = $("#orderDetailDataGrid");
+var currPayAccountDataGrid = $("#payAccountDataGrid");
 var $orderfm = $("#orderfm");   
 var soColumns = [[
 	{field:'ck',checkbox:true},
@@ -161,6 +174,21 @@ var soColumns = [[
 	{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}}
+]];
+
+var payAccountColumns = [[
+	{field:"lineNo",title:"行号", width:80,align:"center", sortable:true, hidden:true},          		
+	{field:"payMode",title:"支付方式", width:80,align:"center", sortable:true,
+		formatter:function(value, row){
+			return formatter(value, window.parent.payMode); 
+		}
+	},            	         	
+	{field:"receptPrice",title:"应收金额", width:80, align:"center",formatter:numBaseFormat},
+	{field:"payPrice",title:"实付金额", width:80, align:"center",formatter:numBaseFormat},
+	{field:"dibPrice",title:"找零金额", width:80, align:"center",formatter:numBaseFormat},
+	{field:"discountAmount",title:"优惠金额", width:80, align:"center",formatter:numBaseFormat},  
+	{field:"tradeNo",title:"支付流水号", width:150, align:"center"},  
+	{field:"cardNo",title:"支付卡号", width:150, align:"center"}
 ]];
 
 
@@ -241,17 +269,19 @@ $(function () {
 			var docOrderDto = result.entry;
 			
 			/***************************              基本信息初始化                        ************************/			
+			//获取当前单据的基本信息
 			var header = docOrderDto.header;
 			if(header!=null){
 				$orderfm.form("load", header);	
 			}
-			
+			//获取当前单据的账单明细
+			currPayAccountData =  docOrderDto.payAccounts;
+			//获取当前单据的商品明细
 			var details = docOrderDto.details;	
 			if(details!=null && details.length>0){
 				currDetailData = details;
 				skuListReLoad();
-			}		
-	
+			}					
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			$.messager.alert("错误", errorThrown, "error");
@@ -264,6 +294,50 @@ $(function () {
 //商品列表刷新
 function skuListReLoad() {
 	currOrderDetailDataGrid.datagrid("loadData", currDetailData);
+}
+
+//打开账单明细
+function openPayAccountView(){
+	currPayAccountDataGrid.datagrid({
+		view:footerStyleView,
+		width:"auto",
+	    height:"auto",
+	    nowrap:false,
+	    striped:true,
+	    border:true,
+	    collapsible:false,//是否可折叠的
+	    fit:true,//自动大小	   
+	    remoteSort:false,
+	    sortName:"lineNo",
+        sortOrder:"asc",	
+        //pagination:true,       
+	    singleSelect:true,//是否单选   
+	    rownumbers:true,//行号
+	    fitColumns:true,
+	    showFooter:true,
+	    //toolbar: "#payAccountToolbar",
+	    columns: payAccountColumns,
+	    loadFilter:function(data) {     		
+    		var fields = ["receptPrice","payPrice","dibPrice","discountAmount"];       		
+    		//排序拦截器
+    		sortFilter($(this), data);		
+    	    //分页拦截器
+    	    var data = pagerFilter($(this), data, fields, "payMode"); 
+			return data; 
+        },
+        rowStyler:function(index,row){	    		    	
+    		if (row.payMode=="合计"){//这里是判断哪些行
+                return 'font-weight:bold;';  
+            }	
+    		return "";
+		},
+	    loadMsg:"数据加载中请稍后……",
+	    emptyMsg:"没有符合条件的记录",
+	    selectOnCheck: true,
+	    checkOnSelect: true
+	}).datagrid("loadData", currPayAccountData);
+	
+	$("#payAccountWin").window("open");
 }
 
 </script>

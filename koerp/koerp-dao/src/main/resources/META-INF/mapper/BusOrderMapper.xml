@@ -110,6 +110,10 @@
   			and a.order_status = #{orderStatus}
   		</if>
   		
+  		<if test="tradeStatus != null and tradeStatus != ''">
+  			and a.trade_status = #{tradeStatus}
+  		</if>
+  		
   		<if test="orderType != null and orderType != ''">
 			and a.order_type = #{orderType,jdbcType=VARCHAR}
 		</if>

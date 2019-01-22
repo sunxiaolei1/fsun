@@ -42,6 +42,12 @@ public interface BusOrderApi extends BaseApi<BusOrder, BusOrderCondition> {
 	public void changeStatus(String[] orderIds, String status, SysUser user, BusOrderCondition condition);
 
 	/**
+	 * 标记打印次数
+	 * @param orderId
+	 */
+	public void signPrint(String orderId);
+	
+	/**
 	 * 获取销售订单对象
 	 * @param orderId
 	 * @return
@@ -54,5 +60,7 @@ public interface BusOrderApi extends BaseApi<BusOrder, BusOrderCondition> {
 	 * @return
 	 */
 	public String saveEntity(BusOrderDto busOrderDto);
+
+	
 
 }

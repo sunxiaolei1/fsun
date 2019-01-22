@@ -282,6 +282,24 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		return orderId;
 	}
 	
+	@Override
+	public void signPrint(String orderId) {
+		BusOrder header = busOrderManage.load(orderId);	
+		if(header==null){
+			throw new OrderException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}	
+		String tradeStatus = header.getTradeStatus();
+		if(TradeStatusEnum.CANCEL.getCode().equals(tradeStatus) 
+			|| TradeStatusEnum.CLOSED.getCode().equals(tradeStatus)){
+			throw new OrderException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
+		}
+		//累加打印次数
+		int printCount = (header.getPrintCount()!=null?header.getPrintCount():0);
+		header.setPrintCount(++printCount);
+		busOrderManage.update(header);
+		
+	}
+	
 	/****************************    私有方法          ******************************/
 	
 	/**
@@ -363,4 +381,5 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		header.setIsSettlemented(true);
 		return header;
 	}
+
 }

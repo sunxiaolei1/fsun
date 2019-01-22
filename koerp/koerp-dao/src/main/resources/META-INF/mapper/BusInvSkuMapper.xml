@@ -92,6 +92,10 @@
 	<if test="qty != null">
 		and inv_sku.qty > #{qty}
 	</if>
+	<if test="categoryCode != null and categoryCode!=''">
+		and rul_sku.category_code = #{categoryCode}
+	</if>
+	
   </select>
   
   <select id="selectListMap" resultType="java.util.Map" 

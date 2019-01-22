@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fsun.biz.bus.manage.BusInvSkuDetailsManage;
 import com.fsun.biz.bus.manage.BusInvSkuManage;
 import com.fsun.common.utils.PKMapping;
+import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.DocTradeStatusEnum;
 import com.fsun.domain.enums.DocTradeTypeEnum;
 import com.fsun.domain.model.BusGoods;
@@ -113,7 +114,10 @@ public abstract class BaseOrderService {
     	BusInvSku busInvSku = this.getInitInvSku(orderHeader.getFromShopId(), docOrderDetails);
     	   	
     	BusInvSkuDetails busInvSkuDetails = this.getInitInvSkuDetails(orderHeader, docOrderDetails);    	   	
-    	
+    	if(DocOrderTypeEnum.LOSE_SO.getCode().equals(orderHeader.getOrderType())){
+    		busInvSku.setDamagedQty(docOrderDetails.getShippedQty().negate());
+    		busInvSkuDetails.setDamagedQty(docOrderDetails.getShippedQty().negate());
+    	}
     	busInvSkuDetailsManage.create(busInvSkuDetails);    	
     	return busInvSkuManage.stockIn(busInvSku); 
 	}
@@ -127,11 +131,15 @@ public abstract class BaseOrderService {
     protected BusInvSku skuStockOut(DocOrderHeader orderHeader, DocOrderDetails docOrderDetails) {
     	//计算库存
     	BusInvSku busInvSku = this.getInitInvSku(orderHeader.getFromShopId(), docOrderDetails);
-    	   	
+    	
     	BusInvSkuDetails busInvSkuDetails = this.getInitInvSkuDetails(orderHeader, docOrderDetails);    	   	
     	busInvSkuDetails.setDamagedQty(BigDecimal.ZERO); 	
     	busInvSkuDetails.setLockQty(BigDecimal.ZERO);
-    	busInvSkuDetails.setQty(docOrderDetails.getShippedQty().negate());  
+    	busInvSkuDetails.setQty(docOrderDetails.getShippedQty().negate()); 
+    	if(DocOrderTypeEnum.LOSE_SO.getCode().equals(orderHeader.getOrderType())){   		
+    		busInvSku.setDamagedQty(docOrderDetails.getShippedQty().negate());
+    		busInvSkuDetails.setDamagedQty(docOrderDetails.getShippedQty());
+    	}
     	busInvSkuDetailsManage.create(busInvSkuDetails);    	
     	return busInvSkuManage.stockOut(busInvSku); 
 	} 
@@ -254,8 +262,9 @@ public abstract class BaseOrderService {
     	busInvSkuDetails.setTradeStatus(tradeStatus);
     	if(tradeStatus!=null && tradeStatus.equals(DocTradeStatusEnum.COMPLETED.getCode())){
         	busInvSkuDetails.setTradeType(DocTradeTypeEnum.SALE_SO.getCode());
-    	}else{    		
-        	busInvSkuDetails.setTradeType(DocTradeTypeEnum.BACK_SI.getCode());
+    	}else{  
+    		busInvSkuDetails.setTradeType(DocTradeTypeEnum.SALE_SO.getCode());
+        	//busInvSkuDetails.setTradeType(DocTradeTypeEnum.BACK_SI.getCode());
     	}
     	busInvSkuDetails.setTradeRelationNo(orderHeader.getExtOrderId());   	
     	busInvSkuDetails.setCreatedTime(orderHeader.getUpdatedTime());
