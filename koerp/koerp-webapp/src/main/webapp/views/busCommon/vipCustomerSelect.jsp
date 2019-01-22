@@ -87,6 +87,14 @@ function initVipCustomerGrid(defaultCustomer){
 	        onShowPanel: function () {
 	        	$('#vipCustomer').combogrid('grid').datagrid('options').url = '${api}/bus/customer/findPage';
 	        	$('#vipCustomer').combogrid('grid').datagrid('reload');
+	        },
+	        onSelect: function(index, row){
+	        	var customer_code = row.customer_code;
+       	  		var contacts = row.customer_name;
+       	  		var tel = row.tel;
+       	  		$('#cnName', $orderfm).textbox("setValue", contacts);
+       	  		$('#mobile', $orderfm).textbox("setValue", tel);
+       	 		$('#cardNo', $orderfm).textbox("setValue", (tel!=null&&tel!=''?tel:customer_code));
 	        }
 	        
 	    });

@@ -56,9 +56,9 @@
 			<td>
 				<input name="cnName" id="cnName" class="easyui-textbox" required />
 			</td>	
-        	<th width="12%">手机号<span style="color:red;">*</span></th>
+        	<th width="12%">手机号</th>
 			<td>
-				<input name="mobile" id="mobile" class="easyui-textbox" required />
+				<input name="mobile" id="mobile" class="easyui-textbox" />
 			</td>			          																				
 		</tr>		
 		<tr>	
@@ -106,7 +106,10 @@ $.extend($.fn.validatebox.defaults.rules, {
 	            dataType: "json",
 	            async: false,
 	            url: "${api}/bus/vip/unique",
-	            data: { 'cardNo':value },
+	            data: { 
+	            	'cardNo':value,
+	            	'id': '${id}'
+	            },	            
 	            success: function(result) {
 	            	success = result.entry;
 	            }
@@ -125,7 +128,8 @@ $(function () {
 	$orderfm = $("#orderfm");	
 	var id = '${id}';
 	
-	$('#cardType', $orderfm).combobox({ 
+	$('#cardType', $orderfm).combobox({
+		editable:false,
 		prompt: '请选择...',
    	 	valueField: 'codeCode',
    	  	textField: 'codeName',  	  

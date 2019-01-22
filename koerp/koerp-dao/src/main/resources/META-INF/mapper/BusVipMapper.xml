@@ -52,9 +52,9 @@
   			and vip.enabled = #{enabled}
   		</if>
   		
-  		<if test="id != null and id != ''">
+  		<!-- <if test="id != null and id != ''">
   			and vip.id = #{id}
-  		</if>
+  		</if> -->
   		
   		<if test="cardNo != null and cardNo != ''">
   			and vip.card_no = #{cardNo}
