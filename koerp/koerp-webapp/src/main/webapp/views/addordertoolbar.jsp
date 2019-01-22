@@ -70,7 +70,19 @@ function initPayAccountData(paramsData){
         	"payPrice": 0,
         	"discountAmount": toZeroPrice
         });
-	}	
+	}
+	
+	var balancePrice = Number(header.orderPrice) - Number(header.toZeroPrice);
+	if(balancePrice==0){
+		currPayAccountData.push({
+        	"payMode": 2,
+        	"receptPrice": 0,
+        	"dibPrice": 0,
+        	"payPrice": 0,
+        	"discountAmount": 0
+        });
+	}
+	
 	
 }
 

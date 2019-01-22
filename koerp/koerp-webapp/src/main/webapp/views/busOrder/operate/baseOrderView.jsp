@@ -38,7 +38,7 @@ $(function () {
    	    	var orderPrice = Number(data.footer[0].totalPrice);    	    	
    	    	$("#orderPrice", $orderfm).numberbox("setValue", orderPrice);
        	    $("#couponPrice", $orderfm).numberbox("setValue", data.footer[0].couponPrice);
-       	    $("#toZeroPrice", $orderfm).numberbox("setValue", (orderPrice*100%10)/100);
+       	    $("#toZeroPrice", $orderfm).numberbox("setValue", (Math.round(orderPrice*100)%10)/100);
 			return data; 
         },
         rowStyler:function(index,row){	    		    	

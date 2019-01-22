@@ -60,7 +60,6 @@ function madeOrderView(docOrderDto, afterPrintFunc){
 		
 		if (LODOP.CVERSION) {  //用CVERSION属性判断是否云打印
 	        LODOP.On_Return=function(TaskID,Value){
-			   debugger
                if (Value!=0) {
       			  $.ajax({
       				 type : "GET",
