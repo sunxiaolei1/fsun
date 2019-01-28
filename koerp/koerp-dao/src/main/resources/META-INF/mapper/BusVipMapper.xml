@@ -108,6 +108,75 @@
     	<include refid="conditions" />
   </select>
   
+  <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
+    <result column="v_card_no" property="cardNo" />
+    <result column="v_customer_code" property="customerCode"/>
+    <result column="v_customer_name" property="customerName"/>      
+    <result column="v_card_type" property="cardType" />    
+    <result column="v_cn_name" property="cnName"/> 
+    <result column="v_origin_precent" property="originPrecent"/>
+    <result column="v_enable_price" property="enablePrice"/>
+    <result column="v_gift_price" property="giftPrice"/>
+  </resultMap>
+  
+  <resultMap id="DefinedResultMap" type="java.util.Map"> 	
+  	<id column="v_card_no" property="cardNo"/>  
+  	<association property="header" resultMap="HeaderMap" />   	   
+    <collection property="details" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="p_unpaid_id" property="unpaidId"/>
+      <result column="p_customer_code" property="customerCode"/> 
+      <result column="p_shop_id" property="shopId"/> 
+      <result column="p_pay_mode" property="payMode"/>
+      <result column="p_trade_type" property="tradeType"/>
+      <result column="p_trade_status" property="tradeStatus"/>
+      <result column="p_trade_time" property="tradeTime"/>
+      <result column="p_trade_price" property="tradePrice"/>
+      <result column="p_gift_price" property="giftPrice"/>
+      <result column="p_memo" property="memo"/>
+      <result column="p_order_id" property="orderId"/>
+      <result column="p_card_no" property="cardNo"/>
+      <result column="p_unusual" property="unusual"/>
+      <result column="p_pay_id" property="payId"/>
+      <result column="p_customer_name" property="customerName"/>
+      <result column="p_shop_name" property="shopName"/>
+    </collection>   
+  </resultMap>
+  
+  <select id="initRachargeData" resultMap="DefinedResultMap" parameterType="java.lang.String" >
+    select 
+        vip.card_no as v_card_no, 
+        (select customer1.customer_name 
+        	from bus_customer customer1 
+        	where customer1.customer_code = vip.customer_code
+        ) as v_customer_name,    
+        vip.customer_code as v_customer_code, 
+        vip.card_type as v_card_type,          
+        vip.cn_name as v_cn_name, 
+        vip.origin_precent as v_origin_precent, 
+        vip.enable_price as v_enable_price, 
+        vip.gift_price as v_gift_price,
+		bus_vip_unpaid.unpaid_id as p_unpaid_id, 
+	    bus_vip_unpaid.customer_code as p_customer_code, 
+	    bus_vip_unpaid.shop_id as p_shop_id, 
+        bus_vip_unpaid.pay_mode as p_pay_mode, 
+        bus_vip_unpaid.trade_type as p_trade_type, 
+        bus_vip_unpaid.trade_status as p_trade_status, 
+        bus_vip_unpaid.trade_time as p_trade_time, 
+        bus_vip_unpaid.trade_price as p_trade_price, 
+        bus_vip_unpaid.gift_price as p_gift_price, 
+        bus_vip_unpaid.memo as p_memo, 
+        bus_vip_unpaid.order_id as p_order_id, 
+        bus_vip_unpaid.card_no as p_card_no, 
+        bus_vip_unpaid.unusual as p_unusual,
+        bus_vip_unpaid.pay_id as p_pay_id,
+        customer.customer_name as p_customer_name,
+	  	bus_shop.shop_name as p_shop_name
+    from bus_vip vip
+    LEFT JOIN bus_vip_unpaid bus_vip_unpaid ON bus_vip_unpaid.card_no = vip.card_no
+    LEFT JOIN bus_customer customer on customer.customer_code = bus_vip_unpaid.customer_code
+    LEFT JOIN bus_shop bus_shop on bus_shop.shop_id = bus_vip_unpaid.shop_id
+    where vip.card_no = #{cardNo,jdbcType=VARCHAR}
+  </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from bus_vip

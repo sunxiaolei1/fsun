@@ -16,6 +16,7 @@ import com.fsun.biz.bus.manage.BusCustomerManage;
 import com.fsun.biz.bus.manage.BusGoodsManage;
 import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusPayAccountManage;
+import com.fsun.biz.bus.manage.BusVipManage;
 import com.fsun.biz.bus.manage.BusVipUnpaidManage;
 import com.fsun.biz.bus.manage.DocOrderHeaderManage;
 import com.fsun.common.utils.DateUtil;
@@ -26,6 +27,8 @@ import com.fsun.domain.dto.BusOrderDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusGoodsCondition;
 import com.fsun.domain.entity.BusOrderCondition;
+import com.fsun.domain.entity.BusPayAccountCondition;
+import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
@@ -69,6 +72,9 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	
 	@Autowired
 	private BusVipUnpaidManage busVipUnpaidManage;
+	
+	@Autowired
+	private BusVipManage busVipManage;
 	
 	@Override
 	public BusOrder load(String id) {
@@ -116,7 +122,8 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] orderIds, String status, SysUser user, BusOrderCondition condition) {		
+	public void changeStatus(String[] orderIds, String status, SysUser curruUser, 
+			BusOrderCondition condition) {		
 		Date now = new Date();
 		for (String orderId : orderIds) {
 			BusOrder header = this.load(orderId);
@@ -128,7 +135,8 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 			}
 			
 			header.setUpdatedTime(now);
-			if(OrderStatusEnum.getByCode(status)==OrderStatusEnum.CANCEL){				
+			if(OrderStatusEnum.getByCode(status)==OrderStatusEnum.CANCEL){	
+				//还原商品库存
 				header.setTradeStatus(TradeStatusEnum.CANCEL.getCode());
 				header.setFlowStatus(FlowStatusEnum.COMPLETED.getCode());
 				BusGoodsCondition condition0 = new BusGoodsCondition();
@@ -136,15 +144,30 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 				List<BusGoods> details = busGoodsManage.list(condition0);
 				for (BusGoods busGoods : details) {
 					super.skuStockIn(header, busGoods);
+				}				
+				BusPayAccountCondition condition1 = new BusPayAccountCondition();
+				condition1.setOrderId(orderId);
+				List<BusPayAccount> payAccounts = busPayAccountManage.list(condition1);
+				for (BusPayAccount busPayAccount : payAccounts) {
+					Short payMode = busPayAccount.getPayMode();
+					if(PayModeEnum.UNPAY.getValue().equals(payMode) 
+							|| PayModeEnum.VIP_PAY.getValue().equals(payMode)){						
+						BusVipUnpaidCondition condition2 = new BusVipUnpaidCondition();
+						condition2.setPayId(busPayAccount.getPayId());
+						List<BusVipUnpaid> list = busVipUnpaidManage.list(condition2);
+						if(list!=null && list.size()==1){
+							busVipUnpaidManage.cancel(list.get(0), curruUser);
+						}else{
+							throw new OrderException(SCMErrorEnum.BUS_ORDER_UNPAY_INVALID);
+						}
+					}
 				}
-			}
-			
+			}			
 			//更新头的状态
 			header.setOrderStatus(status);
-			header.setUpdatedName(user.getRealname());
+			header.setUpdatedName(curruUser.getRealname());
 			header.setMemo(condition.getMemo());
-			busOrderManage.update(header);
-			
+			busOrderManage.update(header);			
 		}
 	}
 
@@ -163,12 +186,10 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		String cashId = header.getCashId();		
 		if(!currUser.getId().equals(cashId)){
 			throw new OrderException(SCMErrorEnum.USER_ILLEGAL);
-		}
-				
+		}				
 		if(this.load(orderId)!=null){
 			throw new OrderException(SCMErrorEnum.BUS_ORDER_EXISTED);
-		}	
-		
+		}			
 		String buyerId = header.getBuyerId();
 		BusCustomer busCustomer = busCustomerManage.loadByCode(buyerId);
 		if(busCustomer==null){
@@ -240,13 +261,13 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 					throw new OrderException(SCMErrorEnum.BUS_CUSTOMER_UNPAY_DISABLED);
 				}
 				BusVipUnpaid busVipUnpaid = this.initOrderUnPay(header, payAccount, TradeTypeEnum.UNPAY_CONSUME.getValue());
-				busVipUnpaidManage.create(busVipUnpaid);
+				busVipUnpaidManage.create(busVipUnpaid, false);
 			}else if(PayModeEnum.VIP_PAY.getValue().equals(payMode)){
 				if(!CustomerTypeEnum.VIP.getCode().equals(busCustomer.getCustomerType())){
 					throw new OrderException(SCMErrorEnum.BUS_CUSTOMER_NO_VIP);
 				}
 				BusVipUnpaid busVipUnpaid = this.initOrderUnPay(header, payAccount, TradeTypeEnum.VIP_CONSUME.getValue());
-				busVipUnpaidManage.create(busVipUnpaid);
+				busVipUnpaidManage.create(busVipUnpaid, false);
 			}
 			busPayAccountManage.create(payAccount);
 		}		
@@ -310,18 +331,34 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	 */
 	private BusVipUnpaid initOrderUnPay(BusOrder header, BusPayAccount payAccount, Short tradeType) {
 		BusVipUnpaid busVipUnpaid = new BusVipUnpaid();
+		
+		String cardNo = payAccount.getCardNo();
 		busVipUnpaid.setUnpaidId(PKMapping.GUUID(PKMapping.bus_vip_unpaid));		
-		busVipUnpaid.setCustomerCode(header.getBuyerId());
-		busVipUnpaid.setGiftPrice(payAccount.getDiscountAmount());
+		busVipUnpaid.setCustomerCode(header.getBuyerId());		
 		busVipUnpaid.setOrderId(header.getOrderId());
 		busVipUnpaid.setPayMode(payAccount.getPayMode());
 		busVipUnpaid.setShopId(header.getShopId());
-		busVipUnpaid.setTradePrice(header.getReceptPrice());	
 		busVipUnpaid.setTradeTime(payAccount.getTradeTime());
 		busVipUnpaid.setCreatedTime(new Date());
-		busVipUnpaid.setCardNo(payAccount.getCardNo());
-		busVipUnpaid.setTradeType(tradeType);	
+		busVipUnpaid.setCreatedName(header.getCreatedName());
+		busVipUnpaid.setCardNo(cardNo);
+		busVipUnpaid.setTradeType(tradeType);
+		busVipUnpaid.setPayId(payAccount.getPayId());		
+		busVipUnpaid.setUnusual(false);
 		busVipUnpaid.setTradeStatus(Short.valueOf(TradeStatusEnum.COMPLETED.getCode()));
+		busVipUnpaid.setGiftPrice(payAccount.getDiscountAmount());
+		busVipUnpaid.setTradePrice(payAccount.getReceptPrice());			
+		if(TradeTypeEnum.VIP_CONSUME.getValue().equals(tradeType)){
+			if(cardNo!=null && !cardNo.equals("")){
+				BigDecimal giftPrice = busVipManage.syncGiftPrice(cardNo, busVipUnpaid.getTradePrice());
+				if(giftPrice!=null){
+					busVipUnpaid.setGiftPrice(giftPrice.negate());
+					busVipUnpaid.setTradePrice(busVipUnpaid.getTradePrice().negate());
+				}else{
+					throw new OrderException(SCMErrorEnum.BUS_VIP_ILLEGAL);
+				}			
+			}			
+		}		
 		return busVipUnpaid;
 	}
 

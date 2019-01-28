@@ -2,6 +2,7 @@ package com.fsun.service.customer;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,11 @@ import com.fsun.api.bus.BusVipApi;
 import com.fsun.biz.bus.manage.BusVipManage;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusVipCondition;
+import com.fsun.domain.enums.PayModeEnum;
+import com.fsun.domain.enums.TradeTypeEnum;
+import com.fsun.domain.enums.VipUnpaidPayModeEnum;
 import com.fsun.domain.model.BusVip;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.VipException;
@@ -41,6 +46,19 @@ public class BusVipService implements BusVipApi {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public HashMap<String, Object> initRachargeData(String cardNo, BusUserDto currUser) {
+		HashMap<String, Object> map = busVipManage.initRachargeData(cardNo);		
+		HashMap<String, Object> headerMap = (HashMap<String, Object>)map.get("header");
+		String shopName = currUser.getShopName();
+		String shopId = currUser.getShopId();
+		headerMap.put("shopId", shopId);
+		headerMap.put("shopName", shopName);	
+		headerMap.put("tradeType", TradeTypeEnum.VIP_RACHARGE.getValue());
+		headerMap.put("payMode", VipUnpaidPayModeEnum.CASH_PAY.getValue());
+		return map;
 	}
  
 	@Override
@@ -76,7 +94,8 @@ public class BusVipService implements BusVipApi {
 		if(id==null || id.equals("")){
 			domain.setId(PKMapping.GUUID(PKMapping.bus_vip));
 			domain.setEnablePrice(BigDecimal.ZERO);
-			domain.setVipTime(now);
+			domain.setGiftPrice(BigDecimal.ZERO);
+			domain.setVipTime(now);			
 			domain.setCreatedName(currentUser.getUsername());
 			domain.setEnabled(true);
 			busVipManage.create(domain);

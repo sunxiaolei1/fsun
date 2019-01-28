@@ -24,6 +24,7 @@ var docPoTypeData = new Array();
 var docTradeStatusData = new Array();
 var docTradeTypeData = new Array();
 var busGoodsTypeData = new Array();
+var vipUnpaidPayModeData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -53,6 +54,7 @@ var docPoType = {};
 var docTradeStatus = {};
 var docTradeType = {};
 var busGoodsType = {};
+var vipUnpaidPayMode = {};
 
 $(function () {
 	synchronizeData();	
@@ -85,6 +87,7 @@ $(function () {
 	docTradeType = formatterCodeType(docTradeTypeData);
 	
 	busGoodsType = formatterCodeType(busGoodsTypeData); 
+	vipUnpaidPayMode = formatterCodeType(vipUnpaidPayModeData); 
 });
 
 function formatterCodeType(result) {
@@ -157,6 +160,8 @@ function synchronizeData() {
         				docTradeTypeData.push(item);
         			}else if(item.codeType == 'BusGoodsType'){
         				busGoodsTypeData.push(item);
+        			}else if(item.codeType == 'VipUnpaidPayMode'){
+        				vipUnpaidPayModeData.push(item);
         			}
         			
     	        });
@@ -287,6 +292,10 @@ function synchronizeData() {
 					codeName:"请选择..."
 				});
 				
+				vipUnpaidPayModeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
         	}
        	}
 	});

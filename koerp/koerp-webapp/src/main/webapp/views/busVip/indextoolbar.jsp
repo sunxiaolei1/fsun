@@ -5,8 +5,8 @@
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
 	request.setAttribute("api", basePath);
 %>
-
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView()">添加</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="toRachargeView()">充值</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="toDetailView()">修改</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="disabledBatch()">禁用</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="enabledBatch()">启用</a>
@@ -21,6 +21,20 @@
 function toAddView(){		
 	commonDialog("ordersDialog", "创建会员卡", "75%", "65%", 
 		"${api}/bus/vip/toDetailView?id=", "icon-add");
+}
+
+//跳转至充值界面
+function toRachargeView(){
+	var rows = currDataGrid.datagrid('getSelections');
+	if (rows.length != 1) {
+		$.messager.alert("提示","只能选择一行数据！");
+		return;
+	}
+	var row = rows[0];
+	var url = "${api}/bus/vip/toRachargeView?cardNo="+ row.card_no;
+	var icon = "icon-edit";
+	var subtitle = "会员卡(卡号:"+ row.card_no +")充值";
+	parent.addTab(subtitle, url, icon);	
 }
 
 //跳转至编辑界面

@@ -75,18 +75,40 @@ public class BusVipUnpaid {
      * 表字段 : bus_vip_unpaid.created_time
      */
     private Date createdTime;
+    
+    /**
+     * 创建人
+     * 表字段 : bus_vip_unpaid.created_name
+     */
+    private String createdName;
 
     /**
      * 更新时间
      * 表字段 : bus_vip_unpaid.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 更新人
+     * 表字段 : bus_vip_unpaid.updated_name
+     */
+    private String updatedName;
 
     /**
      * 
      * 表字段 : bus_vip_unpaid.card_no
      */
     private String cardNo;
+    
+    /**
+     * 标记异常单据
+     */
+    private Boolean unusual;
+    
+    /**
+     * 账单主键
+     */
+    private String payId;
 
     public String getUnpaidId() {
         return unpaidId;
@@ -199,4 +221,60 @@ public class BusVipUnpaid {
     public void setCardNo(String cardNo) {
         this.cardNo = cardNo == null ? null : cardNo.trim();
     }
+
+	/**
+	 * @return the unusual
+	 */
+	public Boolean getUnusual() {
+		return unusual;
+	}
+
+	/**
+	 * @param unusual the unusual to set
+	 */
+	public void setUnusual(Boolean unusual) {
+		this.unusual = unusual;
+	}
+
+	/**
+	 * @return the payId
+	 */
+	public String getPayId() {
+		return payId;
+	}
+
+	/**
+	 * @param payId the payId to set
+	 */
+	public void setPayId(String payId) {
+		this.payId = payId;
+	}
+
+	/**
+	 * @return the createdName
+	 */
+	public String getCreatedName() {
+		return createdName;
+	}
+
+	/**
+	 * @param createdName the createdName to set
+	 */
+	public void setCreatedName(String createdName) {
+		this.createdName = createdName;
+	}
+
+	/**
+	 * @return the updatedName
+	 */
+	public String getUpdatedName() {
+		return updatedName;
+	}
+
+	/**
+	 * @param updatedName the updatedName to set
+	 */
+	public void setUpdatedName(String updatedName) {
+		this.updatedName = updatedName;
+	}
 }

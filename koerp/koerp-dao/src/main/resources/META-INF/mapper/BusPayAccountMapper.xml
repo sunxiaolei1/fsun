@@ -55,6 +55,29 @@
     cash_name, trans_code_msg, trade_time, src_order_id, src_trade_no, src_pay_id, activity_id, 
     flow_status, created_time, updated_time
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="orderId != null and orderId != ''">
+  			and order_id = #{orderId}
+  		</if>
+  		
+  		<if test="payMode != null and payMode != ''">
+  			and pay_mode = #{payMode}
+  		</if>
+  				
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusPayAccountCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_pay_account
+    	<include refid="conditions" />
+  </select>
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

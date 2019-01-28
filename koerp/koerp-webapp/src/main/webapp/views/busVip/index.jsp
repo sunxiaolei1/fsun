@@ -36,6 +36,7 @@ var columns =
 		{field:"cn_name",title:"持卡人",width:80, align:'center'},
 		{field:"vip_time",title:"开卡时间",width:120, align:'center'},
 		{field:"enable_price",title:"可用余额",width:80, align:'center',formatter:numBaseFormat},
+		{field:"gift_price",title:"赠送金额",width:80, align:'center',formatter:numBaseFormat},
 		{field:"neg_balance",title:"允许负余额",width:80, align:'center', formatter:function(value, row){
 			var neg_balance = '否';
 			if(row.card_type==2 || row.card_type==3){

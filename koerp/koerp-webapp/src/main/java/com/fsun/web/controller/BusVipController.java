@@ -1,5 +1,6 @@
 package com.fsun.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.fsun.api.bus.BusVipApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusVipCondition;
 import com.fsun.domain.model.BusVip;
 import com.fsun.domain.model.SysUser;
@@ -41,6 +43,26 @@ public class BusVipController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView("/busVip/detail");
 		modelAndView.addObject("id", id);
 		return modelAndView;
+	}
+	
+	@RequestMapping("/toRachargeView")
+	public ModelAndView toRachargeView(@RequestParam("cardNo") String cardNo) {		
+		ModelAndView modelAndView = new ModelAndView("/busVip/operate/toRachargeView");
+		modelAndView.addObject("cardNo", cardNo);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/initRachargeData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getRachargeInitData(@RequestParam("cardNo") String cardNo){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = busVipApi.initRachargeData(cardNo, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
