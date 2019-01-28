@@ -68,7 +68,7 @@ public class BusVipUnpaidManage extends CrudManage<BusVipUnpaidMapper, BusVipUnp
 			BusVip busVip = busVipManage.getVipByCardNo(busVipUnpaid.getCardNo());
 			if(busVip!=null){
 				BigDecimal enablePrice = busVipUnpaid.getTradePrice();
-				BigDecimal giftPrice = busVipUnpaid.getTradePrice();
+				BigDecimal giftPrice = busVipUnpaid.getGiftPrice();
 				//更新会员卡金额等信息
 				busVip.setUpdatedName(busVipUnpaid.getCreatedName());
 				busVip.setUpdatedTime(busVipUnpaid.getCreatedTime());

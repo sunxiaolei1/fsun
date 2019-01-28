@@ -95,7 +95,7 @@ function pagerFilter($grid, data, fields, totalcolumn){
     	data.currOriginalRows = [];
     	$.each(data.originalRows,function(){
     		var row = this;
-    		if((row.ordeId && row.ordeId.match(opts.searchValue)!=null)
+    		if((row.orderId && row.orderId.match(opts.searchValue)!=null)
 	    		   || (row.shopName && row.shopName.match(opts.searchValue)!=null)) {
     			data.currOriginalRows.push(row);
     		}
