@@ -4,7 +4,7 @@
 
 <div class="easyui-layout" style="width:100%;height:100%;">
 	<div title="会员卡管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
-		<!-- 查询条件 -->
+		<!-- 查询条件  -->
 		<%@include file="./searchbar.jsp"%>
 		
 		<!-- table -->
