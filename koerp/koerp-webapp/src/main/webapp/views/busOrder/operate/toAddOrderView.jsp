@@ -216,7 +216,7 @@ var soColumns = [[
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },
-	    formatter:numBaseFormat,
+	    formatter:numBaseFormat/* ,
 		editor:{
 			type:'numberbox',
 			options:{					
@@ -224,7 +224,7 @@ var soColumns = [[
 				precision:2,
 				required: true
 			}
-		}
+		} */
 	},
 	{field:"qty",title:"数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){

@@ -207,6 +207,10 @@ function delSkuOne(rowIndex){
 function addSkuOne(rowIndex){
 	var rowData = currDatagrid.datagrid("getRows")[rowIndex];
 	if(rowData.qty>=0){
+		if(rowData.salePrice==0){
+			$.messager.alert("提示", "该商品在该渠道下不可使用!", "warn");
+			return ;
+		}
 		var oldRow = getSeletedSku(rowData.sku, currCheckedSkus);
 		if(oldRow == null){
 			var newSku = initAddSku(rowData);

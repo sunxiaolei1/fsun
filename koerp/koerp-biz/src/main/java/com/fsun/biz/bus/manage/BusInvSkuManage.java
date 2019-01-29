@@ -158,6 +158,7 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 			 mapper.updateByPrimaryKey(old);
 			 return old;
 		 }else{
+			 domain.setId(PKMapping.GUUID(PKMapping.bus_inv_sku));
 			 domain.setCreatedTime(now);
 			 domain.setDamagedQty(domain.getDamagedQty().negate());
 			 domain.setLockQty(domain.getLockQty().negate());
