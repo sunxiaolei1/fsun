@@ -135,7 +135,7 @@ public class BusVipManage extends CrudManage<BusVipMapper, BusVip>{
 			//计算实际赠送金额
 			if(enablePrice.compareTo(BigDecimal.ZERO)>0){
 				BigDecimal giftPrice = busVip.getGiftPrice();
-				newGiftPrice = tradePrice.multiply(giftPrice).divide(enablePrice)
+				newGiftPrice = tradePrice.multiply(giftPrice).divide(enablePrice, 2, BigDecimal.ROUND_HALF_UP)
 					.setScale(2, BigDecimal.ROUND_HALF_UP);
 				//扣减之后的可用余额
 				BigDecimal newEnablePrice = enablePrice.subtract(tradePrice);

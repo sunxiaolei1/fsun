@@ -89,7 +89,7 @@
 		</table>
 	</form>			
 </div>	
-<div style="height: 350px; width: 100%;">
+<div style="height: 300px; width: 100%;">
 	<div id="detailskutoolbar" style="display:none;">
 		<%@include file="./detailskutoolbar.jsp"%>
 	</div>
@@ -161,6 +161,7 @@ $(function () {
 	editInitComboxParams($orderfm, "");
 	
 	currOrderDetailDataGrid.datagrid({
+		view:footerStyleView,
 		width:"auto",
 	    height:"auto",
 	    nowrap:false,
@@ -182,14 +183,27 @@ $(function () {
 	    showFooter:true,
 	    toolbar: "#detailskutoolbar",
 	    columns: rachargeColumns,
-	    loadFilter:function(data) { 
-	    	//排序拦截器
-    		sortFilter($(this), data);
-    		//分页拦截器
-    		return pagerFilter($(this), data);   
+	    loadFilter:function(data) {     		
+    		var fields = ["tradePrice","giftPrice"];       		
+    		//排序拦截器
+    		sortFilter($(this), data);		
+    	    //分页拦截器
+    	    var data = pagerFilter($(this), data, fields, "shopName"); 
+			return data; 
         },
 	    loadMsg:"数据加载中请稍后……",
-	    emptyMsg:"没有符合条件的记录"
+	    emptyMsg:"没有符合条件的记录",
+	    rowStyler:function(index,row){
+        	var rowStyle = "";  
+        	if (row.shopName=="合计"){//这里是判断哪些行
+        		rowStyle = 'font-weight:bold;';  
+            }else{
+            	if(row.unusual){
+     				rowStyle += "background-color:#FF9933;";
+    			}
+            }	
+        	return rowStyle;
+		}
 	});
 	
 	$.ajax({

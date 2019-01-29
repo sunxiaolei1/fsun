@@ -79,7 +79,14 @@ $(function() {
 	    toolbar:'#tools',
 	    singleSelect: false,
 	    selectOnCheck: true,
-	    checkOnSelect: true
+	    checkOnSelect: true,
+	    rowStyler:function(index,row){
+        	var rowStyle = "";        	
+        	if(row.unusual){
+ 				rowStyle += "background-color:#FF9933;";
+			}
+        	return rowStyle;
+		}
 	    
 	});
 });

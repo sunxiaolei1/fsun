@@ -184,7 +184,7 @@ var payAccountColumns = [[
 		}
 	},            	         	
 	{field:"receptPrice",title:"应收金额", width:80, align:"center",formatter:numBaseFormat},
-	{field:"payPrice",title:"实付金额", width:80, align:"center",formatter:numBaseFormat},
+	{field:"payPrice",title:"应付金额", width:80, align:"center",formatter:numBaseFormat},
 	{field:"dibPrice",title:"找零金额", width:80, align:"center",formatter:numBaseFormat},
 	{field:"discountAmount",title:"优惠金额", width:80, align:"center",formatter:numBaseFormat},  
 	{field:"tradeNo",title:"支付流水号", width:150, align:"center"},  
@@ -244,7 +244,7 @@ $(function () {
     	    var data = pagerFilter($(this), data, fields, "sku"); 
 			return data; 
         },
-        rowStyler:function(index,row){	    		    	
+        rowStyler:function(index,row){
     		if (row.sku=="合计"){//这里是判断哪些行
                 return 'font-weight:bold;';  
             }	
@@ -322,11 +322,11 @@ function openPayAccountView(){
     		//排序拦截器
     		sortFilter($(this), data);		
     	    //分页拦截器
-    	    var data = pagerFilter($(this), data, fields, "payMode"); 
+    	    var data = pagerFilter($(this), data, fields, "sku"); 
 			return data; 
         },
         rowStyler:function(index,row){	    		    	
-    		if (row.payMode=="合计"){//这里是判断哪些行
+    		if (row.sku=="合计"){//这里是判断哪些行
                 return 'font-weight:bold;';  
             }	
     		return "";

@@ -264,7 +264,7 @@ var payAccountColumns = [[
 		return formatter(value, window.parent.payMode); 
 	}},            	         	
 	{field:"receptPrice",title:"应收金额", width:80, align:"center",formatter:numBaseFormat},
-	{field:"payPrice",title:"实付金额", width:80, align:"center",formatter:numBaseFormat},
+	{field:"payPrice",title:"应付金额", width:80, align:"center",formatter:numBaseFormat},
 	{field:"dibPrice",title:"找零金额", width:80, align:"center",formatter:numBaseFormat},
 	{field:"discountAmount",title:"优惠金额", width:80, align:"center",formatter:numBaseFormat},  
 	{field:"tradeNo",title:"支付流水号", width:150, align:"center"},  

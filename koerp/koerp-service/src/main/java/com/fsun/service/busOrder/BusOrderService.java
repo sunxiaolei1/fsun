@@ -353,7 +353,13 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 				BigDecimal giftPrice = busVipManage.syncGiftPrice(cardNo, busVipUnpaid.getTradePrice());
 				if(giftPrice!=null){
 					busVipUnpaid.setGiftPrice(giftPrice.negate());
-					busVipUnpaid.setTradePrice(busVipUnpaid.getTradePrice().negate());
+					busVipUnpaid.setTradePrice(busVipUnpaid.getTradePrice().negate());					
+					//更新账单优惠金额
+					payAccount.setDiscountAmount(giftPrice);					
+					//更新订单优惠金额,实付金额、实收金额
+					header.setDiscountPrice(header.getDiscountPrice().add(giftPrice));					
+					header.setReceptPrice(header.getReceptPrice().subtract(giftPrice));
+					header.setPayPrice(header.getPayPrice().subtract(giftPrice));
 				}else{
 					throw new OrderException(SCMErrorEnum.BUS_VIP_ILLEGAL);
 				}			
