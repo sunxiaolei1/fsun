@@ -17,17 +17,15 @@
 	    <TD width="24%">
 	      <DIV align=center><b>商品名称</b></DIV></TD>
 	    <TD width="12%">
-	      <DIV align=center><b>赠送信息</b></DIV></TD>
+	      <DIV align=center><b>规格</b></DIV></TD>
 	    <TD width="6%">
 	      <DIV align=center><b>数量</b></DIV></TD>		    
 	    <TD width="6%">
 	      <DIV align=center><b>单位</b></DIV></TD>
 	    <TD width="6%">
-	      <DIV align=center><b>原价</b></DIV></TD>
-	    <TD width="6%">
-	      <DIV align=center><b>实付价</b></DIV></TD>
+	      <DIV align=center><b>单价</b></DIV></TD>
 	    <TD width="8%">
-	      <DIV align=center><b>金额</b></DIV></TD>   
+	      <DIV align=center><b>金额</b></DIV></TD>   	   
 	  </TR>	
 	</thead>      
 	  <TBODY id="tableOrderData">    
@@ -35,8 +33,8 @@
 	  </TBODY>
 	  <tfoot>
 		  <tr>
-		    <TD colspan="6" tdata="allSum" format="UpperMoney" align="left" tindex="9"><b >金额合计(大写)：###</b></TD> 
-		    <TD colspan="3" tdata="allSum" format="#,##0.0" align="left" tindex="9"><b>小写金额 ￥###元</b></TD> 			   				  
+		    <TD colspan="5" tdata="allSum" format="UpperMoney" align="left" tindex="8"><font>金额合计(大写)：###</font></TD> 
+		    <TD colspan="3" tdata="allSum" format="#,##0.0" align="left" tindex="8"><font>小写金额 ￥###元</font></TD> 			   				  
 		 </tr>
 	  </tfoot>
 	</TABLE>
@@ -61,7 +59,7 @@ function madeOrderView(docOrderDto, afterPrintFunc){
                if (Value!=0) {
       			  $.ajax({
       				 type : "GET",
-      	        	 url: '${api}/bus/order/signPrint/'+ docOrderDto.orderId,
+      	        	 url: '${api}/doc/order/signPrint/'+ docOrderDto.orderNo,
       	        	 dataType: "json",     	
       	        	 async:false,
       	        	 success:function(rowData){	
@@ -82,7 +80,7 @@ function madeOrderView(docOrderDto, afterPrintFunc){
 		if(prints>0){
 			$.ajax({
 				type : "GET",
- 	        	url: '${api}/bus/order/signPrint/'+ docOrderDto.orderId,
+ 	        	url: '${api}/doc/order/signPrint/'+ docOrderDto.orderNo,
 	        	dataType: "json",
 	        	async:false,
 	        	success:function(rowData){	
@@ -113,12 +111,12 @@ function initOrderPagePublicInfo(LODOP, docOrderDto){
 
 	LODOP.SET_PRINT_STYLE("FontSize",19);
 	LODOP.SET_PRINT_STYLE("Bold",1);
-	LODOP.ADD_PRINT_TEXT(20,"28%","90%",20,'${applicationScope.companyName}销售单');
+	LODOP.ADD_PRINT_TEXT(20,"28%","90%",20,'${applicationScope.companyName}出库单');
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 	
 	LODOP.SET_PRINT_STYLE("FontSize",13);
 	LODOP.SET_PRINT_STYLE("Bold",1);
-	LODOP.ADD_PRINT_TEXT(65,"35%","90%",19, "NO:"+docOrderDto.orderId);
+	LODOP.ADD_PRINT_TEXT(65,"35%","90%",19, "NO:"+docOrderDto.orderNo);
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 
 	LODOP.SET_PRINT_STYLE("FontSize",9);
@@ -157,14 +155,14 @@ function createOneOrderPage(LODOP,docOrderDto,currRow){
 		LODOP.NewPageA();	
 	}
 	
-	CreateTableOrderContext(docOrderDto.details,9,"tableOrderData");
+	CreateTableOrderContext(docOrderDto.details,8,"tableOrderData");
 	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
     var strStyle='<style type="text/css"> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>';
-	LODOP.ADD_PRINT_TABLE(175,"1%","99%",210,strStyle + document.getElementById("printTableOrder").innerHTML);
+	LODOP.ADD_PRINT_TABLE(148,"1%","99%",230,strStyle + document.getElementById("printTableOrder").innerHTML);
 
 	createTableOrderHead("head1",docOrderDto.header); 
 	var strStyle1 = '<style type="text/css"> input,span {border:none;border-bottom:black solid 1px;} input {font-family:Arial, Helvetica, sans-serif,"Microsoft YaHei";font-size:16px;}</style>';
-	LODOP.ADD_PRINT_HTM(90,"1%","99%",90,strStyle1 + document.getElementById("tableHead").innerHTML);
+	LODOP.ADD_PRINT_HTM(90,"1%","99%",120,strStyle1 + document.getElementById("tableHead").innerHTML);
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 	LODOP.SET_PRINT_STYLEA(0,"LinkedItem",1+currRow);
 	
@@ -172,61 +170,28 @@ function createOneOrderPage(LODOP,docOrderDto,currRow){
 
 /******************************************    创建送货单的表头信息     ************************************/
 function createTableOrderHead(div,header){
-	 var customerName = header.buyerName;
-	 var orderType = formatter(header.orderType, parent.orderType);
-	 var createManName = header.cashName;
-	 var address = header.address;
-	 var mobile = header.mobile;
-	 var receiveName = header.receiveName;
-	 
-/* 	 var orderPrice = header.orderPrice;
-	 var payPrice = header.payPrice;
-	 var dibPrice = header.dibPrice;	
-	 var discountPrice = numBaseFormat(orderPrice - (payPrice - dibPrice)); */
+	 var shopName = header.fromShopName;
+	 var orderType = formatter(header.orderType, parent.docOrderType);
+	 var createdName = header.createdName;		 
 	 var memo = header.memo;
-	 var carrierName =  header.carrierName;
 	 
 	 var tbody = $("#"+div);		 
      var tr=$("<tr></tr>");
      tr.appendTo(tbody);
-     var td = $("<td colspan='2' >客户名称：<input style='width:260px;' value='"
-			+ (customerName != null ? customerName : "")
+     var td = $("<td>单据类型：<span style='width:160px;' >"+ (orderType!=null?orderType:"") +"</span></td>");			 
+	 td.appendTo(tr);
+	 td = $("<td>制单人：<span style='width:160px;' >"+ (createdName!=null?createdName:"") +"</span></td>");			 
+	 td.appendTo(tr);
+     td = $("<td colspan='2' >出库店仓：<input style='width:260px;' value='"
+			+ (shopName != null ? shopName : "")
 			+ "' /></td>");	 
 	 td.appendTo(tr);	
-	 td = $("<td>单据类型：<span>"+ (orderType!=null?orderType:"") +"</span></td>");			 
-	 td.appendTo(tr);
-	 td = $("<td>制单人：<span>"+ (createManName!=null?createManName:"") +"</span></td>");			 
-	 td.appendTo(tr);	
+	 	
 
-	 tr=$("<tr></tr>");
-     tr.appendTo(tbody);
-     var td = $("<td colspan='2' >收货地址：<input style='width:260px;' value='"
- 			+ (address != null ? address : "")
- 			+ "' /></td>");				 
-	 td.appendTo(tr);	
-	 td = $("<td>联系方式：<span>"+ (mobile!=null?mobile:"") +"</span></td>");			 
-	 td.appendTo(tr);
-	 td = $("<td>收货人：<span>"+ (receiveName!=null?receiveName:"") +"</span></td>");			 
-	 td.appendTo(tr);
-
-	 /* tr=$("<tr></tr>");
-     tr.appendTo(tbody);
-     td = $("<td>订单金额：<span>"+ (orderPrice!=null?orderPrice:"") +"</span></td>");			 
-	 td.appendTo(tr);
-	 td = $("<td>商家优惠：<span>"+ (discountPrice!=null?discountPrice:"") +"</span></td>");			 
-	 td.appendTo(tr);
-     td = $("<td>实付金额：<span>"+ (payPrice!=null?payPrice:"") +"</span></td>");			 
-	 td.appendTo(tr);	
-	 td = $("<td>找零金额：<span>"+ (dibPrice!=null?dibPrice:"") +"</span></td>");			 
-	 td.appendTo(tr);	 */ 
-	
-	 	 
 	 tr = $("<tr></tr>");
-	 tr.appendTo(tbody);	
-	 td = $("<td colspan='3' >注意事项：<input style='width:500px;' value='"
+	 tr.appendTo(tbody);
+	 td = $("<td colspan='4' >备注：<input style='width:600px;' value='"
 			+ ((memo != null && memo > 0) ? memo: '暂无') + "' /></td>");
-	 td.appendTo(tr);
-	 td = $("<td>经手人：<span>"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
 	 td.appendTo(tr);
 	 
 }
@@ -241,13 +206,11 @@ function CreateTableOrderContext(list,cellCount,div)
 		tr.appendTo(tbody);
 		var obj= list[i];
 		var sku = obj.sku;
-		var goodsName = (obj.goodsName!=null?formatStr((obj.goodsName.getLength()>26?obj.goodsName.getSub(23):obj.goodsName)):'');
-		var goodsType = obj.goodsType!=null?formatter(obj.goodsType, parent.busGoodsType):"无";
-		var qty = obj.qty;
-		var giftCount = obj.giftCount>0?("[数量:"+ obj.giftCount +"]"):"";
+		var goodsName = (obj.goodsName!=null?formatStr((obj.goodsName.getLength()>26?obj.goodsName.getSub(23):obj.goodsName)):'');		
+		var property = obj.property;
+		var qty = obj.orderedQty;
 		var unit = formatter(obj.unit, parent.unitCode);
-		var originSalePrice = obj.originSalePrice;
-		var salePrice = obj.salePrice;
+		var salePrice = obj.price;
 		var totalPrice =  obj.totalPrice;
 		var j=1;
 		var td;		
@@ -259,18 +222,16 @@ function CreateTableOrderContext(list,cellCount,div)
 			    break;
 			  case 3: td = $("<td align='center'>"+ goodsName +"</td>");
 			    break;		  
-			  case 4: td = $("<td align='center'>"+ (goodsType + giftCount) +"</td>");
+			  case 4: td = $("<td align='center'>"+ property +"</td>");
 			  	break;
 			  case 5: td = $("<td align='center'>"+ qty +"</td>");
 			    break;		    
 			  case 6: td = $("<td align='center'>"+ unit +"</td>");
 			  	break;
-			  case 7: td = $("<td align='center'>"+ originSalePrice +"</td>");				  
-			    break;
-			  case 8: td = $("<td align='center'>"+ salePrice +"</td>");				  
-			    break;				    
-			  case 9: td = $("<td align='center'>"+ totalPrice +"</td>");				  				  
-			    break;
+			  case 7: td = $("<td align='center'>"+ salePrice +"</td>");				  
+			    break;			  			    
+			  case 8: td = $("<td align='center'>"+ totalPrice +"</td>");				  				  
+			    break;			 
 			  default: break;
 			}
 			td.appendTo(tr);

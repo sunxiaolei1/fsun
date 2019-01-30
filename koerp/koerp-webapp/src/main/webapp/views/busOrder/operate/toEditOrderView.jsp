@@ -91,10 +91,10 @@
 				<th width="12%">收货地址</th>
 				<td colspan="3">
 					<input id="address" name="address" class="easyui-textbox" style="width:480px;"/>
-				</td>	        						        		        	
+				</td>        						        		        	
 	        </tr>     
 	        <tr>	        					
-	        	<th width="12%">备注</th>
+	        	<th width="12%">注意事项</th>
 				<td colspan="7">
 					<input id="memo" name="memo"  data-options="multiline:true" 
 						class="easyui-textbox" style="width:800px;height:50px;"/>

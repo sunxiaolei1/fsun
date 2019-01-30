@@ -177,6 +177,7 @@
     <result column="o_delivery_time" property="deliveryTime"/>
     <result column="o_place_loading" property="placeLoading"/>
     <result column="o_route" property="route"/>
+    <result column="o_created_name" property="createdName"/>    
   </resultMap>
   
   <resultMap id="DefinedResultMap" type="java.util.Map"> 	
@@ -255,6 +256,7 @@
 		o.onsign_name as o_onsign_name ,
 		o.descr as o_descr,
 		o.memo as o_memo,
+		o.created_name as o_created_name,		
 		o.i_shop_id as o_i_shop_id,
 		o.i_id as o_i_id,
 		o.i_name as o_i_name,
