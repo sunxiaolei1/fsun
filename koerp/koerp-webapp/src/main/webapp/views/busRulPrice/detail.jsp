@@ -62,20 +62,6 @@ var rulSkuColumns = [[
 		return formatter(value, window.parent.productType); 
 	}},	
 	{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
-	{field:"supplyPrice",title:"內供价", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-	    	return 'font-weight:bold;color:green;';
-	    },
-	    formatter:numBaseFormat,
-		editor:{
-			type:'numberbox',
-			options:{					
-				min:0,
-				precision:2,
-				required: true
-			}
-		}
-	},
 	{field:"marketPrice",title:"分销价", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
@@ -89,7 +75,21 @@ var rulSkuColumns = [[
 				required: true
 			}
 		}
-	},	
+	},
+	{field:"supplyPrice",title:"餐饮价", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:numBaseFormat,
+		editor:{
+			type:'numberbox',
+			options:{					
+				min:0,
+				precision:2,
+				required: true
+			}
+		}
+	},
 	{field:"vipPrice",title:"VIP价", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';

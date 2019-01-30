@@ -68,8 +68,10 @@
 				</td>		
 				<th width="12%">赠送金额</th>
 				<td>
-					<input id="newGiftPrice" name="newGiftPrice" class="easyui-numberbox" readOnly 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
+					<input id="newGiftPrice" name="newGiftPrice" class="easyui-numberbox" readOnly style="width:90px;"
+						data-options="min:0,precision:2,value:0, formatter: priceFormat" />	
+					<input id="trimPrice" class="easyui-numberspinner" style="width:70px;"
+						data-options="min:0,precision:2,value:0.00" />								
 				</td>		        	
 	        </tr>
 	        <tr>
@@ -147,12 +149,23 @@ $(function () {
    	  	data: window.parent.tradeTypeData
    	});
 	
+	$('#trimPrice', $orderfm).numberspinner({  
+	    onChange:function(newValue,oldValue){ 
+	    	var diffPrice = Number(newValue) - Number(oldValue);
+	    	var tradePrice = $("#tradePrice", $orderfm).numberbox("getValue");
+	    	var newGiftPrice = $("#newGiftPrice", $orderfm).numberbox("getValue");
+	    	$("#tradePrice", $orderfm).numberbox("setValue", Number(tradePrice) + diffPrice);
+			$("#newGiftPrice", $orderfm).numberbox("setValue", Number(newGiftPrice) + diffPrice); 	       
+		}  
+	});
+	
 	$('#rachargePrice', $orderfm).numberbox({  
 		onChange:function(newValue,oldValue){	
 			var originPrecent = $("#originPrecent", $orderfm).numberbox("getValue");
+			var trimPrice = $('#trimPrice', $orderfm).numberspinner("getValue");
 			var tradePrice = Number(newValue) * Number(originPrecent);
-			$("#tradePrice", $orderfm).numberbox("setValue", tradePrice);
-			$("#newGiftPrice", $orderfm).numberbox("setValue",tradePrice-Number(newValue));    
+			$("#tradePrice", $orderfm).numberbox("setValue", tradePrice + Number(trimPrice));
+			$("#newGiftPrice", $orderfm).numberbox("setValue",tradePrice-Number(newValue) + Number(trimPrice)); 
 	    }
    	});
 	
