@@ -260,9 +260,17 @@ function getSaveData(){
 	if (!isValid){
 		$.messager.alert("错误", "提交的数据不正确!", "error");  
 		return null;
-	}			
+	}	
+	
 	//初始化交易记录
-	var baseInfo = formJson($orderfm);	
+	var baseInfo = formJson($orderfm);
+	
+	//赠送金额不能大于充值金额
+	if(baseInfo.tradePrice<2*baseInfo.newGiftPrice){
+		$.messager.alert("错误", "赠送金额不能大于充值金额!", "error");  
+		return null;
+	}
+	
 	var busVipUnpaid = {
 		cardNo: baseInfo.cardNo,
 		shopId: baseInfo.shopId,

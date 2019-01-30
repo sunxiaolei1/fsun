@@ -185,6 +185,7 @@
 
 <script type="text/javascript">
 
+var currCustomer = null;
 var currDetailData = []; 
 var currPayAccountData = [];
 var currOrderDetailDataGrid = $("#orderDetailDataGrid");
@@ -313,7 +314,16 @@ $(function () {
 			$('#buyerName', $orderfm).val(data.customer_name);			
 			$("#receiveName", $orderfm).textbox("setValue", data.contacts!=null?data.contacts:"");			
 			$("#mobile", $orderfm).textbox("setValue", data.tel!=null?data.tel:"");			
-			$("#address", $orderfm).textbox("setValue", data.address!=null?data.address:"");			
+			$("#address", $orderfm).textbox("setValue", data.address!=null?data.address:"");
+			if(currCustomer!=null && currCustomer.customer_type!=data.customer_type){				
+				if(currDetailData!=null){
+					$.messager.alert("提示", "切换该用户将清空已有的商品", "info", function(){
+						currDetailData = []; 
+						currOrderDetailDataGrid.datagrid("loadData", currDetailData);
+					});	
+				}						
+			}
+			currCustomer = data;			
         }
     });
 

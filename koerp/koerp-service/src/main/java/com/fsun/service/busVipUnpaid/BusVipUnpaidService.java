@@ -1,5 +1,6 @@
 package com.fsun.service.busVipUnpaid;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -59,7 +60,14 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 		BusCustomer busCustomer = busCustomerManage.loadByCode(customerCode);
 		if(busCustomer==null){
 			throw new VipUnpaidException(SCMErrorEnum.BUS_CUSTOMER_NOT_EXIST);
-		}		
+		}
+		
+		BigDecimal giftPrice = busVipUnpaid.getGiftPrice();
+		BigDecimal tradePrice = busVipUnpaid.getTradePrice();
+		if(giftPrice.multiply(new BigDecimal(2)).compareTo(tradePrice)>0){
+			throw new VipUnpaidException(SCMErrorEnum.BUS_VIP_UNPAID_ILLEGAL);
+		}
+		
 		busVipUnpaid.setUnpaidId(PKMapping.GUUID(PKMapping.bus_vip_unpaid));
 		busVipUnpaid.setCreatedTime(now);
 		busVipUnpaid.setCreatedName(realname);
