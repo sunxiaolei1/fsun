@@ -146,7 +146,10 @@
 				<input type="password" name="password" id="password" value="" placeholder="密码"/>
 			</div>
 			<div class="user-div">
-				<input type="checkbox" id="rememberUser" /><span>记住用户名</span>
+				<label for="isRemember" >		   
+					<input id="isRemember" type="checkbox" id="rememberUser"style="zoom:130%;vertical-align:middle;" />
+					<span style="font-size:13px;">记住用户名</span>
+				</label>	
 			</div>
 			<div class="login-div">
 				<input type="button" id="loginButton" class="btn-sub" value="登 录"/>

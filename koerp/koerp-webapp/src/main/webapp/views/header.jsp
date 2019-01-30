@@ -36,8 +36,8 @@
        	</div>
     </div>
     
-    <div class="pf-user" style="font-size:125%;width:250px;">	
-	    	<span style="color:#FFF;" >欢迎 [${user.realname}]</span>
+    <div class="pf-user" style="font-size:125%;width:330px;">	
+	    	<span style="color:#FFF;" >欢迎 [${user.shopName} - ${user.realname}]</span>
 			&nbsp;&nbsp; <span id="editpass" style="cursor:pointer;color:#FFF;" >修改密码&nbsp;&nbsp;|</span>
 			 <span id="loginOut" style="cursor:pointer;color:#FFF;" >退出</span> 
 		  
