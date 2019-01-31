@@ -12,67 +12,41 @@
 	
 <div class="fsun-wrap">
 	<form id="orderfm">
-		<span class="title" style="top: 35px;">充值信息</span>				
+		<span class="title" style="top: 35px;">挂账结款信息</span>				
 		<input id="customerCode" name="customerCode" hidden="true" />	
 		<input id="shopId" name="shopId" hidden="true" />		
 		<table class="nb-formTable" style="width:100%;margin-top:2px;">
-	        <tr>
-	            <th width="12%">会员卡号<span style="color:red;">*</span></th>
-				<td>
-					<input id="cardNo" name="cardNo" class="easyui-textbox" readOnly />
-				</td>
+	        <tr>	            
 				<th width="12%">客户名称<span style="color:red;">*</span></th>
-				<td colspan="2" >
-					<input id="customerName" name="customerName" class="easyui-textbox" style="width:256px;" disabled />								
+				<td colspan="3" >
+					<input name="customerName" class="easyui-textbox" 
+						style="width:400px;" disabled />								
 				</td>
-				<th width="12%">交易门店<span style="color:red;">*</span></th>
-				<td colspan="2">
-					<input id="shopName" name="shopName" class="easyui-textbox" style="width:256px;" disabled />								
-				</td>																	
+				<th width="12%">客户类型</th>
+				<td>
+					<input name="customerTypeName" class="easyui-textbox" disabled />								
+				</td>
+				<th width="12%">所属销售代表</th>
+				<td>
+					<input name="salesman" class="easyui-textbox" disabled />								
+				</td>																						                													        	
 	        </tr>
-	        <tr>
-	        	<th width="12%">卡类型<span style="color:red;">*</span></th>
-				<td>
-					<input id="cardType" name="cardType" class="easyui-combobox" disabled/>								
+	        <tr>	            								
+				<th width="12%">结款门店</th>
+				<td colspan="3">
+					<input id="shopName" name="shopName" class="easyui-textbox" 
+						style="width:400px;" disabled />								
 				</td>
-	            <th width="12%">持卡人</th>
+				<th width="12%">挂账总额</th>
 				<td>
-					<input id="cnName" name="cnName" class="easyui-textbox" disabled />
+					<input id="totalPrice" name="totalPrice" class="easyui-numberbox" disabled
+						data-options="min:0,precision:2, formatter: priceFormat" />								
 				</td>				
-				<th width="12%">可用余额</th>
+				<th width="12%">已结金额</th>
 				<td>
-					<input id="enablePrice" name="enablePrice" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
-				</td>	
-				<th width="12%">原赠金余额</th>
-				<td>
-					<input id="giftPrice" name="giftPrice" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
-				</td>							
-	        </tr>		               		
-	        <tr>	        		
-				<th width="12%">充值金额<span style="color:red;">*</span></th>
-				<td>
-					<input id="rachargePrice"  class="easyui-numberbox" required 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
-				</td>
-				<th width="12%">本金比例<span style="color:red;">*</span></th>
-				<td>
-					<input id="originPrecent" name="originPrecent" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
-				</td>
-				<th width="12%">交易金额</th>
-				<td>
-					<input id="tradePrice" name="tradePrice" class="easyui-numberbox" readOnly 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
-				</td>		
-				<th width="12%">赠送金额</th>
-				<td>
-					<input id="newGiftPrice" name="newGiftPrice" class="easyui-numberbox" readOnly style="width:90px;"
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />	
-					<input id="trimPrice" class="easyui-numberspinner" style="width:70px;"
-						data-options="min:0,precision:2,value:0.00" />								
-				</td>		        	
+					<input id="paidPrice" name="paidPrice" class="easyui-numberbox" disabled 
+						data-options="min:0,precision:2, formatter: priceFormat" />								
+				</td>																							                													        	
 	        </tr>
 	        <tr>
 	        	<th width="12%">支付方式<span style="color:red;">*</span></th>
@@ -82,12 +56,24 @@
 	            <th width="12%">交易类型</th>
 				<td>
 					<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />
+				</td>
+				<th width="12%">欠款金额</th>
+				<td>
+					<input id="unpaidPrice" name="unpaidPrice" class="easyui-numberbox" disabled 
+						data-options="min:0,precision:2, formatter: priceFormat" />								
 				</td>				
-				<th width="12%">备注</th>
-				<td colspan="3">
-					<input id="memo" name="memo" class="easyui-textbox" style="width:400px;"/>
-				</td>							
+				<th width="12%">结款金额<span style="color:red;">*</span></th>
+				<td>
+					<input id="tradePrice" name="tradePrice" class="easyui-numberbox" required
+						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
+				</td>														
 	        </tr>	
+	        <tr>	        	
+				<th width="12%">备注</th>
+				<td colspan="7">
+					<input id="memo" name="memo" class="easyui-textbox" style="width:800px;"/>
+				</td>							
+	        </tr>
 		</table>
 	</form>			
 </div>	
@@ -122,18 +108,10 @@ var rachargeColumns = [[
 	}},
 	{field:"tradeTime",title:"交易时间", width:130,align:"center",sortable:true},
 	{field:'tradePrice',title:'交易金额',width:80,align:'center',formatter:numBaseFormat},
-	{field:"giftPrice",title:"赠送金额", width:80,align:"center",formatter:numBaseFormat},
 	{field:"memo",title:"备注", width:150,align:"center"}
 ]];
 
 $(function () { 
-	
-	$('#cardType', $orderfm).combobox({  
-		prompt: '请选择...',
-   	 	valueField: 'codeCode',
-   	  	textField: 'codeName',
-   	  	data: window.parent.vipCardTypeData
-   	});
 	
 	$('#payMode', $orderfm).combobox({  
 		prompt: '请选择...',
@@ -148,27 +126,6 @@ $(function () {
    	  	textField: 'codeName',
    	  	data: window.parent.tradeTypeData
    	});
-	
-	$('#trimPrice', $orderfm).numberspinner({  
-	    onChange:function(newValue,oldValue){ 
-	    	var diffPrice = Number(newValue) - Number(oldValue);
-	    	var tradePrice = $("#tradePrice", $orderfm).numberbox("getValue");
-	    	var newGiftPrice = $("#newGiftPrice", $orderfm).numberbox("getValue");
-	    	$("#tradePrice", $orderfm).numberbox("setValue", Number(tradePrice) + diffPrice);
-			$("#newGiftPrice", $orderfm).numberbox("setValue", Number(newGiftPrice) + diffPrice); 	       
-		}  
-	});
-	
-	$('#rachargePrice', $orderfm).numberbox({  
-		onChange:function(newValue,oldValue){	
-			var originPrecent = $("#originPrecent", $orderfm).numberbox("getValue");
-			var trimPrice = $('#trimPrice', $orderfm).numberspinner("getValue");
-			var tradePrice = Number(newValue) * Number(originPrecent);
-			$("#tradePrice", $orderfm).numberbox("setValue", tradePrice + Number(trimPrice));
-			$("#newGiftPrice", $orderfm).numberbox("setValue",tradePrice-Number(newValue) + Number(trimPrice)); 
-	    }
-   	});
-	
 	
 	//去除默认的请选择项
 	editInitComboxParams($orderfm, "");
@@ -197,7 +154,7 @@ $(function () {
 	    toolbar: "#detailskutoolbar",
 	    columns: rachargeColumns,
 	    loadFilter:function(data) {     		
-    		var fields = ["tradePrice","giftPrice"];       		
+    		var fields = ["tradePrice"];       		
     		//排序拦截器
     		sortFilter($(this), data);		
     	    //分页拦截器
@@ -221,9 +178,9 @@ $(function () {
 	
 	$.ajax({
 		type : "GET",
-		url : "${api}/bus/vip/initRachargeData",
+		url : "${api}/bus/customer/initUnpaidData",
 		data:{
-			"cardNo": "${cardNo}"
+			"customerCode": "${customerCode}"
 		},
 		contentType:"application/json;charset=utf-8",	   
 		dataType : "json",
@@ -239,7 +196,14 @@ $(function () {
 			if(details!=null && details.length>0){
 				currDetailData = details;
 				currOrderDetailDataGrid.datagrid("loadData", currDetailData);
-			}	
+			}
+			
+			if(header.unpaidPrice!=null && header.unpaidPrice>=0){
+				$('#tradePrice', $orderfm).numberbox({  
+					max: header.unpaidPrice
+			   	});
+			}
+								
 			//更新明细标题
 			$("#skutitle").html(header.customerName);
 		},
@@ -263,20 +227,11 @@ function getSaveData(){
 	}	
 	
 	//初始化交易记录
-	var baseInfo = formJson($orderfm);
-	
-	//赠送金额不能大于充值金额
-	if(baseInfo.tradePrice<2*baseInfo.newGiftPrice){
-		$.messager.alert("错误", "赠送金额不能大于充值金额!", "error");  
-		return null;
-	}
-	
+	var baseInfo = formJson($orderfm);	
 	var busVipUnpaid = {
-		cardNo: baseInfo.cardNo,
 		shopId: baseInfo.shopId,
 		customerCode: baseInfo.customerCode,
 		tradePrice:	baseInfo.tradePrice,
-		giftPrice:	baseInfo.newGiftPrice,
 		payMode: baseInfo.payMode,
 		tradeType: baseInfo.tradeType,
 		memo: baseInfo.memo

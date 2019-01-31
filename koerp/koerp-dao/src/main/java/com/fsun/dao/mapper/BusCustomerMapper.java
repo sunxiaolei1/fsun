@@ -1,5 +1,6 @@
 package com.fsun.dao.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.fsun.dao.config.Mapper;
@@ -14,4 +15,11 @@ public interface BusCustomerMapper extends BaseMySqlMapper<BusCustomer>{
 	 * @return
 	 */
 	public List<String> getMaxCode(String sign);
+
+	/**
+	 * 获取结款基本信息及挂账交易记录
+	 * @param customerCode
+	 * @return
+	 */
+	public HashMap<String, Object> initUnpaidData(String customerCode);
 }

@@ -1,5 +1,6 @@
 package com.fsun.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.fsun.api.bus.BusCustomerApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusCustomerCondition;
 import com.fsun.domain.model.BusCustomer;
 import com.fsun.domain.model.SysUser;
@@ -48,6 +50,25 @@ public class CustomerController extends BaseController {
 		return modelAndView;
 	}
 	
+	@RequestMapping("/toUnpaidView")
+	public ModelAndView toUnpaidView(@RequestParam("customerCode") String customerCode) {		
+		ModelAndView modelAndView = new ModelAndView("/busCustomer/operate/toUnpaidView");
+		modelAndView.addObject("customerCode", customerCode);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/initUnpaidData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getUnpaidInitData(@RequestParam("customerCode") String customerCode){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = customerApi.initUnpaidData(customerCode, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 	
 	/**
 	    * 根据客户名称判断是否已存在，不允许相同

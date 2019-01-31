@@ -172,7 +172,7 @@
         customer.customer_name as p_customer_name,
 	  	bus_shop.shop_name as p_shop_name
     from bus_vip vip
-    LEFT JOIN bus_vip_unpaid bus_vip_unpaid ON bus_vip_unpaid.card_no = vip.card_no
+    LEFT JOIN bus_vip_unpaid bus_vip_unpaid ON bus_vip_unpaid.card_no = vip.card_no and bus_vip_unpaid.trade_type in (3,4)
     LEFT JOIN bus_customer customer on customer.customer_code = bus_vip_unpaid.customer_code
     LEFT JOIN bus_shop bus_shop on bus_shop.shop_id = bus_vip_unpaid.shop_id
     where vip.card_no = #{cardNo,jdbcType=VARCHAR}

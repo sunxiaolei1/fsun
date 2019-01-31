@@ -25,11 +25,11 @@
 
 <!--头部--> 
 <div id="pf-hd" region="north" split="true" border="false" style="overflow: hidden;height:70px;background-color:#37364c;"> 
-	<div class="pf-logo">
+	<div class="pf-logo" style="border-right: 0px solid;">
         <img src="<%=request.getContextPath()%>/jquery-easyui/images/main/logo2.png" alt="logo">
     </div>
     
-    <div class="pf-nav-wrap">
+    <div class="pf-nav-wrap" style="display:none;">
     	<div class="pf-nav-ww">
         	<ul class="pf-nav">	
          	</ul>

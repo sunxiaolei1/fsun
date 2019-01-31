@@ -81,7 +81,7 @@ $(function() {
 	    rowStyler:function(index,row){
         	var rowStyle = "";        	
         	if(row.unusual){
- 				rowStyle += "background-color:#FF9933;";
+ 				rowStyle += "background-color:#C8C7BF;";
 			}
         	return rowStyle;
 		}

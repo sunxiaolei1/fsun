@@ -345,10 +345,10 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		busVipUnpaid.setTradeType(tradeType);
 		busVipUnpaid.setPayId(payAccount.getPayId());		
 		busVipUnpaid.setUnusual(false);
-		busVipUnpaid.setTradeStatus(Short.valueOf(TradeStatusEnum.COMPLETED.getCode()));
+		busVipUnpaid.setTradeStatus(Short.valueOf(TradeStatusEnum.COMPLETED.getCode()));	
 		busVipUnpaid.setGiftPrice(payAccount.getDiscountAmount());
-		busVipUnpaid.setTradePrice(payAccount.getReceptPrice());			
-		if(TradeTypeEnum.VIP_CONSUME.getValue().equals(tradeType)){
+		busVipUnpaid.setTradePrice(payAccount.getReceptPrice());
+		if(TradeTypeEnum.VIP_CONSUME.getValue().equals(tradeType)){			
 			if(cardNo!=null && !cardNo.equals("")){
 				BigDecimal giftPrice = busVipManage.syncGiftPrice(cardNo, busVipUnpaid.getTradePrice());
 				if(giftPrice!=null){
@@ -364,6 +364,9 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 					throw new OrderException(SCMErrorEnum.BUS_VIP_ILLEGAL);
 				}			
 			}			
+		}else if(TradeTypeEnum.UNPAY_CONSUME.getValue().equals(tradeType)){
+			busVipUnpaid.setGiftPrice(BigDecimal.ZERO);
+			busVipUnpaid.setTradePrice(payAccount.getReceptPrice().negate());
 		}		
 		return busVipUnpaid;
 	}

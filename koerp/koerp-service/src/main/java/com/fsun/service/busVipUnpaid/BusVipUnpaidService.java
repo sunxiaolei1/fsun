@@ -15,6 +15,7 @@ import com.fsun.common.utils.PKMapping;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.TradeStatusEnum;
+import com.fsun.domain.enums.TradeTypeEnum;
 import com.fsun.domain.model.BusCustomer;
 import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
@@ -61,13 +62,16 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 		if(busCustomer==null){
 			throw new VipUnpaidException(SCMErrorEnum.BUS_CUSTOMER_NOT_EXIST);
 		}
-		
-		BigDecimal giftPrice = busVipUnpaid.getGiftPrice();
-		BigDecimal tradePrice = busVipUnpaid.getTradePrice();
-		if(giftPrice.multiply(new BigDecimal(2)).compareTo(tradePrice)>0){
-			throw new VipUnpaidException(SCMErrorEnum.BUS_VIP_UNPAID_ILLEGAL);
+		//会员卡充值金额字段校验
+		Short tradeType = busVipUnpaid.getTradeType();
+		if(TradeTypeEnum.VIP_RACHARGE.getValue().equals(tradeType)){
+			BigDecimal giftPrice = busVipUnpaid.getGiftPrice();
+			BigDecimal tradePrice = busVipUnpaid.getTradePrice();
+			if(giftPrice.multiply(new BigDecimal(2)).compareTo(tradePrice)>0){
+				throw new VipUnpaidException(SCMErrorEnum.BUS_VIP_UNPAID_ILLEGAL);
+			}
 		}
-		
+
 		busVipUnpaid.setUnpaidId(PKMapping.GUUID(PKMapping.bus_vip_unpaid));
 		busVipUnpaid.setCreatedTime(now);
 		busVipUnpaid.setCreatedName(realname);

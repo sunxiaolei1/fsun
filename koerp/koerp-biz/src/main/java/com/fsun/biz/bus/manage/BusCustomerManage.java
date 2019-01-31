@@ -1,5 +1,6 @@
 package com.fsun.biz.bus.manage;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -48,6 +49,15 @@ public class BusCustomerManage extends CrudManage<BusCustomerMapper, BusCustomer
 			return list.get(0);
 		}
 		throw new CustomerException(SCMErrorEnum.BUS_CUSTOMER_NOT_EXIST);
+	}
+
+	/**
+	 * 获取结款基本信息及挂账交易记录
+	 * @param customerCode
+	 * @return
+	 */
+	public HashMap<String, Object> initUnpaidData(String customerCode) {
+		return mapper.initUnpaidData(customerCode);
 	}
 
 }
