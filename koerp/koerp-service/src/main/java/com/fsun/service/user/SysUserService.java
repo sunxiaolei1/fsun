@@ -153,7 +153,7 @@ public class SysUserService implements SysUserApi{
 		rootNode.setIconCls("icon-bricks");
 		rootNode.setState("open");
 		rootNode.setUrl(sysMenu.getUrl());
-		rootNode.setIcon(sysMenu.getIcon());
+		rootNode.setIcon(sysMenu.getIconcls());
 		return rootNode;		
 	}
 		
@@ -174,7 +174,7 @@ public class SysUserService implements SysUserApi{
 				childNode.setIconCls("icon-bricks");
 				childNode.setState("open");
 				childNode.setUrl(sysMenu.getUrl());
-				childNode.setIcon(sysMenu.getIcon());
+				childNode.setIcon(sysMenu.getIconcls());
 				this.addChildren(childNode, list);
 				childrenNode.add(childNode);
 			}

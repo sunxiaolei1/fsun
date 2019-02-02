@@ -19,10 +19,10 @@ a:hover{ color:Red; text-decoration:underline;}
 .txt {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;}
 .footer{text-align:center;color:#15428B; margin:0px; padding:0px;line-height:23px; font-weight:bold;}
 
-.easyui-accordion ul{list-style-type:none;margin:0px; padding:10px;}
+.easyui-accordion ul{list-style-type:none;margin:0px; padding:7px;}
 .easyui-accordion ul li{ padding:0px;}
-.easyui-accordion ul li a{line-height:24px;}
-.easyui-accordion ul li div{margin:2px 0px;padding-left:10px;padding-top:2px;}
+.easyui-accordion ul li a{line-height:26px;font-size:14px;}
+.easyui-accordion ul li div{margin:1px 0px;padding-left:10px;padding-top:1px;}
 .easyui-accordion ul li div.hover{border:1px dashed #99BBE8; background:#E0ECFF;cursor:pointer;}
 .easyui-accordion ul li div.hover a{color:#416AA3;}
 .easyui-accordion ul li div.selected{border:1px solid #99BBE8; background:#E0ECFF;cursor:default;}
@@ -67,3 +67,63 @@ a:hover{ color:Red; text-decoration:underline;}
 	vertical-align: middle;
 }
 .hot-refresh-text {display: inline-block;zoom: 1;vertical-align: middle;}
+
+
+.icon-memu_basket{background:url('../../images/icons/10.png') no-repeat center center;background-size:contain;}
+.icon-memu_bag{background:url('../../images/icons/11.png') no-repeat center center;background-size:contain;}
+.icon-memu_message{background:url('../../images/icons/14.png') no-repeat center center;background-size:contain;}
+.icon-memu_pc{background:url('../../images/icons/16.png') no-repeat center center;background-size:contain;}
+.icon-memu_magic_cube{background:url('../../images/icons/17.png') no-repeat center center;background-size:contain;}
+.icon-memu_electron{background:url('../../images/icons/18.png') no-repeat center center;background-size:contain;}
+.icon-memu_handshake{background:url('../../images/icons/2.png') no-repeat center center;background-size:contain;}
+.icon-memu_setup{background:url('../../images/icons/22.png') no-repeat center center;background-size:contain;}
+.icon-memu_room{background:url('../../images/icons/25.png') no-repeat center center;background-size:contain;}
+.icon-memu_note_book{background:url('../../images/icons/31.png') no-repeat center center;background-size:contain;}
+.icon-memu_wifi{background:url('../../images/icons/38.png') no-repeat center center;background-size:contain;}
+.icon-memu_car{background:url('../../images/icons/42.png') no-repeat center center;background-size:contain;}
+.icon-memu_stock_out{background:url('../../images/icons/43.png') no-repeat center center;background-size:contain;}
+.icon-memu_manager{background:url('../../images/icons/44.png') no-repeat center center;background-size:contain;}
+.icon-memu_woman{background:url('../../images/icons/45.png') no-repeat center center;background-size:contain;}
+.icon-memu_man{background:url('../../images/icons/46.png') no-repeat center center;background-size:contain;}
+.icon-memu_bank_card{background:url('../../images/icons/47.png') no-repeat center center;background-size:contain;}
+.icon-memu_stop{background:url('../../images/icons/5.png') no-repeat center center;background-size:contain;}
+.icon-memu_book{background:url('../../images/icons/6.png') no-repeat center center;background-size:contain;}
+.icon-memu_goods{background:url('../../images/icons/7.png') no-repeat center center;background-size:contain;}
+.icon-memu_calendar{background:url('../../images/icons/9.png') no-repeat center center;background-size:contain;}
+
+.icon-memu_article{background:url('../../images/icons/article48.png') no-repeat center center;background-size:contain;}
+.icon-memu_blue_stock{background:url('../../images/icons/blue_stock.png') no-repeat center center;background-size:contain;}
+.icon-memu_briefcase{background:url('../../images/icons/briefcase.png') no-repeat center center;background-size:contain;}
+.icon-memu_calculator{background:url('../../images/icons/calculator.png') no-repeat center center;background-size:contain;}
+.icon-memu_chart{background:url('../../images/icons/chart.png') no-repeat center center;background-size:contain;}
+.icon-memu_code{background:url('../../images/icons/code.png') no-repeat center center;background-size:contain;}
+.icon-memu_comments{background:url('../../images/icons/comments8.png') no-repeat center center;background-size:contain;}
+.icon-memu_company{background:url('../../images/icons/company.png') no-repeat center center;background-size:contain;}
+.icon-memu_green{background:url('../../images/icons/green.png') no-repeat center center;background-size:contain;}
+.icon-memu_l-cl{background:url('../../images/icons/l-cl.png') no-repeat center center;background-size:contain;}
+.icon-memu_l-home{background:url('../../images/icons/l-home-icon.png') no-repeat center center;background-size:contain;}
+.icon-memu_l-jq{background:url('../../images/icons/l-jq.png') no-repeat center center;background-size:contain;}
+.icon-memu_l-sjzx{background:url('../../images/icons/l-sjzx.png') no-repeat center center;background-size:contain;}
+.icon-memu_l-user{background:url('../../images/icons/l-user.png') no-repeat center center;background-size:contain;}
+.icon-memu_market{background:url('../../images/icons/market.png') no-repeat center center;background-size:contain;}
+.icon-memu_money{background:url('../../images/icons/money.png') no-repeat center center;background-size:contain;}
+.icon-memu_nexus{background:url('../../images/icons/nexus.png') no-repeat center center;background-size:contain;}
+.icon-memu_play{background:url('../../images/icons/play.png') no-repeat center center;background-size:contain;}
+.icon-memu_plugins{background:url('../../images/icons/plugins48.png') no-repeat center center;background-size:contain;}
+.icon-memu_print{background:url('../../images/icons/print.png') no-repeat center center;background-size:contain;}
+.icon-memu_research{background:url('../../images/icons/research.png') no-repeat center center;background-size:contain;}
+.icon-memu_rss{background:url('../../images/icons/rss.png') no-repeat center center;background-size:contain;}
+.icon-memu_sale{background:url('../../images/icons/sale.png') no-repeat center center;background-size:contain;}
+.icon-memu_shipping{background:url('../../images/icons/shipping.png') no-repeat center center;background-size:contain;}
+.icon-memu_sys_delivery{background:url('../../images/icons/sys_delivery.png') no-repeat center center;background-size:contain;}
+.icon-memu_sys_order{background:url('../../images/icons/sys_order.png') no-repeat center center;background-size:contain;}
+.icon-memu_sys_overview{background:url('../../images/icons/sys_overview.png') no-repeat center center;background-size:contain;}
+.icon-memu_sys_product{background:url('../../images/icons/sys_product.png') no-repeat center center;background-size:contain;}
+.icon-memu_sys_shopping{background:url('../../images/icons/sys_shopping.png') no-repeat center center;background-size:contain;}
+.icon-memu_sys_stock{background:url('../../images/icons/sys_stock.png') no-repeat center center;background-size:contain;}
+.icon-memu_sys_store{background:url('../../images/icons/sys_store.png') no-repeat center center;background-size:contain;}
+.icon-memu_themes{background:url('../../images/icons/themes8.png') no-repeat center center;background-size:contain;}
+.icon-memu_transfer{background:url('../../images/icons/transfer.png') no-repeat center center;background-size:contain;}
+.icon-memu_views{background:url('../../images/icons/views8.png') no-repeat center center;background-size:contain;}
+.icon-memu_visa{background:url('../../images/icons/visa.png') no-repeat center center;background-size:contain;}
+.icon-memu_wallet{background:url('../../images/icons/wallet.png') no-repeat center center;background-size:contain;}

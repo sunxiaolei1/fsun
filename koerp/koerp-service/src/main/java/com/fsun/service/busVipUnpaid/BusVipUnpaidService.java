@@ -62,11 +62,15 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 		if(busCustomer==null){
 			throw new VipUnpaidException(SCMErrorEnum.BUS_CUSTOMER_NOT_EXIST);
 		}
+		
 		//会员卡充值金额字段校验
+		BigDecimal tradePrice = busVipUnpaid.getTradePrice();
+		if(tradePrice.compareTo(BigDecimal.ZERO)==0){
+			throw new VipUnpaidException(SCMErrorEnum.BUS_VIP_UNPAID_IS_ZERO);
+		}		
 		Short tradeType = busVipUnpaid.getTradeType();
 		if(TradeTypeEnum.VIP_RACHARGE.getValue().equals(tradeType)){
 			BigDecimal giftPrice = busVipUnpaid.getGiftPrice();
-			BigDecimal tradePrice = busVipUnpaid.getTradePrice();
 			if(giftPrice.multiply(new BigDecimal(2)).compareTo(tradePrice)>0){
 				throw new VipUnpaidException(SCMErrorEnum.BUS_VIP_UNPAID_ILLEGAL);
 			}

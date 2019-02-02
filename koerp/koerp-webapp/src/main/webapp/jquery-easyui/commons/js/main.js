@@ -84,11 +84,11 @@ function initLeftMenu(appId) {
 	            if(n.children != null) {
 	            	$.each(n.children, function (j, o) {
 	            		if(o.text == '订单管理') {
-	            			sub_menulist += '<li><div><a href="#" id="a_'+o.id+'" onclick="clickMenu(\''+o.id+'\', \''+o.url+'\', \''+o.icon+'\', this)" ><span class="'+o.icon+'" style="padding:0px 7px;">&nbsp;</span><span class="nav">' + o.text + '</span></a></div></li> ';
+	            			sub_menulist += '<li><div><a href="#" id="a_'+o.id+'" onclick="clickMenu(\''+o.id+'\', \''+o.url+'\', \''+o.icon+'\', this)" ><span class="'+o.icon+'" style="padding:0px 7px;">&nbsp;</span><span class="nav" style="font-family: 华文楷体;" >' + o.text + '</span></a></div></li> ';
 	            			var obj = '<a href="#" onclick="clickMenu(\''+o.id+'\', \''+o.url+'\', \''+o.icon+'\', this)" ><span class="'+o.icon+'" style="padding: 0px 7px;">&nbsp;</span><span class="nav">' + o.text + '</span></a>';
 	            			clickMenu(o.id, o.url, o.icon, obj);
 	            		}else{
-	            			sub_menulist += '<li><div><a href="#" id="a_'+o.id+'" onclick="clickMenu(\''+o.id+'\', \''+o.url+'\', \''+o.icon+'\', this)"><span class="'+o.icon+'" style="padding: 0px 7px;">&nbsp;</span><span class="nav">' + o.text + '</span></a></div></li> ';
+	            			sub_menulist += '<li><div><a href="#" id="a_'+o.id+'" onclick="clickMenu(\''+o.id+'\', \''+o.url+'\', \''+o.icon+'\', this)"><span class="'+o.icon+'" style="padding: 0px 7px;">&nbsp;</span><span class="nav" style="font-family: 华文楷体;" >' + o.text + '</span></a></div></li> ';
 	            		}
 	            	});
 	            }

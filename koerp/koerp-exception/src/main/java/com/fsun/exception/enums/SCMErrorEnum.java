@@ -53,7 +53,8 @@ public enum SCMErrorEnum {
 	BUS_SHOP_NOT_EXIST(8051, "店仓不存在"),	
 	BUS_SHOP_EXISTED(8052, "店仓已存在"),
 	BUS_SHOP_ISNULL(8053, "店仓是空"),
-	BUS_VIP_UNPAID_ILLEGAL(8061, "赠送金额不能大于充值金额");
+	BUS_VIP_UNPAID_ILLEGAL(8061, "赠送金额不能大于充值金额"),
+	BUS_VIP_UNPAID_IS_ZERO(8062, "交易金额不能为零");
 
 	private int errorCode;
 	

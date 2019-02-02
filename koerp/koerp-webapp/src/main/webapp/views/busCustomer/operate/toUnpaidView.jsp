@@ -60,7 +60,7 @@
 				<th width="12%">欠款金额</th>
 				<td>
 					<input id="unpaidPrice" name="unpaidPrice" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2, formatter: priceFormat" />								
+						data-options="precision:2, formatter: priceFormat" />								
 				</td>				
 				<th width="12%">结款金额<span style="color:red;">*</span></th>
 				<td>
@@ -197,10 +197,15 @@ $(function () {
 				currDetailData = details;
 				currOrderDetailDataGrid.datagrid("loadData", currDetailData);
 			}
-			
+
 			if(header.unpaidPrice!=null && header.unpaidPrice>=0){
 				$('#tradePrice', $orderfm).numberbox({  
 					max: header.unpaidPrice
+			   	});
+			}else{
+				$('#tradePrice', $orderfm).numberbox({  
+					max: 0,
+					editable:false
 			   	});
 			}
 								
