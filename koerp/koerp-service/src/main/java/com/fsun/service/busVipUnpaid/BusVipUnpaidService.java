@@ -37,8 +37,7 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 
 	@Override
 	public BusVipUnpaid load(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return busVipUnpaidManage.load(id);
 	}
 
 	@Override

@@ -108,7 +108,18 @@ var rachargeColumns = [[
 	}},
 	{field:"tradeTime",title:"交易时间", width:130,align:"center",sortable:true},
 	{field:'tradePrice',title:'交易金额',width:80,align:'center',formatter:numBaseFormat},
-	{field:"memo",title:"备注", width:150,align:"center"}
+	{field:"memo",title:"备注", width:150,align:"center"},
+	{field: "selected", title: "操作", width: 70, align: "center",
+		formatter: function(value, row, index){	
+			var tradeType = row.tradeType;
+			var unusual = row.unusual;
+			if(!unusual && tradeType == 2){	
+				var unpaidId = row.unpaidId;
+				return commonAssemBottonHtml('cancelOrderOne', "'"+ unpaidId +"'", '取消', 'icon-script_delete');			
+			}
+											
+		}
+	}
 ]];
 
 $(function () { 
@@ -237,6 +248,7 @@ function getSaveData(){
 		shopId: baseInfo.shopId,
 		customerCode: baseInfo.customerCode,
 		tradePrice:	baseInfo.tradePrice,
+		giftPrice: 0.00,
 		payMode: baseInfo.payMode,
 		tradeType: baseInfo.tradeType,
 		memo: baseInfo.memo
@@ -248,5 +260,38 @@ function getSaveData(){
 	}
 	return saveData;
 }
+
+
+function afterSaveFunc(){
+	parent.closeCurrTab("reflushDataGrid");
+}
+
+/**
+ * 取消一笔充值交易
+ */
+function cancelOrderOne(unpaidId){			
+	$.ajax({
+		type : "POST",
+		url : "${api}/bus/vipUnpaid/status/40?ids="+ unpaidId,
+		data: JSON.stringify({
+			"memo":""
+		}),
+		contentType:"application/json;charset=utf-8",	   
+		dataType : "json",
+		success : function(result) {		
+			if(result.status){
+				$.messager.alert("提示", "操作成功", "info", function(){
+					parent.refreshCurrTab();
+				});
+			}else{
+				$.messager.alert("错误", result.message, "error");
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			$.messager.alert("错误", errorThrown, "error");
+		}
+	});  
+}
+
 
 </script>
