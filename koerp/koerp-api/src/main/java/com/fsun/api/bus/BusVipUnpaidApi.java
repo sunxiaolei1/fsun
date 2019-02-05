@@ -1,5 +1,8 @@
 package com.fsun.api.bus;
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.fsun.api.base.BaseApi;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.model.BusVipUnpaid;
@@ -20,5 +23,19 @@ public interface BusVipUnpaidApi extends BaseApi<BusVipUnpaid, BusVipUnpaidCondi
 	 */
 	public void changeStatus(String[] ids, String tradeStatus, 
 		SysUser currUser, BusVipUnpaidCondition condition);
+
+	/**
+	 * 会员卡消费明细导出
+	 * @param condition
+	 * @return
+	 */
+	public List<HashMap<String, Object>> exportVip(BusVipUnpaidCondition condition);
+
+	/**
+	 * 挂账消费明细导出
+	 * @param condition
+	 * @return
+	 */
+	public List<HashMap<String, Object>> exportUnpaid(BusVipUnpaidCondition condition);
 
 }

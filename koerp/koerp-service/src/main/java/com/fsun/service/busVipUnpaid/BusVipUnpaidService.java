@@ -2,6 +2,7 @@ package com.fsun.service.busVipUnpaid;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,16 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 	@Override
 	public PageModel findPage(BusVipUnpaidCondition condition) {
 		return busVipUnpaidManage.findMapPage(condition);
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> exportVip(BusVipUnpaidCondition condition) {
+		return busVipUnpaidManage.export(condition);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> exportUnpaid(BusVipUnpaidCondition condition) {
+		return busVipUnpaidManage.export(condition);
 	}
 
 	@Transactional
@@ -136,6 +147,5 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 		}
 		return isTrue;
 	}
-
 
 }

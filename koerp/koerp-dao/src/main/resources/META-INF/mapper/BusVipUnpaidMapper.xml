@@ -124,6 +124,30 @@
     	<include refid="conditions" />
   </select>
   
+  <select id="export" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusVipUnpaidCondition" >    
+	SELECT 
+	  bus_vip_unpaid.card_no as card_no, 
+	  customer.customer_name as customer_name,
+	  bus_shop.shop_name as shop_name,
+	  (select codes.code_name from bus_bas_codes codes where codes.code_code = bus_vip_unpaid.pay_mode 
+       		and codes.code_type='PayMode') as pay_mode_name, 
+	  (select codes.code_name from bus_bas_codes codes where codes.code_code = bus_vip_unpaid.trade_type
+       		and codes.code_type='TradeType') as trade_type_name, 
+	  bus_vip_unpaid.order_id as order_id, 
+	  (select codes.code_name from bus_bas_codes codes where codes.code_code = bus_vip_unpaid.trade_status
+       		and codes.code_type='TradeStatus') as trade_status_name, 
+      bus_vip_unpaid.trade_time as trade_time, 
+      bus_vip_unpaid.trade_price as trade_price,
+      bus_vip_unpaid.gift_price as gift_price, 
+      bus_vip_unpaid.memo as memo,
+      bus_vip_unpaid.unusual as unusual
+    FROM bus_vip_unpaid bus_vip_unpaid
+    LEFT JOIN bus_customer customer on customer.customer_code = bus_vip_unpaid.customer_code
+    LEFT JOIN bus_shop bus_shop on bus_shop.shop_id = bus_vip_unpaid.shop_id
+    	<include refid="conditions" />
+    order by bus_vip_unpaid.trade_time desc
+  </select>  
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from bus_vip_unpaid

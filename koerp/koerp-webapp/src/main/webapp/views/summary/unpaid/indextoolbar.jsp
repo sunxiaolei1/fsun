@@ -11,9 +11,18 @@
 
 <script type="text/javascript">
 
-//跳转至盘盈入库新增界面
+//excel导出
 function exportExcel(){	
-	var url = "${api}/bus/order/toAddView?orderType="+ orderType;
+	var queryParams = initQueryParams();
+	var url = "${api}/bus/vipUnpaid/unpaid/exportExcel?q="+ queryParams.q 
+			+ "&tradeType="+ queryParams.tradeType 
+			+ "&tradeStatus="+ queryParams.tradeStatus
+			+ "&payMode="+ queryParams.payMode 
+			+ "&customerCode="+ queryParams.customerCode
+			+ "&shopId="+ queryParams.shopId 
+			+ "&startDate="+ queryParams.startDate 
+			+ "&endDate="+ queryParams.endDate;
+	window.open(url); 
 }
 
 
