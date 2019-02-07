@@ -420,6 +420,51 @@ formatterDate = function(date) {
 	return date.getFullYear() + '-' + month + '-' + day;
 };
 
+/**
+ * 获取字符串的长度(英文占1个字符，中文汉字占2个字符)
+ */
+String.prototype.getLength=function(){
+	var len = 0;
+	if(this.length!=null){
+		 for (var i = 0; i < this.length; i++) {
+			if (this.charCodeAt(i) > 127 || this.charCodeAt(i) == 94) {
+				len += 2;
+			} else {
+				len++;
+			}
+		}  
+	}
+    return len;
+}
+
+/**
+ * 截取字符串(支持中英文混合) 
+ */
+String.prototype.getSub = function(n) {
+	var r = /[^\x00-\xff]/g;
+	if (this.replace(r, "mm").length <= n) {
+		return this;
+	}
+	var m = Math.floor(n / 2);
+	for (var i = m; i < this.length; i++) {
+		if (this.substr(0, i).replace(r, "mm").length >= n) {
+			return this.substr(0, i) + "...";
+		}
+	}
+	return this;
+} 
+
+
+//换行
+function formatStr(str){
+	return str.replace(/(.{18})/g,'$1\n');
+}
+
+//换行
+function formatStr30(str,number){
+	return str.replace(/(.{30})/g,'$1\n');
+}
+
 /** 
  * 在页面中任何嵌套层次的窗口中获取顶层窗口 
  * @return 当前页面的顶层窗口对象 

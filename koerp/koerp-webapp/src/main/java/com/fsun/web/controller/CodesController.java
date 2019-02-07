@@ -89,7 +89,7 @@ public class CodesController extends BaseController {
 			return success();
 		} catch(BasCodesException e){
 			e.printStackTrace();
-			return failure(SCMException.CODE_SAVE, e.getMessage());
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -102,7 +102,7 @@ public class CodesController extends BaseController {
 		try {
 			if (!StringUtils.isEmpty(ids)) {
 				codesApi.deletes(ids.split(","));
-				return success(SCMErrorEnum.SUCCESS.getErrorCode(), "删除成功");
+				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
 		} catch (Exception e) {

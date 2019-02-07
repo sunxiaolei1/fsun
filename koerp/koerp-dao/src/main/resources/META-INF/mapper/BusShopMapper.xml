@@ -7,6 +7,7 @@
     <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
     <result column="position" property="position" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
     <result column="contacts" property="contacts" jdbcType="VARCHAR" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="enabled" property="enabled" jdbcType="BIT" />
@@ -16,13 +17,66 @@
     <result column="updated_id" property="updatedId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    shop_id, shop_code, shop_name, position, address, contacts, memo, enabled, created_time, 
-    updated_time, created_id, updated_id
+    a.shop_id, a.shop_code, a.shop_name, a.position, a.address, a.tel, a.contacts, a.memo, a.enabled, a.created_time, 
+    a.updated_time, a.created_id, a.updated_id
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="q != null and q != ''">
+  			and (a.shop_code like '%${q}%' 
+  				or a.shop_name like '%${q}%'
+  				or a.tel like '%${q}%'
+  			)
+  		</if>
+  		
+  		<if test="shopId != null and shopId != ''">
+  			and a.shop_id = #{shopId}
+  		</if>
+  		
+  		<if test="shopCode != null and shopCode != ''">
+  			and a.shop_code = #{shopCode}
+  		</if>
+  		
+  		<if test="shopName != null and shopName != ''">
+  			and a.shop_name = #{shopName}
+  		</if>
+  		
+  		<if test="enabled != null and enabled != ''">
+  			and a.enabled = #{enabled}
+  		</if>
+  		
+  		<!-- 用于查询黑名单用户对应的订单列表 -->
+		<if test="notInShopIds != null">	
+		    and shop_id not in
+			<foreach collection="notInShopIds" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>
+		</if>
+
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusShopCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_shop a
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusShopCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_shop a
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from bus_shop
+    from bus_shop a
     where shop_id = #{shopId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
@@ -31,15 +85,15 @@
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.BusShop" >
     insert into bus_shop (shop_id, shop_code, shop_name, 
-      position, address, contacts, 
-      memo, enabled, created_time, 
-      updated_time, created_id, updated_id
-      )
+      position, address, tel, 
+      contacts, memo, enabled, 
+      created_time, updated_time, created_id, 
+      updated_id)
     values (#{shopId,jdbcType=VARCHAR}, #{shopCode,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
-      #{position,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, 
-      #{memo,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{createdTime,jdbcType=TIMESTAMP}, 
-      #{updatedTime,jdbcType=TIMESTAMP}, #{createdId,jdbcType=VARCHAR}, #{updatedId,jdbcType=VARCHAR}
-      )
+      #{position,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{contacts,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{createdId,jdbcType=VARCHAR}, 
+      #{updatedId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusShop" >
     insert into bus_shop
@@ -58,6 +112,9 @@
       </if>
       <if test="address != null" >
         address,
+      </if>
+      <if test="tel != null" >
+        tel,
       </if>
       <if test="contacts != null" >
         contacts,
@@ -97,6 +154,9 @@
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
       </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
       <if test="contacts != null" >
         #{contacts,jdbcType=VARCHAR},
       </if>
@@ -135,6 +195,9 @@
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
       </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
       <if test="contacts != null" >
         contacts = #{contacts,jdbcType=VARCHAR},
       </if>
@@ -165,6 +228,7 @@
       shop_name = #{shopName,jdbcType=VARCHAR},
       position = #{position,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
       contacts = #{contacts,jdbcType=VARCHAR},
       memo = #{memo,jdbcType=VARCHAR},
       enabled = #{enabled,jdbcType=BIT},

@@ -23,6 +23,11 @@ public class BusVipCondition extends SortCondition {
      * 表字段 : bus_vip.customer_code
      */
     private String customerCode;
+    
+    /**
+     * 会员卡类型
+     */
+    private Integer cardType;
 
     /**
      * 会员卡号
@@ -83,6 +88,12 @@ public class BusVipCondition extends SortCondition {
      * 表字段 : bus_vip.enable_price
      */
     private BigDecimal enablePrice;
+    
+    /**
+     * 赠金
+     * 表字段 : bus_vip.gift_price
+     */
+    private BigDecimal giftPrice;
 
     /**
      * 备注
@@ -124,6 +135,11 @@ public class BusVipCondition extends SortCondition {
 	 * 客户类型
 	 */
 	private String customerType;
+	
+	/**
+	 * 有无余额
+	 */
+	boolean hasBalance;
 
 	public String getQ() {
 		return q;
@@ -275,6 +291,36 @@ public class BusVipCondition extends SortCondition {
 
 	public void setUpdatedName(String updatedName) {
 		this.updatedName = updatedName;
+	}
+
+	public Integer getCardType() {
+		return cardType;
+	}
+
+	public void setCardType(Integer cardType) {
+		this.cardType = cardType;
+	}
+
+	public boolean isHasBalance() {
+		return hasBalance;
+	}
+
+	public void setHasBalance(boolean hasBalance) {
+		this.hasBalance = hasBalance;
+	}
+
+	/**
+	 * @return the giftPrice
+	 */
+	public BigDecimal getGiftPrice() {
+		return giftPrice;
+	}
+
+	/**
+	 * @param giftPrice the giftPrice to set
+	 */
+	public void setGiftPrice(BigDecimal giftPrice) {
+		this.giftPrice = giftPrice;
 	}
 	
 	

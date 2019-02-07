@@ -46,6 +46,17 @@ public class SysUserCondition {
      * 表字段 : sys_user.enabled
      */
     private Boolean enabled;
+    
+    /**
+     * 所属门店
+     */
+    private String shopId;
+    
+    /**
+     * 模糊查询
+     */
+    private String q;
+    
 
 	public String getId() {
 		return id;
@@ -93,6 +104,34 @@ public class SysUserCondition {
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	/**
+	 * @return the shopId
+	 */
+	public String getShopId() {
+		return shopId;
+	}
+
+	/**
+	 * @param shopId the shopId to set
+	 */
+	public void setShopId(String shopId) {
+		this.shopId = shopId;
+	}
+
+	/**
+	 * @return the q
+	 */
+	public String getQ() {
+		return q;
+	}
+
+	/**
+	 * @param q the q to set
+	 */
+	public void setQ(String q) {
+		this.q = q;
 	}
     
 }

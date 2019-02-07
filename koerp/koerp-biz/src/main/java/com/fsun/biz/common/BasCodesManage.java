@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.fsun.dao.mapper.BusBasCodesMapper;
+import com.fsun.domain.entity.BasCodesCondition;
 import com.fsun.domain.model.BusBasCodes;
 
 @Component

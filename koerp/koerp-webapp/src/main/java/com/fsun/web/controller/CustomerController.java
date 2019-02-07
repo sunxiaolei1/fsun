@@ -1,5 +1,6 @@
 package com.fsun.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.fsun.api.bus.BusCustomerApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusCustomerCondition;
 import com.fsun.domain.model.BusCustomer;
 import com.fsun.domain.model.SysUser;
@@ -47,6 +49,44 @@ public class CustomerController extends BaseController {
 		modelAndView.addObject("id", id);
 		return modelAndView;
 	}
+	
+	@RequestMapping("/toUnpaidView")
+	public ModelAndView toUnpaidView(@RequestParam("customerCode") String customerCode) {		
+		ModelAndView modelAndView = new ModelAndView("/busCustomer/operate/toUnpaidView");
+		modelAndView.addObject("customerCode", customerCode);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/initUnpaidData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getUnpaidInitData(@RequestParam("customerCode") String customerCode){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = customerApi.initUnpaidData(customerCode, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	/**
+	    * 根据客户名称判断是否已存在，不允许相同
+	    * @param id
+	    * @param sku
+	    * @return
+	    */
+	    @ResponseBody
+	    @RequestMapping(value = "/unique", method = {RequestMethod.POST})
+	    public HttpResult unique(@RequestBody BusCustomerCondition condition) {  
+	    	try {
+	    		boolean isUnique = customerApi.unique(condition);
+	    		return success(isUnique);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return failure(SCMErrorEnum.SYSTEM_ERROR);
+			}
+	    }
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	@ResponseBody
@@ -93,7 +133,7 @@ public class CustomerController extends BaseController {
 			return success();
 		} catch(CustomerException e){
 			e.printStackTrace();
-			return failure(SCMException.CODE_SAVE, e.getMessage());
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -106,8 +146,9 @@ public class CustomerController extends BaseController {
 		@RequestParam("ids") String ids) {
 		try {
 			if (!StringUtils.isEmpty(ids)) {
-				customerApi.changeStatus(ids.split(","), enabled);
-				return success(SCMErrorEnum.SUCCESS.getErrorCode());
+				SysUser user = getCurrentUser();	
+				customerApi.changeStatus(ids.split(","), enabled, user);
+				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
 		} catch (Exception e) {

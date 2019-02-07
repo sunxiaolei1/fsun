@@ -14,7 +14,8 @@
 <head> 
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <title>五芳斋后台信息管理系统</title> 
+    <title>订单管理平台</title> 
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link href="jquery-easyui/commons/css/login2.css" rel="stylesheet">
     <script type="text/javascript" src="jquery-easyui/jquery.min.js"></script>
     
@@ -132,9 +133,9 @@
 	<div class="wrap">
 		<div class="head-wrap">
 			<div class="head-icon">
-				<img src="jquery-easyui/images/img/icon.png"/>					
+				<img src="jquery-easyui/images/main/logo2.png"/>					
 			</div>
-			<span class="head-txt">五芳斋后台管理系统</span>
+			<!-- <span class="head-txt">订单管理系统</span> -->
 		</div>
 		
 		<div class="login-wrap">
@@ -146,7 +147,10 @@
 				<input type="password" name="password" id="password" value="" placeholder="密码"/>
 			</div>
 			<div class="user-div">
-				<input type="checkbox" id="rememberUser" /><span>记住用户名</span>
+				<label for="isRemember" >		   
+					<input id="isRemember" type="checkbox" id="rememberUser"style="zoom:130%;vertical-align:middle;" />
+					<span style="font-size:13px;">记住用户名</span>
+				</label>	
 			</div>
 			<div class="login-div">
 				<input type="button" id="loginButton" class="btn-sub" value="登 录"/>

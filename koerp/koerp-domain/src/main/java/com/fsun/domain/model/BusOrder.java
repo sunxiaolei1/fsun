@@ -11,7 +11,7 @@ public class BusOrder {
     private String orderId;
 
     /**
-     * 订单类型 1 pos销售订单，2 盘亏出库，3 外卖销售订单
+     * 订单类型 1 pos销售订单，2 销售寄存单
      * 表字段 : bus_order.order_type
      */
     private Short orderType;
@@ -57,6 +57,18 @@ public class BusOrder {
      * 表字段 : bus_order.buyer_name
      */
     private String buyerName;
+
+    /**
+     * 经办人编码
+     * 表字段 : bus_order.carrier_id
+     */
+    private String carrierId;
+
+    /**
+     * 经办人名称
+     * 表字段 : bus_order.carrier_name
+     */
+    private String carrierName;
 
     /**
      * 平台id
@@ -165,9 +177,15 @@ public class BusOrder {
      * 表字段 : bus_order.ship_price
      */
     private BigDecimal shipPrice;
+    
+    /**
+     * 表字段 : bus_order.coupon_price
+	 * 商品优惠
+	 */
+    private BigDecimal couponPrice;
 
     /**
-     * 优惠金额
+     * 商家优惠
      * 表字段 : bus_order.discount_price
      */
     private BigDecimal discountPrice;
@@ -389,52 +407,10 @@ public class BusOrder {
     private String cashName;
 
     /**
-     * 配送平台名称
-     * 表字段 : bus_order.logistics_plat
-     */
-    private String logisticsPlat;
-
-    /**
-     * 配送平台类型[1平台配送；0自配送]
-     * 表字段 : bus_order.logistics_type
-     */
-    private Short logisticsType;
-
-    /**
-     * 配送人员姓名
-     * 表字段 : bus_order.logistics
-     */
-    private String logistics;
-
-    /**
-     * 配送人员联系方式
-     * 表字段 : bus_order.logistics_phone
-     */
-    private String logisticsPhone;
-
-    /**
      * 日结时间
      * 表字段 : bus_order.settle_time
      */
     private Date settleTime;
-
-    /**
-     * 配送下达时间
-     * 表字段 : bus_order.logistics_time
-     */
-    private Date logisticsTime;
-
-    /**
-     * 配送取餐时间
-     * 表字段 : bus_order.logistics_pick_time
-     */
-    private Date logisticsPickTime;
-
-    /**
-     * 配送送达时间
-     * 表字段 : bus_order.logistics_receive_time
-     */
-    private Date logisticsReceiveTime;
 
     /**
      * 班次
@@ -461,10 +437,16 @@ public class BusOrder {
     private Date updatedTime;
 
     /**
-     * 订单额外信息
-     * 表字段 : bus_order.extra
+     * 
+     * 表字段 : bus_order.updated_name
      */
-    private String extra;
+    private String updatedName;
+
+    /**
+     * 
+     * 表字段 : bus_order.created_name
+     */
+    private String createdName;
 
     public String getOrderId() {
         return orderId;
@@ -536,6 +518,22 @@ public class BusOrder {
 
     public void setBuyerName(String buyerName) {
         this.buyerName = buyerName == null ? null : buyerName.trim();
+    }
+
+    public String getCarrierId() {
+        return carrierId;
+    }
+
+    public void setCarrierId(String carrierId) {
+        this.carrierId = carrierId == null ? null : carrierId.trim();
+    }
+
+    public String getCarrierName() {
+        return carrierName;
+    }
+
+    public void setCarrierName(String carrierName) {
+        this.carrierName = carrierName == null ? null : carrierName.trim();
     }
 
     public String getPlatId() {
@@ -978,68 +976,12 @@ public class BusOrder {
         this.cashName = cashName == null ? null : cashName.trim();
     }
 
-    public String getLogisticsPlat() {
-        return logisticsPlat;
-    }
-
-    public void setLogisticsPlat(String logisticsPlat) {
-        this.logisticsPlat = logisticsPlat == null ? null : logisticsPlat.trim();
-    }
-
-    public Short getLogisticsType() {
-        return logisticsType;
-    }
-
-    public void setLogisticsType(Short logisticsType) {
-        this.logisticsType = logisticsType;
-    }
-
-    public String getLogistics() {
-        return logistics;
-    }
-
-    public void setLogistics(String logistics) {
-        this.logistics = logistics == null ? null : logistics.trim();
-    }
-
-    public String getLogisticsPhone() {
-        return logisticsPhone;
-    }
-
-    public void setLogisticsPhone(String logisticsPhone) {
-        this.logisticsPhone = logisticsPhone == null ? null : logisticsPhone.trim();
-    }
-
     public Date getSettleTime() {
         return settleTime;
     }
 
     public void setSettleTime(Date settleTime) {
         this.settleTime = settleTime;
-    }
-
-    public Date getLogisticsTime() {
-        return logisticsTime;
-    }
-
-    public void setLogisticsTime(Date logisticsTime) {
-        this.logisticsTime = logisticsTime;
-    }
-
-    public Date getLogisticsPickTime() {
-        return logisticsPickTime;
-    }
-
-    public void setLogisticsPickTime(Date logisticsPickTime) {
-        this.logisticsPickTime = logisticsPickTime;
-    }
-
-    public Date getLogisticsReceiveTime() {
-        return logisticsReceiveTime;
-    }
-
-    public void setLogisticsReceiveTime(Date logisticsReceiveTime) {
-        this.logisticsReceiveTime = logisticsReceiveTime;
     }
 
     public Short getShift() {
@@ -1074,11 +1016,34 @@ public class BusOrder {
         this.updatedTime = updatedTime;
     }
 
-    public String getExtra() {
-        return extra;
+    public String getUpdatedName() {
+        return updatedName;
     }
 
-    public void setExtra(String extra) {
-        this.extra = extra == null ? null : extra.trim();
+    public void setUpdatedName(String updatedName) {
+        this.updatedName = updatedName == null ? null : updatedName.trim();
     }
+
+    public String getCreatedName() {
+        return createdName;
+    }
+
+    public void setCreatedName(String createdName) {
+        this.createdName = createdName == null ? null : createdName.trim();
+    }
+
+	/**
+	 * @return the couponPrice
+	 */
+	public BigDecimal getCouponPrice() {
+		return couponPrice;
+	}
+
+	/**
+	 * @param couponPrice the couponPrice to set
+	 */
+	public void setCouponPrice(BigDecimal couponPrice) {
+		this.couponPrice = couponPrice;
+	}
+    
 }

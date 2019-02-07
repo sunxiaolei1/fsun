@@ -59,7 +59,7 @@ public class BusRulSku {
     private String property;
 
     /**
-     * 市场价
+     * 市场价(作为批发价使用)
      * 表字段 : bus_rul_sku.market_price
      */
     private BigDecimal marketPrice;
@@ -71,10 +71,10 @@ public class BusRulSku {
     private BigDecimal salePrice;
 
     /**
-     * 原销售价
-     * 表字段 : bus_rul_sku.last_sale_price
+     * 內供价
+     * 表字段 : bus_rul_sku.supply_price
      */
-    private BigDecimal lastSalePrice;
+    private BigDecimal supplyPrice;
 
     /**
      * 成本价
@@ -206,12 +206,12 @@ public class BusRulSku {
         this.salePrice = salePrice;
     }
 
-    public BigDecimal getLastSalePrice() {
-        return lastSalePrice;
+    public BigDecimal getSupplyPrice() {
+        return supplyPrice;
     }
 
-    public void setLastSalePrice(BigDecimal lastSalePrice) {
-        this.lastSalePrice = lastSalePrice;
+    public void setSupplyPrice(BigDecimal supplyPrice) {
+        this.supplyPrice = supplyPrice;
     }
 
     public BigDecimal getCostPrice() {

@@ -1,8 +1,12 @@
 package com.fsun.api.bus;
 
+import java.util.HashMap;
+
 import com.fsun.api.base.BaseApi;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusVipCondition;
 import com.fsun.domain.model.BusVip;
+import com.fsun.domain.model.SysUser;
 
 /**
  * 
@@ -23,6 +27,14 @@ public interface BusVipApi extends BaseApi<BusVip, BusVipCondition> {
 	 * @param ids
 	 * @param enabled
 	 */
-	public void changeStatus(String[] ids, Boolean enabled);
+	public void changeStatus(String[] ids, Boolean enabled, SysUser user);
+
+	/**
+	 * 获取会员卡充值初始化信息
+	 * @param cardNo
+	 * @param currUser
+	 * @return
+	 */
+	public HashMap<String, Object> initRachargeData(String cardNo, BusUserDto currUser);
 
 }

@@ -5,14 +5,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fsun.api.user.SysUserApi;
+import com.fsun.common.utils.MD5Utils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.dto.MenuTreeDto;
 import com.fsun.domain.model.SysUser;
+import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
 
 /**
@@ -61,5 +64,34 @@ public class UserController extends BaseController {
 			return success(new ArrayList<>());
 		}
 	}
+	
+	/**
+	 * 保存用户
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping("/savePassword")
+	@ResponseBody
+	public HttpResult savePassword(@RequestBody SysUser sysUser) {
+		try {
+			SysUser old = userApi.load(sysUser.getId());
+			String newPassword = MD5Utils.md5SaltEncode(sysUser.getPassword(), old.getUsername());
+			String oldPassword = MD5Utils.md5SaltEncode(sysUser.getOldPassword(), old.getUsername());
+			if(!old.getPassword().equals(oldPassword)){
+				return failure(100, "对不起，原密码输入错误，请重新设置！");
+			}
+			if(old.getPassword().equals(newPassword)) {
+				return failure(100, "对不起，新密码不能与老密码相同，请重新设置！");
+			}
+			sysUser.setPassword(newPassword);
+			userApi.updateUser(sysUser);
+			return success();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+		
+	}
+
 	
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.common.PageResult;
-import com.fsun.domain.model.SysUser;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
 
@@ -110,9 +110,9 @@ public class BaseController {
 				dateFormat, true));
 	}
 
-	public SysUser getCurrentUser() {
+	public BusUserDto getCurrentUser() {
 		Subject subject = SecurityUtils.getSubject();
-		SysUser user = (SysUser) subject.getSession().getAttribute(
+		BusUserDto user = (BusUserDto) subject.getSession().getAttribute(
 				SESSION_USER_KEY);
 		return user;
 	}

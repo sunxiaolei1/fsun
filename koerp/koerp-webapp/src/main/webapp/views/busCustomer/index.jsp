@@ -8,7 +8,7 @@
 		<%@include file="./searchbar.jsp"%>
 		
 		<!-- table -->
-		<div id="gridDiv" data-options="region:'center'" style="height: 85%;">
+		<div id="gridDiv" data-options="region:'center'" style="height: 89%;">
 			<table id="ordersDataGrid"> 
 			</table>
 		</div>
@@ -31,9 +31,11 @@ var columns =
 		}},
 		{field:'customer_name',title:'客户名称',width:150,align:'center',sortable:true},
 		{field:'tel',title:'手机号',width:120,align:'center',sortable:true},
-		{field:'salesman',title:'所属销售代表',width:100,align:'center',sortable:true},						
-		{field:"credit_price",title:"信用额度(元)",width:80, align:'center'},
-		{field:"enabled",title:"是否启用", width:80,align:'center', formatter:function(value, row){
+		{field:'salesman',title:'所属销售代表',width:100,align:'center',sortable:true, formatter:function(value, row){
+			return row.salesman_name; 
+		}},						
+		{field:"credit_price",title:"信用额度(元)",width:80, align:'center',formatter:numBaseFormat},
+		{field:"enabled",title:"状态", width:80,align:'center', formatter:function(value, row){
 			return formatter(value, window.parent.isEnable); 
 		}},
 		{field:'memo',title:'备注',width:200,align:'center',sortable:true}		

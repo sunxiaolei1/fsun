@@ -1,5 +1,6 @@
 package com.fsun.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fsun.api.bus.BusVipApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusVipCondition;
 import com.fsun.domain.model.BusVip;
 import com.fsun.domain.model.SysUser;
@@ -32,12 +35,34 @@ public class BusVipController extends BaseController {
 
 	@RequestMapping("/index")
 	public String index() {
-		return "/busCustomer/index";
+		return "/busVip/index";
 	}
-
+	
 	@RequestMapping("/toDetailView")
-	public String toDetailView() {
-		return "/busCustomer/detail";
+	public ModelAndView toDetailView(String id) {		
+		ModelAndView modelAndView = new ModelAndView("/busVip/detail");
+		modelAndView.addObject("id", id);
+		return modelAndView;
+	}
+	
+	@RequestMapping("/toRachargeView")
+	public ModelAndView toRachargeView(@RequestParam("cardNo") String cardNo) {		
+		ModelAndView modelAndView = new ModelAndView("/busVip/operate/toRachargeView");
+		modelAndView.addObject("cardNo", cardNo);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/initRachargeData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getRachargeInitData(@RequestParam("cardNo") String cardNo){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = busVipApi.initRachargeData(cardNo, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
@@ -103,7 +128,7 @@ public class BusVipController extends BaseController {
 			return success();
 		} catch(VipException e){
 			e.printStackTrace();
-			return failure(SCMException.CODE_SAVE, e.getMessage());
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -111,14 +136,15 @@ public class BusVipController extends BaseController {
 	}
 
 
-	@RequestMapping(value="/status/{enabled}", method = {RequestMethod.GET})
+	@RequestMapping(value="/status/{enabled}", method = {RequestMethod.POST})
 	@ResponseBody
 	public HttpResult changeStatus(@PathVariable("enabled") Boolean enabled, 
 		@RequestParam("ids") String ids) {
 		try {
 			if (!StringUtils.isEmpty(ids)) {
-				busVipApi.changeStatus(ids.split(","), enabled);
-				return success(SCMErrorEnum.SUCCESS.getErrorCode());
+				SysUser user = getCurrentUser();	
+				busVipApi.changeStatus(ids.split(","), enabled, user);
+				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
 		} catch (Exception e) {

@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="sku" property="sku" jdbcType="VARCHAR" />
     <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
-    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
     <result column="qty" property="qty" jdbcType="DECIMAL" />
     <result column="lock_qty" property="lockQty" jdbcType="DECIMAL" />
     <result column="damaged_qty" property="damagedQty" jdbcType="DECIMAL" />
@@ -14,8 +13,113 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, sku, shop_id, shop_name, qty, lock_qty, damaged_qty, memo, created_time, updated_time
+    id, sku, shop_id, qty, lock_qty, damaged_qty, memo, created_time, updated_time
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="q != null and q != ''">
+  			and (a.sku like '%${q}%' 
+  				or b.goods_name like '%${q}%'
+  				)
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and a.sku = #{sku}
+  		</if>
+  		
+  		<if test="shopId != null and shopId != ''">
+  			and a.shop_id = #{shopId}
+  		</if>
+  		
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusInvSkuCondition" >    
+	SELECT 
+		a.id as id, 
+		a.sku as sku, 
+		a.shop_id as shop_id, 
+		a.qty as qty, 
+		a.lock_qty as lock_qty, 
+		a.damaged_qty as damaged_qty, 
+		a.memo as memo,
+		a.created_time as created_time,
+		a.updated_time as updated_time
+    FROM bus_inv_sku a
+    Left JOIN bus_bas_sku b on b.sku = a.sku
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectInvSkuList" resultType="com.fsun.domain.dto.InvSkuDto" 
+  	parameterType="com.fsun.domain.entity.BusInvSkuCondition" >    
+	SELECT 
+	  	bas_sku.sku_id as skuId,
+		bas_sku.bar_code as barCode,
+		bas_sku.sku as sku,
+		bas_sku.parent_sku_id as parentSkuId,
+		
+		rul_sku.category_code as categoryCode,
+		rul_sku.product_type as productType,
+		rul_sku.brand_code as brandCode,
+		rul_sku.goods_name as goodsName,
+		rul_sku.en_name as enName,
+		rul_sku.property as property,
+		rul_sku.market_price as marketPrice,
+		rul_sku.cost_price as costPrice,
+		rul_sku.supply_price as supplyPrice,		
+	    rul_sku.unit as unit,
+ 
+	  	rul_sku.sale_price as salePrice,
+	  	rul_sku.vip_price as vipPrice,
+		
+		bas_sku.origin_sale_price as originSalePrice,
+		bas_sku.assist_id as assistId,
+		bas_sku.warning_qty as warningQty,
+		inv_sku.qty as qty,
+		bas_sku.convert_qty as convertQty,
+		bas_sku.convert_unit as convertUnit,	
+		bas_sku.is_vip_appoint as isVipAppoint
+	from bus_rul_sku rul_sku
+	LEFT JOIN bus_rul_shop rul_shop on rul_shop.rul_id = rul_sku.rul_id
+	LEFT JOIN bus_inv_sku inv_sku on rul_shop.shop_id = inv_sku.shop_id and rul_sku.sku = inv_sku.sku
+	LEFT JOIN bus_bas_sku bas_sku on bas_sku.sku = rul_sku.sku
+	where inv_sku.qty is not null 
+	<if test="shopId != null and shopId != ''">
+		and rul_shop.shop_id = #{shopId}
+	</if>
+	<if test="qty != null">
+		and inv_sku.qty > #{qty}
+	</if>
+	<if test="categoryCode != null and categoryCode!=''">
+		and rul_sku.category_code = #{categoryCode}
+	</if>
+	
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusInvSkuCondition" >    
+	SELECT 
+		a.id as id, 
+		a.sku as sku, 
+		a.shop_id as shop_id, 
+		a.qty as qty, 
+		a.lock_qty as lock_qty, 
+		a.damaged_qty as damaged_qty,
+		b.goods_name as goods_name, 	
+		b.bar_code as bar_code,
+		b.brand_code as brand_code,
+		b.category_code as category_code,
+		b.property as property,
+		b.unit_name as unit_name,
+		a.memo as memo,
+		(SELECT c.shop_name FROM bus_shop c WHERE c.shop_id = a.shop_id) as shop_name
+    FROM bus_inv_sku a 
+    Left JOIN bus_bas_sku b on b.sku = a.sku   
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -28,13 +132,13 @@
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.BusInvSku" >
     insert into bus_inv_sku (id, sku, shop_id, 
-      shop_name, qty, lock_qty, 
-      damaged_qty, memo, created_time, 
-      updated_time)
+      qty, lock_qty, damaged_qty, 
+      memo, created_time, updated_time
+      )
     values (#{id,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
-      #{shopName,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, #{lockQty,jdbcType=DECIMAL}, 
-      #{damagedQty,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
-      #{updatedTime,jdbcType=TIMESTAMP})
+      #{qty,jdbcType=DECIMAL}, #{lockQty,jdbcType=DECIMAL}, #{damagedQty,jdbcType=DECIMAL}, 
+      #{memo,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusInvSku" >
     insert into bus_inv_sku
@@ -47,9 +151,6 @@
       </if>
       <if test="shopId != null" >
         shop_id,
-      </if>
-      <if test="shopName != null" >
-        shop_name,
       </if>
       <if test="qty != null" >
         qty,
@@ -80,9 +181,6 @@
       <if test="shopId != null" >
         #{shopId,jdbcType=VARCHAR},
       </if>
-      <if test="shopName != null" >
-        #{shopName,jdbcType=VARCHAR},
-      </if>
       <if test="qty != null" >
         #{qty,jdbcType=DECIMAL},
       </if>
@@ -112,9 +210,6 @@
       <if test="shopId != null" >
         shop_id = #{shopId,jdbcType=VARCHAR},
       </if>
-      <if test="shopName != null" >
-        shop_name = #{shopName,jdbcType=VARCHAR},
-      </if>
       <if test="qty != null" >
         qty = #{qty,jdbcType=DECIMAL},
       </if>
@@ -140,7 +235,6 @@
     update bus_inv_sku
     set sku = #{sku,jdbcType=VARCHAR},
       shop_id = #{shopId,jdbcType=VARCHAR},
-      shop_name = #{shopName,jdbcType=VARCHAR},
       qty = #{qty,jdbcType=DECIMAL},
       lock_qty = #{lockQty,jdbcType=DECIMAL},
       damaged_qty = #{damagedQty,jdbcType=DECIMAL},

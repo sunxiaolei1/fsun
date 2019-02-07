@@ -3,21 +3,25 @@
 <mapper namespace="com.fsun.dao.mapper.BusVipUnpaidMapper" >
   <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusVipUnpaid" >
     <id column="unpaid_id" property="unpaidId" jdbcType="VARCHAR" />
-    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
     <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
     <result column="pay_mode" property="payMode" jdbcType="SMALLINT" />
     <result column="trade_type" property="tradeType" jdbcType="SMALLINT" />
     <result column="trade_status" property="tradeStatus" jdbcType="SMALLINT" />
     <result column="trade_time" property="tradeTime" jdbcType="TIMESTAMP" />
     <result column="trade_price" property="tradePrice" jdbcType="DECIMAL" />
+    <result column="gift_price" property="giftPrice" jdbcType="DECIMAL" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+    <result column="unusual" property="unusual" jdbcType="BIT" />
+    <result column="pay_id" property="payId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    unpaid_id, customer_id, shop_id, pay_mode, trade_type, trade_status, trade_time, 
-    trade_price, memo, order_id, created_time, updated_time
+    unpaid_id, customer_code, shop_id, pay_mode, trade_type, trade_status, trade_time, 
+    trade_price, gift_price, memo, order_id, created_time, updated_time, card_no, unusual, pay_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -25,30 +29,153 @@
     from bus_vip_unpaid
     where unpaid_id = #{unpaidId,jdbcType=VARCHAR}
   </select>
+  
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="q != null and q != ''">
+  			and (bus_vip_unpaid.card_no like '%${q}%' 
+  				or bus_vip_unpaid.order_id like '%${q}%'
+  			)
+  		</if>
+  		
+  		<if test="shopId != null and shopId !='' ">
+  			and bus_vip_unpaid.shop_id = #{shopId}
+  		</if>
+  		
+  		<if test="customerCode != null and customerCode != ''">
+  			and bus_vip_unpaid.customer_code = #{customerCode}
+  		</if>
+  		
+  		<if test="cardNo != null and cardNo != ''">
+  			and bus_vip_unpaid.card_no = #{cardNo}
+  		</if>
+  		
+  		<if test="payMode != null">
+  			and bus_vip_unpaid.pay_mode = #{payMode}
+  		</if>
+  		
+  		<if test="tradeType != null">
+  			and bus_vip_unpaid.trade_type = #{tradeType}
+  		</if>
+  		
+  		<if test="tradeStatus != null">
+  			and bus_vip_unpaid.trade_status = #{tradeStatus}
+  		</if>
+  		
+  		<if test="unusual != null">
+  			and bus_vip_unpaid.unusual = #{unusual}
+  		</if>
+  		
+  		<if test="payId != null and payId != ''">
+  			and bus_vip_unpaid.pay_id = #{payId}
+  		</if>
+  		
+  		<if test="startTime != null">
+			and bus_vip_unpaid.trade_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			and bus_vip_unpaid.trade_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+		</if>
+		
+		<!-- 用于领用出库查询 -->
+		<if test="inTradeTypes != null">	
+		    and bus_vip_unpaid.trade_type in
+			<foreach collection="inTradeTypes" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>
+		</if>	
+  		
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusVipUnpaidCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_vip_unpaid bus_vip_unpaid
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusVipUnpaidCondition" >    
+	SELECT 
+	  bus_vip_unpaid.unpaid_id as unpaid_id, 
+	  bus_vip_unpaid.customer_code as customer_code, 
+	  bus_vip_unpaid.shop_id as shop_id, 
+      bus_vip_unpaid.pay_mode as pay_mode, 
+      bus_vip_unpaid.trade_type as trade_type, 
+      bus_vip_unpaid.trade_status as trade_status, 
+      bus_vip_unpaid.trade_time as trade_time, 
+      bus_vip_unpaid.trade_price as trade_price, 
+      bus_vip_unpaid.gift_price as gift_price, 
+      bus_vip_unpaid.memo as memo, 
+      bus_vip_unpaid.order_id as order_id, 
+      bus_vip_unpaid.created_time as created_time, 
+      bus_vip_unpaid.updated_time as updated_time, 
+      bus_vip_unpaid.card_no as card_no, 
+      bus_vip_unpaid.unusual as unusual,
+      bus_vip_unpaid.pay_id as pay_id,
+	  customer.customer_name as customer_name,
+	  bus_shop.shop_name as shop_name
+    FROM bus_vip_unpaid bus_vip_unpaid
+    LEFT JOIN bus_customer customer on customer.customer_code = bus_vip_unpaid.customer_code
+    LEFT JOIN bus_shop bus_shop on bus_shop.shop_id = bus_vip_unpaid.shop_id
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="export" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusVipUnpaidCondition" >    
+	SELECT 
+	  bus_vip_unpaid.card_no as card_no, 
+	  customer.customer_name as customer_name,
+	  bus_shop.shop_name as shop_name,
+	  (select codes.code_name from bus_bas_codes codes where codes.code_code = bus_vip_unpaid.pay_mode 
+       		and codes.code_type='PayMode') as pay_mode_name, 
+	  (select codes.code_name from bus_bas_codes codes where codes.code_code = bus_vip_unpaid.trade_type
+       		and codes.code_type='TradeType') as trade_type_name, 
+	  bus_vip_unpaid.order_id as order_id, 
+	  (select codes.code_name from bus_bas_codes codes where codes.code_code = bus_vip_unpaid.trade_status
+       		and codes.code_type='TradeStatus') as trade_status_name, 
+      bus_vip_unpaid.trade_time as trade_time, 
+      bus_vip_unpaid.trade_price as trade_price,
+      bus_vip_unpaid.gift_price as gift_price, 
+      bus_vip_unpaid.memo as memo,
+      bus_vip_unpaid.unusual as unusual
+    FROM bus_vip_unpaid bus_vip_unpaid
+    LEFT JOIN bus_customer customer on customer.customer_code = bus_vip_unpaid.customer_code
+    LEFT JOIN bus_shop bus_shop on bus_shop.shop_id = bus_vip_unpaid.shop_id
+    	<include refid="conditions" />
+    order by bus_vip_unpaid.trade_time desc
+  </select>  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from bus_vip_unpaid
     where unpaid_id = #{unpaidId,jdbcType=VARCHAR}
   </delete>
+  
   <insert id="insert" parameterType="com.fsun.domain.model.BusVipUnpaid" >
-    insert into bus_vip_unpaid (unpaid_id, customer_id, shop_id, 
+    insert into bus_vip_unpaid (unpaid_id, customer_code, shop_id, 
       pay_mode, trade_type, trade_status, 
-      trade_time, trade_price, memo, 
-      order_id, created_time, updated_time
-      )
-    values (#{unpaidId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
+      trade_time, trade_price, gift_price, 
+      memo, order_id, created_time, 
+      updated_time, card_no, unusual, pay_id)
+    values (#{unpaidId,jdbcType=VARCHAR}, #{customerCode,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
       #{payMode,jdbcType=SMALLINT}, #{tradeType,jdbcType=SMALLINT}, #{tradeStatus,jdbcType=SMALLINT}, 
-      #{tradeTime,jdbcType=TIMESTAMP}, #{tradePrice,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, 
-      #{orderId,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}
-      )
+      #{tradeTime,jdbcType=TIMESTAMP}, #{tradePrice,jdbcType=DECIMAL}, #{giftPrice,jdbcType=DECIMAL}, 
+      #{memo,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP}, #{cardNo,jdbcType=VARCHAR}, #{unusual,jdbcType=BIT},
+      #{payId,jdbcType=VARCHAR})
   </insert>
+  
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusVipUnpaid" >
     insert into bus_vip_unpaid
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="unpaidId != null" >
         unpaid_id,
       </if>
-      <if test="customerId != null" >
-        customer_id,
+      <if test="customerCode != null" >
+        customer_code,
       </if>
       <if test="shopId != null" >
         shop_id,
@@ -68,6 +195,9 @@
       <if test="tradePrice != null" >
         trade_price,
       </if>
+      <if test="giftPrice != null" >
+        gift_price,
+      </if>
       <if test="memo != null" >
         memo,
       </if>
@@ -80,13 +210,22 @@
       <if test="updatedTime != null" >
         updated_time,
       </if>
+      <if test="cardNo != null" >
+        card_no,
+      </if>
+      <if test="unusual != null" >
+        unusual,
+      </if>
+      <if test="payId != null" >
+        pay_id,
+      </if>    
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="unpaidId != null" >
         #{unpaidId,jdbcType=VARCHAR},
       </if>
-      <if test="customerId != null" >
-        #{customerId,jdbcType=VARCHAR},
+      <if test="customerCode != null" >
+        #{customerCode,jdbcType=VARCHAR},
       </if>
       <if test="shopId != null" >
         #{shopId,jdbcType=VARCHAR},
@@ -106,6 +245,9 @@
       <if test="tradePrice != null" >
         #{tradePrice,jdbcType=DECIMAL},
       </if>
+      <if test="giftPrice != null" >
+        #{giftPrice,jdbcType=DECIMAL},
+      </if>
       <if test="memo != null" >
         #{memo,jdbcType=VARCHAR},
       </if>
@@ -118,13 +260,22 @@
       <if test="updatedTime != null" >
         #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="unusual != null" >
+        #{unusual,jdbcType=BIT},
+      </if>
+      <if test="payId != null" >
+        #{payId,jdbcType=VARCHAR},
+      </if>      
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusVipUnpaid" >
     update bus_vip_unpaid
     <set >
-      <if test="customerId != null" >
-        customer_id = #{customerId,jdbcType=VARCHAR},
+      <if test="customerCode != null" >
+        customer_code = #{customerCode,jdbcType=VARCHAR},
       </if>
       <if test="shopId != null" >
         shop_id = #{shopId,jdbcType=VARCHAR},
@@ -144,6 +295,9 @@
       <if test="tradePrice != null" >
         trade_price = #{tradePrice,jdbcType=DECIMAL},
       </if>
+      <if test="giftPrice != null" >
+        gift_price = #{giftPrice,jdbcType=DECIMAL},
+      </if>
       <if test="memo != null" >
         memo = #{memo,jdbcType=VARCHAR},
       </if>
@@ -156,22 +310,35 @@
       <if test="updatedTime != null" >
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="cardNo != null" >
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="unusual != null" >
+        unusual = #{unusual,jdbcType=BIT},
+      </if> 
+      <if test="payId != null" >
+        pay_id = #{payId,jdbcType=VARCHAR},
+      </if>  
     </set>
     where unpaid_id = #{unpaidId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusVipUnpaid" >
     update bus_vip_unpaid
-    set customer_id = #{customerId,jdbcType=VARCHAR},
+    set customer_code = #{customerCode,jdbcType=VARCHAR},
       shop_id = #{shopId,jdbcType=VARCHAR},
       pay_mode = #{payMode,jdbcType=SMALLINT},
       trade_type = #{tradeType,jdbcType=SMALLINT},
       trade_status = #{tradeStatus,jdbcType=SMALLINT},
       trade_time = #{tradeTime,jdbcType=TIMESTAMP},
       trade_price = #{tradePrice,jdbcType=DECIMAL},
+      gift_price = #{giftPrice,jdbcType=DECIMAL},
       memo = #{memo,jdbcType=VARCHAR},
       order_id = #{orderId,jdbcType=VARCHAR},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      card_no = #{cardNo,jdbcType=VARCHAR},    
+      unusual = #{unusual,jdbcType=BIT},     
+      pay_id = #{payId,jdbcType=VARCHAR},    
     where unpaid_id = #{unpaidId,jdbcType=VARCHAR}
   </update>
 </mapper>

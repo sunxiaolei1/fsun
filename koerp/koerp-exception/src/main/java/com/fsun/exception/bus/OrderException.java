@@ -4,7 +4,7 @@ import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
 
 /**
- * 订单类异常
+ * 销售订单类异常
  * @author sunxiaolei
  *
  */

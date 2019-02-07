@@ -34,6 +34,12 @@ public class BusShop {
     private String address;
 
     /**
+     * 手机号
+     * 表字段 : bus_shop.tel
+     */
+    private String tel;
+
+    /**
      * 联系人
      * 表字段 : bus_shop.contacts
      */
@@ -113,6 +119,14 @@ public class BusShop {
 
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel == null ? null : tel.trim();
     }
 
     public String getContacts() {

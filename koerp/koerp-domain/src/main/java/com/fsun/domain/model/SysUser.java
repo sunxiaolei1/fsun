@@ -92,6 +92,17 @@ public class SysUser {
      * 表字段 : sys_user.description
      */
     private String description;
+    
+    /**
+     * 店仓ID
+     */
+    private String shopId;
+    
+    /**
+     * 用户原密码
+     * 
+     */
+    private String oldPassword;
 
     public String getId() {
         return id;
@@ -212,4 +223,33 @@ public class SysUser {
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
     }
+
+	/**
+	 * @return the shopId
+	 */
+	public String getShopId() {
+		return shopId;
+	}
+
+	/**
+	 * @param shopId the shopId to set
+	 */
+	public void setShopId(String shopId) {
+		this.shopId = shopId;
+	}
+
+	/**
+	 * @return the oldPassword
+	 */
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	/**
+	 * @param oldPassword the oldPassword to set
+	 */
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
 }

@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class BusInvSku {
     /**
-     * id
+     * 
      * 表字段 : bus_inv_sku.id
      */
     private String id;
@@ -21,12 +21,6 @@ public class BusInvSku {
      * 表字段 : bus_inv_sku.shop_id
      */
     private String shopId;
-
-    /**
-     * 店铺名称
-     * 表字段 : bus_inv_sku.shop_name
-     */
-    private String shopName;
 
     /**
      * 库存数量
@@ -88,14 +82,6 @@ public class BusInvSku {
         this.shopId = shopId == null ? null : shopId.trim();
     }
 
-    public String getShopName() {
-        return shopName;
-    }
-
-    public void setShopName(String shopName) {
-        this.shopName = shopName == null ? null : shopName.trim();
-    }
-
     public BigDecimal getQty() {
         return qty;
     }
@@ -143,4 +129,21 @@ public class BusInvSku {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+	public BusInvSku() {
+		super();
+	}
+
+	public BusInvSku(String sku, String shopId, BigDecimal qty, 
+		BigDecimal lockQty, BigDecimal damagedQty) {
+		super();
+		this.sku = sku;
+		this.shopId = shopId;
+		this.qty = qty;
+		this.lockQty = lockQty;
+		this.damagedQty = damagedQty;
+	}
+    
+    
+    
 }

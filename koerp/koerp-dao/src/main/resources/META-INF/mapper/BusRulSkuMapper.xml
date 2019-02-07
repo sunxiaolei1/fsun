@@ -13,7 +13,7 @@
     <result column="property" property="property" jdbcType="VARCHAR" />
     <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
     <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
-    <result column="last_sale_price" property="lastSalePrice" jdbcType="DECIMAL" />
+    <result column="supply_price" property="supplyPrice" jdbcType="DECIMAL" />
     <result column="cost_price" property="costPrice" jdbcType="DECIMAL" />
     <result column="vip_price" property="vipPrice" jdbcType="DECIMAL" />
     <result column="unit" property="unit" jdbcType="VARCHAR" />
@@ -24,7 +24,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     sku_id, rul_id, category_code, product_type, sku, brand_code, goods_name, en_name, 
-    property, market_price, sale_price, last_sale_price, cost_price, vip_price, unit, 
+    property, market_price, sale_price, supply_price, cost_price, vip_price, unit, 
     unit_name, keywords, created_time, updated_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -33,22 +33,29 @@
     from bus_rul_sku
     where sku_id = #{skuId,jdbcType=VARCHAR}
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from bus_rul_sku
     where sku_id = #{skuId,jdbcType=VARCHAR}
   </delete>
+  
+  <delete id="deleteByRulId" parameterType="java.lang.String" >
+    delete from bus_rul_sku
+    where rul_id = #{rulId,jdbcType=VARCHAR}
+  </delete>
+  
   <insert id="insert" parameterType="com.fsun.domain.model.BusRulSku" >
     insert into bus_rul_sku (sku_id, rul_id, category_code, 
       product_type, sku, brand_code, 
       goods_name, en_name, property, 
-      market_price, sale_price, last_sale_price, 
+      market_price, sale_price, supply_price, 
       cost_price, vip_price, unit, 
       unit_name, keywords, created_time, 
       updated_time)
     values (#{skuId,jdbcType=VARCHAR}, #{rulId,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, 
       #{productType,jdbcType=SMALLINT}, #{sku,jdbcType=VARCHAR}, #{brandCode,jdbcType=VARCHAR}, 
       #{goodsName,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR}, #{property,jdbcType=VARCHAR}, 
-      #{marketPrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, #{lastSalePrice,jdbcType=DECIMAL}, 
+      #{marketPrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, #{supplyPrice,jdbcType=DECIMAL}, 
       #{costPrice,jdbcType=DECIMAL}, #{vipPrice,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
       #{unitName,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{updatedTime,jdbcType=TIMESTAMP})
@@ -89,8 +96,8 @@
       <if test="salePrice != null" >
         sale_price,
       </if>
-      <if test="lastSalePrice != null" >
-        last_sale_price,
+      <if test="supplyPrice != null" >
+        supply_price,
       </if>
       <if test="costPrice != null" >
         cost_price,
@@ -148,8 +155,8 @@
       <if test="salePrice != null" >
         #{salePrice,jdbcType=DECIMAL},
       </if>
-      <if test="lastSalePrice != null" >
-        #{lastSalePrice,jdbcType=DECIMAL},
+      <if test="supplyPrice != null" >
+        #{supplyPrice,jdbcType=DECIMAL},
       </if>
       <if test="costPrice != null" >
         #{costPrice,jdbcType=DECIMAL},
@@ -207,8 +214,8 @@
       <if test="salePrice != null" >
         sale_price = #{salePrice,jdbcType=DECIMAL},
       </if>
-      <if test="lastSalePrice != null" >
-        last_sale_price = #{lastSalePrice,jdbcType=DECIMAL},
+      <if test="supplyPrice != null" >
+        supply_price = #{supplyPrice,jdbcType=DECIMAL},
       </if>
       <if test="costPrice != null" >
         cost_price = #{costPrice,jdbcType=DECIMAL},
@@ -246,7 +253,7 @@
       property = #{property,jdbcType=VARCHAR},
       market_price = #{marketPrice,jdbcType=DECIMAL},
       sale_price = #{salePrice,jdbcType=DECIMAL},
-      last_sale_price = #{lastSalePrice,jdbcType=DECIMAL},
+      supply_price = #{supplyPrice,jdbcType=DECIMAL},
       cost_price = #{costPrice,jdbcType=DECIMAL},
       vip_price = #{vipPrice,jdbcType=DECIMAL},
       unit = #{unit,jdbcType=VARCHAR},

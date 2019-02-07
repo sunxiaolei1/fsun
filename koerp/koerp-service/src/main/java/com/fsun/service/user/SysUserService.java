@@ -1,6 +1,7 @@
 package com.fsun.service.user;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,28 @@ public class SysUserService implements SysUserApi{
 		return list;
 	}
 	
+	@Transactional
+	@Override
+	public void assignShop(String[] ids, String shopId, SysUser user) {
+		Date now = new Date();
+		for (String id : ids) {
+			SysUser sysUser = sysUserManage.load(id);
+			if(sysUser!=null){
+				sysUser.setShopId(shopId);
+				sysUser.setUpdateTime(now);
+				sysUser.setUpdateManId(user.getId());
+				sysUserManage.update(sysUser);
+			}			
+		}		
+	}
+	
+	@Transactional
+	@Override
+	public void updateUser(SysUser sysUser) {
+		sysUserManage.update(sysUser);
+	}
+
+	
 	/***********************************  内部方法     *************************************/
 	
 	/**
@@ -136,7 +159,7 @@ public class SysUserService implements SysUserApi{
 		rootNode.setIconCls("icon-bricks");
 		rootNode.setState("open");
 		rootNode.setUrl(sysMenu.getUrl());
-		rootNode.setIcon(sysMenu.getIcon());
+		rootNode.setIcon(sysMenu.getIconcls());
 		return rootNode;		
 	}
 		
@@ -157,7 +180,7 @@ public class SysUserService implements SysUserApi{
 				childNode.setIconCls("icon-bricks");
 				childNode.setState("open");
 				childNode.setUrl(sysMenu.getUrl());
-				childNode.setIcon(sysMenu.getIcon());
+				childNode.setIcon(sysMenu.getIconcls());
 				this.addChildren(childNode, list);
 				childrenNode.add(childNode);
 			}

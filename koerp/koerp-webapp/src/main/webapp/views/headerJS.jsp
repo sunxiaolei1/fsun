@@ -13,6 +13,7 @@
 	<meta http-equiv="Pragma" content="no-cache"> 
 	<meta http-equiv="Cache-Control" content="no-cache"> 
 	<meta http-equiv="Expires" content="0">
+	<link rel="shortcut icon" href="<%=request.getContextPath()%>/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/jquery-easyui/commons/css/base.css" />
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/jquery-easyui/commons/css/table.css" />
   	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/jquery-easyui/themes/gray/easyui.css" /> 

@@ -45,7 +45,8 @@
         <tr>					
 			<th width="12%">客户名称<span style="color:red;">*</span></th>
 			<td>
-				<input name="customerName" id="customerName" class="easyui-textbox" required />
+				<input name="customerName" id="customerName" class="easyui-textbox" 
+					data-options="required:true,validType:'uniqueValue'" />
 			</td>
 			<th width="12%">信用额度</th>
 			<td>
@@ -91,6 +92,32 @@
 <%@include file="../busCommon/salesmanSelect.jsp"%> 
 
 <script type="text/javascript">
+
+$.extend($.fn.validatebox.defaults.rules, { 
+	uniqueValue : {
+		validator : function(value) {				
+		    var success = false;	
+		    var params = {
+		    	"id": $("#id").val(),
+		    	"customerName": value
+		    };
+			$.ajax({
+	            type: "POST",
+	            dataType: "json",
+	            contentType : "application/json; charset=utf-8",
+	            async: false,
+	            url: "${api}/bus/customer/unique",
+	            data: JSON.stringify(params),
+	            success: function(result) {
+	            	success = result.entry;
+	            }
+	        });
+	        return success;
+			
+		},
+		message : '客户已存在,请换一个！'
+	}          
+});
 
 var $orderfm;
 

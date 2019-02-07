@@ -81,6 +81,16 @@ public class BusCustomerCondition extends SortCondition{
      * 表字段 : bus_customer.enabled
      */
     private Boolean enabled;
+    
+    /**
+     * 客户类型集合String
+     */
+    private String inCustomerTypeStr;
+    
+    /**
+     * 客户类型集合
+     */
+    private String[] inCustomerType;
 
 	public String getId() {
 		return id;
@@ -177,5 +187,25 @@ public class BusCustomerCondition extends SortCondition{
 	public void setQ(String q) {
 		this.q = q;
 	}
+
+	public String getInCustomerTypeStr() {
+		return inCustomerTypeStr;
+	}
+
+	public void setInCustomerTypeStr(String inCustomerTypeStr) {
+		this.inCustomerTypeStr = inCustomerTypeStr;
+		if(inCustomerTypeStr!=null && !"".equals(inCustomerTypeStr)){
+			this.inCustomerType = inCustomerTypeStr.split(",");
+		}
+	}
+
+	public String[] getInCustomerType() {
+		return inCustomerType;
+	}
+
+	public void setInCustomerType(String[] inCustomerType) {
+		this.inCustomerType = inCustomerType;
+	}
     
+	
 }

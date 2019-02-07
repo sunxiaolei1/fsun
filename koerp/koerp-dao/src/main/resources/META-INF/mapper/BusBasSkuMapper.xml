@@ -5,7 +5,7 @@
     <id column="sku_id" property="skuId" jdbcType="VARCHAR" />
     <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
     <result column="sku" property="sku" jdbcType="VARCHAR" />
-    <result column="parent_sku" property="parentSku" jdbcType="VARCHAR" />
+    <result column="parent_sku_id" property="parentSkuId" jdbcType="VARCHAR" />
     <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
     <result column="product_type" property="productType" jdbcType="SMALLINT" />
     <result column="brand_code" property="brandCode" jdbcType="VARCHAR" />
@@ -42,12 +42,75 @@
     <result column="is_vip_appoint" property="isVipAppoint" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    sku_id, bar_code, sku, parent_sku, category_code, product_type, brand_code, assist_id, 
+    sku_id, bar_code, sku, parent_sku_id, category_code, product_type, brand_code, assist_id, 
     goods_name, en_name, property, market_price, cost_price, origin_sale_price, warning_qty, 
     qty, unit, unit_name, convert_qty, convert_unit, keywords, memo, descr, status, is_recommend, 
     on_shelf_time, off_shelf_time, sort_code, is_enabled, ext_0, ext_1, rate_precent, 
     settle_type, created_time, updated_time, created_id, updated_id, is_vip_appoint
   </sql>
+  
+  
+   <sql id="conditions">
+  	<where> 
+  	    and parent_sku_id is null
+  		<if test="q != null and q != ''">
+  			and (sku like '%${q}%' 
+  				or goods_name like '%${q}%'
+  				or property like '%${q}%'
+  				)
+  		</if>
+  		
+  		<if test="barCode != null and barCode != ''">
+  			and bar_code like '%${barCode}%'
+  		</if>
+  		
+  		<if test="categoryCode != null and categoryCode != '' ">
+  			and category_code = #{categoryCode}
+  		</if>
+  		
+  		<if test="brandCode != null and brandCode != '' ">
+  			and brand_code = #{brandCode}
+  		</if>
+  		
+  		<if test="isEnabled != null">
+  			and is_enabled = #{isEnabled}
+  		</if>
+  		
+  		<if test="skuId != null and skuId != ''">
+  			and sku_id = #{skuId}
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and sku = #{sku}
+  		</if>
+  		
+  		<!-- 用于价格策略列表查询 -->
+		<if test="notInSkus != null">	
+		    and sku not in
+			<foreach collection="notInSkus" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>
+		</if>
+  		
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusBasSkuCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_bas_sku
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusBasSkuCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_bas_sku
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -60,7 +123,7 @@
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.BusBasSku" >
     insert into bus_bas_sku (sku_id, bar_code, sku, 
-      parent_sku, category_code, product_type, 
+      parent_sku_id, category_code, product_type, 
       brand_code, assist_id, goods_name, 
       en_name, property, market_price, 
       cost_price, origin_sale_price, warning_qty, 
@@ -73,7 +136,7 @@
       created_time, updated_time, created_id, 
       updated_id, is_vip_appoint)
     values (#{skuId,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, 
-      #{parentSku,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, #{productType,jdbcType=SMALLINT}, 
+      #{parentSkuId,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, #{productType,jdbcType=SMALLINT}, 
       #{brandCode,jdbcType=VARCHAR}, #{assistId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
       #{enName,jdbcType=VARCHAR}, #{property,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, 
       #{costPrice,jdbcType=DECIMAL}, #{originSalePrice,jdbcType=DECIMAL}, #{warningQty,jdbcType=INTEGER}, 
@@ -98,8 +161,8 @@
       <if test="sku != null" >
         sku,
       </if>
-      <if test="parentSku != null" >
-        parent_sku,
+      <if test="parentSkuId != null" >
+        parent_sku_id,
       </if>
       <if test="categoryCode != null" >
         category_code,
@@ -214,8 +277,8 @@
       <if test="sku != null" >
         #{sku,jdbcType=VARCHAR},
       </if>
-      <if test="parentSku != null" >
-        #{parentSku,jdbcType=VARCHAR},
+      <if test="parentSkuId != null" >
+        #{parentSkuId,jdbcType=VARCHAR},
       </if>
       <if test="categoryCode != null" >
         #{categoryCode,jdbcType=VARCHAR},
@@ -330,8 +393,8 @@
       <if test="sku != null" >
         sku = #{sku,jdbcType=VARCHAR},
       </if>
-      <if test="parentSku != null" >
-        parent_sku = #{parentSku,jdbcType=VARCHAR},
+      <if test="parentSkuId != null" >
+        parent_sku_id = #{parentSkuId,jdbcType=VARCHAR},
       </if>
       <if test="categoryCode != null" >
         category_code = #{categoryCode,jdbcType=VARCHAR},
@@ -442,7 +505,7 @@
     update bus_bas_sku
     set bar_code = #{barCode,jdbcType=VARCHAR},
       sku = #{sku,jdbcType=VARCHAR},
-      parent_sku = #{parentSku,jdbcType=VARCHAR},
+      parent_sku_id = #{parentSkuId,jdbcType=VARCHAR},
       category_code = #{categoryCode,jdbcType=VARCHAR},
       product_type = #{productType,jdbcType=SMALLINT},
       brand_code = #{brandCode,jdbcType=VARCHAR},

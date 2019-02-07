@@ -10,10 +10,11 @@
 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="toDetailView()">修改</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="disabledBatch()">禁用</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="enabledBatch()">启用</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="toUnpaidView()">挂账结款</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
-<a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
+<!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125519344_easyicon_net_16" plain="true" onclick="show()">展开查询条件</a>
-
+ -->
 <script type="text/javascript">
 
 
@@ -32,6 +33,20 @@ function toDetailView(){
 	}
 	commonDialog("ordersDialog", "客户("+ rows[0].customer_name +")明细", "75%", "65%", 
 		"${api}/bus/customer/toDetailView?id="+ rows[0].id, "icon-edit");
+}
+
+//跳转至挂账信息界面
+function toUnpaidView(){
+	var rows = currDataGrid.datagrid('getSelections');
+	if (rows.length != 1) {
+		$.messager.alert("提示","只能选择一行数据！");
+		return;
+	}
+	var row = rows[0];
+	var url = "${api}/bus/customer/toUnpaidView?customerCode="+ row.customer_code;
+	var icon = "icon-edit";
+	var subtitle = "客户("+ row.customer_name +")挂账结款";
+	parent.addTab(subtitle, url, icon);	
 }
 
 //禁用

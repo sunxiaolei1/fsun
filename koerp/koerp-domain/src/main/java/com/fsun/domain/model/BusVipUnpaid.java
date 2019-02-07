@@ -12,9 +12,9 @@ public class BusVipUnpaid {
 
     /**
      * 会员Id
-     * 表字段 : bus_vip_unpaid.customer_id
+     * 表字段 : bus_vip_unpaid.customer_code
      */
-    private String customerId;
+    private String customerCode;
 
     /**
      * 店仓编号
@@ -23,19 +23,19 @@ public class BusVipUnpaid {
     private String shopId;
 
     /**
-     * 结款方式  1 银行卡，2 现金，3 支付宝，4 微信，5 会员(卡),6(券)，99 其他
+     * 结款方式  1 银行卡，2 现金，3 支付宝，4 微信，6、挂账，7 会员(卡),99 其他
      * 表字段 : bus_vip_unpaid.pay_mode
      */
     private Short payMode;
 
     /**
-     * 交易类型  1 挂账，2 挂账结款 
+     * 交易类型  1 挂账，2 挂账结款 3会员卡消费 4会员卡充值
      * 表字段 : bus_vip_unpaid.trade_type
      */
     private Short tradeType;
 
     /**
-     * 交易状态  1 交易成功，2 交易取消 
+     * 交易状态  30 交易成功，40 交易取消 
      * 表字段 : bus_vip_unpaid.trade_status
      */
     private Short tradeStatus;
@@ -51,6 +51,12 @@ public class BusVipUnpaid {
      * 表字段 : bus_vip_unpaid.trade_price
      */
     private BigDecimal tradePrice;
+
+    /**
+     * 赠金
+     * 表字段 : bus_vip_unpaid.gift_price
+     */
+    private BigDecimal giftPrice;
 
     /**
      * 备注信息
@@ -69,12 +75,40 @@ public class BusVipUnpaid {
      * 表字段 : bus_vip_unpaid.created_time
      */
     private Date createdTime;
+    
+    /**
+     * 创建人
+     * 表字段 : bus_vip_unpaid.created_name
+     */
+    private String createdName;
 
     /**
      * 更新时间
      * 表字段 : bus_vip_unpaid.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 更新人
+     * 表字段 : bus_vip_unpaid.updated_name
+     */
+    private String updatedName;
+
+    /**
+     * 
+     * 表字段 : bus_vip_unpaid.card_no
+     */
+    private String cardNo;
+    
+    /**
+     * 标记异常单据
+     */
+    private Boolean unusual;
+    
+    /**
+     * 账单主键
+     */
+    private String payId;
 
     public String getUnpaidId() {
         return unpaidId;
@@ -84,12 +118,12 @@ public class BusVipUnpaid {
         this.unpaidId = unpaidId == null ? null : unpaidId.trim();
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public String getCustomerCode() {
+        return customerCode;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId == null ? null : customerId.trim();
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode == null ? null : customerCode.trim();
     }
 
     public String getShopId() {
@@ -140,6 +174,14 @@ public class BusVipUnpaid {
         this.tradePrice = tradePrice;
     }
 
+    public BigDecimal getGiftPrice() {
+        return giftPrice;
+    }
+
+    public void setGiftPrice(BigDecimal giftPrice) {
+        this.giftPrice = giftPrice;
+    }
+
     public String getMemo() {
         return memo;
     }
@@ -171,4 +213,68 @@ public class BusVipUnpaid {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo == null ? null : cardNo.trim();
+    }
+
+	/**
+	 * @return the unusual
+	 */
+	public Boolean getUnusual() {
+		return unusual;
+	}
+
+	/**
+	 * @param unusual the unusual to set
+	 */
+	public void setUnusual(Boolean unusual) {
+		this.unusual = unusual;
+	}
+
+	/**
+	 * @return the payId
+	 */
+	public String getPayId() {
+		return payId;
+	}
+
+	/**
+	 * @param payId the payId to set
+	 */
+	public void setPayId(String payId) {
+		this.payId = payId;
+	}
+
+	/**
+	 * @return the createdName
+	 */
+	public String getCreatedName() {
+		return createdName;
+	}
+
+	/**
+	 * @param createdName the createdName to set
+	 */
+	public void setCreatedName(String createdName) {
+		this.createdName = createdName;
+	}
+
+	/**
+	 * @return the updatedName
+	 */
+	public String getUpdatedName() {
+		return updatedName;
+	}
+
+	/**
+	 * @param updatedName the updatedName to set
+	 */
+	public void setUpdatedName(String updatedName) {
+		this.updatedName = updatedName;
+	}
 }

@@ -1,12 +1,16 @@
 package com.fsun.biz.bus.manage;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.fsun.biz.common.CrudManage;
 import com.fsun.dao.mapper.BusCustomerMapper;
+import com.fsun.domain.entity.BusCustomerCondition;
 import com.fsun.domain.model.BusCustomer;
+import com.fsun.exception.bus.CustomerException;
+import com.fsun.exception.enums.SCMErrorEnum;
 
 /**
  * 
@@ -31,6 +35,29 @@ public class BusCustomerManage extends CrudManage<BusCustomerMapper, BusCustomer
 			return customerType + "100001";
 		}
 		
+	}
+
+	/**
+	 * 通过客户编号获取客户信息
+	 * @param customerCode
+	 */
+	public BusCustomer loadByCode(String customerCode) {
+		BusCustomerCondition condition = new BusCustomerCondition();
+		condition.setCustomerCode(customerCode);
+		List<BusCustomer> list = mapper.selectList(condition);
+		if(list!=null && list.size()==1){
+			return list.get(0);
+		}
+		throw new CustomerException(SCMErrorEnum.BUS_CUSTOMER_NOT_EXIST);
+	}
+
+	/**
+	 * 获取结款基本信息及挂账交易记录
+	 * @param customerCode
+	 * @return
+	 */
+	public HashMap<String, Object> initUnpaidData(String customerCode) {
+		return mapper.initUnpaidData(customerCode);
 	}
 
 }

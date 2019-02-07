@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusVip" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />   
     <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="wechat" property="wechat" jdbcType="VARCHAR" />
@@ -14,6 +15,7 @@
     <result column="origin_precent" property="originPrecent" jdbcType="DECIMAL" />
     <result column="vip_time" property="vipTime" jdbcType="TIMESTAMP" />
     <result column="enable_price" property="enablePrice" jdbcType="DECIMAL" />
+    <result column="gift_price" property="giftPrice" jdbcType="DECIMAL" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="enabled" property="enabled" jdbcType="BIT" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
@@ -21,8 +23,8 @@
     <result column="updated_name" property="updatedName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    vip.id, vip.customer_code, vip.card_no, vip.mobile, vip.wechat, vip.cn_name, vip.sex, 
-    vip.brithday, vip.email, vip.origin_precent, vip.vip_time, vip.enable_price, vip.memo, 
+    vip.id, vip.customer_code, vip.card_type, vip.card_no, vip.mobile, vip.wechat, vip.cn_name, vip.sex, 
+    vip.brithday, vip.email, vip.origin_precent, vip.vip_time, vip.enable_price, vip.gift_price, vip.memo, 
     vip.enabled, vip.updated_time, vip.created_name, vip.updated_name
   </sql>
   
@@ -39,7 +41,6 @@
   			and (vip.card_no like '%${q}%' 
   				or vip.mobile like '%${q}%'
   				or vip.cn_name like '%${q}%'
-  				or vip.wechat like '%${q}%'
   				)
   		</if>
   		
@@ -47,16 +48,20 @@
   			and vip.customer_code = #{customerCode}
   		</if>
   		
-  		<if test="enabled != null and enabled != ''">
+  		<if test="enabled != null">
   			and vip.enabled = #{enabled}
   		</if>
   		
-  		<if test="id != null and id != ''">
+  		<!-- <if test="id != null and id != ''">
   			and vip.id = #{id}
-  		</if>
+  		</if> -->
   		
   		<if test="cardNo != null and cardNo != ''">
   			and vip.card_no = #{cardNo}
+  		</if>
+  		
+  		<if test="cardType != null">
+  			and vip.card_type = #{cardType}
   		</if>
   		
   		<if test="customerType != null and customerType != ''">
@@ -79,6 +84,7 @@
 	SELECT 
 		vip.id as id, 
 		vip.customer_code as customer_code, 
+		vip.card_type as card_type,
 		vip.card_no as card_no, 
 		vip.mobile as mobile, 
 		vip.wechat as wechat, 
@@ -89,6 +95,7 @@
     	vip.origin_precent as origin_precent, 
     	vip.vip_time as vip_time, 
     	vip.enable_price as enable_price, 
+    	vip.gift_price as gift_price,
     	vip.memo as memo, 
     	vip.enabled as enabled, 
     	vip.updated_time as updated_time, 
@@ -101,23 +108,93 @@
     	<include refid="conditions" />
   </select>
   
+  <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
+    <result column="v_card_no" property="cardNo" />
+    <result column="v_customer_code" property="customerCode"/>
+    <result column="v_customer_name" property="customerName"/>      
+    <result column="v_card_type" property="cardType" />    
+    <result column="v_cn_name" property="cnName"/> 
+    <result column="v_origin_precent" property="originPrecent"/>
+    <result column="v_enable_price" property="enablePrice"/>
+    <result column="v_gift_price" property="giftPrice"/>
+  </resultMap>
+  
+  <resultMap id="DefinedResultMap" type="java.util.Map"> 	
+  	<id column="v_card_no" property="cardNo"/>  
+  	<association property="header" resultMap="HeaderMap" />   	   
+    <collection property="details" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="p_unpaid_id" property="unpaidId"/>
+      <result column="p_customer_code" property="customerCode"/> 
+      <result column="p_shop_id" property="shopId"/> 
+      <result column="p_pay_mode" property="payMode"/>
+      <result column="p_trade_type" property="tradeType"/>
+      <result column="p_trade_status" property="tradeStatus"/>
+      <result column="p_trade_time" property="tradeTime"/>
+      <result column="p_trade_price" property="tradePrice"/>
+      <result column="p_gift_price" property="giftPrice"/>
+      <result column="p_memo" property="memo"/>
+      <result column="p_order_id" property="orderId"/>
+      <result column="p_card_no" property="cardNo"/>
+      <result column="p_unusual" property="unusual"/>
+      <result column="p_pay_id" property="payId"/>
+      <result column="p_customer_name" property="customerName"/>
+      <result column="p_shop_name" property="shopName"/>
+    </collection>   
+  </resultMap>
+  
+  <select id="initRachargeData" resultMap="DefinedResultMap" parameterType="java.lang.String" >
+    select 
+        vip.card_no as v_card_no, 
+        (select customer1.customer_name 
+        	from bus_customer customer1 
+        	where customer1.customer_code = vip.customer_code
+        ) as v_customer_name,    
+        vip.customer_code as v_customer_code, 
+        vip.card_type as v_card_type,          
+        vip.cn_name as v_cn_name, 
+        vip.origin_precent as v_origin_precent, 
+        vip.enable_price as v_enable_price, 
+        vip.gift_price as v_gift_price,
+		bus_vip_unpaid.unpaid_id as p_unpaid_id, 
+	    bus_vip_unpaid.customer_code as p_customer_code, 
+	    bus_vip_unpaid.shop_id as p_shop_id, 
+        bus_vip_unpaid.pay_mode as p_pay_mode, 
+        bus_vip_unpaid.trade_type as p_trade_type, 
+        bus_vip_unpaid.trade_status as p_trade_status, 
+        bus_vip_unpaid.trade_time as p_trade_time, 
+        bus_vip_unpaid.trade_price as p_trade_price, 
+        bus_vip_unpaid.gift_price as p_gift_price, 
+        bus_vip_unpaid.memo as p_memo, 
+        bus_vip_unpaid.order_id as p_order_id, 
+        bus_vip_unpaid.card_no as p_card_no, 
+        bus_vip_unpaid.unusual as p_unusual,
+        bus_vip_unpaid.pay_id as p_pay_id,
+        customer.customer_name as p_customer_name,
+	  	bus_shop.shop_name as p_shop_name
+    from bus_vip vip
+    LEFT JOIN bus_vip_unpaid bus_vip_unpaid ON bus_vip_unpaid.card_no = vip.card_no and bus_vip_unpaid.trade_type in (3,4)
+    LEFT JOIN bus_customer customer on customer.customer_code = bus_vip_unpaid.customer_code
+    LEFT JOIN bus_shop bus_shop on bus_shop.shop_id = bus_vip_unpaid.shop_id
+    where vip.card_no = #{cardNo,jdbcType=VARCHAR}
+  </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from bus_vip
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.BusVip" >
-    insert into bus_vip (id, customer_code, card_no, 
+    insert into bus_vip (id, customer_code, card_type, card_no, 
       mobile, wechat, cn_name, 
       sex, brithday, email, 
       origin_precent, vip_time, enable_price, 
-      memo, enabled, updated_time, 
+      gift_price, memo, enabled, updated_time, 
       created_name, updated_name)
-    values (#{id,jdbcType=VARCHAR}, #{customerCode,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{customerCode,jdbcType=VARCHAR}, #{cardType,jdbcType=INTEGER},
+      #{cardNo,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, #{cnName,jdbcType=VARCHAR}, 
       #{sex,jdbcType=VARCHAR}, #{brithday,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, 
       #{originPrecent,jdbcType=DECIMAL}, #{vipTime,jdbcType=TIMESTAMP}, #{enablePrice,jdbcType=DECIMAL}, 
-      #{memo,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{giftPrice,jdbcType=DECIMAL},#{memo,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{updatedTime,jdbcType=TIMESTAMP}, 
       #{createdName,jdbcType=VARCHAR}, #{updatedName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusVip" >
@@ -128,6 +205,9 @@
       </if>
       <if test="customerCode != null" >
         customer_code,
+      </if>
+      <if test="cardType != null" >
+        card_type,
       </if>
       <if test="cardNo != null" >
         card_no,
@@ -155,6 +235,9 @@
       </if>
       <if test="vipTime != null" >
         vip_time,
+      </if>    
+      <if test="giftPrice != null" >
+        gift_price,
       </if>
       <if test="enablePrice != null" >
         enable_price,
@@ -181,6 +264,9 @@
       </if>
       <if test="customerCode != null" >
         #{customerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=INTEGER},
       </if>
       <if test="cardNo != null" >
         #{cardNo,jdbcType=VARCHAR},
@@ -209,6 +295,9 @@
       <if test="vipTime != null" >
         #{vipTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="giftPrice != null" >
+      	#{giftPrice,jdbcType=DECIMAL},
+      </if>
       <if test="enablePrice != null" >
         #{enablePrice,jdbcType=DECIMAL},
       </if>
@@ -234,6 +323,9 @@
     <set >
       <if test="customerCode != null" >
         customer_code = #{customerCode,jdbcType=VARCHAR},
+      </if>    
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=INTEGER},
       </if>
       <if test="cardNo != null" >
         card_no = #{cardNo,jdbcType=VARCHAR},
@@ -265,6 +357,9 @@
       <if test="enablePrice != null" >
         enable_price = #{enablePrice,jdbcType=DECIMAL},
       </if>
+      <if test="giftPrice != null" >
+        gift_price = #{giftPrice,jdbcType=DECIMAL},
+      </if>      
       <if test="memo != null" >
         memo = #{memo,jdbcType=VARCHAR},
       </if>
@@ -286,6 +381,7 @@
   <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusVip" >
     update bus_vip
     set customer_code = #{customerCode,jdbcType=VARCHAR},
+      card_type = #{cardType,jdbcType=INTEGER},
       card_no = #{cardNo,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       wechat = #{wechat,jdbcType=VARCHAR},
@@ -296,6 +392,7 @@
       origin_precent = #{originPrecent,jdbcType=DECIMAL},
       vip_time = #{vipTime,jdbcType=TIMESTAMP},
       enable_price = #{enablePrice,jdbcType=DECIMAL},
+      gift_price = #{giftPrice,jdbcType=DECIMAL},
       memo = #{memo,jdbcType=VARCHAR},
       enabled = #{enabled,jdbcType=BIT},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},

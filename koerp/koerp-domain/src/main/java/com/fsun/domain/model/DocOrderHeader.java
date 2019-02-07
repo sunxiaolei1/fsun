@@ -18,9 +18,27 @@ public class DocOrderHeader {
 
     /**
      * 单据状态
-     * 表字段 : doc_order_header.so_status
+     * 表字段 : doc_order_header.order_status
      */
-    private String soStatus;
+    private String orderStatus;
+
+    /**
+     * 领用方式(10 样品 20 品鉴 30 试饮 40 赠送 50 礼品 60 其他)
+     * 表字段 : doc_order_header.order_mode
+     */
+    private String orderMode;
+
+    /**
+     * 单据来源
+     * 表字段 : doc_order_header.order_source
+     */
+    private String orderSource;
+
+    /**
+     * 申请单号
+     * 表字段 : doc_order_header.po_no
+     */
+    private String poNo;
 
     /**
      * 发运路线id
@@ -65,7 +83,7 @@ public class DocOrderHeader {
     private String fromShopName;
 
     /**
-     * 预期发货时间
+     * 预期收货时间
      * 表字段 : doc_order_header.expected_time
      */
     private Date expectedTime;
@@ -123,6 +141,12 @@ public class DocOrderHeader {
      * 表字段 : doc_order_header.zip_code
      */
     private String zipCode;
+      
+    /**
+     * 联系人
+     * 表字段 : doc_order_header.contacts
+     */
+    private String contacts;
 
     /**
      * 收货人手机
@@ -195,6 +219,12 @@ public class DocOrderHeader {
      * 表字段 : doc_order_header.i_contact
      */
     private String iContact;
+
+    /**
+     * 
+     * 表字段 : doc_order_header.i_name
+     */
+    private String iName;
 
     /**
      * 下单人电话
@@ -292,6 +322,11 @@ public class DocOrderHeader {
      */
     private String route;
 
+    /**
+     * 打印次数
+     */
+    private Integer printCount;
+    
     public String getOrderNo() {
         return orderNo;
     }
@@ -308,12 +343,36 @@ public class DocOrderHeader {
         this.orderType = orderType == null ? null : orderType.trim();
     }
 
-    public String getSoStatus() {
-        return soStatus;
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setSoStatus(String soStatus) {
-        this.soStatus = soStatus == null ? null : soStatus.trim();
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus == null ? null : orderStatus.trim();
+    }
+
+    public String getOrderMode() {
+        return orderMode;
+    }
+
+    public void setOrderMode(String orderMode) {
+        this.orderMode = orderMode == null ? null : orderMode.trim();
+    }
+
+    public String getOrderSource() {
+        return orderSource;
+    }
+
+    public void setOrderSource(String orderSource) {
+        this.orderSource = orderSource == null ? null : orderSource.trim();
+    }
+
+    public String getPoNo() {
+        return poNo;
+    }
+
+    public void setPoNo(String poNo) {
+        this.poNo = poNo == null ? null : poNo.trim();
     }
 
     public String getRouteId() {
@@ -548,6 +607,14 @@ public class DocOrderHeader {
         this.iContact = iContact == null ? null : iContact.trim();
     }
 
+    public String getiName() {
+        return iName;
+    }
+
+    public void setiName(String iName) {
+        this.iName = iName == null ? null : iName.trim();
+    }
+
     public String getiTel() {
         return iTel;
     }
@@ -675,4 +742,32 @@ public class DocOrderHeader {
     public void setRoute(String route) {
         this.route = route == null ? null : route.trim();
     }
+
+	/**
+	 * @return the contacts
+	 */
+	public String getContacts() {
+		return contacts;
+	}
+
+	/**
+	 * @param contacts the contacts to set
+	 */
+	public void setContacts(String contacts) {
+		this.contacts = contacts;
+	}
+
+	/**
+	 * @return the printCount
+	 */
+	public Integer getPrintCount() {
+		return printCount;
+	}
+
+	/**
+	 * @param printCount the printCount to set
+	 */
+	public void setPrintCount(Integer printCount) {
+		this.printCount = printCount;
+	}
 }

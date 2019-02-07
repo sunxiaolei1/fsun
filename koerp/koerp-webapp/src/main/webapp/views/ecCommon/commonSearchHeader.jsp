@@ -80,6 +80,10 @@ function commonReset(childfuncname) {
 		$(this).datetimebox("setValue","");
 	}); 
 	
+	$("#queryForm").find(".easyui-datebox").each(function(){
+		$(this).datebox("setValue","");
+	}); 
+	
 	//$('#borderdatetime').datetimebox('setValue', initOrderDateTime);
 
 	var queryParams = initQueryParams();

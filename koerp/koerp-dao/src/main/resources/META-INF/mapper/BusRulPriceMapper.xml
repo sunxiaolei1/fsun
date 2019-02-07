@@ -16,6 +16,92 @@
     rul_id, rul_name, is_discount, discount, sort_code, created_time, updated_time, created_id, 
     updated_id
   </sql>
+  
+  <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
+    <result column="rul_name" property="rulName"/> 
+    <result column="sort_code" property="sortCode"/> 
+  </resultMap>
+  
+  <resultMap id="DefinedResultMap" type="java.util.Map"> 	
+  	<id column="rul_id" property="rulId"/>  
+  	<association property="header" resultMap="HeaderMap" />   	   
+    <collection property="rulSkus" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="sku_sku_id" property="skuId"/>
+      <result column="sku_category_code" property="categoryCode"/> 
+      <result column="sku_product_type" property="productType"/> 
+      <result column="sku_sku" property="sku"/> 
+      <result column="sku_brand_code" property="brandCode"/> 
+      <result column="sku_goods_name" property="goodsName"/> 
+      <result column="sku_en_name" property="enName"/> 
+      <result column="sku_property" property="property"/> 
+      <result column="sku_market_price" property="marketPrice"/> 
+      <result column="sku_sale_price" property="salePrice"/> 
+      <result column="sku_supply_price" property="supplyPrice"/> 
+      <result column="sku_cost_price" property="costPrice"/> 
+      <result column="sku_vip_price" property="vipPrice"/> 
+      <result column="sku_unit" property="unit"/> 
+      <result column="sku_unit_name" property="unitName"/> 
+      <result column="sku_keywords" property="keywords"/> 
+      <result column="sku_created_time" property="createdTime"/> 
+    </collection>
+    <collection property="rulShops" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="shop_shop_id" property="shopId"/>
+      <result column="shop_shop_code" property="shopCode"/> 
+      <result column="shop_shop_name" property="shopName"/> 
+      <result column="shop_enabled" property="enabled"/> 
+    </collection>
+    
+  </resultMap>
+    
+  <sql id="conditions">
+  	<where>  	 		
+  		<if test="rulName != null and rulName != ''">
+  			and rul_name like '%${rulName}%'
+  		</if>
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusRulPriceCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_rul_price
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="loadEntity" resultMap="DefinedResultMap" parameterType="java.lang.String" >    
+	select 
+	    a.rul_id as rul_id,
+	    a.rul_name as rul_name,
+	    a.sort_code as sort_code,
+    	b.shop_id as shop_shop_id, 
+    	b.shop_name as shop_shop_name,
+    	shop.shop_code as shop_shop_code,
+    	shop.enabled as shop_enabled,   	
+    	c.sku_id as sku_sku_id, 
+    	c.category_code as sku_category_code,  
+    	c.product_type as sku_product_type,  
+    	c.sku as sku_sku, 
+    	c.brand_code as sku_brand_code,  
+    	c.goods_name as sku_goods_name,  
+    	c.en_name as sku_en_name,  
+        c.property as sku_property,  
+        c.market_price as sku_market_price, 
+        c.sale_price as sku_sale_price,  
+        c.supply_price as sku_supply_price,  
+        c.cost_price as sku_cost_price, 
+        c.vip_price as sku_vip_price,  
+        c.unit as sku_unit, 
+        c.unit_name as sku_unit_name,  
+        c.keywords as sku_keywords,  
+        c.created_time as sku_created_time   
+    from bus_rul_price a
+    left join bus_rul_shop b on a.rul_id = b.rul_id
+    left join bus_shop shop on b.shop_id = shop.shop_id
+    left join bus_rul_sku c on a.rul_id = c.rul_id
+    where a.rul_id = #{rulId,jdbcType=VARCHAR} 
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

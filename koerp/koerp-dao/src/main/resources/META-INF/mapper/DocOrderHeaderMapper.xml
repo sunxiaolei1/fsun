@@ -3,8 +3,12 @@
 <mapper namespace="com.fsun.dao.mapper.DocOrderHeaderMapper" >
   <resultMap id="BaseResultMap" type="com.fsun.domain.model.DocOrderHeader" >
     <id column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="print_count" property="printCount" jdbcType="INTEGER" />
     <result column="order_type" property="orderType" jdbcType="CHAR" />
-    <result column="so_status" property="soStatus" jdbcType="CHAR" />
+    <result column="order_status" property="orderStatus" jdbcType="CHAR" />
+    <result column="order_mode" property="orderMode" jdbcType="CHAR" />
+    <result column="order_source" property="orderSource" jdbcType="CHAR" />
+    <result column="po_no" property="poNo" jdbcType="VARCHAR" />
     <result column="route_id" property="routeId" jdbcType="VARCHAR" />
     <result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
     <result column="order_price" property="orderPrice" jdbcType="DECIMAL" />
@@ -21,7 +25,8 @@
     <result column="carrier_id" property="carrierId" jdbcType="VARCHAR" />
     <result column="carrier_name" property="carrierName" jdbcType="VARCHAR" />
     <result column="place_discharge" property="placeDischarge" jdbcType="VARCHAR" />
-    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />   
+    <result column="contacts" property="contacts" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="receive_address" property="receiveAddress" jdbcType="VARCHAR" />
     <result column="vehicle_no" property="vehicleNo" jdbcType="VARCHAR" />
@@ -34,6 +39,7 @@
     <result column="i_address" property="iAddress" jdbcType="VARCHAR" />
     <result column="i_zip_code" property="iZipCode" jdbcType="VARCHAR" />
     <result column="i_contact" property="iContact" jdbcType="VARCHAR" />
+    <result column="i_name" property="iName" jdbcType="VARCHAR" />
     <result column="i_tel" property="iTel" jdbcType="VARCHAR" />
     <result column="supplier_id" property="supplierId" jdbcType="VARCHAR" />
     <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
@@ -52,14 +58,270 @@
     <result column="route" property="route" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    order_no, order_type, so_status, route_id, order_time, order_price, to_shop_id, to_shop_name, 
-    from_shop_id, from_shop_name, expected_time, user_define1, user_define2, user_define3, 
-    release_status, priority, carrier_id, carrier_name, place_discharge, zip_code, mobile, 
-    receive_address, vehicle_no, onsignee_id, onsign_name, descr, memo, i_shop_id, i_id, 
-    i_address, i_zip_code, i_contact, i_tel, supplier_id, supplier_name, supplier_address, 
-    supplier_zip_code, supplier_contact, supplier_tel, address, volume, delivery_time, 
-    created_name, created_time, updated_name, place_loading, updated_time, route
+    order_no, print_count, order_type, order_status, order_mode, order_source, po_no, route_id, order_time, 
+    order_price, to_shop_id, to_shop_name, from_shop_id, from_shop_name, expected_time, 
+    user_define1, user_define2, user_define3, release_status, priority, carrier_id, carrier_name, 
+    place_discharge, zip_code, contacts, mobile, receive_address, vehicle_no, onsignee_id, onsign_name, 
+    descr, memo, i_shop_id, i_id, i_address, i_zip_code, i_contact, i_name, i_tel, supplier_id, 
+    supplier_name, supplier_address, supplier_zip_code, supplier_contact, supplier_tel, 
+    address, volume, delivery_time, created_name, created_time, updated_name, place_loading, 
+    updated_time, route
   </sql>
+  
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="q != null and q != ''">
+  			and (a.order_no like concat(concat('%',#{q}),'%')  
+  				or a.po_no like concat(concat('%',#{q}),'%')  
+  				)
+  		</if>
+  		
+  		<if test="poNo != null and poNo != ''">
+  			and a.po_no = #{poNo}
+  		</if>
+  			
+  		<if test="orderNo != null and orderNo != ''">
+  			and a.order_no = #{orderNo}
+  		</if>
+  		
+  		<if test="fromShopId != null and fromShopId != ''">
+  			and a.from_shop_id = #{fromShopId}
+  		</if>
+  		
+  		<if test="toShopId != null and toShopId != ''">
+  			and a.to_shop_id = #{toShopId}
+  		</if>
+  		
+  		<if test="orderStatus != null and orderStatus != ''">
+  			and a.order_status = #{orderStatus}
+  		</if>
+  		
+  		<if test="orderType != null and orderType != ''">
+			and a.order_type = #{orderType,jdbcType=VARCHAR}
+		</if>
+  		
+  		<if test="startTime != null">
+			and a.delivery_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			and a.delivery_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+		</if>
+  		
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.DocOrderHeaderCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM doc_order_header a
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.DocOrderHeaderCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM doc_order_header a 
+    	<include refid="conditions" />
+  </select>
+  
+  <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
+    <result column="o_order_no" property="orderNo" /> 
+    <result column="o_print_count" property="printCount" /> 
+    <result column="o_order_type" property="orderType"/>
+    <result column="o_order_status" property="orderStatus"/> 
+    <result column="o_order_mode" property="orderMode"/> 
+    <result column="o_order_source" property="orderSource"/> 
+    <result column="o_po_no" property="poNo"/> 
+    <result column="o_route_id" property="routeId"/> 
+    <result column="o_order_time" property="orderTime"/>
+    <result column="o_order_price" property="orderPrice"/> 
+    <result column="o_to_shop_id" property="toShopId"/> 
+    <result column="o_to_shop_name" property="toShopName"/> 
+    <result column="o_from_shop_id" property="fromShopId"/> 
+    <result column="o_from_shop_name" property="fromShopName"/> 
+    <result column="o_expected_time" property="expectedTime"/> 
+    <result column="o_user_define1" property="userDefine1"/>
+    <result column="o_user_define2" property="userDefine2"/> 
+    <result column="o_user_define3" property="userDefine3"/> 
+    <result column="o_release_status" property="releaseStatus"/> 
+    <result column="o_priority" property="priority"/> 
+    <result column="o_carrier_id" property="carrierId"/> 
+    <result column="o_carrier_name" property="carrierName"/> 
+    <result column="o_place_discharge" property="placeDischarge"/> 
+    <result column="o_zip_code" property="zipCode"/> 
+    <result column="o_contacts" property="contacts" />
+    <result column="o_mobile" property="mobile"/> 
+    <result column="o_receive_address" property="receiveAddress"/> 
+    <result column="o_vehicle_no" property="vehicleNo"/> 
+    <result column="o_onsignee_id" property="onsigneeId"/> 
+    <result column="o_onsign_name" property="onsignName"/> 
+    <result column="o_descr" property="descr"/> 
+    <result column="o_memo" property="memo"/> 
+    <result column="o_i_shop_id" property="iShopId"/>
+    <result column="o_i_id" property="iId"/>
+    <result column="o_i_name" property="iName"/>
+    <result column="o_i_address" property="iAddress"/>
+    <result column="o_i_contact" property="iContact"/>
+    <result column="o_i_tel" property="iTel"/>
+    <result column="o_supplier_id" property="supplierId"/> 
+    <result column="o_supplier_name" property="supplierName"/> 
+    <result column="o_supplier_address" property="supplierAddress"/> 
+    <result column="o_supplier_contact" property="supplierContact"/>
+    <result column="o_supplier_tel" property="supplierTel"/>
+    <result column="o_supplier_zip_code" property="supplierZipCode"/>
+    <result column="o_address" property="address"/>
+    <result column="o_volume" property="volume"/>
+    <result column="o_delivery_time" property="deliveryTime"/>
+    <result column="o_place_loading" property="placeLoading"/>
+    <result column="o_route" property="route"/>
+    <result column="o_created_name" property="createdName"/>    
+  </resultMap>
+  
+  <resultMap id="DefinedResultMap" type="java.util.Map"> 	
+  	<id column="o_order_no" property="orderNo"/>  
+  	<association property="header" resultMap="HeaderMap" />   	   
+    <collection property="details" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="d_so_detail_id" property="soDetailId"/>
+      <result column="d_order_no" property="orderNo"/> 
+      <result column="d_line_no" property="lineNo"/> 
+      <result column="d_category_code" property="categoryCode"/> 
+      <result column="d_category_name" property="categoryName"/> 
+      <result column="d_bar_code" property="barCode"/> 
+      <result column="d_brand_code" property="brandCode"/> 
+      <result column="d_brand_name" property="brandName"/> 
+      <result column="d_goods_name" property="goodsName"/> 
+      <result column="d_sku" property="sku"/> 
+      <result column="d_parent_sku" property="parentSku"/> 
+      <result column="d_property" property="property"/> 
+      <result column="d_lot_num" property="lotNum"/> 
+      <result column="d_line_status" property="lineStatus"/> 
+      <result column="d_user_define1" property="userDefine1"/>
+      <result column="d_user_define2" property="userDefine2"/>
+      <result column="d_user_define3" property="userDefine3"/>
+      <result column="d_receive_time" property="receiveTime"/> 
+      <result column="d_receive_qty" property="receiveQty"/>
+      <result column="d_ordered_qty" property="orderedQty"/>
+      <result column="d_picked_qty" property="pickedQty"/>
+      <result column="d_shipped_qty" property="shippedQty"/>
+      <result column="d_sub_qty" property="subQty"/>
+      <result column="d_unit" property="unit"/>
+      <result column="d_convert_qty" property="convertQty"/>
+      <result column="d_convert_unit" property="convertUnit"/>
+      <result column="d_total_price" property="totalPrice"/>
+      <result column="d_cost_price" property="costPrice"/>    
+      <result column="d_price" property="price"/>
+      <result column="d_volume" property="volume"/> 
+      <result column="d_rate_precent" property="ratePrecent"/>
+      <result column="d_memo" property="memo"/>
+      <result column="d_created_time" property="createdTime"/>
+      <result column="d_updated_time" property="updatedTime"/>
+    </collection>
+    
+  </resultMap>
+  
+  <select id="loadEntity" resultMap="DefinedResultMap" parameterType="java.lang.String" >
+    select 
+    	o.order_no as o_order_no ,
+    	o.print_count as o_print_count,
+		o.order_type as o_order_type,
+		o.order_status as o_order_status,
+		o.order_mode as o_order_mode ,
+		o.order_source as o_order_source, 
+		o.po_no as o_po_no,
+		o.route_id as o_route_id ,
+		o.order_time as o_order_time,
+		o.order_price as o_order_price,
+		o.to_shop_id as o_to_shop_id,
+		o.to_shop_name as o_to_shop_name,
+		o.from_shop_id as o_from_shop_id,
+		o.from_shop_name as o_from_shop_name,
+		o.expected_time as o_expected_time,
+		o.user_define1 as o_user_define1,
+		o.user_define2 as o_user_define2,
+		o.user_define3 as o_user_define3,
+		o.release_status as o_release_status,
+		o.priority as o_priority,
+		o.carrier_id as o_carrier_id,
+		o.carrier_name as o_carrier_name ,
+		o.place_discharge as o_place_discharge ,
+		o.zip_code as o_zip_code ,
+		o.contacts as o_contacts,
+		o.mobile as o_mobile,
+		o.receive_address as o_receive_address,
+		o.vehicle_no as o_vehicle_no,
+		o.onsignee_id as o_onsignee_id ,
+		o.onsign_name as o_onsign_name ,
+		o.descr as o_descr,
+		o.memo as o_memo,
+		o.created_name as o_created_name,		
+		o.i_shop_id as o_i_shop_id,
+		o.i_id as o_i_id,
+		o.i_name as o_i_name,
+		o.i_address as o_i_address,
+		o.i_contact as o_i_contact,
+		o.i_tel as o_i_tel,
+		o.supplier_id as o_supplier_id ,
+		o.supplier_name as o_supplier_name,
+		o.supplier_address as o_supplier_address, 
+		o.supplier_contact as o_supplier_contact,
+		o.supplier_tel as o_supplier_tel,
+		o.supplier_zip_code as o_supplier_zip_code,
+		o.address as o_address,
+		o.volume as o_volume,
+		o.delivery_time as o_delivery_time,
+		o.place_loading as o_place_loading,
+		o.route as o_route,
+		d.so_detail_id as so_detail_id,
+		d.order_no as d_order_no,
+		d.line_no as d_line_no,
+		d.category_code as d_category_code,
+		d.category_name as d_category_name,
+		d.bar_code as d_bar_code,
+		d.brand_code as d_brand_code,
+		d.brand_name as d_brand_name ,
+		d.goods_name as d_goods_name,
+		d.sku as d_sku,
+		d.parent_sku as d_parent_sku,
+		d.property as d_property ,
+		d.lot_num as d_lot_num,
+		d.line_status as d_line_status,
+		d.user_define1 as d_user_define1,
+		d.user_define2 as d_user_define2,
+		d.user_define3 as d_user_define3,
+		d.receive_time as d_receive_time,
+		d.receive_qty as d_receive_qty,
+		d.ordered_qty as d_ordered_qty,
+		d.picked_qty as d_picked_qty,
+		d.shipped_qty as d_shipped_qty,
+		d.sub_qty as d_sub_qty,
+		d.unit as d_unit,
+		d.convert_qty as d_convert_qty,
+		d.convert_unit as d_convert_unit,
+		d.total_price as d_total_price,
+		d.cost_price as d_cost_price,
+		d.price as d_price,
+		d.volume as d_volume,
+		d.rate_precent as d_rate_precent,
+		d.memo as d_memo,
+		d.created_time as d_created_time,
+		d.updated_time as d_updated_time
+    from doc_order_header o
+    left join doc_order_details d on d.order_no = o.order_no
+    where o.order_no = #{orderNo,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="getMaxOrderNo" resultType="java.lang.String" parameterType="java.lang.String" >    
+	select 
+		order_no 
+	from doc_order_header 
+	where order_no like concat(#{orderNo},'%')
+	order by order_no desc 
+  </select> 
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -71,40 +333,42 @@
     where order_no = #{orderNo,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.DocOrderHeader" >
-    insert into doc_order_header (order_no, order_type, so_status, 
+    insert into doc_order_header (order_no, print_count, order_type, order_status, 
+      order_mode, order_source, po_no, 
       route_id, order_time, order_price, 
       to_shop_id, to_shop_name, from_shop_id, 
       from_shop_name, expected_time, user_define1, 
       user_define2, user_define3, release_status, 
       priority, carrier_id, carrier_name, 
-      place_discharge, zip_code, mobile, 
+      place_discharge, zip_code, contacts, mobile, 
       receive_address, vehicle_no, onsignee_id, 
       onsign_name, descr, memo, 
       i_shop_id, i_id, i_address, 
-      i_zip_code, i_contact, i_tel, 
-      supplier_id, supplier_name, supplier_address, 
-      supplier_zip_code, supplier_contact, supplier_tel, 
-      address, volume, delivery_time, 
-      created_name, created_time, updated_name, 
-      place_loading, updated_time, route
-      )
-    values (#{orderNo,jdbcType=VARCHAR}, #{orderType,jdbcType=CHAR}, #{soStatus,jdbcType=CHAR}, 
+      i_zip_code, i_contact, i_name, 
+      i_tel, supplier_id, supplier_name, 
+      supplier_address, supplier_zip_code, supplier_contact, 
+      supplier_tel, address, volume, 
+      delivery_time, created_name, created_time, 
+      updated_name, place_loading, updated_time, 
+      route)
+    values (#{orderNo,jdbcType=VARCHAR}, #{printCount,jdbcType=INTEGER}, #{orderType,jdbcType=CHAR}, #{orderStatus,jdbcType=CHAR}, 
+      #{orderMode,jdbcType=CHAR}, #{orderSource,jdbcType=CHAR}, #{poNo,jdbcType=VARCHAR}, 
       #{routeId,jdbcType=VARCHAR}, #{orderTime,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=DECIMAL}, 
       #{toShopId,jdbcType=VARCHAR}, #{toShopName,jdbcType=VARCHAR}, #{fromShopId,jdbcType=VARCHAR}, 
       #{fromShopName,jdbcType=VARCHAR}, #{expectedTime,jdbcType=TIMESTAMP}, #{userDefine1,jdbcType=VARCHAR}, 
       #{userDefine2,jdbcType=VARCHAR}, #{userDefine3,jdbcType=VARCHAR}, #{releaseStatus,jdbcType=CHAR}, 
       #{priority,jdbcType=CHAR}, #{carrierId,jdbcType=VARCHAR}, #{carrierName,jdbcType=VARCHAR}, 
-      #{placeDischarge,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{placeDischarge,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
       #{receiveAddress,jdbcType=VARCHAR}, #{vehicleNo,jdbcType=VARCHAR}, #{onsigneeId,jdbcType=VARCHAR}, 
       #{onsignName,jdbcType=VARCHAR}, #{descr,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
       #{iShopId,jdbcType=VARCHAR}, #{iId,jdbcType=VARCHAR}, #{iAddress,jdbcType=VARCHAR}, 
-      #{iZipCode,jdbcType=VARCHAR}, #{iContact,jdbcType=VARCHAR}, #{iTel,jdbcType=VARCHAR}, 
-      #{supplierId,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{supplierAddress,jdbcType=VARCHAR}, 
-      #{supplierZipCode,jdbcType=VARCHAR}, #{supplierContact,jdbcType=VARCHAR}, #{supplierTel,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{volume,jdbcType=DECIMAL}, #{deliveryTime,jdbcType=TIMESTAMP}, 
-      #{createdName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedName,jdbcType=VARCHAR}, 
-      #{placeLoading,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, #{route,jdbcType=VARCHAR}
-      )
+      #{iZipCode,jdbcType=VARCHAR}, #{iContact,jdbcType=VARCHAR}, #{iName,jdbcType=VARCHAR}, 
+      #{iTel,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, 
+      #{supplierAddress,jdbcType=VARCHAR}, #{supplierZipCode,jdbcType=VARCHAR}, #{supplierContact,jdbcType=VARCHAR}, 
+      #{supplierTel,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{volume,jdbcType=DECIMAL}, 
+      #{deliveryTime,jdbcType=TIMESTAMP}, #{createdName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedName,jdbcType=VARCHAR}, #{placeLoading,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{route,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.DocOrderHeader" >
     insert into doc_order_header
@@ -112,11 +376,23 @@
       <if test="orderNo != null" >
         order_no,
       </if>
+      <if test="printCount != null" >
+        print_count,
+      </if>
       <if test="orderType != null" >
         order_type,
       </if>
-      <if test="soStatus != null" >
-        so_status,
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderMode != null" >
+        order_mode,
+      </if>
+      <if test="orderSource != null" >
+        order_source,
+      </if>
+      <if test="poNo != null" >
+        po_no,
       </if>
       <if test="routeId != null" >
         route_id,
@@ -169,6 +445,9 @@
       <if test="zipCode != null" >
         zip_code,
       </if>
+      <if test="contacts != null">
+      	contacts,
+      </if>
       <if test="mobile != null" >
         mobile,
       </if>
@@ -204,6 +483,9 @@
       </if>
       <if test="iContact != null" >
         i_contact,
+      </if>
+      <if test="iName != null" >
+        i_name,
       </if>
       <if test="iTel != null" >
         i_tel,
@@ -258,11 +540,23 @@
       <if test="orderNo != null" >
         #{orderNo,jdbcType=VARCHAR},
       </if>
+      <if test="printCount != null" >
+        #{printCount,jdbcType=INTEGER}, 
+      </if>
       <if test="orderType != null" >
         #{orderType,jdbcType=CHAR},
       </if>
-      <if test="soStatus != null" >
-        #{soStatus,jdbcType=CHAR},
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderMode != null" >
+        #{orderMode,jdbcType=CHAR},
+      </if>
+      <if test="orderSource != null" >
+        #{orderSource,jdbcType=CHAR},
+      </if>
+      <if test="poNo != null" >
+        #{poNo,jdbcType=VARCHAR},
       </if>
       <if test="routeId != null" >
         #{routeId,jdbcType=VARCHAR},
@@ -315,6 +609,9 @@
       <if test="zipCode != null" >
         #{zipCode,jdbcType=VARCHAR},
       </if>
+      <if test="contacts != null">
+      	#{contacts,jdbcType=VARCHAR},
+      </if>
       <if test="mobile != null" >
         #{mobile,jdbcType=VARCHAR},
       </if>
@@ -350,6 +647,9 @@
       </if>
       <if test="iContact != null" >
         #{iContact,jdbcType=VARCHAR},
+      </if>
+      <if test="iName != null" >
+        #{iName,jdbcType=VARCHAR},
       </if>
       <if test="iTel != null" >
         #{iTel,jdbcType=VARCHAR},
@@ -404,11 +704,23 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.DocOrderHeader" >
     update doc_order_header
     <set >
+      <if test="printCount != null" >
+        print_count = #{printCount,jdbcType=INTEGER}, 
+      </if>
       <if test="orderType != null" >
         order_type = #{orderType,jdbcType=CHAR},
       </if>
-      <if test="soStatus != null" >
-        so_status = #{soStatus,jdbcType=CHAR},
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderMode != null" >
+        order_mode = #{orderMode,jdbcType=CHAR},
+      </if>
+      <if test="orderSource != null" >
+        order_source = #{orderSource,jdbcType=CHAR},
+      </if>
+      <if test="poNo != null" >
+        po_no = #{poNo,jdbcType=VARCHAR},
       </if>
       <if test="routeId != null" >
         route_id = #{routeId,jdbcType=VARCHAR},
@@ -461,6 +773,9 @@
       <if test="zipCode != null" >
         zip_code = #{zipCode,jdbcType=VARCHAR},
       </if>
+      <if test="contacts != null">
+      	contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
       <if test="mobile != null" >
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
@@ -496,6 +811,9 @@
       </if>
       <if test="iContact != null" >
         i_contact = #{iContact,jdbcType=VARCHAR},
+      </if>
+      <if test="iName != null" >
+        i_name = #{iName,jdbcType=VARCHAR},
       </if>
       <if test="iTel != null" >
         i_tel = #{iTel,jdbcType=VARCHAR},
@@ -550,8 +868,12 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.DocOrderHeader" >
     update doc_order_header
-    set order_type = #{orderType,jdbcType=CHAR},
-      so_status = #{soStatus,jdbcType=CHAR},
+    set print_count = #{printCount,jdbcType=INTEGER},  
+      order_type = #{orderType,jdbcType=CHAR},
+      order_status = #{orderStatus,jdbcType=CHAR},
+      order_mode = #{orderMode,jdbcType=CHAR},
+      order_source = #{orderSource,jdbcType=CHAR},
+      po_no = #{poNo,jdbcType=VARCHAR},
       route_id = #{routeId,jdbcType=VARCHAR},
       order_time = #{orderTime,jdbcType=TIMESTAMP},
       order_price = #{orderPrice,jdbcType=DECIMAL},
@@ -569,6 +891,7 @@
       carrier_name = #{carrierName,jdbcType=VARCHAR},
       place_discharge = #{placeDischarge,jdbcType=VARCHAR},
       zip_code = #{zipCode,jdbcType=VARCHAR},
+      contacts = #{contacts,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       receive_address = #{receiveAddress,jdbcType=VARCHAR},
       vehicle_no = #{vehicleNo,jdbcType=VARCHAR},
@@ -581,6 +904,7 @@
       i_address = #{iAddress,jdbcType=VARCHAR},
       i_zip_code = #{iZipCode,jdbcType=VARCHAR},
       i_contact = #{iContact,jdbcType=VARCHAR},
+      i_name = #{iName,jdbcType=VARCHAR},
       i_tel = #{iTel,jdbcType=VARCHAR},
       supplier_id = #{supplierId,jdbcType=VARCHAR},
       supplier_name = #{supplierName,jdbcType=VARCHAR},

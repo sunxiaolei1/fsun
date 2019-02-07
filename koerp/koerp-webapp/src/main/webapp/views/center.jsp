@@ -2,7 +2,7 @@
 <%@include file="header.jsp" %>
 
 <!--  导航 -->
-<div id="west" region="west" hide="true" split="true" title="导航菜单" style="width:180px;">
+<div id="west" region="west" hide="true" split="true" title="导航菜单" style="width:180px;font-size:15px;">
     <div id="nav" class="easyui-accordion" fit="true" border="false">
     </div>
 </div>

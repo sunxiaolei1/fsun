@@ -5,7 +5,10 @@
     <id column="goods_id" property="goodsId" jdbcType="VARCHAR" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
     <result column="line_no" property="lineNo" jdbcType="INTEGER" />
-    <result column="category_id" property="categoryId" jdbcType="VARCHAR" />
+    <result column="goods_type" property="goodsType" jdbcType="SMALLINT" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
     <result column="brand_code" property="brandCode" jdbcType="VARCHAR" />
     <result column="product_type" property="productType" jdbcType="SMALLINT" />
     <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
@@ -24,7 +27,8 @@
     <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
     <result column="origin_sale_price" property="originSalePrice" jdbcType="DECIMAL" />
     <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
-    <result column="part_price" property="partPrice" jdbcType="DECIMAL" />
+    <result column="part_price" property="partPrice" jdbcType="DECIMAL" />    
+    <result column="coupon_price" property="couponPrice" jdbcType="DECIMAL" />
     <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
     <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
     <result column="cost_price" property="costPrice" jdbcType="DECIMAL" />
@@ -39,12 +43,35 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    goods_id, order_id, line_no, category_id, brand_code, product_type, goods_name, bar_code, 
-    sku, parent_sku, sku_id, parent_sku_id, en_unit, total_part_price, rate_type, qty, 
-    unit, convert_qty, convert_unit, market_price, origin_sale_price, sale_price, part_price, 
-    discount_price, total_price, cost_price, rate_precent, is_gift, gift_count, gift_price, 
-    is_show, property, memo, created_time, updated_time
+    goods_id, order_id, line_no, goods_type, category_name, category_code, brand_name, 
+    brand_code, product_type, goods_name, bar_code, sku, parent_sku, sku_id, parent_sku_id, 
+    en_unit, total_part_price, rate_type, qty, unit, convert_qty, convert_unit, market_price, 
+    origin_sale_price, sale_price, part_price, coupon_price, discount_price, total_price, cost_price, 
+    rate_precent, is_gift, gift_count, gift_price, is_show, property, memo, created_time, 
+    updated_time
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="orderId != null and orderId != ''">
+  			and order_id = #{orderId}
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and sku = #{sku}
+  		</if>
+  				
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusGoodsCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_goods
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -57,25 +84,27 @@
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.BusGoods" >
     insert into bus_goods (goods_id, order_id, line_no, 
-      category_id, brand_code, product_type, 
+      goods_type, category_name, category_code, 
+      brand_name, brand_code, product_type, 
       goods_name, bar_code, sku, 
       parent_sku, sku_id, parent_sku_id, 
       en_unit, total_part_price, rate_type, 
       qty, unit, convert_qty, 
       convert_unit, market_price, origin_sale_price, 
-      sale_price, part_price, discount_price, 
+      sale_price, part_price, coupon_price, discount_price, 
       total_price, cost_price, rate_precent, 
       is_gift, gift_count, gift_price, 
       is_show, property, memo, 
       created_time, updated_time)
     values (#{goodsId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{lineNo,jdbcType=INTEGER}, 
-      #{categoryId,jdbcType=VARCHAR}, #{brandCode,jdbcType=VARCHAR}, #{productType,jdbcType=SMALLINT}, 
+      #{goodsType,jdbcType=SMALLINT}, #{categoryName,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, 
+      #{brandName,jdbcType=VARCHAR}, #{brandCode,jdbcType=VARCHAR}, #{productType,jdbcType=SMALLINT}, 
       #{goodsName,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, 
       #{parentSku,jdbcType=VARCHAR}, #{skuId,jdbcType=VARCHAR}, #{parentSkuId,jdbcType=VARCHAR}, 
       #{enUnit,jdbcType=VARCHAR}, #{totalPartPrice,jdbcType=DECIMAL}, #{rateType,jdbcType=VARCHAR}, 
       #{qty,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, #{convertQty,jdbcType=DECIMAL}, 
       #{convertUnit,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, #{originSalePrice,jdbcType=DECIMAL}, 
-      #{salePrice,jdbcType=DECIMAL}, #{partPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
+      #{salePrice,jdbcType=DECIMAL}, #{partPrice,jdbcType=DECIMAL}, #{couponPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
       #{totalPrice,jdbcType=DECIMAL}, #{costPrice,jdbcType=DECIMAL}, #{ratePrecent,jdbcType=DECIMAL}, 
       #{isGift,jdbcType=BIT}, #{giftCount,jdbcType=DECIMAL}, #{giftPrice,jdbcType=DECIMAL}, 
       #{isShow,jdbcType=BIT}, #{property,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
@@ -93,8 +122,17 @@
       <if test="lineNo != null" >
         line_no,
       </if>
-      <if test="categoryId != null" >
-        category_id,
+      <if test="goodsType != null" >
+        goods_type,
+      </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="categoryCode != null" >
+        category_code,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
       </if>
       <if test="brandCode != null" >
         brand_code,
@@ -153,6 +191,9 @@
       <if test="partPrice != null" >
         part_price,
       </if>
+      <if test="couponPrice != null" >
+        coupon_price,
+      </if>      
       <if test="discountPrice != null" >
         discount_price,
       </if>
@@ -200,8 +241,17 @@
       <if test="lineNo != null" >
         #{lineNo,jdbcType=INTEGER},
       </if>
-      <if test="categoryId != null" >
-        #{categoryId,jdbcType=VARCHAR},
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=SMALLINT},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null" >
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
       </if>
       <if test="brandCode != null" >
         #{brandCode,jdbcType=VARCHAR},
@@ -260,6 +310,9 @@
       <if test="partPrice != null" >
         #{partPrice,jdbcType=DECIMAL},
       </if>
+      <if test="couponPrice != null" >
+        #{couponPrice,jdbcType=DECIMAL},      
+      </if> 
       <if test="discountPrice != null" >
         #{discountPrice,jdbcType=DECIMAL},
       </if>
@@ -307,8 +360,17 @@
       <if test="lineNo != null" >
         line_no = #{lineNo,jdbcType=INTEGER},
       </if>
-      <if test="categoryId != null" >
-        category_id = #{categoryId,jdbcType=VARCHAR},
+      <if test="goodsType != null" >
+        goods_type = #{goodsType,jdbcType=SMALLINT},
+      </if>
+      <if test="categoryName != null" >
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null" >
+        category_code = #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
       </if>
       <if test="brandCode != null" >
         brand_code = #{brandCode,jdbcType=VARCHAR},
@@ -367,6 +429,9 @@
       <if test="partPrice != null" >
         part_price = #{partPrice,jdbcType=DECIMAL},
       </if>
+      <if test="couponPrice != null" >
+        coupon_price = #{couponPrice,jdbcType=DECIMAL},      
+      </if>
       <if test="discountPrice != null" >
         discount_price = #{discountPrice,jdbcType=DECIMAL},
       </if>
@@ -410,7 +475,10 @@
     update bus_goods
     set order_id = #{orderId,jdbcType=VARCHAR},
       line_no = #{lineNo,jdbcType=INTEGER},
-      category_id = #{categoryId,jdbcType=VARCHAR},
+      goods_type = #{goodsType,jdbcType=SMALLINT},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      category_code = #{categoryCode,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
       brand_code = #{brandCode,jdbcType=VARCHAR},
       product_type = #{productType,jdbcType=SMALLINT},
       goods_name = #{goodsName,jdbcType=VARCHAR},
@@ -429,7 +497,8 @@
       market_price = #{marketPrice,jdbcType=DECIMAL},
       origin_sale_price = #{originSalePrice,jdbcType=DECIMAL},
       sale_price = #{salePrice,jdbcType=DECIMAL},
-      part_price = #{partPrice,jdbcType=DECIMAL},
+      part_price = #{partPrice,jdbcType=DECIMAL},     
+      coupon_price = #{couponPrice,jdbcType=DECIMAL},           
       discount_price = #{discountPrice,jdbcType=DECIMAL},
       total_price = #{totalPrice,jdbcType=DECIMAL},
       cost_price = #{costPrice,jdbcType=DECIMAL},
