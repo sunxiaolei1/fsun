@@ -60,4 +60,10 @@ public interface SysUserApi extends BaseApi<SysUser, SysUserCondition> {
 	 */
 	public void assignShop(String[] ids, String shopId, SysUser user);
 
+	/**
+	 * 更新用户信息
+	 * @param sysUser
+	 */
+	public void updateUser(SysUser sysUser);
+
 }

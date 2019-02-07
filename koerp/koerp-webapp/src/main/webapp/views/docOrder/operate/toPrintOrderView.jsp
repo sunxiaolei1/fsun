@@ -155,14 +155,26 @@ function createOneOrderPage(LODOP,docOrderDto,currRow){
 		LODOP.NewPageA();	
 	}
 	
+	var detailTop = 148;
+	var detailHeight = 230;
+	var headerTop = 90;
+	var headerHeight = 120;
+	
+	var header = docOrderDto.header;
+    if(header.orderType==16){
+    	headerHeight += 50;
+    	detailTop += 50;
+   		detailHeight -= 50;
+	}
+    
 	CreateTableOrderContext(docOrderDto.details,8,"tableOrderData");
 	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
     var strStyle='<style type="text/css"> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>';
-	LODOP.ADD_PRINT_TABLE(148,"1%","99%",230,strStyle + document.getElementById("printTableOrder").innerHTML);
+	LODOP.ADD_PRINT_TABLE(detailTop,"1%","99%",detailHeight,strStyle + document.getElementById("printTableOrder").innerHTML);
 
-	createTableOrderHead("head1",docOrderDto.header); 
+	createTableOrderHead("head1", header); 
 	var strStyle1 = '<style type="text/css"> input,span {border:none;border-bottom:black solid 1px;} input {font-family:Arial, Helvetica, sans-serif,"Microsoft YaHei";font-size:16px;}</style>';
-	LODOP.ADD_PRINT_HTM(90,"1%","99%",120,strStyle1 + document.getElementById("tableHead").innerHTML);
+	LODOP.ADD_PRINT_HTM(headerTop,"1%","99%",headerHeight,strStyle1 + document.getElementById("tableHead").innerHTML);
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 	LODOP.SET_PRINT_STYLEA(0,"LinkedItem",1+currRow);
 	
@@ -174,19 +186,49 @@ function createTableOrderHead(div,header){
 	 var orderType = formatter(header.orderType, parent.docOrderType);
 	 var createdName = header.createdName;		 
 	 var memo = header.memo;
+	 var orderMode = formatter(header.orderMode, parent.docOrderMode);
+	 var carrierName = header.carrierName;
+	 var customerName = header.customerName;
+	 var mobile = header.mobile;
+	 var contacts = header.contacts;
+	 var receiveAddress = header.receiveAddress;
 	 
 	 var tbody = $("#"+div);		 
      var tr=$("<tr></tr>");
      tr.appendTo(tbody);
-     var td = $("<td>单据类型：<span style='width:160px;' >"+ (orderType!=null?orderType:"") +"</span></td>");			 
+     var td = $("<td colspan='2' >出库店仓：<input style='width:290px;' value='"
+ 			+ (shopName != null ? shopName : "")
+ 			+ "' /></td>");	 
+ 	 td.appendTo(tr);
+     td = $("<td>单据类型：<span style='width:160px;' >"+ (orderType!=null?orderType:"") +"</span></td>");			 
 	 td.appendTo(tr);
 	 td = $("<td>制单人：<span style='width:160px;' >"+ (createdName!=null?createdName:"") +"</span></td>");			 
 	 td.appendTo(tr);
-     td = $("<td colspan='2' >出库店仓：<input style='width:260px;' value='"
-			+ (shopName != null ? shopName : "")
-			+ "' /></td>");	 
-	 td.appendTo(tr);	
-	 	
+     
+
+	 if(header.orderType==16){
+		 tr=$("<tr></tr>");
+	     tr.appendTo(tbody);
+	     td = $("<td colspan='2' >客户名称：<input style='width:290px;' value='"
+				+ (customerName != null ? customerName : "")
+				+ "' /></td>");	 
+		 td.appendTo(tr);
+	     td = $("<td>出库事由：<span style='width:160px;' >"+ (orderMode!=null?orderMode:"") +"</span></td>");			 
+		 td.appendTo(tr);
+		 td = $("<td>经办人：<span style='width:160px;' >"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
+		 td.appendTo(tr);	     
+		 
+		 tr=$("<tr></tr>");
+	     tr.appendTo(tbody);
+	     td = $("<td colspan='2' >收货地址：<input style='width:290px;' value='"
+				+ (receiveAddress != null ? receiveAddress : "")
+				+ "' /></td>");	 
+		 td.appendTo(tr);
+	     td = $("<td>手机号：<span style='width:160px;' >"+ (mobile!=null?mobile:"") +"</span></td>");			 
+		 td.appendTo(tr);
+		 td = $("<td>联系人：<span style='width:160px;' >"+ (contacts!=null?contacts:"") +"</span></td>");			 
+		 td.appendTo(tr);	     
+	 }	
 
 	 tr = $("<tr></tr>");
 	 tr.appendTo(tbody);
@@ -208,7 +250,7 @@ function CreateTableOrderContext(list,cellCount,div)
 		var sku = obj.sku;
 		var goodsName = (obj.goodsName!=null?formatStr((obj.goodsName.getLength()>26?obj.goodsName.getSub(23):obj.goodsName)):'');		
 		var property = obj.property;
-		var qty = obj.orderedQty;
+		var qty = obj.shippedQty;
 		var unit = formatter(obj.unit, parent.unitCode);
 		var salePrice = obj.price;
 		var totalPrice =  obj.totalPrice;

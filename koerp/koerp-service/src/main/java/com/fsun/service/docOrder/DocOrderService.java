@@ -158,9 +158,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 			docOrderDetails.setSoDetailId(PKMapping.GUUID(PKMapping.doc_order_details));
 			docOrderDetails.setOrderNo(orderNo);
 			docOrderDetails.setLineNo(lineNo++);			
-			docOrderDetails.setOrderedQty(
-				docOrderDetails.getOrderedQty()!=null?docOrderDetails.getOrderedQty():docOrderDetails.getShippedQty()
-			);
+			docOrderDetails.setOrderedQty(docOrderDetails.getShippedQty());
 			BigDecimal totalPrice = docOrderDetails.getShippedQty().multiply(docOrderDetails.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
 			docOrderDetails.setTotalPrice(totalPrice);
 			docOrderDetails.setCreatedTime(now);

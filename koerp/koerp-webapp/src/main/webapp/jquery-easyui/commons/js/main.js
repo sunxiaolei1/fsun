@@ -343,7 +343,7 @@ function modifyPassword() {
     var newPassword = trim($('#txtNewPass').val());
     var repeatPassword = trim($('#txtRePass').val());
     if (oldPassword == '') {
-        msgShow('系统提示', '请输入原密码！', 'warning');
+    	$.messager.alert('系统提示', '请输入原密码！', 'warning');
         return false;
     }
     if (newPassword == '') {
@@ -351,25 +351,26 @@ function modifyPassword() {
         return false;
     }
     if (repeatPassword == '') {
-        msgShow('系统提示', '请再一次输入密码！', 'warning');
+    	$.messager.alert('系统提示', '请再一次输入密码！', 'warning');
         return false;
     }
     if (newPassword != repeatPassword) {
-        msgShow('系统提示', '两次密码不一至！请重新输入', 'warning');
+    	$.messager.alert('系统提示', '两次密码不一至！请重新输入', 'warning');
 		$('#txtNewPass').val("");
 		$('#txtRePass').val("");
         return false;
     }
-    var param = {"userId": userId, "password": oldPassword, "newPassword": newPassword};
+    var param = {"id": userId, "password": newPassword, "oldPassword": oldPassword};
     $.ajax({
         type: "post",
-        url: API_PATH + "/user/editPassword",
+        contentType:"application/json;charset=utf-8",
+        url: API_PATH + "/user/savePassword",
         dataType: "json",
-        data: param,
+        data: JSON.stringify(param),
         success: function (res) {
         	console.log(res);
             if (res.status) {
-            	$.messager.alert("系统提示",'恭喜，密码修改成功！',"info", function(){
+            	$.messager.alert("系统提示",'密码修改成功！',"info", function(){
             		location.href = 'login.jsp';
             		$('#txtOldPass').val("");
             		$('#txtNewPass').val("");
@@ -377,7 +378,7 @@ function modifyPassword() {
                     close();
 		    	});
             } else {
-            	$.messager.alert("系统提示", res.msg, "error", function(){
+            	$.messager.alert("系统提示", res.message, "error", function(){
             		$('#txtOldPass').val("");
             		$('#txtNewPass').val("");
             		$('#txtRePass').val("");

@@ -97,6 +97,12 @@ public class SysUser {
      * 店仓ID
      */
     private String shopId;
+    
+    /**
+     * 用户原密码
+     * 
+     */
+    private String oldPassword;
 
     public String getId() {
         return id;
@@ -230,6 +236,20 @@ public class SysUser {
 	 */
 	public void setShopId(String shopId) {
 		this.shopId = shopId;
+	}
+
+	/**
+	 * @return the oldPassword
+	 */
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	/**
+	 * @param oldPassword the oldPassword to set
+	 */
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
 	}
 
 }

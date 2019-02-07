@@ -137,6 +137,12 @@ public class SysUserService implements SysUserApi{
 			}			
 		}		
 	}
+	
+	@Transactional
+	@Override
+	public void updateUser(SysUser sysUser) {
+		sysUserManage.update(sysUser);
+	}
 
 	
 	/***********************************  内部方法     *************************************/
