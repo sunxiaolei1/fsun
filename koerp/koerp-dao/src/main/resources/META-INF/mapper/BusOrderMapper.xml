@@ -106,6 +106,10 @@
   			and a.shop_id = #{shopId}
   		</if>
   		
+  		<if test="carrierId != null and carrierId != ''">
+  			and a.carrier_id = #{carrierId}
+  		</if>
+  		
   		<if test="orderStatus != null and orderStatus != ''">
   			and a.order_status = #{orderStatus}
   		</if>

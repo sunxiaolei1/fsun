@@ -25,9 +25,12 @@
 					</td>																													
 				</tr>
 				<tr>
-										
+					<td  width="6%">经手人:</td>
+					<td>
+						<input id="salesmanText" name="carrierId"  class="easyui-combogrid" />
+					</td>										
 					<td width="6%">单据日期:</td>
-					<td colspan="7">
+					<td colspan="5">
 						<input id="startDate" name="startDate" class="easyui-datebox" />
 						-
 						<input id="endDate" name="endDate" class="easyui-datebox" />&nbsp;&nbsp;&nbsp;&nbsp;
@@ -40,7 +43,8 @@
 	</div>
 
 <%@include file="../busCommon/shopSearch.jsp"%>
-		
+	
+<%@include file="../busCommon/salesmanSearch.jsp"%>	
 
 <script type="text/javascript">
 
