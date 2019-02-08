@@ -133,12 +133,12 @@ function initOrderPagePublicInfo(LODOP, docOrderDto){
 
 	LODOP.SET_PRINT_STYLE("FontSize",12);
 	LODOP.SET_PRINT_STYLE("Bold",0);
-	LODOP.ADD_PRINT_TEXT(460,"1%","90%",9,"发货单位及经手人(盖章)：");
+	LODOP.ADD_PRINT_TEXT(460,"1%","90%",9,"发货单位及经办人(盖章)：");
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 
 	LODOP.SET_PRINT_STYLE("FontSize",12);
 	LODOP.SET_PRINT_STYLE("Bold",0);
-	LODOP.ADD_PRINT_TEXT(460,"50%","90%",9,"收货单位及经手人(盖章)：");
+	LODOP.ADD_PRINT_TEXT(460,"50%","90%",9,"收货单位及经办人(盖章)：");
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 	
 }
@@ -226,7 +226,7 @@ function createTableOrderHead(div,header){
 	 td = $("<td colspan='3' >注意事项：<input style='width:500px;' value='"
 			+ ((memo != null && memo > 0) ? memo: '暂无') + "' /></td>");
 	 td.appendTo(tr);
-	 td = $("<td>经手人：<span>"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
+	 td = $("<td>经办人：<span>"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
 	 td.appendTo(tr);
 	 
 }

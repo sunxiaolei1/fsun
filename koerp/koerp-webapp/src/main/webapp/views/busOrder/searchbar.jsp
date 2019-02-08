@@ -29,7 +29,7 @@
 					<td>
 						<input id="allCustomerCombo" name="buyerId"  class="easyui-combogrid" />
 					</td>
-					<td  width="6%">经手人:</td>
+					<td  width="6%">经办人:</td>
 					<td>
 						<input id="salesmanText" name="carrierId"  class="easyui-combogrid" />
 					</td>										
