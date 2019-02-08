@@ -110,10 +110,14 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 			BusVipUnpaid busVipUnpaid = this.load(unpaidId);
 			if(busVipUnpaid==null){
 				throw new VipUnpaidException(SCMErrorEnum.BUS_ORDER_UNPAY_NOT_EXIST);
-			}		
+			}	
+			String shopId = busVipUnpaid.getShopId();
+			if(!currUser.getShopId().equals(shopId)){
+				throw new VipUnpaidException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
+			}			
 			if(!this.statusValidator(status, busVipUnpaid)){
 				throw new VipUnpaidException(SCMErrorEnum.BUS_ORDER_UNPAY_STATUS_INVALID);
-			}	
+			}
 			//取消单据
 			if(TradeStatusEnum.CANCEL.getCode().equals(status)){
 				busVipUnpaidManage.cancel(busVipUnpaid, currUser);	

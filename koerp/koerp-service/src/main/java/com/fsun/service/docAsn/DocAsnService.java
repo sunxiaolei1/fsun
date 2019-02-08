@@ -26,6 +26,7 @@ import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocAsnException;
+import com.fsun.exception.bus.DocOrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
 
@@ -156,7 +157,11 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 			DocAsnHeader header = this.load(asnNo);
 			if(header==null){
 				throw new DocAsnException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
-			}		
+			}
+			String shopId = header.getToShopId();
+			if(!user.getShopId().equals(shopId)){
+				throw new DocAsnException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
+			}
 			if(!asnStatusValidator(status, header)){
 				throw new DocAsnException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
 			}

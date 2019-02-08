@@ -122,14 +122,19 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] orderIds, String status, SysUser curruUser, 
+	public void changeStatus(String[] orderIds, String status, SysUser currUser, 
 			BusOrderCondition condition) {		
 		Date now = new Date();
 		for (String orderId : orderIds) {
 			BusOrder header = this.load(orderId);
 			if(header==null){
 				throw new OrderException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
-			}		
+			}
+			String shopId = header.getShopId();
+			if(!currUser.getShopId().equals(shopId)){
+				throw new OrderException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
+			}	
+			
 			if(!orderStatusValidator(status, header)){
 				throw new OrderException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
 			}
@@ -156,7 +161,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 						condition2.setPayId(busPayAccount.getPayId());
 						List<BusVipUnpaid> list = busVipUnpaidManage.list(condition2);
 						if(list!=null && list.size()==1){
-							busVipUnpaidManage.cancel(list.get(0), curruUser);
+							busVipUnpaidManage.cancel(list.get(0), currUser);
 						}else{
 							throw new OrderException(SCMErrorEnum.BUS_ORDER_UNPAY_INVALID);
 						}
@@ -165,7 +170,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 			}			
 			//更新头的状态
 			header.setOrderStatus(status);
-			header.setUpdatedName(curruUser.getRealname());
+			header.setUpdatedName(currUser.getRealname());
 			header.setMemo(condition.getMemo());
 			busOrderManage.update(header);			
 		}

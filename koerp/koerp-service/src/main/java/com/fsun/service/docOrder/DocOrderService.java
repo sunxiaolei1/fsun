@@ -27,6 +27,7 @@ import com.fsun.domain.model.DocOrderDetails;
 import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocOrderException;
+import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
 
@@ -98,7 +99,11 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 			DocOrderHeader header = this.load(orderNo);
 			if(header==null){
 				throw new DocOrderException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
-			}		
+			}
+			String shopId = header.getFromShopId();
+			if(!user.getShopId().equals(shopId)){
+				throw new DocOrderException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
+			}
 			if(!orderStatusValidator(status, header)){
 				throw new DocOrderException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
 			}

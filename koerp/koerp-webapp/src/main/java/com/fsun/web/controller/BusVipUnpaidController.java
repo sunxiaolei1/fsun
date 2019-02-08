@@ -155,7 +155,10 @@ public class BusVipUnpaidController extends BaseController {
 				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
-		} catch (Exception e) {
+		} catch (VipUnpaidException e) {
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		}catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
