@@ -33,7 +33,7 @@
 				<td>
 					<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
 				</td>
-				<th width="12%">经办人<span style="color:red;">*</span></th>
+				<th width="12%">经办人</th>
 				<td>
 					<input id="salesman" name="carrierId" class="easyui-combogrid" />	
 					<input hidden=true id="carrierName" name="carrierName" />								
