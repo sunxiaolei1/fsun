@@ -16,4 +16,11 @@ public interface BusVipUnpaidMapper extends BaseMySqlMapper<BusVipUnpaid>{
 	 * @return
 	 */
 	public List<HashMap<String, Object>> export(BusVipUnpaidCondition condition);
+
+	/**
+	 * 获取金额合计
+	 * @param condition
+	 * @return
+	 */
+	public BusVipUnpaid getVipUnpaidAmount(BusVipUnpaidCondition condition);
 }

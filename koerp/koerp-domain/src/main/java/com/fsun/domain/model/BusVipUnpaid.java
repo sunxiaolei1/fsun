@@ -109,6 +109,18 @@ public class BusVipUnpaid {
      * 账单主键
      */
     private String payId;
+    
+    /**
+     * 用于会员卡充值时出现该客户存在挂账欠帐的情况
+     * 关联单号
+     * 表字段 : bus_vip_unpaid.relation_id
+     */
+    private String relationId;
+    
+    /**
+     * 交易门店名称
+     */
+    private String shopName;
 
     public String getUnpaidId() {
         return unpaidId;
@@ -276,5 +288,33 @@ public class BusVipUnpaid {
 	 */
 	public void setUpdatedName(String updatedName) {
 		this.updatedName = updatedName;
+	}
+
+	/**
+	 * @return the relationId
+	 */
+	public String getRelationId() {
+		return relationId;
+	}
+
+	/**
+	 * @param relationId the relationId to set
+	 */
+	public void setRelationId(String relationId) {
+		this.relationId = relationId;
+	}
+
+	/**
+	 * @return the shopName
+	 */
+	public String getShopName() {
+		return shopName;
+	}
+
+	/**
+	 * @param shopName the shopName to set
+	 */
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
 }

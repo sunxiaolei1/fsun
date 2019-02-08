@@ -18,10 +18,12 @@
     <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
     <result column="unusual" property="unusual" jdbcType="BIT" />
     <result column="pay_id" property="payId" jdbcType="VARCHAR" />
+    <result column="relation_id" property="relationId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     unpaid_id, customer_code, shop_id, pay_mode, trade_type, trade_status, trade_time, 
-    trade_price, gift_price, memo, order_id, created_time, updated_time, card_no, unusual, pay_id
+    trade_price, gift_price, memo, order_id, created_time, updated_time, card_no, unusual,
+    pay_id, relation_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -71,6 +73,10 @@
   			and bus_vip_unpaid.pay_id = #{payId}
   		</if>
   		
+  		<if test="relationId != null and relationId != ''">
+  			and bus_vip_unpaid.relation_id = #{relationId}
+  		</if>
+
   		<if test="startTime != null">
 			and bus_vip_unpaid.trade_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
 		</if>
@@ -88,6 +94,16 @@
   		
 	</where>
   </sql>
+  
+  <select id="getVipUnpaidAmount" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusVipUnpaidCondition" >    
+	SELECT 
+	    bus_vip_unpaid.customer_code as customer_code,
+		sum(bus_vip_unpaid.trade_price) as trade_price,
+		sum(bus_vip_unpaid.gift_price) as gift_price
+    FROM bus_vip_unpaid bus_vip_unpaid
+    	<include refid="conditions" />
+  </select>
   
   <select id="selectList" resultMap="BaseResultMap" 
   	parameterType="com.fsun.domain.entity.BusVipUnpaidCondition" >    
@@ -116,6 +132,7 @@
       bus_vip_unpaid.card_no as card_no, 
       bus_vip_unpaid.unusual as unusual,
       bus_vip_unpaid.pay_id as pay_id,
+      bus_vip_unpaid.relation_id as relation_id,
 	  customer.customer_name as customer_name,
 	  bus_shop.shop_name as shop_name
     FROM bus_vip_unpaid bus_vip_unpaid
@@ -159,13 +176,13 @@
       pay_mode, trade_type, trade_status, 
       trade_time, trade_price, gift_price, 
       memo, order_id, created_time, 
-      updated_time, card_no, unusual, pay_id)
+      updated_time, card_no, unusual, pay_id, relation_id)
     values (#{unpaidId,jdbcType=VARCHAR}, #{customerCode,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
       #{payMode,jdbcType=SMALLINT}, #{tradeType,jdbcType=SMALLINT}, #{tradeStatus,jdbcType=SMALLINT}, 
       #{tradeTime,jdbcType=TIMESTAMP}, #{tradePrice,jdbcType=DECIMAL}, #{giftPrice,jdbcType=DECIMAL}, 
       #{memo,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{updatedTime,jdbcType=TIMESTAMP}, #{cardNo,jdbcType=VARCHAR}, #{unusual,jdbcType=BIT},
-      #{payId,jdbcType=VARCHAR})
+      #{payId,jdbcType=VARCHAR}, #{relationId,jdbcType=VARCHAR})
   </insert>
   
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusVipUnpaid" >
@@ -218,7 +235,10 @@
       </if>
       <if test="payId != null" >
         pay_id,
-      </if>    
+      </if>
+      <if test="relationId != null" >
+        relation_id,
+      </if>        
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="unpaidId != null" >
@@ -268,7 +288,10 @@
       </if>
       <if test="payId != null" >
         #{payId,jdbcType=VARCHAR},
-      </if>      
+      </if>    
+      <if test="relationId != null" >
+        #{relationId,jdbcType=VARCHAR},
+      </if>  
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusVipUnpaid" >
@@ -319,6 +342,9 @@
       <if test="payId != null" >
         pay_id = #{payId,jdbcType=VARCHAR},
       </if>  
+      <if test="relationId != null" >
+        relation_id = #{relationId,jdbcType=VARCHAR},
+      </if>
     </set>
     where unpaid_id = #{unpaidId,jdbcType=VARCHAR}
   </update>
@@ -338,7 +364,8 @@
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       card_no = #{cardNo,jdbcType=VARCHAR},    
       unusual = #{unusual,jdbcType=BIT},     
-      pay_id = #{payId,jdbcType=VARCHAR},    
+      pay_id = #{payId,jdbcType=VARCHAR},  
+      relation_id = #{relationId,jdbcType=VARCHAR},  
     where unpaid_id = #{unpaidId,jdbcType=VARCHAR}
   </update>
 </mapper>

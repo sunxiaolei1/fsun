@@ -128,6 +128,22 @@ public class BusVipUnpaidCondition extends BaseOrderCondition{
      */
     private String updatedName;
     
+    /**
+     * 交易门店名称
+     */
+    private String shopName;
+    
+    /**
+     * 客户名称
+     */
+    private String customerName;
+    
+    /**
+     * 关联单号
+     * 表字段 : bus_vip_unpaid.relation_id
+     */
+    private String relationId;
+    
     public String getUnpaidId() {
         return unpaidId;
     }
@@ -301,6 +317,48 @@ public class BusVipUnpaidCondition extends BaseOrderCondition{
 
 	public void setUpdatedName(String updatedName) {
 		this.updatedName = updatedName;
+	}
+
+	/**
+	 * @return the customerName
+	 */
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	/**
+	 * @param customerName the customerName to set
+	 */
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	/**
+	 * @return the relationId
+	 */
+	public String getRelationId() {
+		return relationId;
+	}
+
+	/**
+	 * @param relationId the relationId to set
+	 */
+	public void setRelationId(String relationId) {
+		this.relationId = relationId;
+	}
+
+	/**
+	 * @return the shopName
+	 */
+	public String getShopName() {
+		return shopName;
+	}
+
+	/**
+	 * @param shopName the shopName to set
+	 */
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
     
 }

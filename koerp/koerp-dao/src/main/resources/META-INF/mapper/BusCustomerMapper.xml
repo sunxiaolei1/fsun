@@ -125,6 +125,7 @@
       <result column="p_card_no" property="cardNo"/>
       <result column="p_unusual" property="unusual"/>
       <result column="p_pay_id" property="payId"/>
+      <result column="p_relation_id" property="relationId"/>
       <result column="p_shop_name" property="shopName"/>
     </collection>   
   </resultMap>
@@ -151,6 +152,7 @@
         bus_vip_unpaid.card_no as p_card_no, 
         bus_vip_unpaid.unusual as p_unusual,
         bus_vip_unpaid.pay_id as p_pay_id,
+        bus_vip_unpaid.relation_id as p_relation_id,
 	  	bus_shop.shop_name as p_shop_name
     from bus_customer customer
     LEFT JOIN bus_vip_unpaid bus_vip_unpaid

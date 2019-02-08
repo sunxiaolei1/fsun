@@ -21,6 +21,8 @@ import com.fsun.common.utils.ExcelUtil;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
+import com.fsun.domain.dto.BusVipUnpaidDto;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
@@ -48,6 +50,25 @@ public class BusVipUnpaidController extends BaseController {
 	@RequestMapping(value="/summary/unpaid/index")
 	public String unpaidIndex() {
 		return "/summary/unpaid/index";
+	}
+	
+	@RequestMapping(value="/toVipUnpaidView")
+	public String toVipUnpaidView() {
+		return "/busVip/operate/toVipUnpaidView";
+	}
+	
+	
+	@RequestMapping(value="/initUnpaidAmount", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult initUnpaidAmount(@RequestBody BusVipUnpaidCondition condition) {		
+		try {			
+			BusUserDto busUserDto = getCurrentUser();	
+			HashMap<String, Object> map = busVipUnpaidApi.initUnpaidAmount(condition, busUserDto);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
 	}
 	
 	@RequestMapping(value="/vip/findPage", method = {RequestMethod.GET, RequestMethod.POST})
@@ -142,6 +163,23 @@ public class BusVipUnpaidController extends BaseController {
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}		
 	}
+	
+	@RequestMapping(value="/saveEntity", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult saveEntity(@RequestBody BusVipUnpaidDto busVipUnpaidDto) {
+		try {
+			BusUserDto currUser = getCurrentUser();			
+			String relationId = busVipUnpaidApi.saveEntity(busVipUnpaidDto, currUser);
+			return success(relationId);
+		} catch(VipUnpaidException e){
+			e.printStackTrace();
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}		
+	}
+	
 
 
 	@RequestMapping(value="/status/{status}", method = {RequestMethod.POST})
