@@ -406,10 +406,10 @@ function cancelOrderOne(unpaidId, relationId){
 		if(unpaidAmount!=null){		
 			$("<div></div>").dialog({
 				id:"vipUnpaidDialog",
-			    title:"&nbsp;取消充值",
+			    title:"&nbsp;取消会员卡充值",
 			    width:"960px",
 				height:"350px",
-			    iconCls:"icon-add",
+			    iconCls:"icon-script_delete",
 			    closed:false,
 			    cache:false,
 			    href:"${api}/bus/vipUnpaid/toVipUnpaidView",

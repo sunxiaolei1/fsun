@@ -115,7 +115,8 @@ var rachargeColumns = [[
 			var unusual = row.unusual;
 			if(!unusual && tradeType == 2){	
 				var unpaidId = row.unpaidId;
-				return commonAssemBottonHtml('cancelOrderOne', "'"+ unpaidId +"'", '取消', 'icon-script_delete');			
+				var relationId = (typeof(row.relationId) == "undefined")?"":row.relationId;
+				return commonAssemBottonHtml('cancelOrderOne', "'"+ unpaidId +"','"+ relationId +"'", '取消', 'icon-script_delete');			
 			}
 											
 		}
@@ -267,22 +268,21 @@ function afterSaveFunc(){
 }
 
 /**
- * 取消一笔充值交易
+ * 获取客户对应的挂账欠款
  */
-function cancelOrderOne(unpaidId){			
+function getUnpaidAmount(busVipUnpaid){
+	
+	var unpaidAmount = {};
 	$.ajax({
 		type : "POST",
-		url : "${api}/bus/vipUnpaid/status/40?ids="+ unpaidId,
-		data: JSON.stringify({
-			"memo":""
-		}),
-		contentType:"application/json;charset=utf-8",	   
+		url : "${api}/bus/vipUnpaid/initUnpaidAmount",
+		data : JSON.stringify(busVipUnpaid),
+		contentType:"application/json;charset=utf-8",
+		async: false,
 		dataType : "json",
 		success : function(result) {		
 			if(result.status){
-				$.messager.alert("提示", "操作成功", "info", function(){
-					parent.refreshCurrTab();
-				});
+				unpaidAmount = result.entry;
 			}else{
 				$.messager.alert("错误", result.message, "error");
 			}
@@ -290,7 +290,110 @@ function cancelOrderOne(unpaidId){
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			$.messager.alert("错误", errorThrown, "error");
 		}
-	});  
+	}); 	
+	return unpaidAmount;
+}
+
+
+/**
+ * 取消一笔充值交易
+ */
+function cancelOrderOne(unpaidId, relationId){			
+	if(relationId!=null && relationId!=''){	
+		var unpaidAmount = getUnpaidAmount({
+			relationId:relationId
+		});
+		if(unpaidAmount!=null){		
+			$("<div></div>").dialog({
+				id:"vipUnpaidDialog",
+			    title:"&nbsp;取消挂账结款",
+			    width:"960px",
+				height:"350px",
+			    iconCls:"icon-script_delete",
+			    closed:false,
+			    cache:false,
+			    href:"${api}/bus/vipUnpaid/toVipUnpaidView",
+			    modal:true,
+			    minimizable:false,//定义是否显示最小化按钮。
+		     	maximizable:false,//定义是否显示最大化按钮
+		     	closable:true,
+		     	resizable:true,//定义对话框是否可调整尺寸
+		     	collapsible: false,//是否可折叠的
+		      	buttons:[
+			      	{
+			      		text:"确认",iconCls:"icon-disk",
+			              handler:function(data){	              	
+			            	  var ids = [];
+			            	  $.each(currVipUnpaidDetailData,function(){
+			            		  ids.push(this.unpaidId);
+			            	  });
+			            	  $.ajax({
+			          			type : "POST",
+			          			url : "${api}/bus/vipUnpaid/status/40?ids="+ ids.join(","),
+			          			data: JSON.stringify({
+			          				"memo":""
+			          			}),
+			          			contentType:"application/json;charset=utf-8",	   
+			          			dataType : "json",
+			          			success : function(result) {		
+			          				if(result.status){
+			          					$.messager.alert("提示", "操作成功", "info", function(){
+			          						parent.refreshCurrTab();
+			          					});
+			          				}else{
+			          					$.messager.alert("错误", result.message, "error");
+			          				}
+			          			},
+			          			error : function(XMLHttpRequest, textStatus, errorThrown) {
+			          				$.messager.alert("错误", errorThrown, "error");
+			          			}
+			          		});  
+			              }
+			          },
+			          {
+			              text:"取消",
+			              iconCls:"icon-cancel",
+			              handler:function(){
+			              	$('#vipUnpaidDialog').dialog("destroy");
+			              }
+			          }
+		      	],
+				onLoad:function(){
+		     		$('#vipUnpaidDialog').window('center');
+		     		var header = unpaidAmount.header;
+		     		var details = unpaidAmount.details;
+		     		$vipUnpaidfm.form("load", header);					
+		     		currVipUnpaidDetailData = details;
+					currVipUnpaidDetailDataGrid.datagrid("loadData", currVipUnpaidDetailData);    		
+				},
+		    	onClose:function(){
+		      		$(this).dialog("destroy");
+		      	}
+			});	
+		}
+	}else{
+		$.ajax({
+			type : "POST",
+			url : "${api}/bus/vipUnpaid/status/40?ids="+ unpaidId,
+			data: JSON.stringify({
+				"memo":""
+			}),
+			contentType:"application/json;charset=utf-8",	   
+			dataType : "json",
+			success : function(result) {		
+				if(result.status){
+					$.messager.alert("提示", "操作成功", "info", function(){
+						parent.refreshCurrTab();
+					});
+				}else{
+					$.messager.alert("错误", result.message, "error");
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				$.messager.alert("错误", errorThrown, "error");
+			}
+		});  
+	}
 }
 
 
