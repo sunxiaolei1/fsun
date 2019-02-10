@@ -77,7 +77,7 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 				map.put("salePrice", this.getSalePriceByCustomer(busCustomer, invSkuDto, busVipCondition));		
 				mapList.add(map);
 			}
-			return new PageModel(mapList);
+			return new PageModel(list, mapList);
 		}
 		return new PageModel(list);
 	}

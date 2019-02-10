@@ -1,7 +1,10 @@
 package com.fsun.web.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
+import com.fsun.api.bus.BusAccessLogApi;
 import com.fsun.api.bus.BusOrderApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusOrderDto;
 import com.fsun.domain.dto.BusUserDto;
+import com.fsun.domain.entity.BusAccessLogCondition;
 import com.fsun.domain.entity.BusOrderCondition;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
@@ -41,6 +47,12 @@ public class BusOrderController extends BaseController {
 
 	@Autowired
 	private BusOrderApi busOrderApi;
+	
+	@Autowired
+	private BusAccessLogApi busAccessLogApi;
+	
+	@Autowired
+	private HttpServletRequest request;
 
 	@RequestMapping("/index")
 	public String index() {
@@ -189,15 +201,40 @@ public class BusOrderController extends BaseController {
 	@RequestMapping(value="/saveEntity", method = {RequestMethod.POST})
 	@ResponseBody
 	public HttpResult saveEntity(@RequestBody BusOrderDto busOrderDto) {
-		try {
-			busOrderDto.setCurrentUser(getCurrentUser());			
+		
+		BusAccessLogCondition condition = new BusAccessLogCondition();
+		condition.setCreatedTime(new Date());
+		condition.setExt0("销售订单");
+		condition.setIp(request.getRemoteAddr());
+		condition.setRequestStatus((short)200);
+		condition.setRequestType((short)0);
+		condition.setRequestId(busOrderDto.getOrderId());
+		condition.setRequestJson(JSON.toJSONString(busOrderDto));
+		condition.setExt4("1");
+		try {	
+			BusUserDto currentUser = super.getCurrentUser();
+			busOrderDto.setCurrentUser(currentUser);
+			
+			condition.setExt1(currentUser.getUsername());			
+			condition.setRequestJson(JSON.toJSONString(busOrderDto));
 			String orderId = busOrderApi.saveEntity(busOrderDto);
+			busAccessLogApi.create(condition);
+			
 			return success(orderId);
 		} catch(OrderException e){
 			e.printStackTrace();
+			
+			condition.setRequestStatus((short)-100);
+			condition.setErrorMsg(e.getErrorMsg());			
+			busAccessLogApi.create(condition);
 			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
+			
+			condition.setRequestStatus((short)-100);
+			String errorMessage = e.getMessage().length()>800?e.getMessage().substring(0, 800):e.getMessage();
+			condition.setErrorMsg(errorMessage);			
+			busAccessLogApi.create(condition);
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}		
 	}
