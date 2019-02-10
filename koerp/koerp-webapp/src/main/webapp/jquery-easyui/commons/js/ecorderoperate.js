@@ -225,16 +225,77 @@ function arrayCompare(sortColumn, orderby){
     return function(a,b){
         var value1 = a[sortColumn];
         var value2 = b[sortColumn];
-        if(orderby=='asc'){
-        	return value1 - value2;
+        if(regExp.test(value1) && regExp.test(value2)){
+        	if(orderby=='asc'){
+            	return compareCalendar(value1, value2);        	
+            }else{
+            	return compareCalendar(value2, value1);
+            } 
         }else{
-        	return value2 - value1;
-        }       
+        	if(orderby=='asc'){
+            	return value1 - value2;        	
+            }else{
+            	return value2 - value1;
+            } 
+        }        
     }
 }
 
 
 /********************************       编辑单据数据时使用的公共方法        *********************************/
+
+var reg = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d$/;
+var regExp = new RegExp(reg);
+
+
+//比较日期，时间大小
+function compareCalendar(logintime, logouttime) {
+	if (logintime.indexOf(" ") != -1 && logouttime.indexOf(" ") != -1) {
+		//包含时间，日期
+		return compareTime(logintime, logouttime);
+	}else {
+		//不包含时间，只包含日期
+		return compareDate(logintime, logouttime);
+	}
+}
+
+//比较日期大小
+function compareDate(logintime, logouttime) {
+    var arys1 = new Array();
+    var arys2 = new Array();
+    if (logintime != null && logouttime != null) {
+        arys1 = logintime.split('-');
+        var logindate = new Date(arys1[0], parseInt(arys1[1] - 1), arys1[2]);
+        arys2 = logouttime.split('-');
+        var logoutdate = new Date(arys2[0], parseInt(arys2[1] - 1), arys2[2]);
+        return logindate - logoutdate;
+    } else {
+        return NAN;
+    }
+}
+ 
+//判断日期，时间大小
+function compareTime(logintime, logouttime) {
+    if (logintime.length > 0 && logouttime.length > 0) {
+        var logintimeTemp = logintime.split(" ");
+        var logouttimeTemp = logouttime.split(" ");
+ 
+        var arrloginDate = logintimeTemp[0].split("-");
+        var arrlogoutDate = logouttimeTemp[0].split("-");
+ 
+        var arrloginTime = logintimeTemp[1].split(":");
+        var arrlogoutTime = logouttimeTemp[1].split(":");
+ 
+        var allLoginDate = new Date(arrloginDate[0], arrloginDate[1], arrloginDate[2], arrloginTime[0], arrloginTime[1], arrloginTime[2]);
+        var allLogoutDate = new Date(arrlogoutDate[0], arrlogoutDate[1], arrlogoutDate[2], arrlogoutTime[0], arrlogoutTime[1], arrlogoutTime[2]);
+ 
+        return allLoginDate.getTime() - allLogoutDate.getTime();
+    } else {
+        return NAN;
+    }
+}
+
+
 
 /**
  * 格式化numberbox的默认值(空字符串和null都为0.00)

@@ -58,7 +58,6 @@ function sortFilter($grid, data){
 	
 	var sortColumn = $grid.datagrid("options").sortName;
 	var orderby = $grid.datagrid("options").sortOrder;
-	
 	var originalRows = data.originalRows;
 	//列表加载数据第2次及以后排序
 	if(typeof originalRows !="undefined" && originalRows.length>0){				   			
@@ -67,7 +66,7 @@ function sortFilter($grid, data){
 		//列表第一次加载数据排序初始化
 		if (typeof data.length == 'number' && typeof data.splice == 'function'){
 			if(data.length>0){
-				data.sort(arrayCompare(sortColumn, orderby)); 
+				data.sort(arrayCompare(sortColumn, orderby));
 			}			 
 		}		  	
 	}
