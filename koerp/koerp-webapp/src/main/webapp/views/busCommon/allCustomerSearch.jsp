@@ -24,7 +24,7 @@ function initAllCustomerComboGrid() {
         idField: 'customer_code', //ID字段
         textField: 'customer_name', //显示的字段
         method: 'post',
-        queryParams: {"enabled": true, "inCustomerTypeStr":"JXS,SK,GZ,VIP"},
+        queryParams: {"enabled": true},
         multiple: false,
         fitColumns: true,
         striped: true,

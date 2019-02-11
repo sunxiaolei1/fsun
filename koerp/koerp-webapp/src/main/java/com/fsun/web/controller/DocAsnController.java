@@ -189,7 +189,8 @@ public class DocAsnController extends BaseController {
 					case OVER_SI:	
 						url = "/docAsn/operate/toAddOverSIView";
 						break;	
-					case PURCHASE_SI:			
+					case PURCHASE_SI:	
+						url = "/docAsn/operate/toAddPurchaseSIView";
 						break;
 					case BACK_SI:			
 						break;
@@ -206,7 +207,8 @@ public class DocAsnController extends BaseController {
 					case OVER_SI:	
 						url = "/docAsn/operate/toEditOverSIView";
 						break;	
-					case PURCHASE_SI:			
+					case PURCHASE_SI:	
+						url = "/docAsn/operate/toEditPurchaseSIView";
 						break;
 					case BACK_SI:			
 						break;

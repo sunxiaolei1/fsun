@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<div id="allCustomerToolbar" class="datagrid-toolbar" style="display: none;padding: 5px;"> 
-    <input id="allCustomerQ" style="width: 250px;" class="easyui-textbox" data-options="prompt:'输入编号、名称、手机号检索...'"/>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-2012092109942" onclick="allCustomerSearch()">查询</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-20130406015709810_easyicon_net_16" onclick="allCustomerClear()">重置</a>
+<div id="supplierToolbar" class="datagrid-toolbar" style="display: none;padding: 5px;"> 
+    <input id="supplierQ" style="width: 250px;" class="easyui-textbox" data-options="prompt:'输入编号、名称、手机号检索...'"/>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-2012092109942" onclick="supplierSearch()">查询</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-20130406015709810_easyicon_net_16" onclick="supplierClear()">重置</a>
     <div style="clear: both"></div>
 </div>
 	
@@ -11,19 +11,19 @@
 
 /***************************       初始化查询条件          *****************************/ 
 
-var allCustomerInitFirst = true;
+var supplierInitFirst = true;
  
-function initAllCustomerGrid(defaultCustomer){
+function initSupplierGrid(defaultCustomer){
 	
 	if(defaultCustomer!=null && defaultCustomer!=''){
-		$('#allCustomer', $orderfm).combogrid({
+		$('#supplierId', $orderfm).combogrid({
 			prompt:'请选择...',
 	    	panelWidth:500,
 	    	panelHeight:300,
 	        idField: 'customer_code', //ID字段
 	        textField: 'customer_name', //显示的字段
 	        method: 'post',
-	        queryParams: {"enabled": true, "q": defaultCustomer},
+	        queryParams: {"enabled": true, "customerType":"GYS", "q": defaultCustomer},
 	        multiple: false,
 	        fitColumns: true,
 	        striped: true,
@@ -35,7 +35,7 @@ function initAllCustomerGrid(defaultCustomer){
 	        url: '${api}/bus/customer/findPage',
 		    sortName:"customer_code",
 	        sortOrder:"desc",
-	        toolbar:'#allCustomerToolbar', 
+	        toolbar:'#supplierToolbar', 
 	        pageSize: GLOBAL_PAGE_SIZE,
 	        pageList: GLOBAL_PAGE_SIZE_LIST,
 	        columns: [[
@@ -47,21 +47,21 @@ function initAllCustomerGrid(defaultCustomer){
 	        loadMsg: "数据加载中请稍后……",
 	        emptyMsg: "没有符合条件的记录",
 	        onLoadSuccess:function(data){ 	
-	        	if(allCustomerInitFirst){
-	        		 $("#allCustomer", $orderfm).combogrid('setValue',defaultCustomer);	                            
-	        		 allCustomerInitFirst = false;
+	        	if(supplierInitFirst){
+	        		 $("#supplierId", $orderfm).combogrid('setValue',defaultCustomer);	                            
+	        		 supplierInitFirst = false;
 	        	}              
             }
 	    });
 	}else{
-		$('#allCustomer', $orderfm).combogrid({
+		$('#supplierId', $orderfm).combogrid({
 			prompt:'请选择...',
 	    	panelWidth:500,
 	    	panelHeight:300,
 	        idField: 'customer_code', //ID字段
 	        textField: 'customer_name', //显示的字段
 	        method: 'post',
-	        queryParams: {"enabled": true},
+	        queryParams: {"enabled": true, "customerType":"GYS"},
 	        multiple: false,
 	        fitColumns: true,
 	        striped: true,
@@ -73,7 +73,7 @@ function initAllCustomerGrid(defaultCustomer){
 	        //url: '${api}/bus/customer/findPage',
 		    sortName:"customer_code",
 	        sortOrder:"desc",
-	        toolbar:'#allCustomerToolbar', 
+	        toolbar:'#supplierToolbar', 
 	        pageSize: GLOBAL_PAGE_SIZE,
 	        pageList: GLOBAL_PAGE_SIZE_LIST,
 	        columns: [[
@@ -85,8 +85,8 @@ function initAllCustomerGrid(defaultCustomer){
 	        loadMsg: "数据加载中请稍后……",
 	        emptyMsg: "没有符合条件的记录",	        
 	        onShowPanel: function () {
-	        	$('#allCustomer').combogrid('grid').datagrid('options').url = '${api}/bus/customer/findPage';
-	        	$('#allCustomer').combogrid('grid').datagrid('reload');
+	        	$('#supplierId').combogrid('grid').datagrid('options').url = '${api}/bus/customer/findPage';
+	        	$('#supplierId').combogrid('grid').datagrid('reload');
 	        }
 	        
 	    });
@@ -94,19 +94,19 @@ function initAllCustomerGrid(defaultCustomer){
 		
 }
 
-function allCustomerSearch() {
-	var q = $("#allCustomerQ").val();
-	var params = $("#allCustomer", $orderfm).combogrid("options").queryParams;
+function supplierSearch() {
+	var q = $("#supplierQ").val();
+	var params = $("#supplierId", $orderfm).combogrid("options").queryParams;
 	params.q = q;
-	$('#allCustomer', $orderfm).combogrid('grid').datagrid('reload');
+	$('#supplierId', $orderfm).combogrid('grid').datagrid('reload');
 }
 
-function allCustomerClear() {
-	$("#allCustomerQ").textbox("setValue","");
-	$("#allCustomer", $orderfm).combogrid('clear');
-	var params = $("#allCustomer", $orderfm).combogrid("options").queryParams;
+function supplierClear() {
+	$("#supplierQ").textbox("setValue","");
+	$("#supplierId", $orderfm).combogrid('clear');
+	var params = $("#supplierId", $orderfm).combogrid("options").queryParams;
 	params.q = '';
-	$('#allCustomer', $orderfm).combogrid('grid').datagrid("reload");	
+	$('#supplierId', $orderfm).combogrid('grid').datagrid("reload");	
 }
 
 </script>
