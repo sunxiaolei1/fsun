@@ -169,6 +169,13 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 	}
 	
 	@Override
+	public HashMap<String, Object> findFooter(BusVipUnpaidCondition condition) {
+		HashMap<String, Object> footer = busVipUnpaidManage.findFooter(condition);
+		footer.put(condition.getFirstColumn(), "合计:");	
+		return footer;
+	}
+	
+	@Override
 	public List<HashMap<String, Object>> exportVip(BusVipUnpaidCondition condition) {
 		return busVipUnpaidManage.export(condition);
 	}
@@ -397,4 +404,5 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 		}
 		throw new VipUnpaidException(SCMErrorEnum.BUS_ORDER_UNPAY_NOT_EXIST);
 	}
+
 }

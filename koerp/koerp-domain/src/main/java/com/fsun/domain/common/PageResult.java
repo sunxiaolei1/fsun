@@ -27,10 +27,22 @@ public class PageResult extends HttpResult {
 	private long total;
 
 	private Object rows;
+	
+	/**
+	 * 表格合计列
+	 */
+	private Object footer;
 
 	public PageResult success(int pageNum, int pageSize, long total,
 			Object entry) {
 		return this.success(pageNum, pageSize, total, entry,
+				SCMErrorEnum.SUCCESS.getErrorCode(),
+				SCMErrorEnum.SUCCESS.getErrorMsg());
+	}
+	
+	public PageResult success(int pageNum, int pageSize, long total,
+			Object entry, Object footer) {
+		return this.success(pageNum, pageSize, total, entry, footer,
 				SCMErrorEnum.SUCCESS.getErrorCode(),
 				SCMErrorEnum.SUCCESS.getErrorMsg());
 	}
@@ -41,6 +53,16 @@ public class PageResult extends HttpResult {
 		this.pageSize = pageSize;
 		this.total = total;
 		this.rows = entry;
+		return (PageResult) super.success(entry, responseCode, message);
+	}
+	
+	public PageResult success(int pageNum, int pageSize, long total,
+			Object entry, Object footer, int responseCode, String message) {
+		this.pageNum = pageNum;
+		this.pageSize = pageSize;
+		this.total = total;
+		this.rows = entry;
+		this.footer = footer;
 		return (PageResult) super.success(entry, responseCode, message);
 	}
 
@@ -58,5 +80,12 @@ public class PageResult extends HttpResult {
 
 	public Object getRows() {
 		return rows;
+	}
+
+	/**
+	 * @return the footer
+	 */
+	public Object getFooter() {
+		return footer;
 	}
 }

@@ -42,7 +42,7 @@ $(function () {
 			return data; 
         },
         rowStyler:function(index,row){	    		    	
-    		if (row.sku=="合计"){//这里是判断哪些行
+    		if (row.sku=="合计:"){//这里是判断哪些行
                 return 'font-weight:bold;';  
             }	
     		return "";

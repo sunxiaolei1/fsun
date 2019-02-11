@@ -177,7 +177,7 @@ $(function () {
 	    emptyMsg:"没有符合条件的记录",
 	    rowStyler:function(index,row){
         	var rowStyle = "";  
-        	if (row.shopName=="合计"){//这里是判断哪些行
+        	if (row.shopName=="合计:"){//这里是判断哪些行
         		rowStyle = 'font-weight:bold;';  
             }else{
             	if(row.unusual){

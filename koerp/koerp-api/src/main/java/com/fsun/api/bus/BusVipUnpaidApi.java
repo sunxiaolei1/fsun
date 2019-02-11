@@ -55,6 +55,13 @@ public interface BusVipUnpaidApi extends BaseApi<BusVipUnpaid, BusVipUnpaidCondi
 	 */
 	public List<HashMap<String, Object>> exportUnpaid(BusVipUnpaidCondition condition);
 
+	/**
+	 * 获取表单合计列
+	 * @param condition
+	 * @return
+	 */
+	public HashMap<String, Object> findFooter(BusVipUnpaidCondition condition);
+
 	
 
 }

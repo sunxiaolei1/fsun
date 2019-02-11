@@ -250,7 +250,7 @@ var soColumns = [[
 	}},
 	{field:"stockOut",title:"操作",width:80,align:"center", 
 		formatter: function(value, row, index){	
-			if (row.sku=="合计"){//这里是判断哪些行
+			if (row.sku=="合计:"){//这里是判断哪些行
                 return '';  
             }	
 			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
@@ -272,7 +272,7 @@ var payAccountColumns = [[
 	{field:"cardNo",title:"支付卡号", width:150, align:"center"},  
 	{field:"operate",title:"操作",width:80, align:"center", 
 		formatter: function(value, row, index){	
-			if (row.payMode==900 || row.payMode=="合计"){//这里是判断哪些行
+			if (row.payMode==900 || row.payMode=="合计:"){//这里是判断哪些行
                 return '';  
             }	
 			return commonAssemBottonHtml('delPayAccountOne', index, '删除', 'icon-script_delete');													

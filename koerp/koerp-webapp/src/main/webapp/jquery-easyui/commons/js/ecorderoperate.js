@@ -414,7 +414,7 @@ function commonGetFooter(rows, fields, totalcolumn){
     		}           		
     	}    			          			             		            		            	  		          
     }
-    footerData[totalcolumn] = "合计"; 
+    footerData[totalcolumn] = "合计:"; 
     for(var field in footerData){
     	if(typeof footerData[field] === 'number'){   		
     		footerData[field] = footerData[field].toFixed(2);

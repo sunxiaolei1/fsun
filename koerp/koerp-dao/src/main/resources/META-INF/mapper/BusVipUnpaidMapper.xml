@@ -141,6 +141,15 @@
     	<include refid="conditions" />
   </select>
   
+  <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusVipUnpaidCondition" >    
+	SELECT 	  
+      sum(bus_vip_unpaid.trade_price) as trade_price, 
+      sum(bus_vip_unpaid.gift_price) as gift_price
+    FROM bus_vip_unpaid bus_vip_unpaid
+    	<include refid="conditions" />
+  </select>
+  
   <select id="export" resultType="java.util.Map" 
   	parameterType="com.fsun.domain.entity.BusVipUnpaidCondition" >    
 	SELECT 

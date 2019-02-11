@@ -88,7 +88,8 @@ public class BusVipUnpaidController extends BaseController {
 			String[] tradeTypes = {"3", "4"};
 			condition.setInTradeTypes(tradeTypes);
 			PageModel pageModel = busVipUnpaidApi.findPage(condition);
-			return success(pageModel);
+			HashMap<String, Object> footer = busVipUnpaidApi.findFooter(condition);
+			return success(pageModel, new Object[]{footer});
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -102,7 +103,8 @@ public class BusVipUnpaidController extends BaseController {
 			String[] tradeTypes = {"1", "2"};
 			condition.setInTradeTypes(tradeTypes);
 			PageModel pageModel = busVipUnpaidApi.findPage(condition);
-			return success(pageModel);
+			HashMap<String, Object> footer = busVipUnpaidApi.findFooter(condition);					
+			return success(pageModel, new Object[]{footer});
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);

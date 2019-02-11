@@ -138,7 +138,7 @@ function toPayAccountWin(paramsData){
 			return data; 
         },
         rowStyler:function(index,row){	    		    	
-    		if (row.payMode=="合计"){//这里是判断哪些行
+    		if (row.payMode=="合计:"){//这里是判断哪些行
                 return 'font-weight:bold;';  
             }	
     		return "";

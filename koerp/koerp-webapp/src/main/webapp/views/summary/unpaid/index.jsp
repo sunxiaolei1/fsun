@@ -46,11 +46,13 @@ var columns = [[
 ]];
 
 var currDataGrid;
+var footerFirstColumn = "customer_name";
 
 $(function() {
 	
 	currDataGrid = $("#ordersDataGrid");
 	currDataGrid.datagrid({
+		view:footerStyleView,
 		width:500,
 		height:250,
 	    nowrap:false,
@@ -58,7 +60,7 @@ $(function() {
 	    border:true,
 	    collapsible:false,//是否可折叠的
 	    fit:true,//自动大小
-	    queryParams:{},
+	    queryParams:{firstColumn: footerFirstColumn},
 	    remoteSort:true,
 	    sortName:"trade_time",
         sortOrder:"desc",
@@ -80,9 +82,13 @@ $(function() {
 	    checkOnSelect: true,
 	    rowStyler:function(index,row){
         	var rowStyle = "";        	
-        	if(row.unusual){
- 				rowStyle += "background-color:#C8C7BF;";
-			}
+        	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
+        		rowStyle = 'font-weight:bold;';  
+            }else{
+            	if(row.unusual){
+     				rowStyle += "background-color:#C8C7BF;";
+    			}
+            }
         	return rowStyle;
 		}
 	    

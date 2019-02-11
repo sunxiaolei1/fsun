@@ -16,6 +16,11 @@ public class SortCondition {
 	 * asc ,desc
 	 */
 	private String order;
+	
+	/**
+	 * 表格第一列元素
+	 */
+	private String firstColumn;
 
 	public String getSort() {
 		return sort;
@@ -31,6 +36,20 @@ public class SortCondition {
 
 	public void setOrder(String order) {
 		this.order = order;
+	}
+
+	/**
+	 * @return the firstColumn
+	 */
+	public String getFirstColumn() {
+		return firstColumn;
+	}
+
+	/**
+	 * @param firstColumn the firstColumn to set
+	 */
+	public void setFirstColumn(String firstColumn) {
+		this.firstColumn = firstColumn;
 	}
 	
 }

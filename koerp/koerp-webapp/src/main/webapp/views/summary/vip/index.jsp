@@ -23,13 +23,14 @@
 <script type="text/javascript">
 
 var columns = [[
-	{field:'unpaid_id',checkbox:true},
-	{field:"card_no",title:"会员卡号", width:100,align:"center"},
-	{field:"customer_code",title:"客户名称", width:120,align:"center", formatter:function(value, row){
-		return row.customer_name; 
-	}},
+                
+	{field:'unpaid_id',checkbox:true},	
+	{field:"card_no",title:"会员卡号", width:100,align:"center"},	
 	{field:"shop_code",title:"交易门店", width:120,align:"center", formatter:function(value, row){
 		return row.shop_name; 
+	}},
+	{field:"customer_code",title:"客户名称", width:120,align:"center", formatter:function(value, row){
+		return row.customer_name; 
 	}},
 	{field:"pay_mode",title:"支付方式", width:60,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.payMode); 
@@ -48,11 +49,13 @@ var columns = [[
 ]];
 
 var currDataGrid;
+var footerFirstColumn = "card_no";
 
 $(function() {
 	
 	currDataGrid = $("#ordersDataGrid");
 	currDataGrid.datagrid({
+		view:footerStyleView,
 		width:500,
 		height:250,
 	    nowrap:false,
@@ -60,7 +63,7 @@ $(function() {
 	    border:true,
 	    collapsible:false,//是否可折叠的
 	    fit:true,//自动大小
-	    queryParams:{},
+	    queryParams:{firstColumn: footerFirstColumn},
 	    remoteSort:true,
 	    sortName:"trade_time",
         sortOrder:"desc",
@@ -81,10 +84,14 @@ $(function() {
 	    selectOnCheck: true,
 	    checkOnSelect: true,
 	    rowStyler:function(index,row){
-        	var rowStyle = "";        	
-        	if(row.unusual){
- 				rowStyle += "background-color:#C8C7BF;";
-			}
+        	var rowStyle = "";   
+        	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
+        		rowStyle = 'font-weight:bold;';  
+            }else{
+            	if(row.unusual){
+     				rowStyle += "background-color:#C8C7BF;";
+    			}
+            }	
         	return rowStyle;
 		}
 	    

@@ -37,7 +37,14 @@ public class BaseController {
 				pageModel.getPageSize(), pageModel.getTotal(),
 				pageModel.getRows());
 	}
-
+	
+	protected HttpResult success(PageModel pageModel, Object footer) {
+		PageResult pageResult = new PageResult();
+		return pageResult.success(pageModel.getPageNum(),
+				pageModel.getPageSize(), pageModel.getTotal(),
+				pageModel.getRows(), footer);
+	}
+	
 	protected HttpResult success(PageModel pageModel, int responseCode,
 			String message) {
 		PageResult pageResult = new PageResult();
