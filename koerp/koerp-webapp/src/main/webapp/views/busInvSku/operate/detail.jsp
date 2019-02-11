@@ -44,11 +44,13 @@ var columns = [[
 ]];
 
 var currDataGrid;
+var footerFirstColumn = "sku";
 
 $(function() {
 	
 	currDataGrid = $("#orderDetailDataGrid");
 	currDataGrid.datagrid({
+		view:footerStyleView,
 		width:500,
 		height:250,
 	    nowrap:false,
@@ -58,7 +60,8 @@ $(function() {
 	    fit:true,//自动大小
 	    queryParams:{
 	    	"shopId": "${shopId}",
-	    	"sku": "${sku}"	    	
+	    	"sku": "${sku}",
+	    	"firstColumn": footerFirstColumn
 	    },
 	    remoteSort:true,
 	    sortName:"sku",
@@ -78,7 +81,14 @@ $(function() {
 	    loadMsg:"数据加载中请稍后……",
 	    emptyMsg:"没有符合条件的记录",
 	    //toolbar:'#tools',
-	    singleSelect: true
+	    singleSelect: true,
+	    rowStyler:function(index,row){
+        	var rowStyle = "";        	
+        	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
+        		rowStyle = 'font-weight:bold;';  
+            }
+        	return rowStyle;
+		}
 	});
 });
 

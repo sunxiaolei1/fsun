@@ -3,7 +3,7 @@ package com.fsun.api.bus;
 import java.util.HashMap;
 import java.util.List;
 
-import com.fsun.api.base.BaseApi;
+import com.fsun.api.base.BaseFooterApi;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.BusVipUnpaidDto;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
@@ -15,7 +15,7 @@ import com.fsun.domain.model.SysUser;
  * @author fsun
  * @date 2019年1月24日
  */
-public interface BusVipUnpaidApi extends BaseApi<BusVipUnpaid, BusVipUnpaidCondition> {
+public interface BusVipUnpaidApi extends BaseFooterApi<BusVipUnpaid, BusVipUnpaidCondition> {
 	
 	/**
 	 * 获取客户对应的挂账金额
@@ -54,14 +54,5 @@ public interface BusVipUnpaidApi extends BaseApi<BusVipUnpaid, BusVipUnpaidCondi
 	 * @return
 	 */
 	public List<HashMap<String, Object>> exportUnpaid(BusVipUnpaidCondition condition);
-
-	/**
-	 * 获取表单合计列
-	 * @param condition
-	 * @return
-	 */
-	public HashMap<String, Object> findFooter(BusVipUnpaidCondition condition);
-
-	
 
 }

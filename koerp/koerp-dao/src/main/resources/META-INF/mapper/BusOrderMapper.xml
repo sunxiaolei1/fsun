@@ -160,6 +160,25 @@
     	<include refid="conditions" />
   </select>
   
+  <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusOrderCondition" >    
+	SELECT 
+		sum(a.origin_price) as origin_price, 
+		sum(a.order_price) as order_price, 
+		sum(a.ship_price) as ship_price, 
+    	sum(a.coupon_price) as coupon_price, 
+    	sum(a.discount_price) as discount_price, 
+    	sum(a.to_zero_price) as to_zero_price, 
+    	sum(a.pay_price) as pay_price, 
+    	sum(a.dib_price) as dib_price, 
+    	sum(a.recept_price) as recept_price, 
+    	sum(a.package_price) as package_price, 
+    	sum(a.point_fee) as point_fee, 
+    	sum(a.bonus_price) as bonus_price
+    FROM bus_order a 
+    	<include refid="conditions" />
+  </select>
+  
   <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
     <result column="o_order_id" property="orderId" />
     <result column="o_order_type" property="orderType"/> 

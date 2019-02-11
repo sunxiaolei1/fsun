@@ -67,6 +67,15 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	}
 	
 	/**
+	 * 获取表单合计行
+	 * @param condition
+	 * @return
+	 */
+	public <C>HashMap<String, Object> findFooter(C condition) {
+		return mapper.findFooter(condition);
+	}
+	
+	/**
 	 * 插入对象
 	 *
 	 * @param entity

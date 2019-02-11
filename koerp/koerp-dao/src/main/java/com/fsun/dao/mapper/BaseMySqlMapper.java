@@ -24,6 +24,13 @@ public interface BaseMySqlMapper<T> {
     <C>List<T> selectList(C condition);
     
     <C>List<HashMap<String, Object>> selectListMap(C condition);
+    
+    /**
+	 * 获取表单合计行
+	 * @param condition
+	 * @return
+	 */
+	public <C>HashMap<String, Object> findFooter(C condition);
 
     int updateByPrimaryKeySelective(T record);
 

@@ -1,5 +1,6 @@
 package com.fsun.service.sku;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +71,19 @@ public class BusInvSkuService implements BusInvSkuApi {
 	@Override
 	public PageModel findDetailsPage(BusInvSkuDetailsCondition condition) {
 		return busInvSkuDetailsManage.findMapPage(condition);
+	}
+
+	@Override
+	public HashMap<String, Object> findFooter(BusInvSkuCondition condition) {
+		HashMap<String, Object> footer = busInvSkuManage.findFooter(condition);
+		footer.put(condition.getFirstColumn(), "合计:");	
+		return footer;
+	}
+
+	@Override
+	public HashMap<String, Object> findDetailsFooter(BusInvSkuDetailsCondition condition) {
+		HashMap<String, Object> footer = busInvSkuDetailsManage.findFooter(condition);
+		footer.put(condition.getFirstColumn(), "合计:");	
+		return footer;
 	}
 }

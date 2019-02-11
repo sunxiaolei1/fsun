@@ -2,7 +2,7 @@ package com.fsun.api.bus;
 
 import java.util.HashMap;
 
-import com.fsun.api.base.BaseApi;
+import com.fsun.api.base.BaseFooterApi;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusOrderDto;
 import com.fsun.domain.dto.BusUserDto;
@@ -14,7 +14,7 @@ import com.fsun.domain.model.SysUser;
  * @author fsun
  * @date 2018年12月24日
  */
-public interface BusOrderApi extends BaseApi<BusOrder, BusOrderCondition> {
+public interface BusOrderApi extends BaseFooterApi<BusOrder, BusOrderCondition> {
 
 	/**
 	 * 初始化单据头信息

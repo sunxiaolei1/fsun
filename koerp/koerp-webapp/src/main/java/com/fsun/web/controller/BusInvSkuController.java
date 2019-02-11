@@ -1,5 +1,6 @@
 package com.fsun.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,12 @@ public class BusInvSkuController extends BaseController {
 	public HttpResult findDetailsPage(BusInvSkuDetailsCondition condition) {
 		try {
 			PageModel pageModel = busInvSkuApi.findDetailsPage(condition);
-			return success(pageModel);
+			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
+					&& pageModel.getTotal()>0){
+				HashMap<String, Object> footer = busInvSkuApi.findDetailsFooter(condition);
+				return success(pageModel, new Object[]{footer});
+			}
+			return success(pageModel, new Object[]{});
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -77,7 +83,12 @@ public class BusInvSkuController extends BaseController {
 	public HttpResult findPage(BusInvSkuCondition condition) {
 		try {
 			PageModel pageModel = busInvSkuApi.findPage(condition);
-			return success(pageModel);
+			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
+					&& pageModel.getTotal()>0){
+				HashMap<String, Object> footer = busInvSkuApi.findFooter(condition);
+				return success(pageModel, new Object[]{footer});
+			}
+			return success(pageModel, new Object[]{});
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);

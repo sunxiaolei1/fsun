@@ -32,7 +32,7 @@ var frozenColumns = [[
 		return formatter(value, window.parent.tradeStatus); 
 	}},
 	{field:'print_count',title:'已打印',width:60,align:'center', sortable:true, formatter:function(value, row){
-		return (row.print_count>0?"<span style='color:red;'>是</span>":"否"); 
+		return (row.print_count>0?"<span style='color:red;'>是</span>":(row.print_count==0?"否":"")); 
 	}},
 	{field:'shop_id',title:'所属店仓',width:130,align:'center',sortable:true, formatter:function(value, row){
 		return row.shop_name; 
@@ -55,11 +55,13 @@ var columns = [[
 ]];
 
 var currDataGrid;
+var footerFirstColumn = "order_id";
 
 $(function() {
 	
 	currDataGrid = $("#ordersDataGrid");
 	currDataGrid.datagrid({
+		view:footerStyleView,
 		width:500,
 		height:250,
 	    nowrap:false,
@@ -67,7 +69,7 @@ $(function() {
 	    border:true,
 	    collapsible:false,//是否可折叠的
 	    fit:true,//自动大小
-	    queryParams:{},
+	    queryParams:{firstColumn: footerFirstColumn},
 	    remoteSort:true,
 	    sortName:"order_time",
         sortOrder:"desc",
@@ -88,6 +90,13 @@ $(function() {
 	    singleSelect: false,
 	    selectOnCheck: true,
 	    checkOnSelect: true,
+	    rowStyler:function(index,row){
+        	var rowStyle = "";        	
+        	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
+        		rowStyle = 'font-weight:bold;';  
+            }
+        	return rowStyle;
+		},
 	    onDblClickRow:function(rowIndex, rowData){
 	    	$(this).datagrid("unselectAll");
 			$(this).datagrid("selectRow",rowIndex);

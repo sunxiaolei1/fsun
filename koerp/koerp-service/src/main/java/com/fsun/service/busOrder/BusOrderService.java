@@ -90,6 +90,13 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	public PageModel findPage(BusOrderCondition condition) {
 		return busOrderManage.findMapPage(condition);
 	}
+	
+	@Override
+	public HashMap<String, Object> findFooter(BusOrderCondition condition) {
+		HashMap<String, Object> footer = busOrderManage.findFooter(condition);
+		footer.put(condition.getFirstColumn(), "合计:");	
+		return footer;
+	}
 
 	@Override
 	public String save(BusOrder domain, SysUser currentUser) {
@@ -234,6 +241,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		header.setCashId(cashId);
 		header.setCashName(cashName);*/
 		
+		header.setPrintCount(0);
 		header.setPosNo("1");
 		header.setSettleTime(DateUtil.getNowDate());
 		header.setTradeFrom(TradeFromEnum.PC.getCode());

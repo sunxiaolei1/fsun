@@ -98,13 +98,5 @@ public class BusVipUnpaidManage extends CrudManage<BusVipUnpaidMapper, BusVipUnp
 	public BusVipUnpaid getVipUnpaidAmount(BusVipUnpaidCondition condition) {
 		return mapper.getVipUnpaidAmount(condition);
 	}
-
-	/**
-	 * 获取表单合计列
-	 * @param condition
-	 * @return
-	 */
-	public HashMap<String, Object> findFooter(BusVipUnpaidCondition condition) {
-		return mapper.findFooter(condition);
-	}
+	
 }

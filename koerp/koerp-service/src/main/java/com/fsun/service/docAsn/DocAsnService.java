@@ -26,7 +26,6 @@ import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocAsnException;
-import com.fsun.exception.bus.DocOrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
 
@@ -116,6 +115,7 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		
 		//初始化头信息
 		Date now = new Date();
+		header.setPrintCount(0);
 		header.setiAddress(currUser.getShopName());
 		header.setiContact(currUser.getRealname());
 		header.setiName(currUser.getRealname());

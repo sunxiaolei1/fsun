@@ -62,6 +62,16 @@
     	<include refid="conditions" />
   </select>
   
+  <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusInvSkuDetailsCondition" >    
+	SELECT 		
+    	sum(qty) as qty, 
+    	sum(lock_qty) as lock_qty, 
+    	sum(damaged_qty) as damaged_qty
+    FROM bus_inv_sku_details
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
