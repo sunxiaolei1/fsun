@@ -92,7 +92,7 @@
 	<table id="orderDetailDataGrid"></table>
 </div>	
 
-<div id="payAccountWin" class="easyui-window" title="结帐信息" closed="true" align="center" style="display:none;width:90%;height:85%;top:40px;" modal="true">  
+<div id="payAccountWin" class="easyui-window" title="结帐信息" iconCls="icon-money" closed="true" align="center" style="display:none;width:90%;height:85%;top:40px;" modal="true">  
    	 <div class="easyui-layout" fit=true  id='base_layout'>	
    	 	<div data-options="region:'north'" style="height:280px;">
    	 		<div id="payAccountToolbar" style="display:none;">

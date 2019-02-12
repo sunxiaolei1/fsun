@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.BusRefundMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusRefund" >
+    <id column="refund_id" property="refundId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="ext_order_id" property="extOrderId" jdbcType="VARCHAR" />
+    <result column="barter_order_id" property="barterOrderId" jdbcType="VARCHAR" />
+    <result column="buyer_id" property="buyerId" jdbcType="VARCHAR" />
+    <result column="buyer_name" property="buyerName" jdbcType="VARCHAR" />
+    <result column="seller_id" property="sellerId" jdbcType="VARCHAR" />
+    <result column="seller_name" property="sellerName" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="refund_type" property="refundType" jdbcType="SMALLINT" />
+    <result column="refund_status" property="refundStatus" jdbcType="SMALLINT" />
+    <result column="refund_order_status" property="refundOrderStatus" jdbcType="SMALLINT" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="refund_reason" property="refundReason" jdbcType="SMALLINT" />
+    <result column="refund_price" property="refundPrice" jdbcType="DECIMAL" />
+    <result column="diff_price" property="diffPrice" jdbcType="DECIMAL" />
+    <result column="change_price" property="changePrice" jdbcType="DECIMAL" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="BIT" />
+    <result column="all_return" property="allReturn" jdbcType="BIT" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="refund_time" property="refundTime" jdbcType="TIMESTAMP" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="created_name" property="createdName" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="updated_name" property="updatedName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    refund_id, order_id, ext_order_id, barter_order_id, buyer_id, buyer_name, seller_id, 
+    seller_name, shop_id, shop_name, refund_type, refund_status, refund_order_status, 
+    reason, refund_reason, refund_price, diff_price, change_price, memo, is_valid, all_return, 
+    check_time, refund_time, created_time, created_name, updated_time, updated_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bus_refund
+    where refund_id = #{refundId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bus_refund
+    where refund_id = #{refundId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fsun.domain.model.BusRefund" >
+    insert into bus_refund (refund_id, order_id, ext_order_id, 
+      barter_order_id, buyer_id, buyer_name, 
+      seller_id, seller_name, shop_id, 
+      shop_name, refund_type, refund_status, 
+      refund_order_status, reason, refund_reason, 
+      refund_price, diff_price, change_price, 
+      memo, is_valid, all_return, check_time, 
+      refund_time, created_time, created_name, 
+      updated_time, updated_name)
+    values (#{refundId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{extOrderId,jdbcType=VARCHAR}, 
+      #{barterOrderId,jdbcType=VARCHAR}, #{buyerId,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, 
+      #{sellerId,jdbcType=VARCHAR}, #{sellerName,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
+      #{shopName,jdbcType=VARCHAR}, #{refundType,jdbcType=SMALLINT}, #{refundStatus,jdbcType=SMALLINT}, 
+      #{refundOrderStatus,jdbcType=SMALLINT}, #{reason,jdbcType=VARCHAR}, #{refundReason,jdbcType=SMALLINT}, 
+      #{refundPrice,jdbcType=DECIMAL}, #{diffPrice,jdbcType=DECIMAL}, #{changePrice,jdbcType=DECIMAL}, 
+      #{memo,jdbcType=VARCHAR}, #{isValid,jdbcType=BIT}, #{allReturn,jdbcType=BIT}, #{checkTime,jdbcType=TIMESTAMP}, 
+      #{refundTime,jdbcType=TIMESTAMP}, #{createdTime,jdbcType=TIMESTAMP}, #{createdName,jdbcType=VARCHAR}, 
+      #{updatedTime,jdbcType=TIMESTAMP}, #{updatedName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsun.domain.model.BusRefund" >
+    insert into bus_refund
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="refundId != null" >
+        refund_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="extOrderId != null" >
+        ext_order_id,
+      </if>
+      <if test="barterOrderId != null" >
+        barter_order_id,
+      </if>
+      <if test="buyerId != null" >
+        buyer_id,
+      </if>
+      <if test="buyerName != null" >
+        buyer_name,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="sellerName != null" >
+        seller_name,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="refundType != null" >
+        refund_type,
+      </if>
+      <if test="refundStatus != null" >
+        refund_status,
+      </if>
+      <if test="refundOrderStatus != null" >
+        refund_order_status,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="refundReason != null" >
+        refund_reason,
+      </if>
+      <if test="refundPrice != null" >
+        refund_price,
+      </if>
+      <if test="diffPrice != null" >
+        diff_price,
+      </if>
+      <if test="changePrice != null" >
+        change_price,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="allReturn != null" >
+        all_return,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="refundTime != null" >
+        refund_time,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="createdName != null" >
+        created_name,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="updatedName != null" >
+        updated_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="refundId != null" >
+        #{refundId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="extOrderId != null" >
+        #{extOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="barterOrderId != null" >
+        #{barterOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerId != null" >
+        #{buyerId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerName != null" >
+        #{buyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerName != null" >
+        #{sellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="refundType != null" >
+        #{refundType,jdbcType=SMALLINT},
+      </if>
+      <if test="refundStatus != null" >
+        #{refundStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="refundOrderStatus != null" >
+        #{refundOrderStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="refundReason != null" >
+        #{refundReason,jdbcType=SMALLINT},
+      </if>
+      <if test="refundPrice != null" >
+        #{refundPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="diffPrice != null" >
+        #{diffPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="changePrice != null" >
+        #{changePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=BIT},
+      </if>
+      <if test="allReturn != null" >
+        #{allReturn,jdbcType=BIT},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundTime != null" >
+        #{refundTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdName != null" >
+        #{createdName,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedName != null" >
+        #{updatedName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusRefund" >
+    update bus_refund
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="extOrderId != null" >
+        ext_order_id = #{extOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="barterOrderId != null" >
+        barter_order_id = #{barterOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerId != null" >
+        buyer_id = #{buyerId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerName != null" >
+        buyer_name = #{buyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerName != null" >
+        seller_name = #{sellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="refundType != null" >
+        refund_type = #{refundType,jdbcType=SMALLINT},
+      </if>
+      <if test="refundStatus != null" >
+        refund_status = #{refundStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="refundOrderStatus != null" >
+        refund_order_status = #{refundOrderStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="refundReason != null" >
+        refund_reason = #{refundReason,jdbcType=SMALLINT},
+      </if>
+      <if test="refundPrice != null" >
+        refund_price = #{refundPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="diffPrice != null" >
+        diff_price = #{diffPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="changePrice != null" >
+        change_price = #{changePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=BIT},
+      </if>
+      <if test="allReturn != null" >
+        all_return = #{allReturn,jdbcType=BIT},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundTime != null" >
+        refund_time = #{refundTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdName != null" >
+        created_name = #{createdName,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedName != null" >
+        updated_name = #{updatedName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where refund_id = #{refundId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusRefund" >
+    update bus_refund
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      ext_order_id = #{extOrderId,jdbcType=VARCHAR},
+      barter_order_id = #{barterOrderId,jdbcType=VARCHAR},
+      buyer_id = #{buyerId,jdbcType=VARCHAR},
+      buyer_name = #{buyerName,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      seller_name = #{sellerName,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      refund_type = #{refundType,jdbcType=SMALLINT},
+      refund_status = #{refundStatus,jdbcType=SMALLINT},
+      refund_order_status = #{refundOrderStatus,jdbcType=SMALLINT},
+      reason = #{reason,jdbcType=VARCHAR},
+      refund_reason = #{refundReason,jdbcType=SMALLINT},
+      refund_price = #{refundPrice,jdbcType=DECIMAL},
+      diff_price = #{diffPrice,jdbcType=DECIMAL},
+      change_price = #{changePrice,jdbcType=DECIMAL},
+      memo = #{memo,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=BIT},
+      all_return = #{allReturn,jdbcType=BIT},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      refund_time = #{refundTime,jdbcType=TIMESTAMP},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_name = #{createdName,jdbcType=VARCHAR},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      updated_name = #{updatedName,jdbcType=VARCHAR}
+    where refund_id = #{refundId,jdbcType=VARCHAR}
+  </update>
+</mapper>

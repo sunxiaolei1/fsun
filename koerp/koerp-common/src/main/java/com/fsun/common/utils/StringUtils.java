@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -12,7 +13,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 public class StringUtils {
+	
+	/**
+     * The empty String {@code ""}.
+     * @since 2.0
+     */
+    public static final String EMPTY = "";
+    
 	/**
 	 * 获取唯一Id
 	 *
@@ -67,6 +77,47 @@ public class StringUtils {
 		}
 		return result;
 	}
+	
+	public static String join(final Iterable<?> iterable, final String separator) {
+        if (iterable == null) {
+            return null;
+        }
+        return join(iterable.iterator(), separator);
+    }
+	
+	public static String join(final Iterator<?> iterator, final String separator) {
+
+        // handle null, zero and one elements before building a buffer
+        if (iterator == null) {
+            return null;
+        }
+        if (!iterator.hasNext()) {
+            return EMPTY;
+        }
+        final Object first = iterator.next();
+        if (!iterator.hasNext()) {
+            @SuppressWarnings( "deprecation" ) // ObjectUtils.toString(Object) has been deprecated in 3.2
+            final String result = ObjectUtils.toString(first);
+            return result;
+        }
+
+        // two or more elements
+        final StringBuilder buf = new StringBuilder(256); // Java default is 16, probably too small
+        if (first != null) {
+            buf.append(first);
+        }
+
+        while (iterator.hasNext()) {
+            if (separator != null) {
+                buf.append(separator);
+            }
+            final Object obj = iterator.next();
+            if (obj != null) {
+                buf.append(obj);
+            }
+        }
+        return buf.toString();
+    }
 
 	public static String md5Encode(String inStr) {
 		MessageDigest md5 = null;

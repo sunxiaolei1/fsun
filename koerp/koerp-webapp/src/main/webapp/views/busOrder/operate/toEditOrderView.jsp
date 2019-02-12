@@ -112,7 +112,7 @@
 	<table id="orderDetailDataGrid"></table>
 </div>
 
-<div id="payAccountWin" class="easyui-window" title="账单明细" closed="true" align="center" 
+<div id="payAccountWin" class="easyui-window" title="账单明细" iconCls="icon-money" closed="true" align="center" 
 	style="display:none;width:80%;height:65%;top:100px;" modal="true">  
    	 <div class="easyui-layout" fit=true  id='base_layout'>	
    	 	<div data-options="region:'center'" style="height:280px;">
@@ -322,11 +322,11 @@ function openPayAccountView(){
     		//排序拦截器
     		sortFilter($(this), data);		
     	    //分页拦截器
-    	    var data = pagerFilter($(this), data, fields, "sku"); 
+    	    var data = pagerFilter($(this), data, fields, "payMode"); 
 			return data; 
         },
         rowStyler:function(index,row){	    		    	
-    		if (row.sku=="合计:"){//这里是判断哪些行
+    		if (row.payMode=="合计:"){//这里是判断哪些行
                 return 'font-weight:bold;';  
             }	
     		return "";

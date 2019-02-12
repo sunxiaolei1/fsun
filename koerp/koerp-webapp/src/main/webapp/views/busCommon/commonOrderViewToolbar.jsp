@@ -35,7 +35,8 @@
 
 <div id="addtoolbar" class="toolbar" data-options="region:'center'">	
 	<a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">取消订单</a>
-	<a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="cancel()">返回</a>			
+	<a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="cancel()">返回</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-book_add" plain="true" onclick="orderRefund()">退货</a>			
 </div> 
 
 <script type="text/javascript">

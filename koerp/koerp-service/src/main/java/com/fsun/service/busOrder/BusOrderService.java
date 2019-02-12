@@ -29,6 +29,7 @@ import com.fsun.domain.entity.BusGoodsCondition;
 import com.fsun.domain.entity.BusOrderCondition;
 import com.fsun.domain.entity.BusPayAccountCondition;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
+import com.fsun.domain.enums.BusPayTypeEnum;
 import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
@@ -268,6 +269,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 			payAccount.setLineNo(lineNo++);			
 			payAccount.setCreatedTime(now);
 			payAccount.setTradeTime(now);
+			payAccount.setPayType(BusPayTypeEnum.COMSUME_PAY.getValue());			
 			Short payMode = payAccount.getPayMode();
 			if(PayModeEnum.UNPAY.getValue().equals(payMode)){
 				if(CustomerTypeEnum.SK.getCode().equals(busCustomer.getCustomerType())){

@@ -25,6 +25,12 @@ var docTradeStatusData = new Array();
 var docTradeTypeData = new Array();
 var busGoodsTypeData = new Array();
 var vipUnpaidPayModeData = new Array();
+var busPayTypeData = new Array();
+
+var refundTypeData = new Array();
+var refundStatusData = new Array();
+var refundReasonData = new Array();
+var refundOrderStatusData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -55,6 +61,12 @@ var docTradeStatus = {};
 var docTradeType = {};
 var busGoodsType = {};
 var vipUnpaidPayMode = {};
+var busPayType = {};
+
+var refundType = {};
+var refundStatus = {};
+var refundReason = {};
+var refundOrderStatus = {};
 
 $(function () {
 	synchronizeData();	
@@ -87,7 +99,14 @@ $(function () {
 	docTradeType = formatterCodeType(docTradeTypeData);
 	
 	busGoodsType = formatterCodeType(busGoodsTypeData); 
-	vipUnpaidPayMode = formatterCodeType(vipUnpaidPayModeData); 
+	vipUnpaidPayMode = formatterCodeType(vipUnpaidPayModeData);
+	busPayType = formatterCodeType(busPayTypeData);
+	
+	refundType = formatterCodeType(refundTypeData);
+	refundStatus = formatterCodeType(refundStatusData);
+	refundReason = formatterCodeType(refundReasonData);
+	refundOrderStatus = formatterCodeType(refundOrderStatusData);
+	
 });
 
 function formatterCodeType(result) {
@@ -162,8 +181,18 @@ function synchronizeData() {
         				busGoodsTypeData.push(item);
         			}else if(item.codeType == 'VipUnpaidPayMode'){
         				vipUnpaidPayModeData.push(item);
+        			}else if(item.codeType == 'BusPayType'){
+        				busPayTypeData.push(item);
+        			}else if(item.codeType == 'RefundType'){
+        				refundTypeData.push(item);
+        			}else if(item.codeType == 'RefundStatus'){
+        				refundStatusData.push(item);
+        			}else if(item.codeType == 'RefundReason'){
+        				refundReasonData.push(item);
+        			}else if(item.codeType == 'RefundOrderStatus'){
+        				refundOrderStatusData.push(item);
         			}
-        			
+      
     	        });
         		  		
         		isEnableData.unshift({
@@ -296,6 +325,32 @@ function synchronizeData() {
         			codeCode:"",
 					codeName:"请选择..."
 				});
+				
+				busPayTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				refundTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				refundStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				refundReasonData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				refundOrderStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
         	}
        	}
 	});
