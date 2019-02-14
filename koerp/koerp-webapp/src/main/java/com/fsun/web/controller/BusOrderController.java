@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.fsun.api.bus.BusAccessLogApi;
 import com.fsun.api.bus.BusOrderApi;
+import com.fsun.api.bus.OrderButtonsApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
@@ -50,6 +51,9 @@ public class BusOrderController extends BaseController {
 	
 	@Autowired
 	private BusAccessLogApi busAccessLogApi;
+	
+	@Autowired
+	private OrderButtonsApi orderButtonsApi;
 	
 	@Autowired
 	private HttpServletRequest request;
@@ -87,13 +91,17 @@ public class BusOrderController extends BaseController {
 	
 	@RequestMapping("/toDetailView")
 	public ModelAndView toDetailView(@RequestParam("orderId") String orderId, 
-			@RequestParam("orderType") Short orderType) {				
+		@RequestParam("orderType") Short orderType, @RequestParam("buttontype") String buttontype) {				
 		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.EDIT.getCode());
 		ModelAndView modelAndView = new ModelAndView(url);
 		modelAndView.addObject("orderId", orderId);
-		modelAndView.addObject("cancelStatus", OrderStatusEnum.CANCEL.getCode());	
+		modelAndView.addObject("cancelStatus", OrderStatusEnum.CANCEL.getCode());			
+		//单据状态权限控制按钮显示
+		modelAndView.addObject("buttontype", buttontype);
+		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, orderId, null);
+		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
 		return modelAndView;
-	}		
+	}
 	
 	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
 	@ResponseBody

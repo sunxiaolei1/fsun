@@ -35,7 +35,7 @@ function toDetailView(){
 		return;
 	}
 	var row = rows[0];
-	var url = "${api}/bus/order/toDetailView?orderId="+ row.order_id +"&orderType="+ row.order_type;
+	var url = "${api}/bus/order/toDetailView?orderId="+ row.order_id +"&orderType="+ row.order_type +"&buttontype=busOrder";
 	var icon = "icon-edit";
 	var subtitle = "销售单("+ row.order_id +")详情";
 	parent.addTab(subtitle, url, icon);	

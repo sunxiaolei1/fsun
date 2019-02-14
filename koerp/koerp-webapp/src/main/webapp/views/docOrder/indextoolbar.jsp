@@ -36,7 +36,7 @@ function toDetailView(){
 		return;
 	}
 	var row = rows[0];
-	var url = "${api}/doc/order/toDetailView?orderNo="+ row.order_no +"&orderType="+ row.order_type;
+	var url = "${api}/doc/order/toDetailView?orderNo="+ row.order_no +"&orderType="+ row.order_type +"&buttontype=docAsn";
 	var icon = "icon-edit";
 	var subtitle = "出库单("+ row.order_no +")详情";
 	parent.addTab(subtitle, url, icon);	

@@ -7,7 +7,7 @@
 %>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('22')">盘盈入库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('23')">采购入库</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="toDetailView()">查看</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125519344_easyicon_net_16" plain="true" onclick="show()">展开查询条件</a>
@@ -31,7 +31,7 @@ function toDetailView(){
 		return;
 	}
 	var row = rows[0];
-	var url = "${api}/doc/asn/toDetailView?asnNo="+ row.asn_no +"&asnType="+ row.asn_type;
+	var url = "${api}/doc/asn/toDetailView?asnNo="+ row.asn_no +"&asnType="+ row.asn_type +"&buttontype=docAsn";
 	var icon = "icon-edit";
 	var subtitle = "入库单("+ row.asn_no +")详情";
 	parent.addTab(subtitle, url, icon);	

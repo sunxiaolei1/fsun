@@ -27,9 +27,12 @@
 					<input id="asnType" name="asnType" class="easyui-combobox" required readOnly />								
 				</td>
 				<th width="12%">入库店仓<span style="color:red;">*</span></th>
-				<td colspan="3" >
-					<input id="toShopName" name="toShopName" class="easyui-textbox" 
-					  style="width:400px;" readOnly />								
+				<td>
+					<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly />								
+				</td>
+				<th width="12%">退货单号</th>
+				<td >
+					<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly />								
 				</td>																
 	        </tr>	
 	        <tr>

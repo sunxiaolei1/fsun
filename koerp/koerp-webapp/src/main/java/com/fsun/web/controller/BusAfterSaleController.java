@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fsun.api.bus.BusAfterSaleApi;
+import com.fsun.api.bus.OrderButtonsApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
@@ -33,6 +34,9 @@ public class BusAfterSaleController extends BaseController {
 	
 	@Autowired
 	private BusAfterSaleApi busAfterSaleApi;
+	
+	@Autowired
+	private OrderButtonsApi orderButtonsApi;
 	
 	/******************************************        refund start        *****************************************/
 	
@@ -81,7 +85,7 @@ public class BusAfterSaleController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/toDetailView"); 
 		modelAndView.addObject("refundId", refundId);
 		modelAndView.addObject("buttontype", buttontype);
-		List<String> hiddenbuttons = busAfterSaleApi.getHiddenButtonsMap(buttontype, null, refundId);
+		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, null, refundId);
 		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
 		return modelAndView;
 	}
@@ -175,7 +179,7 @@ public class BusAfterSaleController extends BaseController {
 		modelAndView.addObject("refundId", refundId);
 		modelAndView.addObject("barterOrderId", barterOrderId);		
 		modelAndView.addObject("buttontype", buttontype);			
-		List<String> hiddenbuttons  = busAfterSaleApi.getHiddenButtonsMap(buttontype, barterOrderId, refundId);
+		List<String> hiddenbuttons  = orderButtonsApi.getHiddenButtonsMap(buttontype, barterOrderId, refundId);
 		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
 		return modelAndView;
 	}

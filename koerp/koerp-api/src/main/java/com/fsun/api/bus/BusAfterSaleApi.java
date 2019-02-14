@@ -1,7 +1,6 @@
 package com.fsun.api.bus;
 
 import java.util.HashMap;
-import java.util.List;
 
 import com.fsun.api.base.BaseFooterApi;
 import com.fsun.domain.dto.BusBarterDto;
@@ -29,15 +28,7 @@ public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondi
 	public HashMap<String, Object> getInitData(String refundId, String orderId, 
 		String refundType, BusUserDto currUser);
 
-	/**
-	 * 获取隐藏按钮集合
-	 * @param buttontype
-	 * @param object
-	 * @param refundId
-	 * @return
-	 */
-	public List<String> getHiddenButtonsMap(String buttontype, Object object, String refundId);
-
+	
 	/**
 	 * 获取退货单备注页面
 	 * @param refundId

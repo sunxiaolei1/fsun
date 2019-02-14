@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fsun.api.bus.DocOrderApi;
+import com.fsun.api.bus.OrderButtonsApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
@@ -41,6 +42,9 @@ public class DocOrderController extends BaseController {
 	@Autowired
 	private DocOrderApi docOrderApi;
 
+	@Autowired
+	private OrderButtonsApi orderButtonsApi;
+	
 	@RequestMapping("/index")
 	public String index() {
 		return "/docOrder/index";
@@ -56,11 +60,15 @@ public class DocOrderController extends BaseController {
 	
 	@RequestMapping("/toDetailView")
 	public ModelAndView toDetailView(@RequestParam("orderNo") String orderNo, 
-			@RequestParam("orderType") String orderType) {				
+		@RequestParam("orderType") String orderType, @RequestParam("buttontype") String buttontype) {				
 		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.EDIT.getCode());
 		ModelAndView modelAndView = new ModelAndView(url);
 		modelAndView.addObject("orderNo", orderNo);
-		modelAndView.addObject("cancelStatus", DocOrderStatusEnum.SO_CKQX.getCode());	
+		modelAndView.addObject("cancelStatus", DocOrderStatusEnum.SO_CKQX.getCode());
+		//单据状态权限控制按钮显示
+		modelAndView.addObject("buttontype", buttontype);
+		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, orderNo, null);
+		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
 		return modelAndView;
 	}		
 	

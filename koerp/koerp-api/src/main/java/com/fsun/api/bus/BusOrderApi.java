@@ -61,6 +61,4 @@ public interface BusOrderApi extends BaseFooterApi<BusOrder, BusOrderCondition> 
 	 */
 	public String saveEntity(BusOrderDto busOrderDto);
 
-	
-
 }

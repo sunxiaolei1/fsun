@@ -76,12 +76,6 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 	}
 
 	@Override
-	public List<String> getHiddenButtonsMap(String buttontype, Object object, String refundId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public String getRefundRemark(String refundId) {
 		BusRefund busRefund = this.load(refundId);
 		if(busRefund!=null && busRefund.getMemo()!=null){
