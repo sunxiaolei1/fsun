@@ -64,7 +64,7 @@ $(function() {
 	    	"firstColumn": footerFirstColumn
 	    },
 	    remoteSort:true,
-	    sortName:"sku",
+	    sortName:"trade_time",
         sortOrder:"desc",
         url: "${api}/bus/invSku/findDetailsPage",
 	    //idField:"blackid",

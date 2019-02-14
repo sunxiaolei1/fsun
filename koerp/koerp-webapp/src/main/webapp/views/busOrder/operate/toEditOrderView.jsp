@@ -7,6 +7,22 @@
 	request.setAttribute("api", basePath);
 %>
 
+<style type="text/css">
+
+.skutitle{
+	margin: 0px 18px 0px 6px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 26px;
+    line-height: 26px;
+    width: 182px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #575765;
+}
+
+</style>
+
 <!-- 查询条件 -->
 <%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
 	
@@ -109,6 +125,11 @@
 	<span style="float:right;margin-top:2px;margin-bottom:2px;">	
 		<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
 	</span>
+	<div style="height:24px;">
+		<b class="skutitle" >
+			商品明细
+		</b>
+	</div>	
 	<table id="orderDetailDataGrid"></table>
 </div>
 
