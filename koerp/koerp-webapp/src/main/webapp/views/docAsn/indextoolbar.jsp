@@ -32,7 +32,7 @@ function toDetailView(){
 	}
 	var row = rows[0];
 	var url = "${api}/doc/asn/toDetailView?asnNo="+ row.asn_no +"&asnType="+ row.asn_type +"&buttontype=docAsn";
-	var icon = "icon-edit";
+	var icon = "icon-application_view_detail";
 	var subtitle = "入库单("+ row.asn_no +")详情";
 	parent.addTab(subtitle, url, icon);	
 }
