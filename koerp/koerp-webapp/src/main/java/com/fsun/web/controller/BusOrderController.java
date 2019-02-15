@@ -102,7 +102,7 @@ public class BusOrderController extends BaseController {
 		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
 	@ResponseBody
 	public HttpResult getInitData(@RequestParam("orderId") String orderId, 
@@ -199,6 +199,18 @@ public class BusOrderController extends BaseController {
 		}
 	}
 	
+	@RequestMapping(value="/{orderId}", method = RequestMethod.GET)
+	@ResponseBody
+	public HttpResult load(@PathVariable("orderId") String orderId) {
+		try {
+			BusOrder busOrder = busOrderApi.load(orderId);
+			return success(busOrder);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
 	@RequestMapping(value="/loadEntity/{orderId}", method = RequestMethod.GET)
 	@ResponseBody
 	public HttpResult loadEntity(@PathVariable("orderId") String orderId) {
@@ -252,7 +264,81 @@ public class BusOrderController extends BaseController {
 		}		
 	}
 	
-/****************************       私有方法            *************************************/
+	
+	
+	/*************************************  售后单据操作     *******************************************/
+	
+	/**
+	 * 跳转到修改备注信息页面
+	 * @param ModelAndView
+	 * @return
+	 */
+	@RequestMapping(value="/toRemarkView/{orderId}", method=RequestMethod.GET)
+	public ModelAndView toRemarkView(@PathVariable("orderId") String orderId) {
+		ModelAndView modelAndView = new ModelAndView("/busOrder/operate/toRemarkView"); 
+		modelAndView.addObject("orderId", orderId);
+		return modelAndView;
+	}
+	
+	/**
+	 * 跳转至一键退货页面
+	 * @param sysorderid
+	 * @return
+	 */
+	@RequestMapping(value="/refund/toOneKeyRefundView/{orderId}", method=RequestMethod.GET)
+	public ModelAndView toOneKeyRefundView(@PathVariable("orderId") String orderId) {
+		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/onekeyrefund"); 
+		modelAndView.addObject("orderId", orderId);		
+		return modelAndView;
+	}
+	
+	/**
+	 * 跳转至退货单新增界面
+	 * @param sysorderid
+	 * @return
+	 */
+	@RequestMapping(value="/refund/toAddView/{orderId}", method=RequestMethod.GET)
+	public ModelAndView toAddViewForRefund(@PathVariable("orderId") String orderId) {
+		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/toAddView"); 
+		modelAndView.addObject("orderId", orderId);		
+		return modelAndView;
+	}
+	
+	/**
+	 * 跳转至换货单新增界面
+	 * @param sysorderid
+	 * @return
+	 */
+	@RequestMapping(value="/barter/toAddView/{orderId}", method=RequestMethod.GET)
+	public ModelAndView toAddViewForBarter(@PathVariable("orderId") String orderId) {
+		ModelAndView modelAndView = new ModelAndView("/busAfterSale/barter/toAddView"); 
+		modelAndView.addObject("orderId", orderId);		
+		return modelAndView;
+	}
+	
+	/**
+	 * 更新备注信息
+	 * @param sysorderid
+	 * @return
+	 */
+	@RequestMapping(value="/appendRemark", method=RequestMethod.POST)
+	@ResponseBody
+	public HttpResult appendRemark(@RequestBody BusOrderCondition condition) {
+		try {
+			BusUserDto currUser = getCurrentUser();
+			busOrderApi.appendRemark(condition, currUser);
+			return success(condition.getOrderId());
+		} catch(OrderException e){
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}		
+	}
+	
+	
+	/****************************       私有方法            *************************************/
 	
 	/**
 	 * 通过单据类型和操作类型获取对应的查看地址

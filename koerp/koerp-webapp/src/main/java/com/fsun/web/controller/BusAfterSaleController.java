@@ -51,30 +51,6 @@ public class BusAfterSaleController extends BaseController {
 	}
 	
 	/**
-	 * 跳转至一键退货页面
-	 * @param sysorderid
-	 * @return
-	 */
-	@RequestMapping(value="/refund/toOneKeyRefundView/{orderId}", method=RequestMethod.GET)
-	public ModelAndView toOneKeyRefundView(@PathVariable("orderId") String orderId) {
-		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/onekeyrefund"); 
-		modelAndView.addObject("orderId", orderId);		
-		return modelAndView;
-	}
-	
-	/**
-	 * 跳转至退货单新增界面
-	 * @param sysorderid
-	 * @return
-	 */
-	@RequestMapping(value="/refund/toAddView/{orderId}", method=RequestMethod.GET)
-	public ModelAndView toAddViewForRefund(@PathVariable("orderId") String orderId) {
-		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/toAddView"); 
-		modelAndView.addObject("orderId", orderId);		
-		return modelAndView;
-	}
-	
-	/**
 	 * 跳转到退货详情页面
 	 * @param sysorderid
 	 * @return
@@ -149,18 +125,6 @@ public class BusAfterSaleController extends BaseController {
 	@RequestMapping(value="/barter/index", method=RequestMethod.GET)
 	public String barterIndex(ModelMap modelMap) {
 		return "/busAfterSale/barter/index";
-	}
-	
-	/**
-	 * 跳转至换货单新增界面
-	 * @param sysorderid
-	 * @return
-	 */
-	@RequestMapping(value="/barter/toAddView/{orderId}", method=RequestMethod.GET)
-	public ModelAndView toAddViewForBarter(@PathVariable("orderId") String orderId) {
-		ModelAndView modelAndView = new ModelAndView("/busAfterSale/barter/toAddView"); 
-		modelAndView.addObject("orderId", orderId);		
-		return modelAndView;
 	}
 
 	/**

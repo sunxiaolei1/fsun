@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fsun.biz.bus.manage.BusInvSkuDetailsManage;
 import com.fsun.biz.bus.manage.BusInvSkuManage;
 import com.fsun.common.utils.PKMapping;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.DocTradeStatusEnum;
 import com.fsun.domain.enums.DocTradeTypeEnum;
+import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusInvSku;
 import com.fsun.domain.model.BusInvSkuDetails;
@@ -19,13 +21,15 @@ import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocOrderDetails;
 import com.fsun.domain.model.DocOrderHeader;
+import com.fsun.exception.bus.OrderException;
+import com.fsun.exception.enums.SCMErrorEnum;
 
 /**
  * 单据基础类
  * @author fsun
  * @date 2018年12月19日
  */
-public abstract class BaseOrderService {
+public abstract class BaseOrderService extends BaseOrderValidatorService {
 
 	@Autowired
 	private BusInvSkuManage busInvSkuManage;
@@ -298,7 +302,34 @@ public abstract class BaseOrderService {
     	return busInvSku;
 	}
 	
-
 	
+	/********************************      单据验证器          *************************************/
+
+	/**
+	 * 基本验证器
+	 * @param ecOrders
+	 * @param sysuser
+	 */
+	protected void baseInfoValidator(BusOrder busOrder, BusUserDto currUser){
+		
+		if(busOrder==null){
+			throw new OrderException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}
+		if(currUser.getShopId()==null || !currUser.getShopId().equals(busOrder.getShopId())){
+			throw new OrderException(SCMErrorEnum.USER_ILLEGAL);
+		}
+	}
+	
+	/**
+	 * 订单状态是否有效
+	 * @param ecOrders
+	 * @param buttonsEnum
+	 */
+	protected void orderStatusIsValid(BusOrder busOrder, OrderOperateButtonsEnum buttonsEnum){
+		boolean isValid = super.orderStatusValidator(busOrder, buttonsEnum);
+		if(!isValid){
+		   throw new OrderException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
+	    }
+	}
  
 }

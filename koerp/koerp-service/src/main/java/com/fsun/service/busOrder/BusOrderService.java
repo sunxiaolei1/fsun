@@ -32,6 +32,7 @@ import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
 import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
+import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
 import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.PayTypeEnum;
@@ -47,6 +48,7 @@ import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
+import com.github.pagehelper.StringUtil;
 
 /**
  * 销售订单接口
@@ -334,6 +336,29 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		header.setPrintCount(++printCount);
 		busOrderManage.update(header);
 		
+	}
+	
+	@Transactional
+	@Override
+	public void appendRemark(BusOrderCondition condition, BusUserDto currUser) {
+		
+		String orderId = condition.getOrderId();	
+		BusOrder busOrder = busOrderManage.load(orderId);	
+		//基础验证
+		this.baseInfoValidator(busOrder, currUser);
+		//订单状态验证
+		this.orderStatusIsValid(busOrder, OrderOperateButtonsEnum.ADD_ORDER_REMARK);
+		//追击备注
+		busOrder.setUpdatedTime(new Date());
+		busOrder.setUpdatedName(currUser.getRealname());	
+		String newRemark = condition.getMemo();		
+		if(newRemark!=null){
+			String prefix = DateUtil.getDateTimeFormat(new Date()) + " " + currUser.getRealname() + " ";								
+			String originRemark = busOrder.getMemo();
+			newRemark = (StringUtil.isNotEmpty(originRemark)?(originRemark + "\n"):"") + prefix + newRemark;
+			busOrder.setMemo(newRemark);					
+		}		
+		busOrderManage.updateEach(busOrder);
 	}
 	
 	/****************************    私有方法          ******************************/

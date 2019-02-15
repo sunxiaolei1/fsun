@@ -60,5 +60,15 @@ public interface BusOrderApi extends BaseFooterApi<BusOrder, BusOrderCondition> 
 	 * @return
 	 */
 	public String saveEntity(BusOrderDto busOrderDto);
+	
+	
+	/******************************    售后操作       ***********************************/
+
+	/**
+	 * 追加备注
+	 * @param condition
+	 * @param currUser
+	 */
+	public void appendRemark(BusOrderCondition condition, BusUserDto currUser);
 
 }

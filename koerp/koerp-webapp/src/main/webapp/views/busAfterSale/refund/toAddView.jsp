@@ -37,7 +37,7 @@
 <%@include file="../addtoolbar.jsp"%>
 	
 <div class="fsun-wrap">
-	<span class="title" style="top: 35px;">原销售商品</span>	
+	<span class="title" style="top: 35px;">原订单商品[单号:${orderId}]</span>	
 	<div style="height: 158px;width: 100%;">
 		<table id="orderDetailDataGrid"></table>
 	</div>	
@@ -48,7 +48,7 @@
 		<table id="refundDetailDataGrid"></table>
 	</div>
 	<form id="orderfm">
-		<input id="sysorderid" name="sysorderid" hidden="true" />
+		<input id="orderId" name="orderId" hidden="true" />
 		<table class="nb-formTable" style="width:100%;margin-top:2px;">
 	        <tr>
 	            <th width="12%">原订单金额</th>
@@ -59,34 +59,23 @@
 				<td>
 					<input id="alreadyprice" class="easyui-textbox" disabled />
 				</td>
-				<th width="12%">调整后退款金额</th>
+				<th width="12%">退款金额</th>
 				<td>
 					<input id="refundprice" name="refundprice" class="easyui-numberbox" 
 						data-options="min:0,precision:2,value:0, formatter: priceFormat" />
 				</td>
-				<th width="12%">所属仓库</th>
+				<th width="12%">所属店仓</th>
 				<td>
-					<input id="stockname" class="easyui-textbox" disabled />								
+					<input id="shopName" class="easyui-textbox" disabled />								
 				</td>								
 	        </tr>	
 	        <tr>	
-       			<th width="12%">退货快递</th>
-				<td>
-					<input id="expresscode" name="expresscode" class="easyui-combobox" editable="false" />								
-				</td>
-				<th width="12%">快递单号</th>
-				<td colspan="3">
-					<input id="expressno" name="expressno" class="easyui-textbox" style="width:350px;" />								
-				</td>
-				<th width="12%">寄回发票</th>
-				<td>
-					<input type="checkbox" id="isreturninvoices" name="isreturninvoices" style="zoom:140%;" />
-				</td>										        			           
+       												        			           
 	        </tr>	       		        		        
 	        <tr>	        			        	
 	            <th width="12%">备注</th>
 	        	<td colspan="7">
-					<input id="remark" name="remark" data-options="multiline:true"
+					<input id="memo" name="memo" data-options="multiline:true"
 						class="easyui-textbox" style="width:800px;height:40px;" />
 				</td>		        			           
 	        </tr>
@@ -108,16 +97,9 @@ var $orderfm ;
 $(function () { 
 	
 	$orderfm = $("#orderfm");   		
-	var sysorderid = '${sysorderid}';
+	var orderId = '${orderId}';
 	
 	//$("#payprice", $orderfm).next().children("input:first-child").css("background-color", "rgb(235, 235, 228)");
-		
-	$('#expresscode', $orderfm).combobox({  
-		prompt: '请选择...',
-   	 	valueField: 'codeCode',
-   	  	textField: 'codeName',
-   	  	data: window.parent.expressCodeData
-   	});	
 	
 	$("#orderDetailDataGrid").datagrid({
 		width:"auto",

@@ -86,13 +86,21 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	}
 
 	/**
-	 * 更新对象
-	 *
+	 * 属性非空更新对象
 	 * @param entity
 	 */
 	@Transactional
 	public int update(T domain) {		
 		return mapper.updateByPrimaryKeySelective(domain);		
+	}
+	
+	/**
+	 * 更新对象所有属性
+	 * @param entity
+	 */
+	@Transactional
+	public int updateEach(T domain) {		
+		return mapper.updateByPrimaryKey(domain);		
 	}
 
 	/**
