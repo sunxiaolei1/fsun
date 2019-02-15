@@ -143,6 +143,7 @@ function afterSaveFunc(){
 	parent.closeCurrTab("reflushDataGrid");
 }
 
+
 /******************************    供选择商品的子页面使用      ********************************/
 
 

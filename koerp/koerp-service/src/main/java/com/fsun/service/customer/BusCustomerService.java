@@ -137,9 +137,34 @@ public class BusCustomerService implements BusCustomerApi {
 			busCustomer.setSalesman(domain.getSalesman());			
 			busCustomer.setUpdatedId(currentUser.getUsername());
 			busCustomer.setUpdatedTime(now);			
-			busCustomerManage.update(busCustomer);
+			busCustomerManage.update(busCustomer);			
 		}
 		return domain.getId();
+	}
+	
+	@Transactional
+	@Override
+	public BusCustomer create(BusCustomer domain, SysUser currUser) {
+		BusCustomerCondition condition = new BusCustomerCondition();
+		condition.setId(domain.getId());
+		condition.setCustomerName(domain.getCustomerName());
+		boolean hasUnique= this.unique(condition);
+		if(!hasUnique){
+			throw new BasSkuException(SCMErrorEnum.BUS_CUSTOMER_EXISTED);
+		}
+		
+		//保存数据
+		Date now = new Date();		
+		domain.setId(PKMapping.GUUID(PKMapping.bus_customer));
+		String customerCode = busCustomerManage.initCustomerCode(domain.getCustomerType());
+		domain.setCustomerCode(customerCode);
+		domain.setCreditPrice(BigDecimal.ZERO);
+		domain.setEnabled(true);
+		domain.setCreatedId(currUser.getUsername());
+		domain.setCreatedTime(now);
+		busCustomerManage.create(domain);
+		return domain;
+		
 	}
 
 	@Transactional
@@ -161,5 +186,7 @@ public class BusCustomerService implements BusCustomerApi {
 			busCustomerManage.update(busCustomer);
 		}
 	}
+
+	
 
 }

@@ -13,8 +13,11 @@
 
 var salesmanInitFirst = true;
  
-function initSalesmanGrid(defaultCustomer){
-	
+function initSalesmanGrid(defaultCustomer, $fm){
+	//方法中可以传入fm
+	if($fm!=null && $fm!=''){
+		$orderfm =$fm;
+	}
 	if(defaultCustomer!=null && defaultCustomer!=''){
 		$('#salesman', $orderfm).combogrid({
 			prompt:'请选择...',

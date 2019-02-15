@@ -15,8 +15,8 @@ import com.fsun.common.utils.PKMapping;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusVipCondition;
-import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.TradeTypeEnum;
+import com.fsun.domain.enums.VipCardTypeEnum;
 import com.fsun.domain.enums.VipUnpaidPayModeEnum;
 import com.fsun.domain.model.BusVip;
 import com.fsun.domain.model.SysUser;
@@ -49,7 +49,28 @@ public class BusVipService implements BusVipApi {
 	}
 	
 	@Override
+	public HashMap<String, Object> initActiveData(BusUserDto currUser) {
+		
+		HashMap<String, Object> map = new HashMap<>();	
+		//基本数据初始化
+		HashMap<String, Object> vipCardHeaderMap = new HashMap<>();
+		vipCardHeaderMap.put("cardType", VipCardTypeEnum.DEFAULT_VIP.getValue());
+		map.put("vipCardHeader", vipCardHeaderMap);				
+		//充值数据初始化
+		HashMap<String, Object> rachargeHeaderMap = new HashMap<>();
+		String shopName = currUser.getShopName();
+		String shopId = currUser.getShopId();
+		rachargeHeaderMap.put("shopId", shopId);
+		rachargeHeaderMap.put("shopName", shopName);	
+		rachargeHeaderMap.put("tradeType", TradeTypeEnum.VIP_RACHARGE.getValue());
+		rachargeHeaderMap.put("payMode", VipUnpaidPayModeEnum.CASH_PAY.getValue());
+		map.put("rachargeHeader", rachargeHeaderMap);
+		return map;
+	}
+	
+	@Override
 	public HashMap<String, Object> initRachargeData(String cardNo, BusUserDto currUser) {
+		
 		HashMap<String, Object> map = busVipManage.initRachargeData(cardNo);		
 		HashMap<String, Object> headerMap = (HashMap<String, Object>)map.get("header");
 		String shopName = currUser.getShopName();
@@ -122,6 +143,29 @@ public class BusVipService implements BusVipApi {
 			busVipManage.update(busVip);
 		}
 		return domain.getId();
+	}
+	
+	@Transactional
+	@Override
+	public BusVip create(BusVip domain, BusUserDto currUser) {
+		
+		BusVipCondition condition = new BusVipCondition();
+		condition.setId(domain.getId());
+		condition.setCardNo(domain.getCardNo());
+		boolean hasUnique= this.unique(condition);
+		if(!hasUnique){
+			throw new VipException(SCMErrorEnum.BUS_VIP_EXISTED);
+		}		
+		//保存数据
+		Date now = new Date();	
+		domain.setId(PKMapping.GUUID(PKMapping.bus_vip));
+		domain.setEnablePrice(BigDecimal.ZERO);
+		domain.setGiftPrice(BigDecimal.ZERO);
+		domain.setVipTime(now);			
+		domain.setCreatedName(currUser.getUsername());
+		domain.setEnabled(true);
+		busVipManage.create(domain);		
+		return domain;
 	}
 
 	@Transactional

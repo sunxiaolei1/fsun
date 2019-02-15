@@ -10,17 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fsun.api.bus.BusVipApi;
 import com.fsun.api.bus.BusVipUnpaidApi;
 import com.fsun.biz.bus.manage.BusCustomerManage;
 import com.fsun.biz.bus.manage.BusVipUnpaidManage;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.ActiveCardDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.BusVipUnpaidDto;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.TradeStatusEnum;
 import com.fsun.domain.enums.TradeTypeEnum;
 import com.fsun.domain.model.BusCustomer;
+import com.fsun.domain.model.BusVip;
 import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.VipUnpaidException;
@@ -38,6 +41,12 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 	
 	@Autowired
 	private BusCustomerManage busCustomerManage;
+	
+	
+	/*****************************   service接口      ********************************/
+	
+	@Autowired
+	private BusVipApi busVipApi;
 
 	@Override
 	public BusVipUnpaid load(String id) {
@@ -259,6 +268,25 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 		}
 		return relationId;
 		
+	}
+	
+	@Transactional
+	@Override
+	public BusVipUnpaid active(ActiveCardDto activeCardDto, BusUserDto currUser){
+		//创建会员卡
+		BusVip busVip = activeCardDto.getBusVip();
+		BusVip newBusVip = busVipApi.create(busVip, currUser);
+		//创建会员卡交易记录
+		BusVipUnpaid busVipUnpaid = activeCardDto.getBusVipUnpaid();		
+		if(busVipUnpaid!=null){
+			BigDecimal tradePrice = busVipUnpaid.getTradePrice();
+			if(tradePrice != null && tradePrice.compareTo(BigDecimal.ZERO)>0){
+				busVipUnpaid.setCardNo(newBusVip.getCardNo());
+				busVipUnpaid.setCustomerCode(newBusVip.getCustomerCode());
+				this.save(busVipUnpaid, currUser);
+			}						
+		}
+		return busVipUnpaid;
 	}
 
 	@Override

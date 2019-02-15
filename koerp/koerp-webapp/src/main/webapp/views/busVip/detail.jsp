@@ -34,6 +34,8 @@
 			<th width="12%">所属客户<span style="color:red;">*</span></th>
 			<td>
 				<input name="customerCode" id="vipCustomer" class="easyui-combogrid" required />
+				<div title='创建客户' class="icon-customer-btn" onclick="javascript:toAddCustomerView();" 
+					style="margin-right:65px;" ></div>	
 			</td>
 			<th width="12%">本金比例<span style="color:red;">*</span></th>
 			<td>
@@ -191,6 +193,61 @@ function initInfo($orderfm, id){
 	    }, 100);
 		
 	}		
+}
+
+/**
+ * 
+ */
+function toAddCustomerView(){
+	
+	$("<div></div>").dialog({
+		id:"customerDialog",
+	    title:"&nbsp;创建客户",
+	    width:"75%",
+		height:"67%",
+	    iconCls:"icon-client",
+	    closed:false,
+	    cache:false,
+	    href:"${api}/bus/customer/toAddView",
+	    modal:true,
+	    minimizable:false,//定义是否显示最小化按钮。
+     	maximizable:false,//定义是否显示最大化按钮
+     	closable:true,
+     	resizable:true,//定义对话框是否可调整尺寸
+     	collapsible: false,//是否可折叠的
+      	buttons:[
+	      	{
+	      		text:"确认",iconCls:"icon-disk",
+	              handler:function(data){	            	  
+	            	  var isValid = $customerfm.form('validate');
+	          		  if (!isValid){
+	          			  $.messager.alert("错误", "提交的数据不正确!", "error");  
+	          			  return;
+	          		  }		
+	          		  var baseInfo = formJson($customerfm);					
+	          		  commonPost("${api}/bus/customer/create", JSON.stringify(baseInfo), function(customerCode){	          			
+	          			  initVipCustomerGrid(customerCode);    			
+	          			  $('#customerDialog').dialog("destroy");
+	          		  });
+	              }
+	          },
+	          {
+	              text:"取消",
+	              iconCls:"icon-cancel",
+	              handler:function(){
+	              	$('#customerDialog').dialog("destroy");
+	              }
+	          }
+      	],
+		onLoad:function(){
+     		$('#customerDialog').window('center');
+     		$('#customerType', $customerfm).combobox('readonly',true).combobox("setValue", "VIP");	  		
+		},
+    	onClose:function(){
+      		$(this).dialog("destroy");
+      	}
+	});	
+
 }
 
 

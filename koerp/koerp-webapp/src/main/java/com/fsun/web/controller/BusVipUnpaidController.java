@@ -24,6 +24,7 @@ import com.fsun.common.utils.ExcelUtil;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.ActiveCardDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.BusVipUnpaidDto;
 import com.fsun.domain.entity.BusAccessLogCondition;
@@ -65,6 +66,11 @@ public class BusVipUnpaidController extends BaseController {
 	@RequestMapping(value="/toVipUnpaidView")
 	public String toVipUnpaidView() {
 		return "/busVip/operate/toVipUnpaidView";
+	}
+	
+	@RequestMapping("/toVipActiveView")
+	public String toVipActiveView() {
+		return "/busVip/operate/toVipActiveView";
 	}
 	
 	
@@ -246,7 +252,44 @@ public class BusVipUnpaidController extends BaseController {
 		}		
 	}
 	
-
+	@RequestMapping(value="/active", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult active(@RequestBody ActiveCardDto activeCardDto) {
+		
+		BusAccessLogCondition condition = new BusAccessLogCondition();
+		condition.setCreatedTime(new Date());
+		condition.setExt0("挂账充值交易记录");
+		condition.setIp(request.getRemoteAddr());
+		condition.setRequestStatus((short)200);
+		condition.setRequestType((short)0);
+		condition.setRequestJson(JSON.toJSONString(activeCardDto));
+		condition.setExt4("1");
+		try {
+			BusUserDto currUser = getCurrentUser();			
+			condition.setExt1(currUser.getUsername());			
+			BusVipUnpaid busVipUnpaid = busVipUnpaidApi.active(activeCardDto, currUser);
+			if(busVipUnpaid!=null){
+				condition.setRequestId(busVipUnpaid.getUnpaidId());
+				busAccessLogApi.create(condition);
+			}
+			return success();
+		} catch(VipUnpaidException e){
+			e.printStackTrace();
+			
+			condition.setRequestStatus((short)-100);
+			condition.setErrorMsg(e.getErrorMsg());			
+			busAccessLogApi.create(condition);
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			condition.setRequestStatus((short)-100);
+			String errorMessage = e.getMessage().length()>800?e.getMessage().substring(0, 800):e.getMessage();
+			condition.setErrorMsg(errorMessage);			
+			busAccessLogApi.create(condition);
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}	
+	}	
 
 	@RequestMapping(value="/status/{status}", method = {RequestMethod.POST})
 	@ResponseBody

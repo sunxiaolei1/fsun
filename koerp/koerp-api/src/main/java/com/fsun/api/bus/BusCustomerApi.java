@@ -37,5 +37,13 @@ public interface BusCustomerApi extends BaseApi<BusCustomer, BusCustomerConditio
 	 * @return
 	 */
 	public HashMap<String, Object> initUnpaidData(String customerCode, BusUserDto currUser);
+
+	/**
+	 * 创建客户
+	 * @param busCustomer
+	 * @param user
+	 * @return
+	 */
+	public BusCustomer create(BusCustomer busCustomer, SysUser user);
 	
 }

@@ -43,7 +43,7 @@
 	        	<th width="12%">客户名称<span style="color:red;">*</span></th>
 				<td>
 					<input id="allCustomer" name="buyerId" class="easyui-combogrid" required/>
-					<input hidden=true id="buyerName" name="buyerName" />									
+					<input hidden=true id="buyerName" name="buyerName" />		
 				</td>
 	        	<th width="12%">订单金额</th>
 				<td>

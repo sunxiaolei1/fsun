@@ -28,6 +28,13 @@ public interface BusVipApi extends BaseApi<BusVip, BusVipCondition> {
 	 * @param enabled
 	 */
 	public void changeStatus(String[] ids, Boolean enabled, SysUser user);
+	
+	/**
+	 * 获取会员开卡初始化信息
+	 * @param currUser
+	 * @return
+	 */
+	public HashMap<String, Object> initActiveData(BusUserDto currUser);
 
 	/**
 	 * 获取会员卡充值初始化信息
@@ -36,5 +43,13 @@ public interface BusVipApi extends BaseApi<BusVip, BusVipCondition> {
 	 * @return
 	 */
 	public HashMap<String, Object> initRachargeData(String cardNo, BusUserDto currUser);
+	
+	/**
+	 * 创建会员卡
+	 * @param domain
+	 * @param currUser
+	 * @return
+	 */
+	public BusVip create(BusVip domain, BusUserDto currUser);
 
 }

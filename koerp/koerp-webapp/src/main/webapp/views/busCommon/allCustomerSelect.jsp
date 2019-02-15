@@ -12,9 +12,12 @@
 /***************************       初始化查询条件          *****************************/ 
 
 var allCustomerInitFirst = true;
- 
-function initAllCustomerGrid(defaultCustomer){
-	
+
+function initAllCustomerGrid(defaultCustomer, $fm){
+	//方法中可以传入fm
+	if($fm!=null && $fm!=''){
+		$orderfm = $fm;
+	}
 	if(defaultCustomer!=null && defaultCustomer!=''){
 		$('#allCustomer', $orderfm).combogrid({
 			prompt:'请选择...',

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.fsun.api.base.BaseFooterApi;
+import com.fsun.domain.dto.ActiveCardDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.BusVipUnpaidDto;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
@@ -31,6 +32,14 @@ public interface BusVipUnpaidApi extends BaseFooterApi<BusVipUnpaid, BusVipUnpai
 	 * @param user
 	 */
 	public String saveEntity(BusVipUnpaidDto busVipUnpaidDto, BusUserDto currUser);
+	
+	/**
+	 * 会员开卡
+	 * @param activeCardDto
+	 * @param currUser
+	 * @return
+	 */
+	public BusVipUnpaid active(ActiveCardDto activeCardDto, BusUserDto currUser);
 	
 	/**
 	 * 取消交易

@@ -9,7 +9,7 @@
 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="toDetailView()">修改</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="disabledBatch()">禁用</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="enabledBatch()">启用</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="toRachargeView()">充值</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-money" plain="true" onclick="toRachargeView()">充值</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125519344_easyicon_net_16" plain="true" onclick="show()">展开查询条件</a>
@@ -32,7 +32,7 @@ function toRachargeView(){
 	}
 	var row = rows[0];
 	var url = "${api}/bus/vip/toRachargeView?cardNo="+ row.card_no;
-	var icon = "icon-edit";
+	var icon = "icon-money";
 	var subtitle = "会员卡(卡号:"+ row.card_no +")充值";
 	parent.addTab(subtitle, url, icon);	
 }

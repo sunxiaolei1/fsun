@@ -13,8 +13,11 @@
 
 var vipCustomerInitFirst = true;
  
-function initVipCustomerGrid(defaultCustomer){
-	
+function initVipCustomerGrid(defaultCustomer, $fm){
+	//方法中可以传入fm
+	if($fm!=null && $fm!=''){
+		$orderfm = $fm;
+	}	 
 	if(defaultCustomer!=null && defaultCustomer!=''){
 		$('#vipCustomer', $orderfm).combogrid({
 			prompt:'请选择...',

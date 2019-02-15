@@ -8,9 +8,11 @@
 %>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('1')">销售出库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('2')">销售寄存</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="toDetailView()">查看</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toPrintOrderView()">打印</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
+<a href="#" class="easyui-linkbutton" iconCls="icon-client" plain="true" onclick="toAddCustomerView()">创建客户</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-memu_visa" plain="true" onclick="toVipActiveView()">会员开卡</a>	
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125519344_easyicon_net_16" plain="true" onclick="show()">展开查询条件</a>
  -->
@@ -77,6 +79,22 @@ function toPrintOrderView(){
 //刷新DataGrid
 function reflushDataGrid(){
 	query();
+}
+
+/*
+ * 创建客户
+ */
+function toAddCustomerView(){
+	commonDialog("ordersDialog", "创建客户", "75%", "65%", 
+		"${api}/bus/customer/toDetailView?id=", "icon-add");
+}
+
+/*
+ * 会员开卡
+ */
+function toVipActiveView(){
+	commonDialog("ordersDialog", "会员开卡", "90%", "88%", 
+		"${api}/bus/vipUnpaid/toVipActiveView", "icon-memu_visa");
 }
 
 //隐藏查询条件

@@ -42,13 +42,18 @@ public class CustomerController extends BaseController {
 	public String index() {
 		return "/busCustomer/index";
 	}
+	
+	@RequestMapping("/toAddView")
+	public String toAddView(String id) {		
+		return "/busCustomer/add";
+	}
 
 	@RequestMapping("/toDetailView")
 	public ModelAndView toDetailView(String id) {		
 		ModelAndView modelAndView = new ModelAndView("/busCustomer/detail");
 		modelAndView.addObject("id", id);
 		return modelAndView;
-	}
+	}	
 	
 	@RequestMapping("/toUnpaidView")
 	public ModelAndView toUnpaidView(@RequestParam("customerCode") String customerCode) {		
@@ -131,6 +136,22 @@ public class CustomerController extends BaseController {
 			SysUser user = getCurrentUser();			
 			customerApi.save(busCustomer, user);
 			return success();
+		} catch(CustomerException e){
+			e.printStackTrace();
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}		
+	}
+	
+	@RequestMapping(value="/create", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult create(@RequestBody BusCustomer busCustomer) {
+		try {
+			SysUser user = getCurrentUser();			
+			BusCustomer busCustomer0 = customerApi.create(busCustomer, user);
+			return success(busCustomer0);
 		} catch(CustomerException e){
 			e.printStackTrace();
 			return failure(SCMException.CODE_SAVE, e.getErrorMsg());

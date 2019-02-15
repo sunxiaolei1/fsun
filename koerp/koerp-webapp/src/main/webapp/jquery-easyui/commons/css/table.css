@@ -15,3 +15,53 @@ table.nb-formTable { width:99%; border: 1px solid #a8cfeb;border-collapse: colla
     filter: alpha(opacity=60);
     border-color: #ccc;
 }
+
+.icon-syn-btn{
+	float:right;
+	padding:0px 10px;
+	display: inline-block;
+	height:20px; 	
+	cursor: pointer;
+	background:url('IconsExtension/2013040601125064_easyicon_net_16.png') no-repeat center center;		
+}
+.icon-syn-btn:hover {height:21px;}
+
+.icon-add-btn{
+	float:right;
+	padding:0px 10px;
+	display: inline-block;
+	height:20px; 	
+	cursor: pointer;
+	background:url('IconsExtension/add.png') no-repeat center center;			
+}
+.icon-add-btn:hover {height:21px;}
+
+.icon-clear-btn{
+	float:right;
+	padding:0px 10px;
+	display: inline-block;
+	height:20px; 	
+	cursor: pointer;
+	background:url('IconsExtension/20130408025545236_easyicon_net_30.png') no-repeat center center;
+}
+.icon-clear-btn:hover {height:21px;}
+
+.icon-add-btn{
+	float:right;
+	padding:0px 10px;
+	display: inline-block;
+	height:20px; 	
+	cursor: pointer;
+	background:url('IconsExtension/add.png') no-repeat center center;			
+}
+.icon-add-btn:hover {height:21px;}
+
+.icon-customer-btn{
+	float:right;
+	padding:0px 10px;
+	display: inline-block;
+	height:20px; 	
+	cursor: pointer;
+	background:url('IconsExtension/client.png') no-repeat center center;	
+}
+.icon-customer-btn:hover {height:21px;}

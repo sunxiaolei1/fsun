@@ -83,7 +83,7 @@ public class BusAccessLogCondition extends SortCondition{
     private String ext3;
 
     /**
-     * Extended field
+     * Extended field 请求流水号是否是主键
      * 表字段 : bus_access_log.ext_4
      */
     private String ext4;

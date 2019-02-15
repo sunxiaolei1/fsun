@@ -51,6 +51,18 @@ public class BusVipController extends BaseController {
 		modelAndView.addObject("cardNo", cardNo);
 		return modelAndView;
 	}
+		
+	@RequestMapping(value="/initActiveData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult initActiveData(){
+		try {
+			HashMap<String, Object> map = busVipApi.initActiveData(super.getCurrentUser());
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 	
 	@RequestMapping(value="/initRachargeData", method = {RequestMethod.GET})
 	@ResponseBody

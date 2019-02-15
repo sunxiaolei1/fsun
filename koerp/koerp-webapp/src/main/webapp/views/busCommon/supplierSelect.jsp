@@ -13,8 +13,11 @@
 
 var supplierInitFirst = true;
  
-function initSupplierGrid(defaultCustomer){
-	
+function initSupplierGrid(defaultCustomer, $fm){
+	//方法中可以传入fm
+	if($fm!=null && $fm!=''){
+		$orderfm =$fm;
+	}
 	if(defaultCustomer!=null && defaultCustomer!=''){
 		$('#supplierId', $orderfm).combogrid({
 			prompt:'请选择...',
