@@ -1,5 +1,6 @@
 package com.fsun.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +112,21 @@ public class BusAfterSaleController extends BaseController {
 		}
 	}
 	
+	@RequestMapping(value="/refund/getInitData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getRefundInitData(@RequestParam("orderId") String orderId, 
+			@RequestParam("refundId") String refundId){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = busAfterSaleApi.getInitData(refundId, orderId, 
+				RefundTypeEnum.RETURN_ORDER.getValue(), currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
 	/******************************************        refund end     *****************************************/
 	
 
@@ -168,10 +184,22 @@ public class BusAfterSaleController extends BaseController {
 		}
 	}
 	
+	@RequestMapping(value="/barter/getInitData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getBarterInitData(@RequestParam("orderId") String orderId, 
+			@RequestParam("refundId") String refundId){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = busAfterSaleApi.getInitData(refundId, orderId, 
+				RefundTypeEnum.EXCHANGE_ORDER.getValue(), currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 	
 	/******************************************        barter end     *****************************************/
 	
 	/***********************************    共用方法       ***************************************/
-	
-	
 }

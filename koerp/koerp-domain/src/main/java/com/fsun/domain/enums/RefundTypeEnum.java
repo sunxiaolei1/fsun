@@ -10,17 +10,22 @@ import java.util.List;
  */
 public enum RefundTypeEnum {
 
-	UNKNOW(null,"未知"),
-	RETURN_ORDER((short)1, "退货单"),
-	EXCHANGE_ORDER((short)2, "换退单");
+	UNKNOW(null, "", "未知"),
+	RETURN_ORDER((short)1, "TH","退货单"),
+	EXCHANGE_ORDER((short)2, "HT", "换退单");
 	
 	/** 常量 key */
 	private Short value;
+	
+	/** 常量描述 */
+	private String sign;
+	
 	/** 常量描述 */
 	private String comment;
     
-	private RefundTypeEnum(Short value, String comment) {
+	private RefundTypeEnum(Short value, String sign, String comment) {
 		this.value = value;
+		this.sign = sign;
 		this.comment = comment;
 	}
 
@@ -30,6 +35,14 @@ public enum RefundTypeEnum {
 
 	public void setValue(Short value) {
 		this.value = value;
+	}
+	
+	public String getSign() {
+		return sign;
+	}
+
+	public void setSign(String sign) {
+		this.sign = sign;
 	}
 
 	public String getComment() {

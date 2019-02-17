@@ -13,7 +13,8 @@ public enum VipUnpaidPayModeEnum {
 	UNOIN_PAY((short)1, "银行卡"),
 	CASH_PAY((short)2, "现金"),
 	ALI_PAY((short)3, "支付宝"),
-	WECHAT_PAY((short)4, "微信");
+	WECHAT_PAY((short)4, "微信"),
+	OTHERS((short)5, "其他");
 	
 	/** 常量 key */
 	private Short value;

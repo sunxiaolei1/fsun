@@ -237,6 +237,11 @@ public class BusGoods {
      * 表字段 : bus_goods.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 商品售后状态
+     */
+    private Short skuAftersaleStatus;
 
     public String getGoodsId() {
         return goodsId;
@@ -554,5 +559,19 @@ public class BusGoods {
 	 */
 	public void setCouponPrice(BigDecimal couponPrice) {
 		this.couponPrice = couponPrice;
+	}
+
+	/**
+	 * @return the skuAftersaleStatus
+	 */
+	public Short getSkuAftersaleStatus() {
+		return skuAftersaleStatus;
+	}
+
+	/**
+	 * @param skuAftersaleStatus the skuAftersaleStatus to set
+	 */
+	public void setSkuAftersaleStatus(Short skuAftersaleStatus) {
+		this.skuAftersaleStatus = skuAftersaleStatus;
 	}
 }

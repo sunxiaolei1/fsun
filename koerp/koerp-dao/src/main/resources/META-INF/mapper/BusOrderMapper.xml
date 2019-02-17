@@ -21,11 +21,12 @@
     <result column="trade_from" property="tradeFrom" jdbcType="VARCHAR" />
     <result column="trade_status" property="tradeStatus" jdbcType="CHAR" />
     <result column="order_status" property="orderStatus" jdbcType="CHAR" />
-    <result column="refund_status" property="refundStatus" jdbcType="CHAR" />
+    <result column="refund_id" property="refundId" jdbcType="VARCHAR" />
+    <result column="refund_status" property="refundStatus" jdbcType="SMALLINT" />
     <result column="refund_time" property="refundTime" jdbcType="TIMESTAMP" />
-    <result column="refund_sponsor" property="refundSponsor" jdbcType="INTEGER" />
-    <result column="refund_type" property="refundType" jdbcType="INTEGER" />
-    <result column="refund_reason" property="refundReason" jdbcType="VARCHAR" />
+    <result column="refund_sponsor" property="refundSponsor" jdbcType="SMALLINT" />
+    <result column="refund_type" property="refundType" jdbcType="SMALLINT" />
+    <result column="refund_reason" property="refundReason" jdbcType="SMALLINT" />
     <result column="flow_status" property="flowStatus" jdbcType="CHAR" />
     <result column="is_valid" property="isValid" jdbcType="BIT" />
     <result column="origin_price" property="originPrice" jdbcType="DECIMAL" />
@@ -80,7 +81,7 @@
   <sql id="Base_Column_List" >
     order_id, order_type, pay_type, sys_order_id, ext_order_id, pos_no, card_type, buyer_id, 
     buyer_name, carrier_id, carrier_name, plat_id, plat_name, plat_shop_id, shop_id, 
-    shop_name, trade_from, trade_status, order_status, refund_status, refund_time, refund_sponsor, 
+    shop_name, trade_from, trade_status, order_status, refund_id, refund_status, refund_time, refund_sponsor, 
     refund_type, refund_reason, flow_status, is_valid, origin_price, order_price, ship_price, 
     coupon_price, discount_price, to_zero_price, pay_price, dib_price, recept_price, package_price, 
     point_fee, bonus_price, rate_price, is_settlemented, receive_name, province_id, province, 
@@ -401,7 +402,7 @@
       carrier_id, carrier_name, plat_id, 
       plat_name, plat_shop_id, shop_id, 
       shop_name, trade_from, trade_status, 
-      order_status, refund_status, refund_time, 
+      order_status, refund_id, refund_status, refund_time, 
       refund_sponsor, refund_type, refund_reason, 
       flow_status, is_valid, origin_price, 
       order_price, ship_price, coupon_price, discount_price, 
@@ -426,8 +427,8 @@
       #{carrierId,jdbcType=VARCHAR}, #{carrierName,jdbcType=VARCHAR}, #{platId,jdbcType=VARCHAR}, 
       #{platName,jdbcType=VARCHAR}, #{platShopId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
       #{shopName,jdbcType=VARCHAR}, #{tradeFrom,jdbcType=VARCHAR}, #{tradeStatus,jdbcType=CHAR}, 
-      #{orderStatus,jdbcType=CHAR}, #{refundStatus,jdbcType=CHAR}, #{refundTime,jdbcType=TIMESTAMP}, 
-      #{refundSponsor,jdbcType=INTEGER}, #{refundType,jdbcType=INTEGER}, #{refundReason,jdbcType=VARCHAR}, 
+      #{orderStatus,jdbcType=CHAR}, #{refundId,jdbcType=VARCHAR}, #{refundStatus,jdbcType=SMALLINT}, #{refundTime,jdbcType=TIMESTAMP}, 
+      #{refundSponsor,jdbcType=SMALLINT}, #{refundType,jdbcType=SMALLINT}, #{refundReason,jdbcType=SMALLINT}, 
       #{flowStatus,jdbcType=CHAR}, #{isValid,jdbcType=BIT}, #{originPrice,jdbcType=DECIMAL}, 
       #{orderPrice,jdbcType=DECIMAL}, #{shipPrice,jdbcType=DECIMAL}, #{couponPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
       #{toZeroPrice,jdbcType=DECIMAL}, #{payPrice,jdbcType=DECIMAL}, #{dibPrice,jdbcType=DECIMAL}, 
@@ -502,6 +503,9 @@
       </if>
       <if test="tradeStatus != null" >
         trade_status,
+      </if>     
+      <if test="refundId != null" >
+        refund_id,
       </if>
       <if test="orderStatus != null" >
         order_status,
@@ -730,20 +734,23 @@
       <if test="orderStatus != null" >
         #{orderStatus,jdbcType=CHAR},
       </if>
+      <if test="refundId != null" >
+        #{refundId,jdbcType=VARCHAR},
+      </if>
       <if test="refundStatus != null" >
-        #{refundStatus,jdbcType=CHAR},
+        #{refundStatus,jdbcType=SMALLINT},
       </if>
       <if test="refundTime != null" >
         #{refundTime,jdbcType=TIMESTAMP},
       </if>
       <if test="refundSponsor != null" >
-        #{refundSponsor,jdbcType=INTEGER},
+        #{refundSponsor,jdbcType=SMALLINT},
       </if>
       <if test="refundType != null" >
-        #{refundType,jdbcType=INTEGER},
+        #{refundType,jdbcType=SMALLINT},
       </if>
       <if test="refundReason != null" >
-        #{refundReason,jdbcType=VARCHAR},
+        #{refundReason,jdbcType=SMALLINT},
       </if>
       <if test="flowStatus != null" >
         #{flowStatus,jdbcType=CHAR},
@@ -954,20 +961,23 @@
       <if test="orderStatus != null" >
         order_status = #{orderStatus,jdbcType=CHAR},
       </if>
+      <if test="refundId != null" >
+        refund_id = #{refundId,jdbcType=VARCHAR},
+      </if>
       <if test="refundStatus != null" >
-        refund_status = #{refundStatus,jdbcType=CHAR},
+        refund_status = #{refundStatus,jdbcType=SMALLINT},
       </if>
       <if test="refundTime != null" >
         refund_time = #{refundTime,jdbcType=TIMESTAMP},
       </if>
       <if test="refundSponsor != null" >
-        refund_sponsor = #{refundSponsor,jdbcType=INTEGER},
+        refund_sponsor = #{refundSponsor,jdbcType=SMALLINT},
       </if>
       <if test="refundType != null" >
-        refund_type = #{refundType,jdbcType=INTEGER},
+        refund_type = #{refundType,jdbcType=SMALLINT},
       </if>
       <if test="refundReason != null" >
-        refund_reason = #{refundReason,jdbcType=VARCHAR},
+        refund_reason = #{refundReason,jdbcType=SMALLINT},
       </if>
       <if test="flowStatus != null" >
         flow_status = #{flowStatus,jdbcType=CHAR},
@@ -1141,12 +1151,13 @@
       shop_name = #{shopName,jdbcType=VARCHAR},
       trade_from = #{tradeFrom,jdbcType=VARCHAR},
       trade_status = #{tradeStatus,jdbcType=CHAR},
-      order_status = #{orderStatus,jdbcType=CHAR},
-      refund_status = #{refundStatus,jdbcType=CHAR},
+      order_status = #{orderStatus,jdbcType=CHAR},    
+      refund_id = #{refundId,jdbcType=VARCHAR},     
+      refund_status = #{refundStatus,jdbcType=SMALLINT},
       refund_time = #{refundTime,jdbcType=TIMESTAMP},
-      refund_sponsor = #{refundSponsor,jdbcType=INTEGER},
-      refund_type = #{refundType,jdbcType=INTEGER},
-      refund_reason = #{refundReason,jdbcType=VARCHAR},
+      refund_sponsor = #{refundSponsor,jdbcType=SMALLINT},
+      refund_type = #{refundType,jdbcType=SMALLINT},
+      refund_reason = #{refundReason,jdbcType=SMALLINT},
       flow_status = #{flowStatus,jdbcType=CHAR},
       is_valid = #{isValid,jdbcType=BIT},
       origin_price = #{originPrice,jdbcType=DECIMAL},

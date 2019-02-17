@@ -381,4 +381,5 @@ public class BusRefund {
     public void setUpdatedName(String updatedName) {
         this.updatedName = updatedName == null ? null : updatedName.trim();
     }
+
 }

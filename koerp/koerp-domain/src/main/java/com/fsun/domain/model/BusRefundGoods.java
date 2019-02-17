@@ -117,6 +117,12 @@ public class BusRefundGoods {
      * 表字段 : bus_refund_goods.rate_type
      */
     private String rateType;
+    
+    /**
+     * 原订单销售数量
+     * 表字段 : bus_refund_goods.origin_qty
+     */
+    private BigDecimal originQty;
 
     /**
      * 购买数量
@@ -243,6 +249,11 @@ public class BusRefundGoods {
      * 表字段 : bus_refund_goods.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 原订单商品应收总金额
+     */
+    private BigDecimal originTotalPrice;
 
     public String getGoodsId() {
         return goodsId;
@@ -563,4 +574,33 @@ public class BusRefundGoods {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+	/**
+	 * @return the originQty
+	 */
+	public BigDecimal getOriginQty() {
+		return originQty;
+	}
+
+	/**
+	 * @param originQty the originQty to set
+	 */
+	public void setOriginQty(BigDecimal originQty) {
+		this.originQty = originQty;
+	}
+
+	/**
+	 * @return the originTotalPrice
+	 */
+	public BigDecimal getOriginTotalPrice() {
+		return originTotalPrice;
+	}
+
+	/**
+	 * @param originTotalPrice the originTotalPrice to set
+	 */
+	public void setOriginTotalPrice(BigDecimal originTotalPrice) {
+		this.originTotalPrice = originTotalPrice;
+	}
+
 }

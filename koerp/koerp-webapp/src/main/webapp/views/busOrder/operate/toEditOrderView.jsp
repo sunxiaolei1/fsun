@@ -167,14 +167,26 @@ var soColumns = [[
 	//	return formatter(value, window.parent.categoryCode); 
 	//}},
 	{field:'property',title:'规格',width:120,align:'center',sortable:true},
-	{field:"isGift",title:"有无赠品", width:60,align:"center",formatter:function(value, row){
+	{field:'isGift',title:'赠品信息',width:160,align:'center',sortable:true,formatter:function(value, row){
+		var info = "--";
+		if(value!=null && value){
+			var goodsType = row.goodsType; 
+			if(goodsType!=null && goodsType!=''){
+				info = formatter(goodsType, window.parent.busGoodsType) 
+					+ "[数量:"+ intNumBaseFormat(row.giftCount)
+					+",金额:"+ numBaseFormat(row.giftPrice) +"]";				
+			}
+		}
+		return info; 
+	}},
+	/* {field:"isGift",title:"有无赠品", width:60,align:"center",formatter:function(value, row){
 		return value!=null?(value?'有':"无"):""; 
 	}},
 	{field:"goodsType",title:"赠送类型", width:80,align:"center", formatter:function(value, row){
-		return value!=''?formatter(value, window.parent.busGoodsType):"--"; 
+		return (value!=null && value!='')?formatter(value, window.parent.busGoodsType):"--"; 
 	}},
 	{field:"giftCount",title:"赠送数量", width:80,align:"center",formatter:intNumBaseFormat},
-	{field:"giftPrice",title:"赠送金额", width:80,align:"center",formatter:numBaseFormat},
+	{field:"giftPrice",title:"赠送金额", width:80,align:"center",formatter:numBaseFormat}, */
 	{field:"originSalePrice",title:"销售单价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"salePrice",title:"实付单价", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){

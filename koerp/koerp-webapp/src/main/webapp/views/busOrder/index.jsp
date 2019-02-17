@@ -31,8 +31,8 @@ var frozenColumns = [[
 	{field:'trade_status',title:'交易状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeStatus); 
 	}},
-	{field:'print_count',title:'已打印',width:60,align:'center', sortable:true, formatter:function(value, row){
-		return (row.print_count>0?"<span style='color:red;'>是</span>":(row.print_count==0?"否":"")); 
+	{field:'refund_status',title:'退货状态',width:100,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.refundStatus); 
 	}},
 	{field:'shop_id',title:'所属店仓',width:130,align:'center',sortable:true, formatter:function(value, row){
 		return row.shop_name; 
@@ -46,7 +46,10 @@ var columns = [[
 	{field:'to_zero_price',title:'抹零金额',width:80,align:'center',formatter:numBaseFormat},
 	{field:'pay_price',title:'实付金额',width:80,align:'center',formatter:numBaseFormat},
 	{field:'dib_price',title:'找零金额',width:80,align:'center',formatter:numBaseFormat},
-	{field:'recept_price',title:'实收金额',width:80,align:'center',formatter:numBaseFormat},		
+	{field:'recept_price',title:'实收金额',width:80,align:'center',formatter:numBaseFormat},
+	{field:'print_count',title:'已打印',width:60,align:'center', sortable:true, formatter:function(value, row){
+		return (row.print_count>0?"<span style='color:red;'>是</span>":(row.print_count==0?"否":"")); 
+	}},
 	{field:'buyer_name',title:'客户名称',width:100,align:'center',sortable:true},
 	{field:'carrier_name',title:'经办人',width:100,align:'center',sortable:true},
 	{field:'order_time',title:'单据时间',width:130,align:'center',sortable:true},

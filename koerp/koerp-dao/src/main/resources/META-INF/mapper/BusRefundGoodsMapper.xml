@@ -22,6 +22,7 @@
     <result column="total_part_price" property="totalPartPrice" jdbcType="DECIMAL" />
     <result column="rate_type" property="rateType" jdbcType="VARCHAR" />
     <result column="qty" property="qty" jdbcType="DECIMAL" />
+    <result column="origin_qty" property="originQty" jdbcType="DECIMAL" />
     <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="convert_qty" property="convertQty" jdbcType="DECIMAL" />
     <result column="convert_unit" property="convertUnit" jdbcType="VARCHAR" />
@@ -46,7 +47,7 @@
   <sql id="Base_Column_List" >
     goods_id, order_id, refund_id, line_no, goods_type, category_name, category_code, 
     brand_name, brand_code, product_type, goods_name, bar_code, sku, parent_sku, sku_id, 
-    parent_sku_id, en_unit, total_part_price, rate_type, qty, unit, convert_qty, convert_unit, 
+    parent_sku_id, en_unit, total_part_price, rate_type, qty, origin_qty, unit, convert_qty, convert_unit, 
     market_price, origin_sale_price, sale_price, part_price, coupon_price, discount_price, 
     total_price, cost_price, rate_precent, is_gift, gift_count, gift_price, is_show, 
     property, memo, created_time, updated_time
@@ -68,7 +69,7 @@
       product_type, goods_name, bar_code, 
       sku, parent_sku, sku_id, 
       parent_sku_id, en_unit, total_part_price, 
-      rate_type, qty, unit, 
+      rate_type, qty, origin_qty, unit, 
       convert_qty, convert_unit, market_price, 
       origin_sale_price, sale_price, part_price, 
       coupon_price, discount_price, total_price, 
@@ -82,7 +83,7 @@
       #{productType,jdbcType=SMALLINT}, #{goodsName,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, 
       #{sku,jdbcType=VARCHAR}, #{parentSku,jdbcType=VARCHAR}, #{skuId,jdbcType=VARCHAR}, 
       #{parentSkuId,jdbcType=VARCHAR}, #{enUnit,jdbcType=VARCHAR}, #{totalPartPrice,jdbcType=DECIMAL}, 
-      #{rateType,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
+      #{rateType,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, #{originQty,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
       #{convertQty,jdbcType=DECIMAL}, #{convertUnit,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, 
       #{originSalePrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, #{partPrice,jdbcType=DECIMAL}, 
       #{couponPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, 
@@ -154,6 +155,9 @@
       <if test="qty != null" >
         qty,
       </if>
+      <if test="originQty != null" >
+        origin_qty,
+      </if>     
       <if test="unit != null" >
         unit,
       </if>
@@ -275,6 +279,9 @@
       </if>
       <if test="qty != null" >
         #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="originQty != null" >
+        #{originQty,jdbcType=DECIMAL},
       </if>
       <if test="unit != null" >
         #{unit,jdbcType=VARCHAR},
@@ -398,6 +405,9 @@
       <if test="qty != null" >
         qty = #{qty,jdbcType=DECIMAL},
       </if>
+      <if test="originQty != null" >
+        origin_qty = #{originQty,jdbcType=DECIMAL},
+      </if>
       <if test="unit != null" >
         unit = #{unit,jdbcType=VARCHAR},
       </if>
@@ -482,6 +492,7 @@
       total_part_price = #{totalPartPrice,jdbcType=DECIMAL},
       rate_type = #{rateType,jdbcType=VARCHAR},
       qty = #{qty,jdbcType=DECIMAL},
+      origin_qty = #{originQty,jdbcType=DECIMAL},
       unit = #{unit,jdbcType=VARCHAR},
       convert_qty = #{convertQty,jdbcType=DECIMAL},
       convert_unit = #{convertUnit,jdbcType=VARCHAR},

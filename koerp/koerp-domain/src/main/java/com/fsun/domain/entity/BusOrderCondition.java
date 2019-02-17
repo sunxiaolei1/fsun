@@ -126,10 +126,16 @@ public class BusOrderCondition extends BaseOrderCondition {
     private String orderStatus;
 
     /**
+     * 退货单单号
+     * 表字段 : bus_order.refund_id
+     */
+    private String refundId;
+    
+    /**
      * 退款状态[05 申请取消单,10 申请退款,15 同意取消单,20 同意退款, 25 拒绝取消单,30  拒绝退款, 35 取消单完成,40  退款完成,45 申请取消单取消,50 申请退单取消]
      * 表字段 : bus_order.refund_status
      */
-    private String refundStatus;
+    private Short refundStatus;
 
     /**
      * 退款时间
@@ -138,22 +144,22 @@ public class BusOrderCondition extends BaseOrderCondition {
     private Date refundTime;
 
     /**
-     * 发起退单（退货）角色：1下单用户，2外卖平台系统，3商户，4外卖平台客服，5其他
+     * 发起退单（退货）角色：1下单用户，2第三方平台，3商户，4其他
      * 表字段 : bus_order.refund_sponsor
      */
-    private Integer refundSponsor;
+    private Short refundSponsor;
 
     /**
-     * 退单类型[0,取消单；1.退单]
+     * 退单类型[1,退货单；2.换退单]
      * 表字段 : bus_order.refund_type
      */
-    private Integer refundType;
+    private Short refundType;
 
     /**
      * 取消或退单原因
      * 表字段 : bus_order.refund_reason
      */
-    private String refundReason;
+    private Short refundReason;
 
     /**
      * 流转状态 00 创建，30 出库，40 完成,99 已回传
@@ -607,12 +613,12 @@ public class BusOrderCondition extends BaseOrderCondition {
         this.orderStatus = orderStatus == null ? null : orderStatus.trim();
     }
 
-    public String getRefundStatus() {
+    public Short getRefundStatus() {
         return refundStatus;
     }
 
-    public void setRefundStatus(String refundStatus) {
-        this.refundStatus = refundStatus == null ? null : refundStatus.trim();
+    public void setRefundStatus(Short refundStatus) {
+        this.refundStatus = refundStatus;
     }
 
     public Date getRefundTime() {
@@ -623,28 +629,28 @@ public class BusOrderCondition extends BaseOrderCondition {
         this.refundTime = refundTime;
     }
 
-    public Integer getRefundSponsor() {
+    public Short getRefundSponsor() {
         return refundSponsor;
     }
 
-    public void setRefundSponsor(Integer refundSponsor) {
+    public void setRefundSponsor(Short refundSponsor) {
         this.refundSponsor = refundSponsor;
     }
 
-    public Integer getRefundType() {
+    public Short getRefundType() {
         return refundType;
     }
 
-    public void setRefundType(Integer refundType) {
+    public void setRefundType(Short refundType) {
         this.refundType = refundType;
     }
 
-    public String getRefundReason() {
+    public Short getRefundReason() {
         return refundReason;
     }
 
-    public void setRefundReason(String refundReason) {
-        this.refundReason = refundReason == null ? null : refundReason.trim();
+    public void setRefundReason(Short refundReason) {
+        this.refundReason = refundReason;
     }
 
     public String getFlowStatus() {
@@ -1051,6 +1057,20 @@ public class BusOrderCondition extends BaseOrderCondition {
 	 */
 	public void setCouponPrice(BigDecimal couponPrice) {
 		this.couponPrice = couponPrice;
+	}
+
+	/**
+	 * @return the refundId
+	 */
+	public String getRefundId() {
+		return refundId;
+	}
+
+	/**
+	 * @param refundId the refundId to set
+	 */
+	public void setRefundId(String refundId) {
+		this.refundId = refundId;
 	}
 
 }

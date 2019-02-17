@@ -35,6 +35,15 @@ public enum SCMErrorEnum {
 	BUS_ORDER_UNPAY_NOT_EXIST(2010, "单据不存在"),
 	BUS_ORDER_UNPAY_STATUS_INVALID(2011, "单据状态不可用"),
 	
+	BUS_REFUND_NOT_EXIST(3001, "单据不存在"),
+	BUS_REFUND_DETAIL_NOT_EXIST(3002, "单据商品不存在"),
+	BUS_REFUND_EXISTED(3003, "单据已存在"),
+	BUS_REFUND_PAYACCOUNT_NOT_EXIST(3004, "单据账单不存在"),
+	BUS_REFUND_PAYACCOUNT_ILLEGAL(3005, "退单金额非法"),
+	BUS_REFUND_SKU_QTY_ILLEGAL(3006, "退货商品数量非法"),
+	BUS_REFUND_STATUS_ILLEGAL(3007, "订单处理中，不能重审，请稍后再试!"),
+	BUS_REFUND_STATUS_INVALID(3008, "单据状态不可用"),
+	
 	BUS_SKU_NOT_EXIST(8011, "商品不存在"),
 	BUS_SKU_EXISTED(8012, "商品已存在"),
 	BUS_SKU_ISNULL(8013, "商品sku是空"),
@@ -56,7 +65,7 @@ public enum SCMErrorEnum {
 	BUS_SHOP_ILLEGAL(8054, "店仓非法"),
 	BUS_VIP_UNPAID_ILLEGAL(8061, "赠送金额不能大于充值金额"),
 	BUS_VIP_UNPAID_IS_ZERO(8062, "交易金额不能为零");
-
+	
 	private int errorCode;
 	
 	private String errorType;

@@ -24,59 +24,103 @@
 	position: absolute;
 	color: #416AA3;
 	font-weight: bold;
-	left: 2%;
+	left: 5px;
 	line-height: 2em;
 	font-size: 12px;
     font-family: Tahoma,Verdana,微软雅黑,新宋体;
 	padding: 0 1em;
 	background-color: #fff;
 }
+
+.skutitle{
+	margin: 0px 18px 0px 6px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 26px;
+    line-height: 26px;
+    width: 182px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #416AA3;
+}
+
+
 </style> 
 
 <!-- 查询条件 -->
-<%@include file="../addtoolbar.jsp"%>
-	
+<%@include file="../../addrefundtoolbar.jsp"%>
+
+<span style="float:right;margin-top:2px;margin-bottom:2px;">	
+	<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
+</span>
+<div style="height:24px;margin-left:10px;">
+	<b class="skutitle" >
+		原订单商品[单号:${orderId}]
+	</b>
+</div>	
+<div style="height: 145px;width: 100%;">      		
+	<table id="orderDetailDataGrid"></table>
+</div>	
+
 <div class="fsun-wrap">
-	<span class="title" style="top: 35px;">原订单商品[单号:${orderId}]</span>	
-	<div style="height: 158px;width: 100%;">
-		<table id="orderDetailDataGrid"></table>
-	</div>	
-</div>
-<div class="fsun-wrap">
-	<span class="title" style="top: 224px;">退货退款信息</span>	
-	<div style="height: 130px;width: 100%;">
+	<span class="title" style="top: 207px;">退货退款信息</span>	
+	<div style="height: 155px;width: 100%;">
 		<table id="refundDetailDataGrid"></table>
 	</div>
 	<form id="orderfm">
 		<input id="orderId" name="orderId" hidden="true" />
+		<input id="extOrderId" name="extOrderId" hidden="true" />		
+		<input id="shopId" name="shopId" hidden="true" />
+		<input id="buyerId" name="buyerId" hidden="true" />
 		<table class="nb-formTable" style="width:100%;margin-top:2px;">
 	        <tr>
-	            <th width="12%">原订单金额</th>
+	        	<th width="12%">原订单金额</th>
 				<td>
-					<input id="payprice" class="easyui-textbox" disabled />
+					<input id="orderPrice" class="easyui-numberbox" disabled 
+						data-options="min:0,precision:2, formatter: priceFormat" />
 				</td>
-				<th width="12%">原已付金额</th>
+				<th width="12%">原实收金额</th>
 				<td>
-					<input id="alreadyprice" class="easyui-textbox" disabled />
+					<input id="receptPrice" class="easyui-numberbox" disabled 
+						data-options="min:0,precision:2, formatter: priceFormat" />
 				</td>
-				<th width="12%">退款金额</th>
+	        	<th width="12%">客户名称</th>
 				<td>
-					<input id="refundprice" name="refundprice" class="easyui-numberbox" 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />
-				</td>
+					<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly />								
+				</td>				
 				<th width="12%">所属店仓</th>
 				<td>
-					<input id="shopName" class="easyui-textbox" disabled />								
-				</td>								
+					<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
+				</td>            												
 	        </tr>	
 	        <tr>	
-       												        			           
+       			<th width="12%">退款金额</th>
+				<td>
+					<input id="refundPrice" name="refundPrice" class="easyui-numberbox" 
+						data-options="min:0,precision:2,value:0, formatter: priceFormat" />
+				</td>									        			           
+				<th width="12%">支付方式<span style="color:red;">*</span></th>
+				<td>
+					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
+				</td>
+				<th width="12%">支付流水号</th>
+				<td>
+					<input id="tradeNo" name="tradeNo" class="easyui-textbox" />								
+				</td>
+				<th width="12%">支付卡号</th>
+				<td>
+					<input id="cardNo" name="cardNo" class="easyui-textbox" />								
+				</td>
 	        </tr>	       		        		        
-	        <tr>	        			        	
+	        <tr>	
+	        	<th width="12%">退货原因<span style="color:red;">*</span></th>
+				<td>
+					<input id="refundReason" name="refundReason" class="easyui-combobox" editable="false" required />								
+				</td>        			        	
 	            <th width="12%">备注</th>
-	        	<td colspan="7">
+	        	<td colspan="5">
 					<input id="memo" name="memo" data-options="multiline:true"
-						class="easyui-textbox" style="width:800px;height:40px;" />
+						class="easyui-textbox" style="width:600px;height:40px;" />
 				</td>		        			           
 	        </tr>
 		</table>
@@ -86,22 +130,198 @@
 
 
 <!-- datagrid可编辑单元格 -->
-<%@include file="../../ecCommon/commonEdatagridCellediting.jsp"%>
+<%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>
 
 <script type="text/javascript">
 
 var currOrderDetails = []; 
 var currRefundDetails = [];
-var $orderfm ;
+var currOrderDetailDataGrid = $("#orderDetailDataGrid");
+var currRefundDetailDataGrid = $("#refundDetailDataGrid");
+var $orderfm = $("#orderfm");   
+var soColumns = [[
+	{field:'lineNo',hidden:true},
+	{field:"sku",title:"SKU", width:60,align:"center"},
+	{field:"goodsName",title:"商品名称", width:140,align:"center"},
+	//{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.brandCode); 
+	}},
+	//{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
+	//	return formatter(value, window.parent.categoryCode); 
+	//}},
+	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	{field:'isGift',title:'赠品信息',width:160,align:'center',sortable:true,formatter:function(value, row){
+		var info = "--";
+		if(value!=null && value){
+			var goodsType = row.goodsType; 
+			if(goodsType!=null && goodsType!=''){
+				info = formatter(goodsType, window.parent.busGoodsType) 
+					+ "[数量:"+ intNumBaseFormat(row.giftCount)
+					+",金额:"+ numBaseFormat(row.giftPrice) +"]";				
+			}
+		}
+		return info; 
+	}},
+	/* {field:"isGift",title:"有无赠品", width:60,align:"center",formatter:function(value, row){
+		return value!=null?(value?'有':"无"):""; 
+	}},
+	{field:"goodsType",title:"赠送类型", width:80,align:"center", formatter:function(value, row){
+		return value!=''?formatter(value, window.parent.busGoodsType):"--"; 
+	}},
+	{field:"giftCount",title:"赠送数量", width:70,align:"center",formatter:intNumBaseFormat},
+	{field:"giftPrice",title:"赠送金额", width:70,align:"center",formatter:numBaseFormat}, */
+	{field:"originSalePrice",title:"销售单价", width:70,align:"center",formatter:numBaseFormat},
+	{field:"salePrice",title:"实付单价", width:70,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:numBaseFormat
+	},
+	{field:"qty",title:"数量", width:70,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:intNumBaseFormat
+	},
+	{field:"costPrice",title:"成本价", width:80, hidden:true},
+	{field:"totalPrice",title:"实付金额", width:80,align:"center",formatter:numBaseFormat},
+	{field:"totalPartPrice",title:"分摊金额", width:80, hidden:true},
+	{field:"couponPrice",title:"商品优惠", width:80,hidden:true},
+	{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){
+		return formatter(value, window.parent.unitCode); 
+	}},
+	{field:"skuAftersaleStatus",title:"状态",width:70,align:"center", formatter:function(value, row){
+		return formatter(value, window.parent.skuAftersaleStatus); 
+	}},
+	{field:"operate",title:"操作",width:80,align:"center", formatter: function(value, row, index){
+		if(row.skuAftersaleStatus==10){
+			return commonAssemBottonHtml('refundOne', index, '退货', 'icon-cart_error');	
+		}
+		return "";								
+	}}
+]];
+
+var refundColumns = [[
+	{field:"sku",title:"SKU", width:80,align:"center"},
+	{field:"goodsName",title:"商品名称", width:140,align:"center"},
+	//{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.brandCode); 
+	}},
+	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	{field:"originQty",title:"下单数量",width:60,align:"center",formatter:numBaseFormat},
+	{field:"originTotalPrice",title:"实付总价",width:60,align:"center",formatter:numBaseFormat},			
+	{field:"qty",title:"退货数量",width:60,align:"center",
+		styler: function(value, rowData, rowIndex){
+	      	return 'font-weight:bold;color:green;';
+	    },
+      	formatter:numBaseFormat,
+		editor:{
+			type:'numberspinner',
+			options:{
+				required: true,
+				min:0,
+				precision:2
+			}
+		}
+	},	
+	{field:"salePrice",title:"退货单价",width:60,align:"center",
+		styler: function(value, rowData, rowIndex){
+	      	return 'font-weight:bold;color:green;';
+	    },
+      	formatter:numBaseFormat,
+		editor:{
+			type:'numberbox',
+			options:{
+				required: true,
+				min:0,
+				precision:2
+			}
+		}
+	},	
+	{field:"totalPrice",title:"退款金额",width:60,align:"center",formatter:numBaseFormat},
+	{field:"delete",title:"操作",width:80,align:"center", formatter: function(value, row, index){
+		if (row.sku!="合计:"){//这里是判断哪些行
+			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');	
+        }	
+		return "";				
+	}}
+]];
 
 $(function () { 
-	
-	$orderfm = $("#orderfm");   		
-	var orderId = '${orderId}';
-	
+			
 	//$("#payprice", $orderfm).next().children("input:first-child").css("background-color", "rgb(235, 235, 228)");
 	
-	$("#orderDetailDataGrid").datagrid({
+	$('#payMode', $orderfm).combobox({  
+		prompt: '请选择...',
+   	 	valueField: 'codeCode',
+   	  	textField: 'codeName',
+   	  	data: window.parent.vipUnpaidPayModeData
+   	});
+	
+	$('#refundReason', $orderfm).combobox({  
+		prompt: '请选择...',
+   	 	valueField: 'codeCode',
+   	  	textField: 'codeName',
+   	  	data: window.parent.refundReasonData
+   	});
+	
+	//去除默认的请选择项
+	editInitComboxParams($orderfm, "");
+	
+	//初始化搜索框
+	$('#skuSearcher').searchbox({
+	     prompt: '输入商品名称、SKU筛选...',
+	     searcher: function (value, name) {
+	    	 currOrderDetailDataGrid.datagrid({searchValue: value})
+	    	 	.datagrid("loadData", currOrderDetails);
+	     }
+	 });
+	
+	currOrderDetailDataGrid.datagrid({
+		width:"auto",
+	    height:"auto",
+	    nowrap:false,
+	    striped:true,
+	    border:true,
+	    collapsible:false,//是否可折叠的
+	    fit:true,//自动大小	   
+	    remoteSort:false,
+	    idField:"sku",
+	    sortName:"sku",
+        sortOrder:"asc",	
+        pagination:false,
+        pageNumber:currPageNumber,
+        pageSize: currPageSize,
+	    pageList: GLOBAL_PAGE_SIZE_LIST,
+	    singleSelect:false,//是否单选   
+	    rownumbers:true,//行号
+	    fitColumns:true,
+	    showFooter:true,
+	    //toolbar: "#detailskutoolbar",
+	    columns: soColumns,
+	    loadMsg:"数据加载中请稍后……",
+	    emptyMsg:"没有符合条件的记录",
+	    selectOnCheck: true,
+	    checkOnSelect: true,
+	    rowStyler:function(index,row){
+    		if (row.skuAftersaleStatus==20){
+                return "background-color:#FFAF33";  
+            }	
+    		return "";
+		},
+		loadFilter:function(data) {     		  		
+    		//排序拦截器
+    		sortFilter($(this), data);		
+    	    //分页拦截器
+    	    var data = pagerFilter($(this), data); 
+			return data; 
+        },
+	});
+	
+	currRefundDetailDataGrid.datagrid({
+		view:footerStyleView,
 		width:"auto",
 	    height:"auto",
 	    nowrap:false,
@@ -111,147 +331,71 @@ $(function () {
 	    fit:true,//自动大小	   
 	    remoteSort:false,
 	    sortName:"sku",
-        sortOrder:"desc",	    
+        sortOrder:"asc",	    
 	    singleSelect:true,//是否单选   
 	    rownumbers:true,//行号
 	    fitColumns:true,
 	    showFooter:true,
-	    columns:[[
-			{field:"sku",title:"SKU",width:120,align:"center",sortable:true},
-			{field:"materialname",title:"商品名称",width:240,align:"center"},
-			//{field:"materialcode",title:"商品货号",width:80,align:"center"},	
-			{field:"isbuy",title:"商品类型",width:60,align:"center", formatter:function(value, row){
-				return formatter(value, window.parent.ecIsbuy); 
-			}},
-			{field:"materialproperty",title:"商品属性",width:140,align:"center"},
-			{field:"saleprice",title:"销售单价",width:60,align:"center",formatter:numBaseFormat},
-			{field:"payprice",title:"实付单价",width:60,align:"center",formatter:numBaseFormat},
-			{field:"orderqty",title:"下单数量",width:60,align:"center",formatter:numBaseFormat},
-			{field:"totalprice",title:"实付总价",width:60,align:"center",formatter:numBaseFormat},			
-			{field:"aftersalestatus",title:"售后状态",width:60,align:"center", formatter:function(value, row){				
-				if(value==10){
-					return '<span style="font-weight:bold;color:green;">'+ formatter(value, window.parent.ecAftersalestatus) +'</span>';
-				}
-				return '<span style="font-weight:bold;color:#FF6600;">'+ formatter(value, window.parent.ecAftersalestatus) +'</span>';
-			}},
-			{field:"torefund",title:"操作",width:80,align:"center", formatter: function(value, row, index){
-				var aftersalestatus = row.aftersalestatus;
-				if(aftersalestatus==10){					
-					return commonAssemBottonHtml('refundOne', index, '退货', 'icon-cart_error');		
-				}
-									
-			}}
-	    ]],
+	    columns: refundColumns,
+	    loadFilter:function(data) {     		
+    		var fields = ["totalPrice"];       		
+    		//排序拦截器
+    		sortFilter($(this), data);		
+    	    //分页拦截器
+    	    var data = pagerFilter($(this), data, fields, "sku"); 
+			return data; 
+        },
+        rowStyler:function(index,row){
+    		if (row.sku=="合计:"){//这里是判断哪些行
+                return 'font-weight:bold;';  
+            }	
+    		return "";
+		},
 	    loadMsg:"数据加载中请稍后……",
-	    emptyMsg:"没有符合条件的记录"
+	    emptyMsg:"没有符合条件的记录",
+	    onAfterEdit: function(rowIndex, rowData, changes){
+	    	if(typeof rowData.salePrice !=undefined && typeof rowData.qty!=undefined){
+	    		rowData.salePrice = Number(rowData.salePrice);
+	    		rowData.originSalePrice = rowData.salePrice;
+		    	rowData.qty = Number(rowData.qty);
+	    		rowData.totalPrice = rowData.salePrice * rowData.qty;
+	    	}else{	    		   	
+	    		rowData.totalPrice = 0;
+	    	}	    	
+	    	//更新单头退款金额
+	    	updateRefundPrice(currRefundDetails, $("#refundPrice", $orderfm));
+	    }
 	});
 	
 	$.ajax({
 		type : "GET",
-		url : "${api}/ecaftersale/order/base/"+ sysorderid +"?timestamp=" + new Date().getTime(),
+		url : "${api}/bus/aftersale/refund/getInitData?orderId=${orderId}&refundId=${refundId}",
 		contentType:"application/json;charset=utf-8",	   
 		dataType : "json",
 		success : function(result) {		
-			var ecorderDto = result.entry;
-			var header = ecorderDto.header;
-			var stockinfo = ecorderDto.stockInfo;
+			var orderDto = result.entry;
+			var header = orderDto.header;		
 			
-			var shopid = header.shopid;
-			/***************************              基本信息初始化                        ************************/
+			/***************************              基本信息初始化                        ************************/			
+			$("#payMode", $orderfm).combobox("setValue", header.payMode);
+			$("#refundReason", $orderfm).combobox("setValue", header.refundReason);
+			$("#orderPrice", $orderfm).numberbox("setValue", header.orderPrice);
+			$("#receptPrice", $orderfm).numberbox("setValue", header.receptPrice);
+			$("#shopName",$orderfm).textbox("setValue", header.shopName);			
+			$("#buyerName",$orderfm).textbox("setValue", header.buyerName);
+			$("#orderId",$orderfm).val(header.orderId);
+			$("#extOrderId",$orderfm).val(header.extOrderId);
+			$("#shopId",$orderfm).val(header.shopId);
+			$("#buyerId",$orderfm).val(header.buyerId);
 			
-			$("#payprice", $orderfm).textbox("setValue", header.payprice.toFixed(2));
-			$("#alreadyprice", $orderfm).textbox("setValue", header.alreadyprice.toFixed(2));
-			$("#stockname",$orderfm).textbox("setValue", stockinfo.stockname);
-			$("#sysorderid",$orderfm).val(header.sysorderid);
-										
-			currOrderDetails = ecorderDto.details;
-			$("#orderDetailDataGrid").datagrid("loadData", currOrderDetails);
-			
-			$("#refundDetailDataGrid").datagrid({
-				width:"auto",
-			    height:"auto",
-			    nowrap:false,
-			    striped:true,
-			    border:true,
-			    collapsible:false,//是否可折叠的
-			    fit:true,//自动大小	   
-			    remoteSort:false,
-			    sortName:"sku",
-		        sortOrder:"desc",	    
-			    singleSelect:true,//是否单选   
-			    rownumbers:true,//行号
-			    fitColumns:true,
-			    showFooter:true,
-			    columns:[[
-					{field:"sku",title:"SKU",width:120,align:"center",sortable:true},
-					{field:"materialname",title:"商品名称",width:240,align:"center"},
-					//{field:"materialcode",title:"商品货号",width:80,align:"center"},	
-					{field:"isbuy",title:"商品类型",width:60,align:"center", formatter:function(value, row){
-						return formatter(value, window.parent.ecIsbuy); 
-					}},
-					{field:"materialproperty",title:"商品属性",width:140,align:"center"},
-					{field:"payprice",title:"实付单价",width:60,align:"center",formatter:numBaseFormat},
-					{field:"oldorderqty",title:"下单数量",width:60,align:"center",formatter:numBaseFormat},
-					{field:"oldtotalprice",title:"实付总价",width:60,align:"center",formatter:numBaseFormat},			
-					{field:"orderqty",title:"退货数量",width:60,align:"center",
-						styler: function(value, rowData, rowIndex){
-		                	return 'font-weight:bold;color:green;';
-		                },
-		                formatter:numBaseFormat,
-						editor:{
-							type:'numberspinner',
-							options:{
-								required: true,
-								min:0,
-								precision:2
-							}
-						}},	
-					{field:"totalprice",title:"退款金额",width:60,align:"center",formatter:numBaseFormat},			
-					{field:"reasonid",title:"退货理由",width:160,align:"center",
-						editor:{
-							type:'combobox',
-							options: {
-								valueField: 'codecode',
-						   	  	textField: 'codename',
-						   		url: "${api}/ecorder/config/getRefundReasons/"+ shopid,
-		                        panelHeight : 'auto',
-		                        editable: false,
-		                        required: true,		                        
-		                        loadFilter: function(data){			            				
-		            		 		return data.entry;
-		            			}
-		                    }							
-						},
-						styler: function(value, rowData, rowIndex){
-							return 'font-weight:bold;color:green;';
-                        },
-						formatter:function(value, row){
-							return formatter(value, window.parent.ecReturnReason); 
-						}	
-					},
-					{field:"delete",title:"操作",width:80,align:"center", formatter: function(value, row, index){
-						return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');					
-					}}
-			    ]],
-			    loadMsg:"数据加载中请稍后……",
-			    emptyMsg:"没有符合条件的记录",
-			    onAfterEdit: function(rowIndex, rowData, changes){
-			    	if(typeof rowData.payprice !=undefined && typeof rowData.orderqty!=undefined){
-			    		rowData.payprice = Number(rowData.payprice);
-				    	rowData.orderqty = Number(rowData.orderqty);
-				    	rowData.saleprice = Number(rowData.saleprice);
-			    		rowData.totalprice = rowData.payprice * rowData.orderqty;
-			    		rowData.discountprice = rowData.saleprice * rowData.orderqty - rowData.totalprice;
-			    	}else{	    		   	
-			    		rowData.totalprice = 0;
-			    		rowData.discountprice = 0;
-			    	}
-			    	
-			    	//更新退款金额
-			    	updateRefundPrice(currRefundDetails, $("#refundprice", $orderfm));
-			    }
-			}).datagrid("loadData", currRefundDetails);
-	
+			currOrderDetails = orderDto.details;
+			if(currOrderDetails!=null && currOrderDetails.length>0){
+				$.each(currOrderDetails, function(){
+					this.skuAftersaleStatus = 10;
+				});
+				currOrderDetailDataGrid.datagrid("loadData", currOrderDetails);		
+			}
+			//currRefundDetailDataGrid.datagrid("loadData", currRefundDetails);
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			$.messager.alert("错误", errorThrown, "error");
@@ -266,60 +410,70 @@ $(function () {
  * 退货单个
  */
 function refundOne(rowIndex){		
-	var row = $('#orderDetailDataGrid').datagrid('getRows')[rowIndex];   
+	var row = currOrderDetailDataGrid.datagrid('getRows')[rowIndex];   
     $.each(currOrderDetails, function(){
-    	if(this.orderlineid == row.orderlineid){
-    		this.aftersalestatus = 20;  	
-    		$("#orderDetailDataGrid").datagrid("refreshRow", rowIndex);
+    	if(this.lineNo == row.lineNo){
+    		this.skuAftersaleStatus = 20;  	
+    		currOrderDetailDataGrid.datagrid("refreshRow", rowIndex);
     		return;
     	}
     });	
  
     var rowdata = cloneObj(row);    
-    rowdata.oldorderqty = row.orderqty;
-    rowdata.oldtotalprice = row.totalprice;
-    rowdata.reasonid = 70;
-    delete rowdata.returnreason;
-    delete rowdata.aftersalestatusname;
-    //delete rowdata.aftersalestatus;
-    delete rowdata.giftname;
+    rowdata.originQty = row.qty;
+    rowdata.originTotalPrice = row.totalPrice;
+    rowdata.originSalePrice = row.salePrice;
+    rowdata.couponPrice = 0;
+    rowdata.discountPrice = 0;
+    rowdata.totalPartPrice = 0;
+    rowdata.partPrice = 0;
+    rowdata.isGift = false;
+    rowdata.goodsType = null;
+    rowdata.giftCount = 0;
+    rowdata.giftPrice = 0;
+    delete rowdata.skuAftersaleStatus;
     delete rowdata.nid;
 	currRefundDetails.push(rowdata);
-	$("#refundDetailDataGrid").datagrid("loadData",currRefundDetails);
-	
-	//更新退款金额
-	updateRefundPrice(currRefundDetails, $("#refundprice", $orderfm));
+	currRefundDetailDataGrid.datagrid("loadData",currRefundDetails);	
+	//更新单头退款金额
+	updateRefundPrice(currRefundDetails, $("#refundPrice", $orderfm));
 }
 
 /**
  * 删除单个
  */
 function delOne(rowIndex){
-	var row = $('#refundDetailDataGrid').datagrid('getRows')[rowIndex];
+	var row = currRefundDetailDataGrid.datagrid('getRows')[rowIndex];	
+	//删除商品
+	for(var i in currRefundDetails) {	
+		if(currRefundDetails[i].lineNo==row.lineNo) {
+			currRefundDetails.splice(i,1);	
+			currRefundDetailDataGrid.datagrid("loadData", currRefundDetails);	
+			break;
+		}
+	}	
+	//同步商品状态
 	$.each(currOrderDetails, function(){
-    	if(this.orderlineid == row.orderlineid){
-    		this.aftersalestatus = 10;
-    		$("#orderDetailDataGrid").datagrid("loadData",currOrderDetails);
+    	if(this.lineNo == row.lineNo){
+    		this.skuAftersaleStatus = 10;
+    		currOrderDetailDataGrid.datagrid("loadData",currOrderDetails);
     		return;
     	}
-    });
-	
-	$("#refundDetailDataGrid").datagrid("deleteRow",rowIndex).datagrid("loadData", currRefundDetails);
-	
-	//更新退款金额
-	updateRefundPrice(currRefundDetails, $("#refundprice", $orderfm));
+    });		
+	//更新单头退款金额
+	updateRefundPrice(currRefundDetails, $("#refundPrice", $orderfm));
 }
 
 /**
- * 更新退款金额
+ * 更新单头退款金额
  */
 function updateRefundPrice(refundDetails, $div){
 
-	var refundprice = 0;
+	var refundPrice = 0;
 	$.each(refundDetails, function(){
-		refundprice += this.totalprice;
+		refundPrice += this.totalPrice;
     });
-	$div.numberbox("setValue", refundprice);
+	$div.numberbox("setValue", refundPrice);
 } 
 
 /**
@@ -327,34 +481,38 @@ function updateRefundPrice(refundDetails, $div){
  */
 function getSaveData(){
 	
-	var isValid0 = $("#refundDetailDataGrid").datagrid("isValid");		
+	var isValid0 = currRefundDetailDataGrid.datagrid("isValid");		
 	var isValid = $orderfm.form('validate');
 	if (!isValid || !isValid0){
 		$.messager.alert("错误", "提交的数据不正确!", "error");  
 		return null;
 	}			
-	$("#refundDetailDataGrid").datagrid("acceptChanges");
+	currRefundDetailDataGrid.datagrid("acceptChanges");
 	var baseInfo = formJson($orderfm);	
-	baseInfo.isreturninvoices = $("#isreturninvoices", $orderfm).prop("checked")?1:0;
-
-	//计算有效订单商品实收金额
-	var newpayprice = 0 ;
-	$.each(currOrderDetails, function(){
-		if(this.aftersalestatus==10){
-			newpayprice += Number(this.totalprice); 
-		}		
-	});
-	$.each(currRefundDetails, function(){		
-		newpayprice += (Number(this.oldtotalprice)-Number(this.totalprice)); 				
-	});	
-	baseInfo.newpayprice = newpayprice;
-		
+	var refundPrice = baseInfo.refundPrice;
+	var payAccounts = [];
+	if(refundPrice!=null && refundPrice>0){
+		payAccounts.push({
+			receptPrice: refundPrice,
+			payPrice: refundPrice,
+			discountAmount: 0,
+			dibPrice: 0,
+			payMode: baseInfo.payMode,
+			tradeNo: baseInfo.tradeNo,
+			cardNo: baseInfo.cardNo
+		});
+	}
+	delete baseInfo.payMode;
+	delete baseInfo.tradeNo;
+	delete baseInfo.cardNo;	
 	var saveData = {
 	     "params": {
-			 "header": baseInfo,
-			 "details": currRefundDetails
+			 "refundHeader": baseInfo,
+			 "refundDetails": currRefundDetails,
+			 "orderDetails": currOrderDetails,
+			 "payAccounts": payAccounts
 			},
-	     "saveUrl": "${api}/ecaftersale/refund/create"
+	     "saveUrl": "${api}/bus/aftersale/refund/create"
 	}
 	return saveData;
 }

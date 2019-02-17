@@ -26,7 +26,7 @@ public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondi
 	 * @return
 	 */
 	public HashMap<String, Object> getInitData(String refundId, String orderId, 
-		String refundType, BusUserDto currUser);
+		Short refundType, BusUserDto currUser);
 
 	
 	/**
@@ -44,19 +44,19 @@ public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondi
 	 * 创建退货单
 	 * @param busRefundDto
 	 */
-	public void createForRefund(BusRefundDto busRefundDto);
+	public String createForRefund(BusRefundDto busRefundDto);
 
 	/**
 	 * 一键退货
 	 * @param busRefundDto
 	 */
-	public void onekeyRefund(BusRefundDto busRefundDto);
+	public String onekeyRefund(BusRefundDto busRefundDto);
 
 	/**
 	 * 创建换货单
 	 * @param busBarterDto
 	 */
-	public void createForBarter(BusBarterDto busBarterDto);
+	public String createForBarter(BusBarterDto busBarterDto);
 
 	/**
 	 * 改变单据状态

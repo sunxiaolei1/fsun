@@ -29,7 +29,7 @@ public abstract class BaseOrderValidatorService {
 		boolean isEnable = false;
 		String flowStatus = busOrder.getFlowStatus();		
 		String orderStatus = busOrder.getOrderStatus();
-		String refundStatus = busOrder.getRefundStatus();
+		Short refundStatus = busOrder.getRefundStatus();
 		String tradeStatus = busOrder.getTradeStatus();
 		switch (buttonsEnum){  	        
 	        case REFRESH: 	

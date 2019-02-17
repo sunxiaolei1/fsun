@@ -17,7 +17,7 @@
 	    <TD width="24%">
 	      <DIV align=center><b>商品名称</b></DIV></TD>
 	    <TD width="12%">
-	      <DIV align=center><b>赠送信息</b></DIV></TD>
+	      <DIV align=center><b>赠品信息</b></DIV></TD>
 	    <TD width="6%">
 	      <DIV align=center><b>数量</b></DIV></TD>		    
 	    <TD width="6%">

@@ -30,12 +30,170 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
     <result column="updated_name" property="updatedName" jdbcType="VARCHAR" />
   </resultMap>
+  
   <sql id="Base_Column_List" >
     refund_id, order_id, ext_order_id, barter_order_id, buyer_id, buyer_name, seller_id, 
     seller_name, shop_id, shop_name, refund_type, refund_status, refund_order_status, 
     reason, refund_reason, refund_price, diff_price, change_price, memo, is_valid, all_return, 
     check_time, refund_time, created_time, created_name, updated_time, updated_name
   </sql>
+  
+  <select id="getMaxRefundId" resultType="java.lang.String" parameterType="java.lang.String" >    
+	select 
+		refund_id 
+	from bus_refund 
+	where refund_id like concat(#{prefix},'%')
+	order by refund_id desc 
+  </select>
+  
+  <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
+  	<result column="o_refund_id" property="refundId" />
+    <result column="o_order_id" property="orderId" />
+    <result column="o_ext_order_id" property="extOrderId" />
+    <result column="o_barter_order_id" property="barterOrderId" />
+    <result column="o_buyer_id" property="buyerId"/>
+    <result column="o_buyer_name" property="buyerName"/>
+    <result column="o_seller_id" property="sellerId"/>
+    <result column="o_seller_name" property="sellerName"/>
+    <result column="o_shop_id" property="shopId"/>
+    <result column="o_shop_name" property="shopName"/>    
+    <result column="o_refund_type" property="refundType"/> 
+    <result column="o_refund_status" property="refundStatus" />       
+    <result column="o_refund_order_status" property="refundOrderStatus"/>    
+    <result column="o_refund_reason" property="refundReason"/>
+    <result column="o_reason" property="reason"/>   
+    <result column="o_refund_price" property="refundPrice"/>
+    <result column="o_diff_price" property="diffPrice"/>    
+    <result column="o_change_price" property="changePrice"/>
+    <result column="o_memo" property="memo"/>    
+    <result column="o_is_valid" property="isValid"/>
+    <result column="o_all_return" property="allReturn"/>  
+    <result column="o_check_time" property="checkTime"/>
+    <result column="o_refund_time" property="refundTime"/>    
+    <result column="o_created_time" property="createdTime"/>
+    <result column="o_created_name" property="createdName"/>
+    <result column="o_updated_time" property="updatedTime"/>
+    <result column="o_updated_name" property="updatedName"/>    
+  </resultMap>
+  
+  <resultMap id="DefinedResultMap" type="java.util.Map"> 	
+  	<id column="o_refund_id" property="refundId"/>  
+  	<association property="refundHeader" resultMap="HeaderMap" />   	   
+    <collection property="refundDetails" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="d_goods_id" property="goodsId"/>
+      <result column="d_order_id" property="orderId"/> 
+      <result column="d_line_no" property="lineNo"/> 
+      <result column="d_goods_type" property="goodsType"/> 
+      <result column="d_product_type" property="productType"/> 
+      <result column="d_category_code" property="categoryCode"/> 
+      <result column="d_category_name" property="categoryName"/> 
+      <result column="d_bar_code" property="barCode"/> 
+      <result column="d_brand_code" property="brandCode"/> 
+      <result column="d_brand_name" property="brandName"/> 
+      <result column="d_goods_name" property="goodsName"/> 
+      <result column="d_sku" property="sku"/> 
+      <result column="d_parent_sku" property="parentSku"/> 
+      <result column="d_sku_id" property="skuId"/> 
+      <result column="d_parent_sku_id" property="parentSkuId"/>
+      <result column="d_en_unit" property="enUnit"/> 
+      <result column="d_qty" property="qty"/>
+      <result column="d_origin_qty" property="originQty"/>      
+      <result column="d_unit" property="unit"/>
+      <result column="d_convert_qty" property="convertQty"/>
+      <result column="d_convert_unit" property="convertUnit"/>
+      <result column="d_market_price" property="marketPrice"/>
+      <result column="d_origin_sale_price" property="originSalePrice"/>
+      <result column="d_sale_price" property="salePrice"/>
+      <result column="d_part_price" property="partPrice"/>
+      <result column="d_coupon_price" property="couponPrice"/>
+      <result column="d_discount_price" property="discountPrice"/>
+      <result column="d_total_price" property="totalPrice"/>
+      <result column="d_cost_price" property="costPrice"/>    
+      <result column="d_rate_precent" property="ratePrecent"/>
+      <result column="d_is_gift" property="isGift"/>
+      <result column="d_gift_count" property="giftCount"/>
+      <result column="d_gift_price" property="giftPrice"/>
+      <result column="d_is_show" property="isShow"/>
+      <result column="d_property" property="property"/> 
+      <result column="d_memo" property="memo"/>
+      <result column="d_created_time" property="createdTime"/>
+      <result column="d_updated_time" property="updatedTime"/>
+    </collection>  
+  </resultMap>
+  
+  <select id="loadEntity" resultMap="DefinedResultMap" parameterType="java.lang.String" >
+    select 
+    	o.refund_id as o_refund_id,
+    	o.order_id as o_order_id,
+    	o.ext_order_id as o_ext_order_id,
+    	o.barter_order_id as o_barter_order_id,
+    	o.buyer_id as o_buyer_id,
+		o.buyer_name as o_buyer_name,
+		o.seller_id as o_seller_id,
+		o.seller_name as o_seller_name,
+		o.shop_id as o_shop_id,
+		o.shop_name as o_shop_name,
+		o.refund_type as o_refund_type,
+		o.refund_status as o_refund_status,
+		o.refund_order_status as o_refund_order_status,
+		o.reason as o_reason,
+		o.refund_reason as o_refund_reason,
+		o.refund_price as o_refund_price,
+		o.diff_price as o_diff_price,
+		o.change_price as o_change_price,
+		o.memo as o_memo,
+		o.is_valid as o_is_valid,
+		o.all_return as o_all_return,
+		o.check_time as o_check_time,
+		o.refund_time as o_refund_time,
+		o.created_time as o_created_time,
+		o.created_name as o_created_name,
+		o.updated_time as o_updated_time,
+		o.updated_name as o_updated_name,
+		d.goods_id as d_goods_id,
+		d.order_id as d_order_id ,
+		d.line_no as d_line_no,
+		d.goods_type as d_goods_type,
+		d.product_type as d_product_type,
+		d.category_code as d_category_code,
+		d.category_name as d_category_name, 
+		d.bar_code as d_bar_code,
+		d.brand_code as d_brand_code,
+		d.brand_name as d_brand_name,
+		d.goods_name as d_goods_name,
+		d.sku as d_sku,
+		d.parent_sku as d_parent_sku, 
+		d.sku_id as d_sku_id,
+		d.parent_sku_id as d_parent_sku_id,
+		d.en_unit as d_en_unit ,
+		d.qty as d_qty,
+		d.unit as d_unit,
+		d.convert_qty as d_convert_qty,
+		d.convert_unit as d_convert_unit,
+		d.market_price as d_market_price,
+		d.origin_sale_price as d_origin_sale_price,
+		d.sale_price as d_sale_price,
+		d.part_price as d_part_price,
+		d.coupon_price as d_coupon_price,
+		d.discount_price as d_discount_price,
+		d.total_price as d_total_price,
+		d.cost_price as d_cost_price,
+		d.rate_precent as d_rate_precent,
+		d.is_gift as d_is_gift,
+		d.gift_count as d_gift_count,
+		d.gift_price as d_gift_price,
+		d.is_show as d_is_show,
+		d.property as d_property,
+		d.memo as d_memo,
+		d.created_time as d_created_time,
+		d.updated_time as d_updated_time
+    from bus_refund o
+    left join bus_refund_goods d on d.order_id = o.o_refund_id
+    where o.o_refund_id = #{refundId,jdbcType=VARCHAR}
+    order by d.sku asc
+  </select>
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

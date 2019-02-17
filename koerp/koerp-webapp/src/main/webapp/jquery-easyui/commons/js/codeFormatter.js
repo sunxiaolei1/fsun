@@ -31,6 +31,7 @@ var refundTypeData = new Array();
 var refundStatusData = new Array();
 var refundReasonData = new Array();
 var refundOrderStatusData = new Array();
+var skuAftersaleStatusData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -67,6 +68,7 @@ var refundType = {};
 var refundStatus = {};
 var refundReason = {};
 var refundOrderStatus = {};
+var skuAftersaleStatus = {};
 
 $(function () {
 	synchronizeData();	
@@ -106,7 +108,7 @@ $(function () {
 	refundStatus = formatterCodeType(refundStatusData);
 	refundReason = formatterCodeType(refundReasonData);
 	refundOrderStatus = formatterCodeType(refundOrderStatusData);
-	
+	skuAftersaleStatus = formatterCodeType(skuAftersaleStatusData);
 });
 
 function formatterCodeType(result) {
@@ -191,6 +193,8 @@ function synchronizeData() {
         				refundReasonData.push(item);
         			}else if(item.codeType == 'RefundOrderStatus'){
         				refundOrderStatusData.push(item);
+        			}else if(item.codeType == 'SkuAftersaleStatus'){
+        				skuAftersaleStatusData.push(item);
         			}
       
     	        });
@@ -347,6 +351,11 @@ function synchronizeData() {
 				});
 				
 				refundOrderStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				skuAftersaleStatusData.unshift({
         			codeCode:"",
 					codeName:"请选择..."
 				});

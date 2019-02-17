@@ -48,7 +48,6 @@ import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
-import com.github.pagehelper.StringUtil;
 
 /**
  * 销售订单接口
@@ -271,18 +270,22 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 			payAccount.setLineNo(lineNo++);			
 			payAccount.setCreatedTime(now);
 			payAccount.setTradeTime(now);
+			payAccount.setShopId(currUser.getShopId());
+			payAccount.setShopName(currUser.getShopName());
 			payAccount.setPayType(BusPayTypeEnum.COMSUME_PAY.getValue());			
 			Short payMode = payAccount.getPayMode();
 			if(PayModeEnum.UNPAY.getValue().equals(payMode)){
 				if(CustomerTypeEnum.SK.getCode().equals(busCustomer.getCustomerType())){
 					throw new OrderException(SCMErrorEnum.BUS_CUSTOMER_UNPAY_DISABLED);
 				}
+				payAccount.setVipId(busCustomer.getCustomerCode());
 				BusVipUnpaid busVipUnpaid = this.initOrderUnPay(header, payAccount, TradeTypeEnum.UNPAY_CONSUME.getValue());
 				busVipUnpaidManage.create(busVipUnpaid, false);
 			}else if(PayModeEnum.VIP_PAY.getValue().equals(payMode)){
 				if(!CustomerTypeEnum.VIP.getCode().equals(busCustomer.getCustomerType())){
 					throw new OrderException(SCMErrorEnum.BUS_CUSTOMER_NO_VIP);
 				}
+				payAccount.setVipId(busCustomer.getCustomerCode());
 				BusVipUnpaid busVipUnpaid = this.initOrderUnPay(header, payAccount, TradeTypeEnum.VIP_CONSUME.getValue());
 				busVipUnpaidManage.create(busVipUnpaid, false);
 			}
@@ -352,12 +355,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		busOrder.setUpdatedTime(new Date());
 		busOrder.setUpdatedName(currUser.getRealname());	
 		String newRemark = condition.getMemo();		
-		if(newRemark!=null){
-			String prefix = DateUtil.getDateTimeFormat(new Date()) + " " + currUser.getRealname() + " ";								
-			String originRemark = busOrder.getMemo();
-			newRemark = (StringUtil.isNotEmpty(originRemark)?(originRemark + "\n"):"") + prefix + newRemark;
-			busOrder.setMemo(newRemark);					
-		}		
+		busOrder.setMemo(super.formatRemark(newRemark, busOrder.getMemo(), currUser));
 		busOrderManage.updateEach(busOrder);
 	}
 	

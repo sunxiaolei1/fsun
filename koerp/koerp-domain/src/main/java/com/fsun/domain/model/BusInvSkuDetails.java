@@ -29,7 +29,7 @@ public class BusInvSkuDetails {
     private String tradeOrderNo;
 
     /**
-     * 交易单关联单号(1、采购入库->申请单号,2、调拨入库->调拨出库单号)
+     * 交易单关联单号(1、采购入库->申请单号,2、调拨入库->调拨出库单号,2、退货入库->原订单号)
      * 表字段 : bus_inv_sku_details.trade_relation_no
      */
     private String tradeRelationNo;

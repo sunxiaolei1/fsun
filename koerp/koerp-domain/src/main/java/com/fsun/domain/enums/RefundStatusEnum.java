@@ -11,10 +11,10 @@ import java.util.List;
 public enum RefundStatusEnum {
 	
 	UNKNOW(null,"未知"),
-	RETURN_UNREFUND((short)1, "已退货未退款"),
-	RETURN_REFUND((short)2, "已退货已退款"),
-	COMPLETE((short)3, "退单完成"),
-	CANCEL((short)4, "退单取消");
+	RETURN_UNREFUND((short)10, "已退货未退款"),
+	RETURN_REFUND((short)20, "已退货已退款"),
+	COMPLETE((short)30, "退单完成"),
+	CANCEL((short)40, "退单取消");
 	
 	/** 常量 key */
 	private Short value;
