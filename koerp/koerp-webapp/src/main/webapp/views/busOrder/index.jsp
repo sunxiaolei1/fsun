@@ -54,7 +54,7 @@ var columns = [[
 	{field:'carrier_name',title:'经办人',width:100,align:'center',sortable:true},
 	{field:'order_time',title:'单据时间',width:130,align:'center',sortable:true},
 	{field:'cash_name',title:'制单人',width:80,align:'center'},
-	{field:'memo',title:'注意事项',width:250,align:'center'}		
+	{field:'seller_notes',title:'注意事项',width:250,align:'center'}
 ]];
 
 var currDataGrid;

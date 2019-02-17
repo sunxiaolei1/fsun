@@ -107,7 +107,6 @@ function getSaveData(){
 
 	var baseInfo = formJson($orderfm);
 	var payAccountInfo = formJson($payAccountfm);
-	
 	baseInfo.receptPrice = payAccountInfo.receptPrice;
 	baseInfo.payPrice = payAccountInfo.payPrice;
 	baseInfo.dibPrice = payAccountInfo.dibPrice;

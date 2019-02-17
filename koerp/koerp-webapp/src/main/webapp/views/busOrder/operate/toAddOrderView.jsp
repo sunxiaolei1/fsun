@@ -78,7 +78,7 @@
 	        <tr>        	
 	        	<th width="12%">注意事项</th>
 				<td colspan="7">
-					<input id="memo" name="memo" data-options="multiline:true" 
+					<input id="sellerNotes" name="sellerNotes" data-options="multiline:true" 
 						class="easyui-textbox" style="width:800px;height:50px;"/>
 				</td>
 	        </tr>	        

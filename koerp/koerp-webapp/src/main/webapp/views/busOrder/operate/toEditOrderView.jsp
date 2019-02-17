@@ -111,10 +111,15 @@
 	        </tr>     
 	        <tr>	        					
 	        	<th width="12%">注意事项</th>
-				<td colspan="7">
-					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:800px;height:50px;"/>
-					<a href="#" class="easyui-linkbutton" iconCls="icon-money" style="margin-left:90px;"
+				<td colspan="3">
+					<input id="sellerNotes" name="sellerNotes"  data-options="multiline:true" readOnly
+						class="easyui-textbox" style="width:400px;height:50px;"/>		
+				</td>
+				<th width="12%">备注</th>
+				<td colspan="3">
+					<input id="memo" name="memo"  data-options="multiline:true" readOnly 
+						class="easyui-textbox" style="width:360px;height:50px;"/>
+					<a href="#" class="easyui-linkbutton" iconCls="icon-money" 
 						plain="false" onclick="openPayAccountView()">账单明细</a>			
 				</td>	        	
 	        </tr>

@@ -183,7 +183,7 @@ function createTableOrderHead(div,header){
 	 var payPrice = header.payPrice;
 	 var dibPrice = header.dibPrice;	
 	 var discountPrice = numBaseFormat(orderPrice - (payPrice - dibPrice)); */
-	 var memo = header.memo;
+	 var sellerNotes = header.sellerNotes;
 	 var carrierName =  header.carrierName;
 	 
 	 var tbody = $("#"+div);		 
@@ -224,7 +224,7 @@ function createTableOrderHead(div,header){
 	 tr = $("<tr></tr>");
 	 tr.appendTo(tbody);	
 	 td = $("<td colspan='3' >注意事项：<input style='width:500px;' value='"
-			+ ((memo != null && memo > 0) ? memo: '暂无') + "' /></td>");
+			+ ((sellerNotes != null && sellerNotes > 0) ? sellerNotes: '暂无') + "' /></td>");
 	 td.appendTo(tr);
 	 td = $("<td>经办人：<span>"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
 	 td.appendTo(tr);

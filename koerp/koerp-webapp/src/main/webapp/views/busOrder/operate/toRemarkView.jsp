@@ -48,7 +48,7 @@
 			    <input id="orderId" name="orderId" hidden=true />
 				<table class="nb-formTable" style="width:100%;">
 			        <tr>
-			        	<th width="3%">原注意事项</th>
+			        	<th width="3%">原备注</th>
 						<td >
 							<input id="originRemark" class="easyui-textbox" disabled 
 								data-options="multiline:true" style="width:540px;height:92px;" />								
