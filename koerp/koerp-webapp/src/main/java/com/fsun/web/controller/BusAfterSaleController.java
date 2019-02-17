@@ -52,6 +52,18 @@ public class BusAfterSaleController extends BaseController {
 	}
 	
 	/**
+	 * 跳转到基本退货详情页面
+	 * @param sysorderid
+	 * @return
+	 */
+	@RequestMapping(value="/refund/toBaseDetailView/{refundId}", method=RequestMethod.GET)
+	public ModelAndView toRefundDetail(@PathVariable("refundId") String refundId) {
+		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/toSimpleDetailView"); 
+		modelAndView.addObject("refundId", refundId);
+		return modelAndView;
+	}
+	
+	/**
 	 * 跳转到退货详情页面
 	 * @param sysorderid
 	 * @return

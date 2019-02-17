@@ -264,7 +264,7 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		
 		//获取原订单头和明细
 		String orderId = (String) refundHeaderMap.get("orderId");
-		Short refundType = (Short) refundHeaderMap.get("refundType");
+		Short refundType = Short.parseShort(refundHeaderMap.get("refundType")+"");
 		HashMap<String, Object> orderMap = busOrderManage.loadEntity(orderId);
 		refundMap.put("orderHeader", orderMap.get("header"));
 		refundMap.put("orderDetails", orderMap.get("details"));

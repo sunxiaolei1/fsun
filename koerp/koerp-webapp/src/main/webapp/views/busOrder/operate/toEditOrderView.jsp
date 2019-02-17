@@ -30,7 +30,8 @@
 	<form id="orderfm">
 		<span class="title" style="top: 35px;">单据基本信息</span>		
 		<input id="fromShopId" name="fromShopId" hidden="true" />	
-		<input id="orderPrice" name="orderPrice" hidden="true" />	
+		<input id="orderPrice" name="orderPrice" hidden="true" />
+		<input id="refundId" name="refundId" hidden="true" />		
 		<table class="nb-formTable" style="width:100%;margin-top:2px;">
 	        <tr>
 	            <th width="12%">单据编号</th>
@@ -113,7 +114,9 @@
 	        	<th width="12%">注意事项</th>
 				<td colspan="3">
 					<input id="sellerNotes" name="sellerNotes"  data-options="multiline:true" readOnly
-						class="easyui-textbox" style="width:400px;height:50px;"/>		
+						class="easyui-textbox" style="width:300px;height:50px;"/>	
+					<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach" 
+						plain="false" onclick="openRefundView()">退换货明细</a>	
 				</td>
 				<th width="12%">备注</th>
 				<td colspan="3">
@@ -332,6 +335,13 @@ $(function () {
 //商品列表刷新
 function skuListReLoad() {
 	currOrderDetailDataGrid.datagrid("loadData", currDetailData);
+}
+
+//打开退换货明细
+function openRefundView(){
+	var refundId = $("#refundId", $orderfm).val();
+	var url = "${api}/bus/aftersale/refund/toBaseDetailView/"+ refundId;	
+	commonDialog("ordersDialog", "退换货明细", "95%", "90%", url, "icon-book_open");
 }
 
 //打开账单明细
