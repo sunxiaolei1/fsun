@@ -271,6 +271,85 @@ var soColumns = [[
 	}
 ]];
 
+//可编辑单价
+var soEditColumns = [[
+  	{field:'ck',checkbox:true},
+	{field:"sku",title:"SKU", width:80,align:"center"},
+	{field:"goodsName",title:"商品名称", width:140,align:"center"},
+	//{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.brandCode); 
+	}},
+	//{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
+	//	return formatter(value, window.parent.categoryCode); 
+	//}},
+	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	{field:'isGift',title:'赠品信息',width:160,align:'center',sortable:true,formatter:function(value, row){
+		var info = "--";
+		if(value!=null && value){
+			debugger
+			var goodsType = row.goodsType; 
+			if(goodsType!=null && goodsType!=''){
+				info = formatter(goodsType, window.parent.busGoodsType) 
+					+ "[数量:"+ intNumBaseFormat(row.giftCount)
+					+",金额:"+ numBaseFormat(row.giftPrice) +"]";				
+			}
+		}
+		return info; 
+	}},
+	/* {field:"isGift",title:"有无赠品", width:60,align:"center",formatter:function(value, row){
+		return value!=null?(value?'有':"无"):""; 
+	}},
+	{field:"goodsType",title:"赠送类型", width:80,align:"center", formatter:function(value, row){
+		return value!=''?formatter(value, window.parent.busGoodsType):"--"; 
+	}},
+	{field:"giftCount",title:"赠送数量", width:80,align:"center",formatter:intNumBaseFormat},
+	{field:"giftPrice",title:"赠送金额", width:80,align:"center",formatter:numBaseFormat}, */
+	{field:"originSalePrice",title:"销售单价", width:80,align:"center",formatter:numBaseFormat},
+	{field:"salePrice",title:"实付单价", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:numBaseFormat ,
+		editor:{
+			type:'numberbox',
+			options:{					
+				min:0,
+				precision:2,
+				required: true
+			}
+		}
+	},
+	{field:"qty",title:"数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:intNumBaseFormat,
+		editor:{
+			type:'numberbox',
+			options:{					
+				min:1,
+				precision:0,
+				required: true
+			}
+		}
+	},
+	{field:"costPrice",title:"成本价", width:80, hidden:true},
+	{field:"totalPrice",title:"实付金额", width:80,align:"center",formatter:numBaseFormat},
+	{field:"totalPartPrice",title:"分摊金额", width:80, hidden:true},
+	{field:"couponPrice",title:"商品优惠", width:80,hidden:true},
+	{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){
+		return formatter(value, window.parent.unitCode); 
+	}},
+	{field:"stockOut",title:"操作",width:80,align:"center", 
+		formatter: function(value, row, index){	
+			if (row.sku=="合计:"){//这里是判断哪些行
+                return '';  
+            }	
+			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
+		}
+	}
+]];
 
 var payAccountColumns = [[
 	{field:'ck',checkbox:true},             		

@@ -26,7 +26,7 @@ $(function () {
 	    fitColumns:true,
 	    showFooter:true,
 	    toolbar: "#detailskutoolbar",
-	    columns: soColumns,
+	    columns: '${hasEditPricePower}'=='' ? soColumns:soEditColumns,
 	    loadFilter:function(data) {     		
     		var fields = ["totalPrice","giftPrice","couponPrice"];       		
     		//排序拦截器

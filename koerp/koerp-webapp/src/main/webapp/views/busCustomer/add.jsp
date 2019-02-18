@@ -120,7 +120,7 @@ $(function () {
 	editInitComboxParams($customerfm, "");
 
 	window.setTimeout(function () {
-		initSalesmanGrid("");
+		initSalesmanGrid("", $customerfm);
     }, 100);
      
 });

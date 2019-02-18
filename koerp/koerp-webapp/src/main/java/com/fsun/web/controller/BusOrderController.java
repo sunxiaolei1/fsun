@@ -20,6 +20,7 @@ import com.alibaba.fastjson.JSON;
 import com.fsun.api.bus.BusAccessLogApi;
 import com.fsun.api.bus.BusOrderApi;
 import com.fsun.api.bus.OrderButtonsApi;
+import com.fsun.api.user.SysUserApi;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
@@ -48,6 +49,9 @@ public class BusOrderController extends BaseController {
 
 	@Autowired
 	private BusOrderApi busOrderApi;
+	
+	@Autowired
+	private SysUserApi userApi;
 	
 	@Autowired
 	private BusAccessLogApi busAccessLogApi;
@@ -85,7 +89,17 @@ public class BusOrderController extends BaseController {
 	public ModelAndView toAddView(@RequestParam("orderType") Short orderType) {
 		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.ADD.getCode());
 		ModelAndView modelAndView = new ModelAndView(url);		
-		modelAndView.addObject("orderType", orderType);		
+		modelAndView.addObject("orderType", orderType);	
+		//控制编辑单价权限
+		String hasEditPricePower = "";		
+		List<String> list = userApi.findPermissionsByUser(getCurrentUser().getId());
+		for (String permission : list) {
+			if(permission.equals("ORDER_EDIT_SALE_PRICE")){
+				hasEditPricePower = "true";
+				break;
+			}
+		}	
+		modelAndView.addObject("hasEditPricePower", hasEditPricePower);	
 		return modelAndView;
 	}	
 	
