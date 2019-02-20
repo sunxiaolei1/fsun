@@ -12,6 +12,47 @@
 /***************************       初始化查询条件          *****************************/ 
 
 var salesmanInitFirst = true;
+
+function reloadSalesmanGrid(defaultCustomer){
+	salesmanInitFirst = true;
+	$('#salesman', $orderfm).combogrid({
+		prompt:'请选择...',
+    	panelWidth:500,
+    	panelHeight:300,
+        idField: 'customer_code', //ID字段
+        textField: 'customer_name', //显示的字段
+        method: 'post',
+        queryParams: {"enabled": true, "customerType":"YWY", "q": defaultCustomer},
+        multiple: false,
+        fitColumns: true,
+        striped: true,
+        pagination: true,//是否分页
+        rownumbers: true,//序号
+        collapsible: false,//是否可折叠的
+        remoteSort:true,
+        editable:false,  
+        url: '${api}/bus/customer/findPage',
+	    sortName:"customer_code",
+        sortOrder:"desc",
+        toolbar:'#salesmanToolbar', 
+        pageSize: GLOBAL_PAGE_SIZE,
+        pageList: GLOBAL_PAGE_SIZE_LIST,
+        columns: [[
+            {field: 'id', checkbox: true},
+            {field: "customer_code", title: "编号", width: 80, align: "center", sortable:true},
+            {field: "customer_name", title: "名称", width: 80, align: "center", sortable:true},
+            {field: "tel", title: "手机号", width: 120, align: "center", sortable:true}
+        ]],
+        loadMsg: "数据加载中请稍后……",
+        emptyMsg: "没有符合条件的记录",
+        onLoadSuccess:function(data){ 	
+        	if(salesmanInitFirst){
+        		 $("#salesman", $orderfm).combogrid('setValue',defaultCustomer);	                            
+        		 salesmanInitFirst = false;
+        	}              
+        }
+    });
+}
  
 function initSalesmanGrid(defaultCustomer, $fm){
 	//方法中可以传入fm
