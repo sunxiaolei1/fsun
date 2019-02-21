@@ -410,7 +410,6 @@ $(function () {
 			$("#mobile", $orderfm).textbox("setValue", data.tel!=null?data.tel:"");			
 			$("#address", $orderfm).textbox("setValue", data.address!=null?data.address:"");
 			if(data.salesman!=null && data.salesman!=''){
-				debugger
 				reloadSalesmanGrid(data.salesman);
 			} 
 			if(currCustomer!=null && currCustomer.customer_type!=data.customer_type){				

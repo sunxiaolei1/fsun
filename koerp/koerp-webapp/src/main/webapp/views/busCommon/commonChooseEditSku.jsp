@@ -90,7 +90,7 @@ $(function() {
 			}},
 			{field: "property", title: "规格", width: 120, align: "center"},
 			{field: "qty", title: "数量", width: 60, align: "center"},
-			{field: "originSalePrice", title: "单价", width: 60, align: "center",formatter:numBaseFormat},						
+			{field: "marketPrice", title: "单价", width: 60, align: "center",formatter:numBaseFormat},						
 			{field:"unit",title:"单位", width:60,align:"center", formatter:function(value, row){
 				return formatter(value, window.parent.unitCode); 
 			}},
