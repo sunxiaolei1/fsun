@@ -163,7 +163,7 @@ function createOneOrderPage(LODOP,docOrderDto,currRow){
 	var header = docOrderDto.header;
     if(header.orderType==16){
     	headerHeight += 50;
-    	detailTop += 50;
+    	detailTop += 60;
    		detailHeight -= 50;
 	}
     
@@ -196,43 +196,43 @@ function createTableOrderHead(div,header){
 	 var tbody = $("#"+div);		 
      var tr=$("<tr></tr>");
      tr.appendTo(tbody);
-     var td = $("<td colspan='2' >出库店仓：<input style='width:290px;' value='"
+     var td = $("<td colspan='2' >出库店仓：<input style='width:260px;' value='"
  			+ (shopName != null ? shopName : "")
  			+ "' /></td>");	 
  	 td.appendTo(tr);
-     td = $("<td>单据类型：<span style='width:160px;' >"+ (orderType!=null?orderType:"") +"</span></td>");			 
+     td = $("<td>单据类型：<span>"+ (orderType!=null?orderType:"") +"</span></td>");			 
 	 td.appendTo(tr);
-	 td = $("<td>制单人：<span style='width:160px;' >"+ (createdName!=null?createdName:"") +"</span></td>");			 
+	 td = $("<td>制单人：<span>"+ (createdName!=null?createdName:"") +"</span></td>");			 
 	 td.appendTo(tr);
      
 
 	 if(header.orderType==16){
 		 tr=$("<tr></tr>");
 	     tr.appendTo(tbody);
-	     td = $("<td colspan='2' >客户名称：<input style='width:290px;' value='"
+	     td = $("<td colspan='2' >客户名称：<input style='width:260px;' value='"
 				+ (customerName != null ? customerName : "")
 				+ "' /></td>");	 
 		 td.appendTo(tr);
-	     td = $("<td>出库事由：<span style='width:160px;' >"+ (orderMode!=null?orderMode:"") +"</span></td>");			 
+	     td = $("<td>出库事由：<span>"+ (orderMode!=null?orderMode:"") +"</span></td>");			 
 		 td.appendTo(tr);
-		 td = $("<td>经办人：<span style='width:160px;' >"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
+		 td = $("<td>经办人：<span>"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
 		 td.appendTo(tr);	     
 		 
 		 tr=$("<tr></tr>");
 	     tr.appendTo(tbody);
-	     td = $("<td colspan='2' >收货地址：<input style='width:290px;' value='"
+	     td = $("<td colspan='2' >收货地址：<input style='width:260px;' value='"
 				+ (receiveAddress != null ? receiveAddress : "")
 				+ "' /></td>");	 
 		 td.appendTo(tr);
-	     td = $("<td>手机号：<span style='width:160px;' >"+ (mobile!=null?mobile:"") +"</span></td>");			 
+	     td = $("<td>手机号：<span>"+ (mobile!=null?mobile:"") +"</span></td>");			 
 		 td.appendTo(tr);
-		 td = $("<td>联系人：<span style='width:160px;' >"+ (contacts!=null?contacts:"") +"</span></td>");			 
+		 td = $("<td>联系人：<span>"+ (contacts!=null?contacts:"") +"</span></td>");			 
 		 td.appendTo(tr);	     
 	 }	
 
 	 tr = $("<tr></tr>");
 	 tr.appendTo(tbody);
-	 td = $("<td colspan='4' >备注：<input style='width:600px;' value='"
+	 td = $("<td colspan='4' >备注：<input style='width:500px;' value='"
 			+ ((memo != null && memo > 0) ? memo: '暂无') + "' /></td>");
 	 td.appendTo(tr);
 	 

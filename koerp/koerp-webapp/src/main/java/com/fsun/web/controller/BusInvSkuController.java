@@ -16,6 +16,7 @@ import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.entity.BusInvSkuCondition;
 import com.fsun.domain.entity.BusInvSkuDetailsCondition;
+import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.model.BusInvSku;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
@@ -42,8 +43,11 @@ public class BusInvSkuController extends BaseController {
 	}
 	
 	@RequestMapping("/toChooseEditSku")
-	public String toChooseEditSku() {
-		return "/busCommon/commonChooseEditInvSku";
+	public ModelAndView toChooseEditSku() {
+		ModelAndView modelAndView = new ModelAndView("/busCommon/commonChooseEditInvSku");
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
+		return modelAndView;
 	}	
 	
 	@RequestMapping("/toDetailView")

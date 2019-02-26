@@ -11,7 +11,6 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fsun.api.user.SysUserApi;
 import com.fsun.common.utils.MD5Utils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.model.SysUser;
@@ -31,9 +29,6 @@ import com.fsun.web.controller.base.BaseController;
 @Controller
 public class HomeController extends BaseController {
 	
-	@Autowired
-	private SysUserApi userApi;
-
 	/**
 	 * 登录
 	 * 

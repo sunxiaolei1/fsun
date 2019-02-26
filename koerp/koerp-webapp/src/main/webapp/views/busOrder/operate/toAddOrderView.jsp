@@ -192,7 +192,7 @@ var currOrderDetailDataGrid = $("#orderDetailDataGrid");
 var currPayAccountDataGrid = $("#payAccountDataGrid");
 var $orderfm = $("#orderfm");   
 var $payAccountfm = $("#payAccountfm"); 
-var soColumns = [[
+var soColumns = '${hasEditPricePower}'=='0' ? [[
 	{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
 	{field:"goodsName",title:"商品名称", width:140,align:"center"},
@@ -227,9 +227,9 @@ var soColumns = [[
 	{field:"giftPrice",title:"赠送金额", width:80,align:"center",formatter:numBaseFormat}, */
 	{field:"originSalePrice",title:"销售单价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"salePrice",title:"实付单价", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
+		/* styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
-	    },
+	    }, */
 	    formatter:numBaseFormat/* ,
 		editor:{
 			type:'numberbox',
@@ -269,10 +269,7 @@ var soColumns = [[
 			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
 		}
 	}
-]];
-
-//可编辑单价
-var soEditColumns = [[
+]]:[[
   	{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
 	{field:"goodsName",title:"商品名称", width:140,align:"center"},

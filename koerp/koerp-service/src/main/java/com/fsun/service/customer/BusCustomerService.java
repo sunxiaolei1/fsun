@@ -118,6 +118,9 @@ public class BusCustomerService implements BusCustomerApi {
 		if(id==null || id.equals("")){
 			domain.setId(PKMapping.GUUID(PKMapping.bus_customer));
 			String customerCode = busCustomerManage.initCustomerCode(domain.getCustomerType());
+			if(domain.getContacts()==null || domain.getContacts().equals("")){
+				domain.setContacts(domain.getCustomerName());
+			}
 			domain.setCustomerCode(customerCode);
 			domain.setCreditPrice(BigDecimal.ZERO);
 			domain.setEnabled(true);
@@ -151,12 +154,14 @@ public class BusCustomerService implements BusCustomerApi {
 		boolean hasUnique= this.unique(condition);
 		if(!hasUnique){
 			throw new BasSkuException(SCMErrorEnum.BUS_CUSTOMER_EXISTED);
-		}
-		
+		}		
 		//保存数据
 		Date now = new Date();		
 		domain.setId(PKMapping.GUUID(PKMapping.bus_customer));
 		String customerCode = busCustomerManage.initCustomerCode(domain.getCustomerType());
+		if(domain.getContacts()==null || domain.getContacts().equals("")){
+			domain.setContacts(domain.getCustomerName());
+		}
 		domain.setCustomerCode(customerCode);
 		domain.setCreditPrice(BigDecimal.ZERO);
 		domain.setEnabled(true);

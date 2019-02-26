@@ -2,15 +2,18 @@ package com.fsun.web.controller.base;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
+import com.fsun.api.user.SysUserApi;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.common.PageResult;
@@ -28,6 +31,9 @@ import com.fsun.exception.enums.SCMErrorEnum;
 public class BaseController {
 
 	public static final String SESSION_USER_KEY = "user";
+	
+	@Autowired
+	protected SysUserApi userApi;
 
 	protected Logger logger = LogManager.getLogger(getClass());
 
@@ -124,4 +130,20 @@ public class BaseController {
 		return user;
 	}
 	
+	/**
+	 * 获取当前用户是否可以编辑商品价格的权限
+	 * @return
+	 */
+	protected String hasEditPricePower(){
+		String hasEditPricePower = "0";		
+		List<String> list = userApi.findPermissionsByUser(getCurrentUser().getId());
+		for (String permission : list) {
+			if(permission.equals("ORDER_EDIT_SALE_PRICE")){
+				hasEditPricePower = "1";
+				break;
+			}
+		}
+		return hasEditPricePower;
+	}
+		
 }

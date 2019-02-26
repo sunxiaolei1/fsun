@@ -3,14 +3,12 @@ package com.fsun.web.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fsun.api.user.SysUserApi;
 import com.fsun.common.utils.MD5Utils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.dto.MenuTreeDto;
@@ -26,9 +24,6 @@ import com.fsun.web.controller.base.BaseController;
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
-	
-	@Autowired
-	private SysUserApi userApi;
 
 	/**
 	 * 获取用户对应的菜单树

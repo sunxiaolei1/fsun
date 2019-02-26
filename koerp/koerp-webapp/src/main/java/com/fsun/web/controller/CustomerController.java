@@ -76,22 +76,22 @@ public class CustomerController extends BaseController {
 	}
 	
 	/**
-	    * 根据客户名称判断是否已存在，不允许相同
-	    * @param id
-	    * @param sku
-	    * @return
-	    */
-	    @ResponseBody
-	    @RequestMapping(value = "/unique", method = {RequestMethod.POST})
-	    public HttpResult unique(@RequestBody BusCustomerCondition condition) {  
-	    	try {
-	    		boolean isUnique = customerApi.unique(condition);
-	    		return success(isUnique);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return failure(SCMErrorEnum.SYSTEM_ERROR);
-			}
-	    }
+	 * 根据客户名称判断是否已存在，不允许相同
+	 * @param id
+	 * @param sku
+	 * @return
+	 */
+    @ResponseBody
+    @RequestMapping(value = "/unique", method = {RequestMethod.POST})
+    public HttpResult unique(@RequestBody BusCustomerCondition condition) {  
+    	try {
+    		boolean isUnique = customerApi.unique(condition);
+    		return success(isUnique);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+    }
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	@ResponseBody
