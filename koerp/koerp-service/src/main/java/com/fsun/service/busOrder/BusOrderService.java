@@ -43,6 +43,7 @@ import com.fsun.domain.model.BusCustomer;
 import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusPayAccount;
+import com.fsun.domain.model.BusVip;
 import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.OrderException;
@@ -121,6 +122,59 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		}else{
 			map = busOrderManage.loadEntity(orderId);
 		}
+		return map;
+	}
+	
+	@Override
+	public HashMap<String, Object> getInitCopyOrder(String orderId, String orderType, BusUserDto currUser){
+		HashMap<String, Object> map = busOrderManage.loadEntity(orderId);		
+		String newOrderId = busOrderManage.initOrderId(orderType, currUser.getShopCode());
+		HashMap<String, Object> header = (HashMap<String, Object>) map.get("header");
+		header.put("orderId", newOrderId);
+		header.put("cashId", currUser.getId());
+		header.put("cashName", currUser.getRealname());
+		header.put("payType", PayTypeEnum.CURR_PAY.getValue());
+		header.put("isSettlemented", true);
+		
+		List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");
+		for (HashMap<String, Object> goodsMap : details) {
+			goodsMap.put("totalPartPrice", BigDecimal.ZERO);
+			goodsMap.put("partPrice", BigDecimal.ZERO);
+			goodsMap.put("discountPrice", BigDecimal.ZERO);
+		}
+		return map;
+	}
+	
+	@Override
+	public HashMap<String, Object> getVipPrintOrder(String orderId, String orderType, BusUserDto currUser){
+		HashMap<String, Object> map = busOrderManage.loadEntity(orderId);
+		
+		List<HashMap<String, Object>> payAccounts = (List<HashMap<String, Object>>) map.get("payAccounts");
+		int vipCards = 0;
+		String showContent = "";
+		for (HashMap<String, Object> payAccountMap : payAccounts) {
+			Short payMode = Short.valueOf(payAccountMap.get("payMode")+"");
+			if(PayModeEnum.VIP_PAY.getValue().equals(payMode)){
+				String cardNo = (String) payAccountMap.get("cardNo");
+				if(cardNo!=null && !cardNo.equals("")){
+					BusVip busVip = busVipManage.getVipByCardNo(cardNo);
+					BigDecimal enablePrice = busVip.getEnablePrice();
+					showContent += ("[卡号:"+ cardNo +",余额:"+ enablePrice +"]");
+					vipCards++;
+				}				
+			}
+		}
+		//追加会员卡余额信息
+		if(vipCards>0){
+			HashMap<String, Object> header = (HashMap<String, Object>) map.get("header");			
+			if(vipCards==1){
+				String buyerName = (String) header.get("buyerName");
+				header.put("buyerName", buyerName + showContent);
+			}else{
+				String sellerNotes = (String) header.get("sellerNotes");
+				header.put("sellerNotes", sellerNotes + showContent);
+			}
+		}		
 		return map;
 	}
 

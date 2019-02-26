@@ -91,6 +91,32 @@ public class BusOrderController extends BaseController {
 		return modelAndView;
 	}	
 	
+	@RequestMapping("/toCopyOrderView")
+	public ModelAndView toCopyOrderView(@RequestParam("orderId") String orderId, 
+			@RequestParam("orderType") Short orderType) {
+		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.COPY.getCode());
+		ModelAndView modelAndView = new ModelAndView(url);		
+		modelAndView.addObject("orderType", orderType);	
+		modelAndView.addObject("orderId", orderId);	
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
+		return modelAndView;
+	}	
+		
+	@RequestMapping(value="/getInitCopyOrder", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getInitCopyOrder(@RequestParam("orderId") String orderId, 
+			@RequestParam("orderType") String orderType){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = busOrderApi.getInitCopyOrder(orderId, orderType, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
 	@RequestMapping("/toDetailView")
 	public ModelAndView toDetailView(@RequestParam("orderId") String orderId, 
 		@RequestParam("orderType") Short orderType, @RequestParam("buttontype") String buttontype) {				
@@ -112,6 +138,20 @@ public class BusOrderController extends BaseController {
 		try {
 			BusUserDto currUser = super.getCurrentUser();
 			HashMap<String, Object> map = busOrderApi.getInitData(orderId, orderType, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/getVipPrintOrder", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getVipPrintOrder(@RequestParam("orderId") String orderId, 
+			@RequestParam("orderType") String orderType){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = busOrderApi.getVipPrintOrder(orderId, orderType, currUser);
 			return success(map);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -376,6 +416,18 @@ public class BusOrderController extends BaseController {
 				}
 				break;	
 			case VIEW:			
+				break;
+			case COPY:
+				switch (OrderTypeEnum.getByValue(orderType)) {
+					case ORDER:	
+						url = "/busOrder/operate/toCopyOrderView";
+						break;						
+					case TAKE_ORDER:	
+						url = "/busOrder/operate/toCopyOrderView";
+						break;	
+					default:
+						break;
+				}
 				break;
 			default:
 				break;

@@ -163,7 +163,7 @@ function createOneOrderPage(LODOP,docOrderDto,currRow){
 	var header = docOrderDto.header;
     if(header.orderType==16){
     	headerHeight += 50;
-    	detailTop += 60;
+    	detailTop += 55;
    		detailHeight -= 50;
 	}
     
@@ -232,7 +232,7 @@ function createTableOrderHead(div,header){
 
 	 tr = $("<tr></tr>");
 	 tr.appendTo(tbody);
-	 td = $("<td colspan='4' >备注：<input style='width:500px;' value='"
+	 td = $("<td colspan='4' >备注：<input style='width:600px;' value='"
 			+ ((memo != null && memo > 0) ? memo: '暂无') + "' /></td>");
 	 td.appendTo(tr);
 	 

@@ -189,7 +189,7 @@ function createTableOrderHead(div,header){
 	 var tbody = $("#"+div);		 
      var tr=$("<tr></tr>");
      tr.appendTo(tbody);
-     var td = $("<td colspan='2' >客户名称：<input style='width:260px;' value='"
+     var td = $("<td colspan='2' >客户名称：<input style='width:320px;' value='"
 			+ (customerName != null ? customerName : "")
 			+ "' /></td>");	 
 	 td.appendTo(tr);	
@@ -200,7 +200,7 @@ function createTableOrderHead(div,header){
 
 	 tr=$("<tr></tr>");
      tr.appendTo(tbody);
-     var td = $("<td colspan='2' >收货地址：<input style='width:260px;' value='"
+     var td = $("<td colspan='2' >收货地址：<input style='width:320px;' value='"
  			+ (address != null ? address : "")
  			+ "' /></td>");				 
 	 td.appendTo(tr);	

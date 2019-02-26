@@ -24,6 +24,24 @@ public interface BusOrderApi extends BaseFooterApi<BusOrder, BusOrderCondition> 
 	 * @return
 	 */
 	public HashMap<String, Object> getInitData(String orderId, String orderType, BusUserDto currUser);
+	
+	/**
+	 * 获取copy单据并初始化
+	 * @param orderId
+	 * @param orderType
+	 * @param currUser
+	 * @return
+	 */
+	public HashMap<String, Object> getInitCopyOrder(String orderId, String orderType, BusUserDto currUser);
+	
+	/**
+	 * 获取会员卡余额打印对象
+	 * @param orderId
+	 * @param orderType
+	 * @param currUser
+	 * @return
+	 */
+	public HashMap<String, Object> getVipPrintOrder(String orderId, String orderType, BusUserDto currUser);
 
 	/**
 	 * 获取单据头信息列表
@@ -70,5 +88,6 @@ public interface BusOrderApi extends BaseFooterApi<BusOrder, BusOrderCondition> 
 	 * @param currUser
 	 */
 	public void appendRemark(BusOrderCondition condition, BusUserDto currUser);
+	
 
 }

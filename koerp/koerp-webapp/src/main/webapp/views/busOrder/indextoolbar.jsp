@@ -9,10 +9,12 @@
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('1')">销售出库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('2')">销售寄存</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-page_copy" plain="true" onclick="toCopyOrderView()">复制</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toPrintOrderView()">打印</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
 <a href="#" class="easyui-linkbutton" iconCls="icon-client" plain="true" onclick="toAddCustomerView()">创建客户</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-memu_visa" plain="true" onclick="toVipActiveView()">会员开卡</a>	
+<a href="#" class="easyui-linkbutton" iconCls="icon-memu_visa" plain="true" onclick="toVipActiveView()">会员开卡</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toVipPrintOrderView()">打印(会员)</a>	
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125519344_easyicon_net_16" plain="true" onclick="show()">展开查询条件</a>
  -->
@@ -43,6 +45,20 @@ function toDetailView(){
 	parent.addTab(subtitle, url, icon);	
 }
 
+//跳转至单据复制新增界面
+function toCopyOrderView(){
+	var rows = currDataGrid.datagrid('getSelections');
+	if (rows.length != 1) {
+		$.messager.alert("提示","只能选择一行数据！");
+		return;
+	}
+	var row = rows[0];
+	var url = "${api}/bus/order/toCopyOrderView?orderId="+ row.order_id + "&orderType="+ row.order_type;
+	var icon = "icon-page_copy";
+	var subtitle = "创建销售单";
+	parent.addTab(subtitle, url, icon);	
+}
+
 function toPrintOrderView(){
 	var rows = currDataGrid.datagrid('getSelections');
 	if (rows.length != 1) {
@@ -57,6 +73,39 @@ function toPrintOrderView(){
 	$.ajax({
 		type : "GET",
 		url : "${api}/bus/order/getInitData",
+		data:{
+			"orderId": row.order_id,
+			"orderType": row.order_type
+		},
+		contentType:"application/json;charset=utf-8",	   
+		dataType : "json",
+		success : function(result) {		
+			var docOrderDto = result.entry;
+			if(docOrderDto!=null){
+				madeOrderView(docOrderDto, reflushDataGrid);
+			}		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			$.messager.alert("错误", errorThrown, "error");
+		}
+	});  	
+}
+
+//会员卡余额打印
+function toVipPrintOrderView(){
+	var rows = currDataGrid.datagrid('getSelections');
+	if (rows.length != 1) {
+		$.messager.alert("提示","只能选择一行数据！");
+		return;
+	}
+	var row = rows[0];
+	if(row.trade_status=="40" || row.trade_status=="60"){
+		$.messager.alert("提示","取消或关闭的单据不可打印！");
+		return;
+	}
+	$.ajax({
+		type : "GET",
+		url : "${api}/bus/order/getVipPrintOrder",
 		data:{
 			"orderId": row.order_id,
 			"orderType": row.order_type

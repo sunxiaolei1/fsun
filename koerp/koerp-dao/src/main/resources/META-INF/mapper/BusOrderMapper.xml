@@ -217,6 +217,7 @@
     <result column="o_seller_notes" property="sellerNotes"/>
     <result column="o_refund_id" property="refundId"/>
     <result column="o_refund_type" property="refundType"/>
+    <result column="o_seller_notes" property="sellerNotes"/>
   </resultMap>
   
   <resultMap id="DefinedResultMap" type="java.util.Map"> 	
@@ -325,6 +326,7 @@
 		o.seller_notes as o_seller_notes,
 		o.refund_id as o_refund_id,
 		o.refund_type as o_refund_type,
+		o.seller_notes as o_seller_notes,
 		d.goods_id as d_goods_id,
 		d.order_id as d_order_id ,
 		d.line_no as d_line_no,

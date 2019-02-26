@@ -13,6 +13,7 @@ public enum OrderOperateTypeEnum {
 	ADD("add", "新增"),
 	EDIT("edit", "编辑"),
 	VIEW("view", "查看"),
+	COPY("copy", "复制"),
 	UNKNOW(null,"未知");
 	
 	/** 常量 key */
