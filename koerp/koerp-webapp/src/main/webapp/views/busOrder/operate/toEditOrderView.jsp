@@ -341,7 +341,7 @@ function skuListReLoad() {
 function openRefundView(){
 	var refundId = $("#refundId", $orderfm).val();
 	if(refundId==""){
-		$.messager.alert("提示", "暂无退货明细!", "info");
+		$.messager.alert("提示", "暂无明细!", "info");
 		return;
 	}
 	var url = "${api}/bus/aftersale/refund/toBaseDetailView/"+ refundId;	
