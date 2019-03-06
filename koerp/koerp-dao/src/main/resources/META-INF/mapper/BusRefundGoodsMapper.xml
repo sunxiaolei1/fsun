@@ -52,6 +52,28 @@
     total_price, cost_price, rate_precent, is_gift, gift_count, gift_price, is_show, 
     property, memo, created_time, updated_time
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="refundId != null and refundId != ''">
+  			and refund_id = #{refundId}
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and sku = #{sku}
+  		</if>
+  				
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusRefundGoodsCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_refund_goods
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

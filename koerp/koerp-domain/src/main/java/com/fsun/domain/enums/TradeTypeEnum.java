@@ -13,7 +13,8 @@ public enum TradeTypeEnum {
 	UNPAY_CONSUME((short)1, "挂账消费"),
 	UNPAY_PAYMENT((short)2, "挂账结款"),
 	VIP_CONSUME((short)3, "会员卡消费"),
-	VIP_RACHARGE((short)4, "会员卡充值");
+	VIP_RACHARGE((short)4, "会员卡充值"),
+	REFUND_PAYMENT((short)5, "退货结款");
 	
 	/** 常量 key */
 	private Short value;

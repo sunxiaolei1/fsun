@@ -138,7 +138,9 @@ var currOrderDetails = [];
 var currRefundDetails = [];
 var currOrderDetailDataGrid = $("#orderDetailDataGrid");
 var currRefundDetailDataGrid = $("#refundDetailDataGrid");
-var $orderfm = $("#orderfm");   
+var $orderfm = $("#orderfm");  
+var currOrderUnpayPrice = 0;
+var isOpenShow = false;
 var soColumns = [[
 	{field:'lineNo',hidden:true},
 	{field:"sku",title:"SKU", width:60,align:"center"},
@@ -389,11 +391,21 @@ $(function () {
 			$("#buyerId",$orderfm).val(header.buyerId);
 			
 			currOrderDetails = orderDto.details;
-			if(currOrderDetails!=null && currOrderDetails.length>0){
+			if(currOrderDetails!=null && currOrderDetails.length>0){				
 				$.each(currOrderDetails, function(){
 					this.skuAftersaleStatus = 10;
 				});
 				currOrderDetailDataGrid.datagrid("loadData", currOrderDetails);		
+			}
+			//获取订单挂账合计金额
+			var payAccounts = orderDto.payAccounts;
+			if(payAccounts!=null && payAccounts.length>0){
+				$.each(payAccounts, function(){
+					if(this.payMode==6){
+						var receptPrice = this.receptPrice;
+						currOrderUnpayPrice = (currOrderUnpayPrice + Number(receptPrice));
+					}					
+				});
 			}
 			//currRefundDetailDataGrid.datagrid("loadData", currRefundDetails);
 		},
@@ -489,18 +501,53 @@ function getSaveData(){
 	}			
 	currRefundDetailDataGrid.datagrid("acceptChanges");
 	var baseInfo = formJson($orderfm);	
-	var refundPrice = baseInfo.refundPrice;
+	var refundPrice = Number(baseInfo.refundPrice);
 	var payAccounts = [];
 	if(refundPrice!=null && refundPrice>0){
-		payAccounts.push({
-			receptPrice: refundPrice,
-			payPrice: refundPrice,
-			discountAmount: 0,
-			dibPrice: 0,
-			payMode: baseInfo.payMode,
-			tradeNo: baseInfo.tradeNo,
-			cardNo: baseInfo.cardNo
-		});
+		//原订单存在挂账记录
+		if(currOrderUnpayPrice>0){
+			isOpenShow = true;
+			if(currOrderUnpayPrice>=refundPrice){
+				payAccounts.push({
+					receptPrice: refundPrice,
+					payPrice: refundPrice,
+					discountAmount: 0,
+					dibPrice: 0,
+					payMode: 6
+				});
+			}else{
+				var diffPrice = Number(refundPrice) - currOrderUnpayPrice;
+				//挂账记录
+				payAccounts.push({
+					receptPrice: currOrderUnpayPrice,
+					payPrice: currOrderUnpayPrice,
+					discountAmount: 0,
+					dibPrice: 0,
+					payMode: 6					
+				});
+				//多出来的使用当前支付方式记账
+				payAccounts.push({
+					receptPrice: diffPrice,
+					payPrice: diffPrice,
+					discountAmount: 0,
+					dibPrice: 0,
+					payMode: baseInfo.payMode,
+					tradeNo: baseInfo.tradeNo,
+					cardNo: baseInfo.cardNo
+				});
+			}	
+		}else{
+			payAccounts.push({
+				receptPrice: refundPrice,
+				payPrice: refundPrice,
+				discountAmount: 0,
+				dibPrice: 0,
+				payMode: baseInfo.payMode,
+				tradeNo: baseInfo.tradeNo,
+				cardNo: baseInfo.cardNo
+			});
+		}
+		
 	}
 	delete baseInfo.payMode;
 	delete baseInfo.tradeNo;

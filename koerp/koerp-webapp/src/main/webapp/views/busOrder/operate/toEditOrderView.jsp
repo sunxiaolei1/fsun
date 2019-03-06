@@ -340,8 +340,12 @@ function skuListReLoad() {
 //打开退换货明细
 function openRefundView(){
 	var refundId = $("#refundId", $orderfm).val();
+	if(refundId==""){
+		$.messager.alert("提示", "暂无退货明细!", "info");
+		return;
+	}
 	var url = "${api}/bus/aftersale/refund/toBaseDetailView/"+ refundId;	
-	commonDialog("ordersDialog", "退换货明细", "95%", "90%", url, "icon-book_open");
+	commonDialog("ordersDialog", "退换货明细", "90%", "90%", url, "icon-book_open");
 }
 
 //打开账单明细

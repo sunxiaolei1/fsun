@@ -79,7 +79,7 @@
 							<th width="12%">备注</th>
 							<td colspan="3">
 								<input name="memo" id="memo" data-options="multiline:true" class="easyui-textbox" 
-									style="width:360px;height:50px;" editable="false" />
+									style="width:360px;height:50px;" />
 							</td>																			
 				        </tr>					        				       
 			        </table>			        	
@@ -128,7 +128,7 @@
 				        <tr>				            
 							<th width="12%">备注</th>
 							<td colspan="3">
-								<input name="memo" id="memo" data-options="multiline:true" 
+								<input name="orderMemo" id="orderMemo" data-options="multiline:true" 
 									class="easyui-textbox" style="width:360px;height:50px;" editable="false" />
 							</td>							
 				        </tr>				        	       
@@ -319,7 +319,7 @@ $(function () {
 			$("#toZeroPrice", $orderfm).numberbox("setValue", orderHeader.toZeroPrice);
 			
 			$("#couponPrice", $orderfm).numberbox("setValue", orderHeader.couponPrice);
-			$("#memo", $orderfm).textbox("setValue", orderHeader.memo);
+			$("#orderMemo", $orderfm).textbox("setValue", orderHeader.memo);
 				
 			var refundDetails = refundOrderDto.refundDetails;
 			var orderDetails = refundOrderDto.orderDetails;
@@ -360,9 +360,14 @@ $(function () {
 //获取取消订单的参数
 function getOrderCancelData(){
 	var refundIfd = $("#refundId", $orderfm).text();
+	var memo = $("#memo",$orderfm).textbox("getValue");
+	if(memo==''){
+		$.messager.alert("提示", "撤销单据请备注撤销原因!", "info");
+		return;
+	}
 	var saveData = {
 	     "params": {
-	    	"memo":  $("#memo",$orderfm).textbox("getValue")
+	    	"memo":  memo
 	      },
 	     "saveUrl": "${api}/bus/aftersale/status/${cancelStatus}?refundIds="+ refundIfd
 	}

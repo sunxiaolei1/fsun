@@ -7,60 +7,51 @@
 
 <div class="fsun-wrap">
 	<form id="refundfm">
-		<span class="title" style="top: 30px;">基本信息</span>		
+		<span class="title" style="top: 30px;">基本信息(退货单号:<span id='refundId'></span>)</span>		
 		<input id="orderId" name="orderId" hidden="true" />
 		<input id="extOrderId" name="extOrderId" hidden="true" />		
 		<input id="shopId" name="shopId" hidden="true" />
 		<input id="buyerId" name="buyerId" hidden="true" />
 		<table class="nb-formTable" style="width:100%;margin-top:2px;">
 	        <tr>
-	        	<th width="12%">原订单金额</th>
+	        	<th width="6%">客户名称</th>
+				<td>
+					<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly />								
+				</td>				
+				<th width="6%">所属店仓</th>
+				<td>
+					<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
+				</td> 
+				<th width="6%">退货原因</th>
+				<td>
+					<input id="refundReason" name="refundReason" class="easyui-combobox" editable="false" required />								
+				</td>            												
+	        </tr>	
+	        <tr>
+	        	<th width="6%">原订单金额</th>
 				<td>
 					<input id="orderPrice" class="easyui-numberbox" disabled 
 						data-options="min:0,precision:2, formatter: priceFormat" />
 				</td>
-				<th width="12%">原实收金额</th>
+				<th width="6%">原实收金额</th>
 				<td>
 					<input id="receptPrice" class="easyui-numberbox" disabled 
 						data-options="min:0,precision:2, formatter: priceFormat" />
-				</td>
-	        	<th width="12%">客户名称</th>
-				<td>
-					<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly />								
-				</td>				
-				<th width="12%">所属店仓</th>
-				<td>
-					<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
-				</td>            												
-	        </tr>	
-	        <tr>	
-	      			<th width="12%">退款金额</th>
+				</td>	
+	      		<th width="6%">退款金额</th>
 				<td>
 					<input id="refundPrice" name="refundPrice" class="easyui-numberbox" 
 						data-options="min:0,precision:2,value:0, formatter: priceFormat" />
-				</td>									        			           
-				<th width="12%">支付方式</th>
-				<td>
-					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
-				</td>
-				<th width="12%">支付流水号</th>
-				<td>
-					<input id="tradeNo" name="tradeNo" class="easyui-textbox" />								
-				</td>
-				<th width="12%">支付卡号</th>
-				<td>
-					<input id="cardNo" name="cardNo" class="easyui-textbox" />								
-				</td>
+				</td>									        			           				
 	        </tr>	       		        		        
-	        <tr>	
-	        	<th width="12%">退货原因</th>
-				<td>
-					<input id="refundReason" name="refundReason" class="easyui-combobox" editable="false" required />								
-				</td>        			        	
-	            <th width="12%">备注</th>
+	        <tr>		        	       			        	
+	            <th width="6%">备注</th>
 	        	<td colspan="5">
 					<input id="memo" name="memo" data-options="multiline:true"
-						class="easyui-textbox" style="width:600px;height:40px;" />
+						class="easyui-textbox" style="width:700px;height:50px;" />
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="#" class="easyui-linkbutton" iconCls="icon-money" 
+						plain="false" onclick="openRefundPayAccountView()">退货账单</a>	
 				</td>		        			           
 	        </tr>
 		</table>
@@ -85,8 +76,9 @@
 <%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>
 
 <script type="text/javascript">
- 
+
 var currRefundDetails = [];
+var currRefundPayAccount = [];
 var currRefundDetailDataGrid = $("#refundDetailDataGrid");
 var $refundfm = $("#refundfm");   
 var refundColumns = [[
@@ -190,6 +182,9 @@ $(function () {
 			var orderDto = result.entry;
 			var refundId = orderDto.refundId;
 			if(refundId!=null && refundId!=''){
+				
+				$("#refundId", $refundfm).text(refundId);
+				
 				var refundHeader = orderDto.refundHeader;
 				var orderHeader = orderDto.orderHeader;
 				var payAccounts = orderDto.payAccounts;				
@@ -200,11 +195,8 @@ $(function () {
 				$("#shopName",$refundfm).textbox("setValue", refundHeader.shopName);			
 				$("#buyerName",$refundfm).textbox("setValue", refundHeader.buyerName);
 				$("#memo",$refundfm).textbox("setValue", refundHeader.memo);				
-				if(payAccounts!=null && payAccounts.length==1){
-					var payAccount = payAccounts[0];
-					$("#payMode", $refundfm).combobox("setValue", payAccount.payMode);
-					$("#tradeNo",$refundfm).textbox("setValue", payAccount.tradeNo);
-					$("#cardNo",$refundfm).textbox("setValue", payAccount.cardNo);
+				if(payAccounts!=null && payAccounts.length>0){
+					currRefundPayAccount = payAccounts;
 				}
 				
 				if(orderDto.refundDetails!=null && orderDto.refundDetails.length>0){
@@ -220,5 +212,34 @@ $(function () {
      
 });
 
+/**
+ * 打开退货账单明细
+ */
+function openRefundPayAccountView(){
+	$("<div></div>").dialog({
+		id:"payAccountDialog",
+	    title:"&nbsp;退货结款",
+	    width:"860px",
+		height:"350px",
+	    iconCls:"icon-script_delete",
+	    closed:false,
+	    cache:false,
+	    href:"${api}/bus/payAccount/toRefundDetailView",
+	    modal:true,
+	    minimizable:false,//定义是否显示最小化按钮。
+     	maximizable:false,//定义是否显示最大化按钮
+     	closable:true,
+     	resizable:true,//定义对话框是否可调整尺寸
+     	collapsible: false,//是否可折叠的
+		onLoad:function(){
+     		$('#payAccountDialog').window('center');
+     		currRefundPayAccountDataGrid.datagrid("loadData", currRefundPayAccount);    		
+		},
+    	onClose:function(){
+      		$(this).dialog("destroy");
+      	}
+	});	
+}
+ 
 
 </script>

@@ -59,21 +59,53 @@
   <sql id="conditions">
   	<where>  	
   		<if test="orderId != null and orderId != ''">
-  			and order_id = #{orderId}
+  			and a.order_id = #{orderId}
   		</if>
   		
   		<if test="payMode != null and payMode != ''">
-  			and pay_mode = #{payMode}
+  			and a.pay_mode = #{payMode}
+  		</if>
+  		
+  		<if test="shopId != null and shopId != ''">
+  			and a.shop_id = #{shopId}
+  		</if>
+  		
+  		<if test="cardNo != null and cardNo != ''">
+  			and a.card_no like concat(#{cardNo},'%')
+  		</if>
+  		
+  		<if test="tradeNo != null and tradeNo != ''">
+  			and a.trade_no like concat(#{tradeNo},'%')
   		</if>
   				
 	</where>
   </sql>
   
+   <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusPayAccountCondition" >    
+	SELECT 
+		sum(a.pay_price) as pay_price, 
+		sum(a.recept_price) as recept_price, 
+		sum(a.dib_price) as dib_price, 
+    	sum(a.over_amount) as over_amount, 
+    	sum(a.discount_amount) as discount_amount
+    FROM bus_pay_account a 
+    	<include refid="conditions" />
+  </select>
+  
   <select id="selectList" resultMap="BaseResultMap" 
   	parameterType="com.fsun.domain.entity.BusPayAccountCondition" >    
 	SELECT 
 		<include refid="Base_Column_List" />
-    FROM bus_pay_account
+    FROM bus_pay_account a
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusPayAccountCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_pay_account a 
     	<include refid="conditions" />
   </select>
   

@@ -24,15 +24,13 @@ import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusBarterDto;
 import com.fsun.domain.dto.BusRefundDto;
 import com.fsun.domain.dto.BusUserDto;
-import com.fsun.domain.entity.BusGoodsCondition;
 import com.fsun.domain.entity.BusPayAccountCondition;
 import com.fsun.domain.entity.BusRefundCondition;
 import com.fsun.domain.entity.BusRefundGoodsCondition;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
-import com.fsun.domain.enums.FlowStatusEnum;
+import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
-import com.fsun.domain.enums.OrderStatusEnum;
 import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.RefundOrderStatusEnum;
 import com.fsun.domain.enums.RefundReasonEnum;
@@ -41,6 +39,7 @@ import com.fsun.domain.enums.RefundStatusEnum;
 import com.fsun.domain.enums.RefundTypeEnum;
 import com.fsun.domain.enums.SkuAftersaleStatusEnum;
 import com.fsun.domain.enums.TradeStatusEnum;
+import com.fsun.domain.enums.TradeTypeEnum;
 import com.fsun.domain.enums.VipUnpaidPayModeEnum;
 import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusOrder;
@@ -180,21 +179,29 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		
 		//创建退货账单
 		List<BusPayAccount> busPayAccounts = busRefundDto.getPayAccounts();
+		int lineNo = 1;
 		for (BusPayAccount payAccount : busPayAccounts) {			
 			payAccount.setPayId(PKMapping.GUUID(PKMapping.bus_pay_account));
 			payAccount.setOrderId(refundId);
 			payAccount.setSrcOrderId(refundHeader.getOrderId());
-			payAccount.setLineNo(1);			
+			payAccount.setLineNo(lineNo++);			
 			payAccount.setCreatedTime(now);
 			payAccount.setTradeTime(now);
 			payAccount.setPayType(BusPayTypeEnum.REFUND_PAY.getValue());
 			payAccount.setShopId(refundHeader.getShopId());
 			payAccount.setShopName(refundHeader.getShopName());
 			busPayAccountManage.create(payAccount);
+			//退货挂账结款
+			Short payMode = payAccount.getPayMode();
+			if(PayModeEnum.UNPAY.getValue().equals(payMode)){
+				payAccount.setVipId(refundHeader.getBuyerId());
+				BusVipUnpaid busVipUnpaid = this.initOrderUnPay(refundHeader, payAccount, TradeTypeEnum.REFUND_PAYMENT.getValue());
+				busVipUnpaidManage.create(busVipUnpaid, false);
+			}
 		}		
 		
 		//创建退货商品明细
-		int lineNo = 1;
+		lineNo = 1;
 		Set<BusRefundGoods> apportionDetails = new HashSet<>();
 		busRefundGoodsManage.initApportionDetails(busRefundDto, apportionDetails);
 		for (BusRefundGoods busRefundGoods : apportionDetails) {
@@ -273,6 +280,14 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 						}
 					}
 				}
+				BusOrder busOrder = busOrderManage.load(header.getOrderId());
+				busOrder.setRefundId(null);
+				busOrder.setRefundStatus(null);
+				busOrder.setRefundType(null);
+				busOrder.setRefundReason(null);
+				busOrder.setRefundTime(null);
+				busOrder.setRefundSponsor(null);
+				busOrderManage.updateEach(busOrder);
 			}			
 			//更新头的状态
 			header.setRefundStatus(status);
@@ -360,7 +375,33 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		}
 		return refundMap;
 	}
+
 	
-	
+	/**
+	 * 初始化挂账信息
+	 * @param header
+	 * @param payAccount
+	 * @return
+	 */
+	private BusVipUnpaid initOrderUnPay(BusRefund header, BusPayAccount payAccount, Short tradeType) {
+		BusVipUnpaid busVipUnpaid = new BusVipUnpaid();		
+		busVipUnpaid.setUnpaidId(PKMapping.GUUID(PKMapping.bus_vip_unpaid));		
+		busVipUnpaid.setCustomerCode(header.getBuyerId());		
+		busVipUnpaid.setOrderId(header.getRefundId());
+		busVipUnpaid.setPayMode(payAccount.getPayMode());
+		busVipUnpaid.setShopId(header.getShopId());
+		busVipUnpaid.setTradeTime(payAccount.getTradeTime());
+		busVipUnpaid.setCreatedTime(new Date());
+		busVipUnpaid.setCreatedName(header.getCreatedName());
+		busVipUnpaid.setCardNo(payAccount.getCardNo());
+		busVipUnpaid.setTradeType(tradeType);
+		busVipUnpaid.setPayId(payAccount.getPayId());		
+		busVipUnpaid.setUnusual(false);
+		busVipUnpaid.setTradeStatus(Short.valueOf(TradeStatusEnum.COMPLETED.getCode()));	
+		busVipUnpaid.setGiftPrice(BigDecimal.ZERO);
+		busVipUnpaid.setTradePrice(payAccount.getReceptPrice());
+		return busVipUnpaid;
+	}
+
 
 }
