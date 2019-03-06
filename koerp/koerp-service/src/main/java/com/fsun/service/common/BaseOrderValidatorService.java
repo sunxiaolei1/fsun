@@ -6,6 +6,7 @@ import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
+import com.fsun.domain.enums.RefundStatusEnum;
 import com.fsun.domain.enums.TradeStatusEnum;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusRefund;
@@ -91,7 +92,11 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = true; break; 
 		 	case RETURN_ORDER: 	
 	        	isEnable = true; break;	 
-	        case CANCEL_ORDER: 	        	
+	        case CANCEL_REFUND: 
+	        	if(RefundStatusEnum.RETURN_REFUND.getValue().equals(refundStatus) 
+	        		|| RefundStatusEnum.RETURN_UNREFUND.getValue().equals(refundStatus)){
+	        		isEnable = true;
+	        	}
 	        	break;	        
 	        case REPAIR_REFUND:  
 	        	isEnable = true; break;
@@ -124,7 +129,7 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = true; break;	        	
 	        case ADD_ORDER_REMARK:
 	        	isEnable = false;break;	                
-	        case CANCEL_ORDER: 	        	
+	        case CANCEL_DOC_ORDER: 	        	
 	        	if(DocOrderStatusEnum.SO_DDCK.getCode().equals(orderStatus)){
 	        		isEnable = true;
 	        	}      
@@ -155,7 +160,7 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = true; break;	        	
 	        case ADD_ORDER_REMARK:
 	        	break;	                       
-	        case CANCEL_ORDER: 	  
+	        case CANCEL_DOC_ASN: 	  
 	        	if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
 	        		|| DocAsnStatusEnum.SI_WQSH.getCode().equals(asnStatus))){
 	        		if(!DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType)){

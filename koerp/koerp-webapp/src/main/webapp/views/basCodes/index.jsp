@@ -40,8 +40,11 @@
 	
 <script type="text/javascript">
 $(function () {
-	initDataGrid();
+	
 	initCodeTypeCombox();
+	
+	initDataGrid();
+	
 });
 
 var columns = 
@@ -239,7 +242,7 @@ function del() {
 	if(rows) {
 		var ids = '';
 		for(var i=0;i< rows.length;i++){
-			ids += rows[i].codeId + ",";			
+			ids += rows[i].code_id + ",";			
 	    }
 		ids = ids.substring(0,ids.length-1); 
 		
@@ -310,7 +313,7 @@ function initCodeTypeCombox() {
 				});
 				items.unshift({
 					id:"",
-					text:"请选择..."
+					text:"全部"
 				})
         		
         		$('#codeType').combobox({   	

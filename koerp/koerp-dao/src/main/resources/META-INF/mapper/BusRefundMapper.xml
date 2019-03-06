@@ -38,6 +38,64 @@
     check_time, refund_time, created_time, created_name, updated_time, updated_name
   </sql>
   
+  <sql id="conditions">
+  	<where>  	
+  		<if test="q != null and q != ''">
+  			and (a.refund_id like concat(concat('%',#{q}),'%')  
+  				or a.order_id like concat(concat('%',#{q}),'%')  
+  				)
+  		</if>
+  		
+  		<if test="barterOrderId != null and barterOrderId != ''">
+  			and a.barter_order_id like concat(concat('%',#{barterOrderId}),'%')  
+  		</if>
+  			
+  		<if test="shopId != null and shopId != ''">
+  			and a.shop_id = #{shopId}
+  		</if>
+  		
+  		<if test="buyerId != null and buyerId != ''">
+  			and a.buyer_id = #{buyerId}
+  		</if>
+  		
+  		<if test="refundStatus != null">
+  			and a.refund_status = #{refundStatus}
+  		</if>
+  		
+  		<if test="refundType != null">
+			and a.refund_type = #{refundType}
+		</if>
+		
+		<if test="refundReason != null">
+			and a.refund_reason = #{refundReason}
+		</if>
+  		
+  		<if test="startTime != null">
+			and a.refund_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			and a.refund_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+		</if>
+  		
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusRefundCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_refund a
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusRefundCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_refund a 
+    	<include refid="conditions" />
+  </select>
+  
   <select id="getMaxRefundId" resultType="java.lang.String" parameterType="java.lang.String" >    
 	select 
 		refund_id 

@@ -230,15 +230,15 @@ var refundColumns = [[
 		styler: function(value, rowData, rowIndex){
 	      	return 'font-weight:bold;color:green;';
 	    },
-      	formatter:numBaseFormat,
-		editor:{
+      	formatter:numBaseFormat //,
+		/* editor:{
 			type:'numberbox',
 			options:{
 				required: true,
 				min:0,
 				precision:2
 			}
-		}
+		} */
 	},	
 	{field:"totalPrice",title:"退款金额",width:60,align:"center",formatter:numBaseFormat},
 	{field:"delete",title:"操作",width:80,align:"center", formatter: function(value, row, index){

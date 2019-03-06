@@ -60,12 +60,12 @@ public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondi
 
 	/**
 	 * 改变单据状态
-	 * @param split
+	 * @param refundIds
 	 * @param status
 	 * @param user
 	 * @param condition
 	 */
-	public void changeStatus(String[] split, String status, SysUser user, BusRefundCondition condition);
+	public void changeStatus(String[] refundIds, Short status, SysUser user, BusRefundCondition condition);
 
 	/**
 	 * 追加备注

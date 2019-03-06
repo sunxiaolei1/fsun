@@ -20,6 +20,7 @@ import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusRefundCondition;
+import com.fsun.domain.enums.RefundStatusEnum;
 import com.fsun.domain.enums.RefundTypeEnum;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
@@ -58,8 +59,9 @@ public class BusAfterSaleController extends BaseController {
 	 */
 	@RequestMapping(value="/refund/toBaseDetailView/{refundId}", method=RequestMethod.GET)
 	public ModelAndView toRefundDetail(@PathVariable("refundId") String refundId) {
-		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/toSimpleDetailView"); 
+		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/toSimpleDetailView"); 		
 		modelAndView.addObject("refundId", refundId);
+		modelAndView.addObject("cancelStatus", RefundStatusEnum.CANCEL.getValue());	
 		return modelAndView;
 	}
 	
@@ -74,6 +76,7 @@ public class BusAfterSaleController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/toDetailView"); 
 		modelAndView.addObject("refundId", refundId);
 		modelAndView.addObject("buttontype", buttontype);
+		modelAndView.addObject("cancelStatus", RefundStatusEnum.CANCEL.getValue());	
 		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, null, refundId);
 		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
 		return modelAndView;
@@ -169,7 +172,8 @@ public class BusAfterSaleController extends BaseController {
 				@RequestParam("barterOrderId") String barterOrderId) {
 		ModelAndView modelAndView = new ModelAndView("/busAfterSale/barter/toDetailView"); 
 		modelAndView.addObject("refundId", refundId);
-		modelAndView.addObject("barterOrderId", barterOrderId);		
+		modelAndView.addObject("barterOrderId", barterOrderId);	
+		modelAndView.addObject("cancelStatus", RefundStatusEnum.CANCEL.getValue());	
 		modelAndView.addObject("buttontype", buttontype);			
 		List<String> hiddenbuttons  = orderButtonsApi.getHiddenButtonsMap(buttontype, barterOrderId, refundId);
 		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
@@ -214,4 +218,32 @@ public class BusAfterSaleController extends BaseController {
 	/******************************************        barter end     *****************************************/
 	
 	/***********************************    共用方法       ***************************************/
+	
+	
+	@RequestMapping("/index")
+	public ModelAndView index() {				
+		ModelAndView modelAndView = new ModelAndView("/busAfterSale/index");
+		modelAndView.addObject("cancelStatus", RefundStatusEnum.CANCEL.getValue());			
+		return modelAndView;
+	}
+	
+	/**
+	 * 退货单列表
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/findPage", method=RequestMethod.POST)
+	@ResponseBody
+	public HttpResult findPage(BusRefundCondition condition) {
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			condition.setShopId(currUser.getShopId());	
+			PageModel pageModel = busAfterSaleApi.findPage(condition);
+			return success(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();			
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
 }

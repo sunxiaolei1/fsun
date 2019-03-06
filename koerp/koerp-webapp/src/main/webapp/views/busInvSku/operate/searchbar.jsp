@@ -4,7 +4,7 @@
 
 <%-- <shiro:hasPermission name="orders:query">   --%>
 	<div id="queryDiv" style="height:10%;overflow:hidden;border: 1px solid #D3D3D3;" data-options="region:'center'">
-		<%@include file="../../ecCommon/commonSearchHeader.jsp"%>		
+		<%@include file="../../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>
 					<td width="6%">交易单号:</td>
@@ -24,7 +24,7 @@
 					</td>																			
 				</tr>									
 			</table>
-		<%@include file="../../ecCommon/commonSearchFooter.jsp"%>		
+		<%@include file="../../busCommon/commonSearchFooter.jsp"%>		
 	</div>
 <%-- </shiro:hasPermission> --%>
 

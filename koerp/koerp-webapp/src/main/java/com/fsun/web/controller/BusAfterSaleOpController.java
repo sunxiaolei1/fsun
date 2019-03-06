@@ -110,7 +110,7 @@ public class BusAfterSaleOpController extends BaseController {
 	 */
 	@RequestMapping(value="/status/{status}", method = {RequestMethod.POST})
 	@ResponseBody
-	public HttpResult changeStatus(@PathVariable("status") String status, 
+	public HttpResult changeStatus(@PathVariable("status") Short status, 
 		@RequestParam("refundIds") String refundIds, @RequestBody BusRefundCondition condition) {
 		try {
 			if (!StringUtils.isEmpty(refundIds)) {

@@ -12,7 +12,7 @@ public enum RefundTypeEnum {
 
 	UNKNOW(null, "", "未知"),
 	RETURN_ORDER((short)1, "TH","退货单"),
-	EXCHANGE_ORDER((short)2, "HT", "换退单");
+	EXCHANGE_ORDER((short)2, "HH", "换货单");
 	
 	/** 常量 key */
 	private Short value;

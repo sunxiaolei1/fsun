@@ -17,27 +17,41 @@ import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusPayAccountManage;
 import com.fsun.biz.bus.manage.BusRefundGoodsManage;
 import com.fsun.biz.bus.manage.BusRefundManage;
+import com.fsun.biz.bus.manage.BusVipUnpaidManage;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusBarterDto;
 import com.fsun.domain.dto.BusRefundDto;
 import com.fsun.domain.dto.BusUserDto;
+import com.fsun.domain.entity.BusGoodsCondition;
+import com.fsun.domain.entity.BusPayAccountCondition;
 import com.fsun.domain.entity.BusRefundCondition;
+import com.fsun.domain.entity.BusRefundGoodsCondition;
+import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
+import com.fsun.domain.enums.FlowStatusEnum;
+import com.fsun.domain.enums.OrderOperateButtonsEnum;
+import com.fsun.domain.enums.OrderStatusEnum;
+import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.RefundOrderStatusEnum;
 import com.fsun.domain.enums.RefundReasonEnum;
 import com.fsun.domain.enums.RefundSponsorEnum;
 import com.fsun.domain.enums.RefundStatusEnum;
 import com.fsun.domain.enums.RefundTypeEnum;
 import com.fsun.domain.enums.SkuAftersaleStatusEnum;
+import com.fsun.domain.enums.TradeStatusEnum;
 import com.fsun.domain.enums.VipUnpaidPayModeEnum;
 import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusPayAccount;
 import com.fsun.domain.model.BusRefund;
 import com.fsun.domain.model.BusRefundGoods;
+import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
+import com.fsun.exception.bus.AfterSaleException;
+import com.fsun.exception.bus.OrderException;
+import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
 
 /**
@@ -59,6 +73,9 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 	
 	@Autowired
 	private BusPayAccountManage busPayAccountManage;
+	
+	@Autowired
+	private BusVipUnpaidManage busVipUnpaidManage;
 	
 	@Autowired
 	private BusOrderApi busOrderApi;
@@ -144,6 +161,8 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		refundHeader.setCreatedName(currUser.getRealname());
 		refundHeader.setCreatedTime(now);
 		refundHeader.setIsValid(true);
+		refundHeader.setDiffPrice(BigDecimal.ZERO);
+		refundHeader.setChangePrice(BigDecimal.ZERO);
 		refundHeader.setRefundOrderStatus(RefundOrderStatusEnum.SOLVED.getValue());
 		if(refundPrice!=null && refundPrice.compareTo(BigDecimal.ZERO)>0){
 			refundHeader.setRefundStatus(RefundStatusEnum.RETURN_REFUND.getValue());
@@ -212,8 +231,55 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 	}
 
 	@Override
-	public void changeStatus(String[] split, String status, SysUser user, BusRefundCondition condition) {
-		// TODO Auto-generated method stub
+	public void changeStatus(String[] refundIds, Short status, SysUser currUser, BusRefundCondition condition) {
+		Date now = new Date();
+		for (String refundId : refundIds) {
+			BusRefund header = this.load(refundId);
+			if(header==null){
+				throw new AfterSaleException(SCMErrorEnum.BUS_REFUND_NOT_EXIST);
+			}
+			String shopId = header.getShopId();
+			if(!currUser.getShopId().equals(shopId)){
+				throw new AfterSaleException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
+			}	
+					
+			header.setUpdatedTime(now);
+			if(RefundStatusEnum.getByValue(status)==RefundStatusEnum.CANCEL){	
+				//校验单据是否可取消退货单
+				if(!orderStatusValidator(header, OrderOperateButtonsEnum.CANCEL_REFUND)){
+					throw new AfterSaleException(SCMErrorEnum.BUS_REFUND_STATUS_INVALID);
+				}
+				//还原商品库存
+				header.setRefundOrderStatus(RefundOrderStatusEnum.SOLVED.getValue());
+				BusRefundGoodsCondition condition0 = new BusRefundGoodsCondition();
+				condition0.setRefundId(refundId);
+				List<BusRefundGoods> details = busRefundGoodsManage.list(condition0);
+				for (BusRefundGoods refundGoods : details) {
+					super.skuStockIn(header, refundGoods);
+				}				
+				BusPayAccountCondition condition1 = new BusPayAccountCondition();
+				condition1.setOrderId(refundId);
+				List<BusPayAccount> payAccounts = busPayAccountManage.list(condition1);
+				for (BusPayAccount busPayAccount : payAccounts) {
+					Short payMode = busPayAccount.getPayMode();
+					if(PayModeEnum.UNPAY.getValue().equals(payMode)){						
+						BusVipUnpaidCondition condition2 = new BusVipUnpaidCondition();
+						condition2.setPayId(busPayAccount.getPayId());
+						List<BusVipUnpaid> list = busVipUnpaidManage.list(condition2);
+						if(list!=null && list.size()==1){
+							busVipUnpaidManage.cancel(list.get(0), currUser);
+						}else{
+							throw new AfterSaleException(SCMErrorEnum.BUS_ORDER_UNPAY_INVALID);
+						}
+					}
+				}
+			}			
+			//更新头的状态
+			header.setRefundStatus(status);
+			header.setUpdatedName(currUser.getRealname());
+			header.setMemo(condition.getMemo());
+			busRefundManage.update(header);			
+		}
 		
 	}
 
