@@ -50,6 +50,7 @@
 
 var currCheckedSkus = [];	
 var currDatagrid;
+var currTradeType;
 
 $(function() {
 	
@@ -57,7 +58,8 @@ $(function() {
 	var obj = $('#chooseSkuDialog').dialog('options');		
 	var queryParams = obj["view"];		
 	if(typeof(queryParams) != "undefined") {
-		currCheckedSkus = queryParams.checkedSkus;	
+		currCheckedSkus = queryParams.checkedSkus;
+		currTradeType = queryParams.tradeType;
 	}
 	
 	currDatagrid = $("#skusDatagrid");
@@ -67,7 +69,8 @@ $(function() {
 		striped: true,
 		fit: true, //自动大小		
 		queryParams : {
-			"enabled": 1
+			"enabled": 1,
+			"tradeType": currTradeType
 	    },
 		pagination: true, //分页控件
 		rownumbers: true, //行号			
@@ -90,7 +93,7 @@ $(function() {
 			}},
 			{field: "property", title: "规格", width: 120, align: "center"},
 			{field: "qty", title: "数量", width: 60, align: "center"},
-			{field: "marketPrice", title: "单价", width: 60, align: "center",formatter:numBaseFormat},						
+			{field: "salePrice", title: "单价", width: 60, align: "center",formatter:numBaseFormat},						
 			{field:"unit",title:"单位", width:60,align:"center", formatter:function(value, row){
 				return formatter(value, window.parent.unitCode); 
 			}},

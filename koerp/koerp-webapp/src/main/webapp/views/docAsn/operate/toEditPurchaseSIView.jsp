@@ -186,8 +186,8 @@ function initAddSku(rowData){
 	skuDto.rejectedQty = 0; 
 	skuDto.unit = rowData.unit;
 	skuDto.costPrice = rowData.costPrice;
-	skuDto.price = rowData.originSalePrice;
-	skuDto.totalPrice = rowData.originSalePrice * skuDto.receiveQty;
+	skuDto.price = rowData.salePrice;
+	skuDto.totalPrice = rowData.salePrice * skuDto.receiveQty;
 	
 	
 	skuDto.barCode = rowData.barCode;  

@@ -231,6 +231,11 @@ public class BusBasSku {
      * 表字段 : bus_bas_sku.is_vip_appoint
      */
     private Boolean isVipAppoint;
+    
+    /**
+     * 销售单价(用于商品选择带出的单价)
+     */
+    private BigDecimal salePrice;
 
     public String getSkuId() {
         return skuId;
@@ -535,4 +540,18 @@ public class BusBasSku {
     public void setIsVipAppoint(Boolean isVipAppoint) {
         this.isVipAppoint = isVipAppoint;
     }
+
+	/**
+	 * @return the salePrice
+	 */
+	public BigDecimal getSalePrice() {
+		return salePrice;
+	}
+
+	/**
+	 * @param salePrice the salePrice to set
+	 */
+	public void setSalePrice(BigDecimal salePrice) {
+		this.salePrice = salePrice;
+	}
 }

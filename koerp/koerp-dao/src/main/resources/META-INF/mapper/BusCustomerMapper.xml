@@ -157,7 +157,7 @@
     from bus_customer customer
     LEFT JOIN bus_vip_unpaid bus_vip_unpaid
     	ON bus_vip_unpaid.customer_code = customer.customer_code 
-    		and bus_vip_unpaid.trade_type in (1,2)
+    		and bus_vip_unpaid.trade_type in (1,2,5)
     LEFT JOIN bus_shop bus_shop on bus_shop.shop_id = bus_vip_unpaid.shop_id
     where customer.customer_code = #{customerCode,jdbcType=VARCHAR}
   </select>

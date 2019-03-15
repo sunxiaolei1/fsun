@@ -110,7 +110,7 @@ public class BusVipUnpaidController extends BaseController {
 	@ResponseBody
 	public HttpResult findUnpaidPage(BusVipUnpaidCondition condition) {
 		try {
-			String[] tradeTypes = {"1", "2"};
+			String[] tradeTypes = {"1", "2", "5"};
 			condition.setInTradeTypes(tradeTypes);
 			PageModel pageModel = busVipUnpaidApi.findPage(condition);
 			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn())
@@ -155,7 +155,7 @@ public class BusVipUnpaidController extends BaseController {
 	public void exportUnpaid(BusVipUnpaidCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
-			String[] tradeTypes = {"1", "2"};
+			String[] tradeTypes = {"1", "2", "5"};
 			condition.setInTradeTypes(tradeTypes);
 			List<HashMap<String, Object>> list = busVipUnpaidApi.exportUnpaid(condition);
 			LinkedHashMap<String, String> fieldMap = new LinkedHashMap<String, String>();

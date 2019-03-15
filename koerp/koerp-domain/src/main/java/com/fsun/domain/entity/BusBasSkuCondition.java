@@ -254,6 +254,11 @@ public class BusBasSkuCondition extends SortCondition {
      * 
      */
     private String[] notInSkus;
+    
+    /**
+     * 交易类型
+     */
+    private String tradeType;
 
     public String getSkuId() {
         return skuId;
@@ -592,5 +597,12 @@ public class BusBasSkuCondition extends SortCondition {
 		this.notInSkus = notInSkus;
 	}
 
-	
+	public String getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
+	}
+
 }

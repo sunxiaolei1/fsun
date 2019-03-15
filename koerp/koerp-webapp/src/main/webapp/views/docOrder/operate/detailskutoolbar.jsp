@@ -51,7 +51,8 @@ function addSkuRow() {
         href: "${api}/bus/basSku/toChooseEditSku",
         view: {
             checkedSkus: currDetailData,
-            currShopid: toShopId
+            currShopid: toShopId,
+            tradeType: '${orderType}'
         },
         modal: true,
         minimizable: false,
