@@ -77,6 +77,8 @@ public class BusCustomerService implements BusCustomerApi {
 					totalPrice = totalPrice.add(tradePrice);	
 				}else if(TradeTypeEnum.UNPAY_PAYMENT.getValue().equals(tradeType)){
 					paidPrice = paidPrice.add(tradePrice);	
+				}else if(TradeTypeEnum.REFUND_PAYMENT.getValue().equals(tradeType)){
+					paidPrice = paidPrice.add(tradePrice);	
 				}				
 			}							
 		}
