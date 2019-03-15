@@ -46,13 +46,13 @@
 
 /***************************************** 制作销售单的操作 *******************************************/
 
-function madeOrderView(docOrderDto, afterPrintFunc){
+function madeOrderView(docOrderDto, afterPrintFunc, printType){
 	if(docOrderDto){
     	var LODOP=getLodop();  
 		//LODOP.PRINT_INIT("送货单打印");
 		LODOP.SET_PRINT_PAGESIZE(1,"203mm","141mm","");		   			
 		
-		createOneOrderPage(LODOP,docOrderDto,0);
+		createOneOrderPage(LODOP,docOrderDto,0, printType);
 		
 		initOrderPagePublicInfo(LODOP, docOrderDto);
 		
@@ -143,7 +143,7 @@ function initOrderPagePublicInfo(LODOP, docOrderDto){
 	
 }
 
-function createOneOrderPage(LODOP,docOrderDto,currRow){
+function createOneOrderPage(LODOP,docOrderDto,currRow, printType){
 
 	if($("#head1")){
 		$("#head1").empty();
@@ -157,7 +157,7 @@ function createOneOrderPage(LODOP,docOrderDto,currRow){
 		LODOP.NewPageA();	
 	}
 	
-	CreateTableOrderContext(docOrderDto.details,9,"tableOrderData");
+	CreateTableOrderContext(docOrderDto.details,9,"tableOrderData",printType);
 	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
     var strStyle='<style type="text/css"> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>';
 	LODOP.ADD_PRINT_TABLE(175,"1%","99%",210,strStyle + document.getElementById("printTableOrder").innerHTML);
@@ -232,7 +232,7 @@ function createTableOrderHead(div,header){
 }
 
 /************************************  创建送货单的主体内容  ********************************/
-function CreateTableOrderContext(list,cellCount,div)
+function CreateTableOrderContext(list,cellCount,div, printType)
 { 
      var tbody = $("#"+div);
 	 for(var i=0;i<list.length;i++)
@@ -248,7 +248,11 @@ function CreateTableOrderContext(list,cellCount,div)
 		var unit = formatter(obj.unit, parent.unitCode);
 		var originSalePrice = obj.originSalePrice;
 		var salePrice = obj.salePrice;
-		var totalPrice =  obj.totalPrice;
+		var totalPrice =  obj.totalPrice;		
+		if(printType==1){
+			salePrice = originSalePrice;
+			totalPrice = (Number(obj.qty)-Number(obj.giftCount)) * Number(salePrice);
+		}
 		var j=1;
 		var td;		
 		while(j<=cellCount){		

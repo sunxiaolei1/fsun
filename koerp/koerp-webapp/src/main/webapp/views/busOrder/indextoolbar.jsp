@@ -10,11 +10,12 @@
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('2')">销售寄存</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-page_copy" plain="true" onclick="toCopyOrderView()">复制</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toPrintOrderView()">打印</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toPrintOrderView(0)">打印</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
 <a href="#" class="easyui-linkbutton" iconCls="icon-client" plain="true" onclick="toAddCustomerView()">创建客户</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-memu_visa" plain="true" onclick="toVipActiveView()">会员开卡</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toVipPrintOrderView()">打印(会员)</a>	
+<a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toPrintOrderView(1)">打印(零售)</a>
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125519344_easyicon_net_16" plain="true" onclick="show()">展开查询条件</a>
  -->
@@ -59,7 +60,7 @@ function toCopyOrderView(){
 	parent.addTab(subtitle, url, icon);	
 }
 
-function toPrintOrderView(){
+function toPrintOrderView(printType){
 	var rows = currDataGrid.datagrid('getSelections');
 	if (rows.length != 1) {
 		$.messager.alert("提示","只能选择一行数据！");
@@ -82,7 +83,7 @@ function toPrintOrderView(){
 		success : function(result) {		
 			var docOrderDto = result.entry;
 			if(docOrderDto!=null){
-				madeOrderView(docOrderDto, reflushDataGrid);
+				madeOrderView(docOrderDto, reflushDataGrid, printType);
 			}		
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -115,7 +116,7 @@ function toVipPrintOrderView(){
 		success : function(result) {		
 			var docOrderDto = result.entry;
 			if(docOrderDto!=null){
-				madeOrderView(docOrderDto, reflushDataGrid);
+				madeOrderView(docOrderDto, reflushDataGrid, 0);
 			}		
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
