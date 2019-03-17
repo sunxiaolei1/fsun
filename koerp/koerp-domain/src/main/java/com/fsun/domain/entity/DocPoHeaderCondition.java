@@ -1,21 +1,28 @@
-package com.fsun.domain.model;
+package com.fsun.domain.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class DocPoHeader {
-    /**
+import com.fsun.domain.common.BaseOrderCondition;
+
+/**
+ * @author fsun
+ * @date 2019年3月16日
+ */
+public class DocPoHeaderCondition extends BaseOrderCondition{
+
+	/**
      * PO号
      * 表字段 : doc_po_header.po_no
      */
     private String poNo;
-
+    
     /**
      * 打印次数
      * 表字段 : doc_po_header.print_count
      */
     private Integer printCount;  
-    
+
     /**
      * 单据类型
      * 表字段 : doc_po_header.po_type
@@ -189,7 +196,7 @@ public class DocPoHeader {
      * 表字段 : doc_po_header.receiving_Time
      */
     private Date receivingTime;
-        
+    
     /**
      * 审核时间
      * 表字段 : doc_po_header.audit_time
@@ -519,6 +526,5 @@ public class DocPoHeader {
 	public void setPrintCount(Integer printCount) {
 		this.printCount = printCount;
 	}
-
-	
+    
 }

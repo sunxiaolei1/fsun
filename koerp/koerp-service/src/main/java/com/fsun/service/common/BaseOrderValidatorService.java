@@ -3,6 +3,7 @@ package com.fsun.service.common;
 import com.fsun.domain.enums.DocAsnStatusEnum;
 import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.DocOrderStatusEnum;
+import com.fsun.domain.enums.DocPoStatusEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
@@ -12,6 +13,7 @@ import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusRefund;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocOrderHeader;
+import com.fsun.domain.model.DocPoHeader;
 
 /**
  * 单据状态验证器
@@ -106,6 +108,34 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = true; break;
 	        case ADD_REFUND_REMARK:  
 	        	isEnable = true; break;
+	        default:  
+	        	isEnable = true;
+	    }  
+		return isEnable;
+	}
+	
+	/**
+	 * 申请单状态验证
+	 * @param header
+	 * @param buttonsEnum
+	 * @return
+	 */
+	protected boolean orderStatusValidator(DocPoHeader header, OrderOperateButtonsEnum buttonsEnum) {
+		boolean isEnable = false;
+		String poStatus = header.getPoStatus();
+		String poType = header.getPoType();
+		switch (buttonsEnum){  	        
+	        case REFRESH: 	
+	        	isEnable = true; break;
+	        case RETURN_ORDER: 	
+	        	isEnable = true; break;	        	
+	        case ADD_ORDER_REMARK:
+	        	isEnable = false;break;	                
+	        case CANCEL_DOC_PO: 	        	
+	        	if(DocPoStatusEnum.CANCEL.getCode().equals(poStatus)){
+	        		isEnable = true;
+	        	}      
+	        	break;	        
 	        default:  
 	        	isEnable = true;
 	    }  

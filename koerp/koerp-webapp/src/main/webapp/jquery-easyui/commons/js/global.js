@@ -781,38 +781,6 @@ function convertAppTreeData(rows){
 	return nodes;
 }
 
-/**
- * 初始化门店下拉框
- * @param id
- */
-function initShopComboGrid(id){
-	$("#" + id).combogrid({
-    	panelWidth:300,
-        idField: 'shopid', //ID字段
-        textField: 'shopname', //显示的字段
-        url: API_PATH + "/shop/findShopPageList",
-        method: 'post',
-        queryParams: {"clientType": clientType},
-        multiple: true,
-        fitColumns: true,
-        striped: true,
-        pagination: true,//是否分页
-        rownumbers: true,//序号
-        collapsible: false,//是否可折叠的
-        remoteSort:true,
-        editable:false,  
-	    sortName:"shopid",
-        sortOrder:"desc",
-        pageSize: GLOBAL_PAGE_SIZE,
-        pageList: GLOBAL_PAGE_SIZE_LIST,
-        columns: [[
-            {field: 'ck', checkbox: true},
-            {field: "shopname", title: "门店名称", width: 30, align: "center", sortable:true}
-        ]],
-        loadMsg: "数据加载中请稍后……",
-        emptyMsg: "没有符合条件的记录"
-    });
-}
 
 /**
  * 重置树

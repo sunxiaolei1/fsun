@@ -32,7 +32,8 @@
     <result column="supplier_contact" property="supplierContact" jdbcType="VARCHAR" />
     <result column="supplier_tel" property="supplierTel" jdbcType="VARCHAR" />
     <result column="volume" property="volume" jdbcType="DECIMAL" />
-    <result column="receiving_Time" property="receivingTime" jdbcType="TIMESTAMP" />
+    <result column="receiving_time" property="receivingTime" jdbcType="TIMESTAMP" />
+    <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
     <result column="created_name" property="createdName" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_name" property="updatedName" jdbcType="VARCHAR" />
@@ -42,9 +43,229 @@
     po_no, print_count, po_type, po_status, po_source, to_shop_id, to_shop_name, from_shop_id, from_shop_name, 
     order_price, expected_time, user_define1, user_define2, user_define3, memo, descr, 
     i_shop_id, i_id, i_name, i_address, i_zip_code, i_contact, i_tel, supplier_id, supplier_name, 
-    supplier_address, supplier_zip_code, supplier_contact, supplier_tel, volume, receiving_Time, 
-    created_name, created_time, updated_name, updated_time
+    supplier_address, supplier_zip_code, supplier_contact, supplier_tel, volume, receiving_time, 
+    audit_time, created_name, created_time, updated_name, updated_time
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="q != null and q != ''">
+  			and (a.po_no like concat(concat('%',#{q}),'%'))
+  		</if>
+  		
+  		<if test="poNo != null and poNo != ''">
+  			and a.po_no = #{poNo}
+  		</if>
+  		
+  		<if test="fromShopId != null and fromShopId != ''">
+  			and a.from_shop_id = #{fromShopId}
+  		</if>
+  		
+  		<if test="toShopId != null and toShopId != ''">
+  			and a.to_shop_id = #{toShopId}
+  		</if>
+  		
+  		<if test="poStatus != null and poStatus != ''">
+  			and a.po_status = #{poStatus}
+  		</if>
+  		
+  		<if test="poType != null and poType != ''">
+			and a.po_type = #{poType,jdbcType=VARCHAR}
+		</if>
+  		
+  		<if test="startTime != null">
+			and a.created_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			and a.created_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+		</if>
+  		
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.DocPoHeaderCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM doc_po_header a
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.DocPoHeaderCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM doc_po_header a 
+    	<include refid="conditions" />
+  </select>
+  
+  <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
+    <result column="o_po_no" property="poNo" /> 
+    <result column="o_print_count" property="printCount" /> 
+    <result column="o_po_type" property="poType"/>
+    <result column="o_po_status" property="poStatus"/> 
+    <result column="o_po_source" property="poSource"/> 
+    <result column="o_to_shop_id" property="toShopId"/> 
+    <result column="o_to_shop_name" property="toShopName"/> 
+    <result column="o_from_shop_id" property="fromShopId"/> 
+    <result column="o_from_shop_name" property="fromShopName"/> 
+    <result column="o_order_price" property="orderPrice"/> 
+    <result column="o_expected_time" property="expectedTime"/> 
+    <result column="o_user_define1" property="userDefine1"/>
+    <result column="o_user_define2" property="userDefine2"/> 
+    <result column="o_user_define3" property="userDefine3"/> 
+    <result column="o_descr" property="descr"/> 
+    <result column="o_memo" property="memo"/> 
+    <result column="o_i_shop_id" property="iShopId"/>
+    <result column="o_i_id" property="iId"/>
+    <result column="o_i_name" property="iName"/>
+    <result column="o_i_address" property="iAddress"/>
+    <result column="o_i_contact" property="iContact"/>
+    <result column="o_i_tel" property="iTel"/>
+    <result column="o_supplier_id" property="supplierId"/> 
+    <result column="o_supplier_name" property="supplierName"/> 
+    <result column="o_supplier_address" property="supplierAddress"/> 
+    <result column="o_supplier_contact" property="supplierContact"/>
+    <result column="o_supplier_tel" property="supplierTel"/>
+    <result column="o_supplier_zip_code" property="supplierZipCode"/>
+    <result column="o_volume" property="volume"/>
+    <result column="o_receiving_time" property="receivingTime"/>
+    <result column="o_audit_time" property="auditTime"/>     
+    <result column="o_created_name" property="createdName"/>  
+    <result column="o_created_time" property="createdTime"/> 
+    <result column="o_updated_name" property="updatedName"/>  
+    <result column="o_updated_time" property="updatedTime"/>  
+  </resultMap>
+  
+  <resultMap id="DefinedResultMap" type="java.util.Map"> 	
+  	<id column="o_po_no" property="poNo"/>  
+  	<association property="header" resultMap="HeaderMap" />   	   
+    <collection property="details" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="d_po_detail_id" property="poDetailId"/>
+      <result column="d_po_no" property="poNo"/> 
+      <result column="d_line_no" property="lineNo"/> 
+      <result column="d_category_code" property="categoryCode"/> 
+      <result column="d_category_name" property="categoryName"/> 
+      <result column="d_bar_code" property="barCode"/> 
+      <result column="d_brand_code" property="brandCode"/> 
+      <result column="d_brand_name" property="brandName"/> 
+      <result column="d_goods_name" property="goodsName"/> 
+      <result column="d_sku" property="sku"/> 
+      <result column="d_parent_sku" property="parentSku"/> 
+      <result column="d_property" property="property"/> 
+      <result column="d_line_status" property="lineStatus"/>      
+      <result column="d_lot_num" property="lotNum"/> 
+      <result column="d_seq" property="seq"/> 
+      <result column="d_sub_qty" property="subQty"/>
+      <result column="d_user_define1" property="userDefine1"/>
+      <result column="d_user_define2" property="userDefine2"/>
+      <result column="d_user_define3" property="userDefine3"/>
+      <result column="d_receive_time" property="receiveTime"/> 
+      <result column="d_receive_qty" property="receiveQty"/>
+      <result column="d_expected_qty" property="expectedQty"/>
+      <result column="d_ordered_qty" property="orderedQty"/>
+      <result column="d_unit" property="unit"/>
+      <result column="d_convert_qty" property="convertQty"/>
+      <result column="d_convert_unit" property="convertUnit"/>
+      <result column="d_is_gift" property="isGift"/>
+      <result column="d_total_price" property="totalPrice"/>
+      <result column="d_cost_price" property="costPrice"/> 
+      <result column="d_price" property="price"/>
+      <result column="d_volume" property="volume"/> 
+      <result column="d_rate_precent" property="ratePrecent"/>
+      <result column="d_memo" property="memo"/>
+      <result column="d_created_time" property="createdTime"/>
+      <result column="d_updated_time" property="updatedTime"/>   
+    </collection>
+    
+  </resultMap>
+ 
+  <select id="loadEntity" resultMap="DefinedResultMap" parameterType="java.lang.String" >
+    select 
+    	o.po_no as o_po_no,
+    	o.print_count as o_print_count,
+		o.po_type as o_po_type,
+		o.po_status as o_po_status,
+		o.po_source as o_po_source, 
+		o.to_shop_id as o_to_shop_id,
+		o.to_shop_name as o_to_shop_name,
+		o.from_shop_id as o_from_shop_id,
+		o.from_shop_name as o_from_shop_name,
+		o.order_price as o_order_price,
+		o.expected_time as o_expected_time,
+		o.user_define1 as o_user_define1,
+		o.user_define2 as o_user_define2,
+		o.user_define3 as o_user_define3,
+		o.descr as o_descr,
+		o.memo as o_memo,
+		o.i_shop_id as o_i_shop_id,
+		o.i_id as o_i_id,
+		o.i_name as o_i_name,
+		o.i_address as o_i_address,
+		o.i_contact as o_i_contact,
+		o.i_tel as o_i_tel,
+		o.supplier_id as o_supplier_id ,
+		o.supplier_name as o_supplier_name,
+		o.supplier_address as o_supplier_address, 
+		o.supplier_contact as o_supplier_contact,
+		o.supplier_tel as o_supplier_tel,
+		o.supplier_zip_code as o_supplier_zip_code,
+		o.volume as o_volume,
+		o.receiving_time as o_receiving_time,
+		o.audit_time as o_audit_time,
+		o.created_name as o_created_name,	
+		o.created_time as o_created_time,		
+		o.updated_name as o_updated_name,	
+		o.updated_time as o_updated_time,		
+		d.po_detail_id as po_detail_id,
+		d.po_no as d_po_no,
+		d.line_no as d_line_no,
+		d.category_code as d_category_code,
+		d.category_name as d_category_name,
+		d.bar_code as d_bar_code,
+		d.brand_code as d_brand_code,
+		d.brand_name as d_brand_name ,
+		d.goods_name as d_goods_name,
+		d.sku as d_sku,
+		d.parent_sku as d_parent_sku,
+		d.property as d_property ,		
+		d.line_status as d_line_status,
+		d.lot_num as d_lot_num,
+		d.seq as d_seq,
+		d.sub_qty as d_sub_qty,		
+		d.user_define1 as d_user_define1,
+		d.user_define2 as d_user_define2,
+		d.user_define3 as d_user_define3,	
+		d.receive_time as d_receive_time,
+		d.receive_qty as d_receive_qty,
+		d.expected_qty as d_expected_qty,
+		d.ordered_qty as d_ordered_qty,
+		d.unit as d_unit,
+		d.convert_qty as d_convert_qty,
+		d.convert_unit as d_convert_unit,
+		d.is_gift as d_is_gift,	
+		d.total_price as d_total_price,
+		d.cost_price as d_cost_price,		
+		d.price as d_price,
+		d.volume as d_volume,		
+		d.rate_precent as d_rate_precent,
+		d.memo as d_memo,
+		d.created_time as d_created_time,
+		d.updated_time as d_updated_time
+    from doc_po_header o
+    left join doc_po_details d on d.po_no = o.po_no
+    where o.po_no = #{poNo,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="getMaxPoNo" resultType="java.lang.String" parameterType="java.lang.String" >    
+	select 
+		po_no 
+	from doc_po_header 
+	where po_no like concat(#{poNo},'%')
+	order by po_no desc 
+  </select> 
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -65,7 +286,7 @@
       i_address, i_zip_code, i_contact, 
       i_tel, supplier_id, supplier_name, 
       supplier_address, supplier_zip_code, supplier_contact, 
-      supplier_tel, volume, receiving_Time, 
+      supplier_tel, volume, receiving_time, audit_time,
       created_name, created_time, updated_name, 
       updated_time)
     values (#{poNo,jdbcType=VARCHAR}, #{printCount,jdbcType=INTEGER}, #{poType,jdbcType=CHAR}, #{poStatus,jdbcType=CHAR}, 
@@ -78,8 +299,8 @@
       #{iTel,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, 
       #{supplierAddress,jdbcType=VARCHAR}, #{supplierZipCode,jdbcType=VARCHAR}, #{supplierContact,jdbcType=VARCHAR}, 
       #{supplierTel,jdbcType=VARCHAR}, #{volume,jdbcType=DECIMAL}, #{receivingTime,jdbcType=TIMESTAMP}, 
-      #{createdName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedName,jdbcType=VARCHAR}, 
-      #{updatedTime,jdbcType=TIMESTAMP})
+      #{auditTime,jdbcType=TIMESTAMP},#{createdName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedName,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.DocPoHeader" >
     insert into doc_po_header
@@ -175,8 +396,11 @@
         volume,
       </if>
       <if test="receivingTime != null" >
-        receiving_Time,
+        receiving_time,
       </if>
+      <if test="auditTime != null" >
+        audit_time,
+      </if>    
       <if test="createdName != null" >
         created_name,
       </if>
@@ -284,6 +508,9 @@
       <if test="receivingTime != null" >
         #{receivingTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="auditTime != null" >
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>      
       <if test="createdName != null" >
         #{createdName,jdbcType=VARCHAR},
       </if>
@@ -389,7 +616,10 @@
         volume = #{volume,jdbcType=DECIMAL},
       </if>
       <if test="receivingTime != null" >
-        receiving_Time = #{receivingTime,jdbcType=TIMESTAMP},
+        receiving_time = #{receivingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditTime != null" >
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createdName != null" >
         created_name = #{createdName,jdbcType=VARCHAR},
@@ -437,7 +667,8 @@
       supplier_contact = #{supplierContact,jdbcType=VARCHAR},
       supplier_tel = #{supplierTel,jdbcType=VARCHAR},
       volume = #{volume,jdbcType=DECIMAL},
-      receiving_Time = #{receivingTime,jdbcType=TIMESTAMP},
+      receiving_time = #{receivingTime,jdbcType=TIMESTAMP},
+      audit_time = #{auditTime,jdbcType=TIMESTAMP},
       created_name = #{createdName,jdbcType=VARCHAR},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_name = #{updatedName,jdbcType=VARCHAR},
