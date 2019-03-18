@@ -21,6 +21,9 @@ public enum DocTradeTypeEnum {
 	PURCHASE_SI("23","采购入库",1),
 	BACK_SI("24","销退入库",1),
 	SUNDRY_SI("25","杂收入库",1),
+	
+	PURCHASE_APPLY("10","采购申请",1),
+	ALLOT_APPLY("20","调拨申请",1),
 	UNKNOW("UNKNOW","未知",0);
 	
 	/** 常量code */

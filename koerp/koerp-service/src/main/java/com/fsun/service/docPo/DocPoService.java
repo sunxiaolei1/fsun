@@ -99,7 +99,7 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 			if(header==null){
 				throw new DocPoException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
 			}
-			String shopId = header.getFromShopId();
+			String shopId = header.getToShopId();
 			if(!user.getShopId().equals(shopId)){
 				throw new DocPoException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
 			}
@@ -150,7 +150,9 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		for (DocPoDetails docPoDetails : details) {
 			docPoDetails.setPoDetailId(PKMapping.GUUID(PKMapping.doc_po_details));
 			docPoDetails.setPoNo(poNo);
-			docPoDetails.setLineNo(lineNo++);			
+			docPoDetails.setLineNo(lineNo++);
+			docPoDetails.setExpectedQty(BigDecimal.ZERO);
+			docPoDetails.setReceiveQty(BigDecimal.ZERO);
 			BigDecimal totalPrice = docPoDetails.getOrderedQty().multiply(docPoDetails.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
 			docPoDetails.setTotalPrice(totalPrice);
 			docPoDetails.setCreatedTime(now);
@@ -162,6 +164,58 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		return poNo;
 	}
 
+	@Transactional
+	@Override
+	public String updateEntity(DocPoDto docPoDto) {
+		String poNo = docPoDto.getPoNo();
+		BusUserDto currUser = docPoDto.getCurrentUser();
+		DocPoHeader header = docPoDto.getHeader();		
+		//入参基本的校验
+		String iId = header.getiId();	
+		if(!currUser.getId().equals(iId)){
+			throw new DocPoException(SCMErrorEnum.USER_ILLEGAL);
+		}	
+		DocPoHeader oldHeader = this.load(poNo);
+		if(oldHeader==null){
+			throw new DocPoException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}	
+		String currPoStatus = DocPoStatusEnum.CREATE.getCode();
+		if(!this.orderStatusValidator(currPoStatus, oldHeader)){
+			throw new DocPoException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
+		}
+		
+		List<DocPoDetails> details = docPoDto.getDetails();
+		if(details==null || details.size()==0){
+			throw new DocPoException(SCMErrorEnum.BUS_ORDER_DETAIL_NOT_EXIST);
+		}		
+		//初始化头信息
+		Date now = new Date();		
+		header.setUpdatedName(currUser.getRealname());
+		header.setUpdatedTime(now);
+		header.setPoStatus(currPoStatus);		
+		BigDecimal orderPrice = BigDecimal.ZERO;
+		
+		//初始化明细
+		//删除原明细
+		docPoDetailsManage.deleteByPoNo(poNo);
+		//新增明细		
+		int lineNo = 1;
+		for (DocPoDetails docPoDetails : details) {
+			docPoDetails.setPoDetailId(PKMapping.GUUID(PKMapping.doc_po_details));
+			docPoDetails.setPoNo(poNo);
+			docPoDetails.setLineNo(lineNo++);
+			docPoDetails.setExpectedQty(BigDecimal.ZERO);
+			docPoDetails.setReceiveQty(BigDecimal.ZERO);
+			BigDecimal totalPrice = docPoDetails.getOrderedQty().multiply(docPoDetails.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
+			docPoDetails.setTotalPrice(totalPrice);
+			docPoDetails.setCreatedTime(now);
+			orderPrice = orderPrice.add(totalPrice);
+			docPoDetailsManage.create(docPoDetails);
+		}
+		header.setOrderPrice(orderPrice);
+		docPoHeaderManage.update(header);		
+		return poNo;
+	}
 	
 	/****************************    私有方法          ******************************/
 	
@@ -175,7 +229,11 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		boolean isTrue = true;
 		String oldStatus = oldHeader.getPoStatus();
 		switch (DocPoStatusEnum.getByName(currOrderStatus)) {
-			case CREATE:			
+			case CREATE:	
+				if(DocPoStatusEnum.AUDIT_PASS.getCode().equals(oldStatus)
+					|| DocPoStatusEnum.CANCEL.getCode().equals(oldStatus)){
+					isTrue = false;
+				}
 				break;		
 			case AUDIT_PASS:			
 				break;	
@@ -224,4 +282,5 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		}
 		return header;
 	}
+
 }

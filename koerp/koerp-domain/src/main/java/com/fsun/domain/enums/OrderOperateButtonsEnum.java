@@ -28,6 +28,8 @@ public enum OrderOperateButtonsEnum {
 		
 	//申请单
 	CANCEL_DOC_PO("docPo_cancel","取消申请单"),
+	UPDATE_DOC_PO("docPo_update","更新申请单"),
+	
 	
 	//退货单、换货单
 	REPAIR_REFUND("repair_refund","补退款"),

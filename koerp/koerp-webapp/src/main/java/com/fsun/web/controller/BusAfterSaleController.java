@@ -120,7 +120,12 @@ public class BusAfterSaleController extends BaseController {
 			condition.setShopId(currUser.getShopId());	
 			condition.setRefundType(RefundTypeEnum.RETURN_ORDER.getValue());
 			PageModel pageModel = busAfterSaleApi.findPage(condition);
-			return success(pageModel);
+			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
+					&& pageModel.getTotal()>0){
+				HashMap<String, Object> footer = busAfterSaleApi.findFooter(condition);
+				return success(pageModel, new Object[]{footer});
+			}
+			return success(pageModel, new Object[]{});
 		} catch (Exception e) {
 			e.printStackTrace();			
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -239,7 +244,12 @@ public class BusAfterSaleController extends BaseController {
 			BusUserDto currUser = super.getCurrentUser();
 			condition.setShopId(currUser.getShopId());	
 			PageModel pageModel = busAfterSaleApi.findPage(condition);
-			return success(pageModel);
+			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
+					&& pageModel.getTotal()>0){
+				HashMap<String, Object> footer = busAfterSaleApi.findFooter(condition);
+				return success(pageModel, new Object[]{footer});
+			}
+			return success(pageModel, new Object[]{});
 		} catch (Exception e) {
 			e.printStackTrace();			
 			return failure(SCMErrorEnum.SYSTEM_ERROR);

@@ -152,7 +152,7 @@ $(function () {
 			if(header!=null){
 				$orderfm.form("load", header);	
 				var notInShopIdsStr = header.toShopId;
-				initShopComboGrid("",notInShopIdsStr);
+				initShopComboGrid("", "", notInShopIdsStr);
 			}
 			
 			var details = docPoDto.details;	

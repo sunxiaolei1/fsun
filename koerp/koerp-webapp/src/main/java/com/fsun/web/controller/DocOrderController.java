@@ -91,6 +91,8 @@ public class DocOrderController extends BaseController {
 	@ResponseBody
 	public HttpResult findPage(DocOrderHeaderCondition condition) {
 		try {
+			BusUserDto currUser = super.getCurrentUser();
+			condition.setFromShopId(currUser.getShopId());
 			PageModel pageModel = docOrderApi.findPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {

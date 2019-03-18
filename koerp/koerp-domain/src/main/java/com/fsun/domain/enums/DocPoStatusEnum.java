@@ -12,7 +12,7 @@ public enum DocPoStatusEnum {
 
 	CREATE("00","待审核"),
 	AUDIT_PASS("10","审核通过"),
-	AUDIT_REFUSE("20","审核拒绝"),
+	AUDIT_REFUSE("20","审核驳回"),
 	CANCEL("90","订单取消"),
 	UNKNOW(null,"未知");
 	

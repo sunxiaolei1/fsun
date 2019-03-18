@@ -104,6 +104,16 @@
 	order by refund_id desc 
   </select>
   
+  <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusRefundCondition" >    
+	SELECT 
+		sum(a.refund_price) as refund_price, 
+		sum(a.diff_price) as diff_price, 
+		sum(a.change_price) as change_price 
+    FROM bus_refund a 
+    	<include refid="conditions" />
+  </select>
+  
   <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >
   	<result column="o_refund_id" property="refundId" />
     <result column="o_order_id" property="orderId" />

@@ -45,16 +45,24 @@
     ordered_qty, unit, convert_qty, convert_unit, is_gift, total_price, cost_price, price, 
     volume, rate_precent, memo, created_time, updated_time
   </sql>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from doc_po_details
     where po_detail_id = #{poDetailId,jdbcType=VARCHAR}
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from doc_po_details
     where po_detail_id = #{poDetailId,jdbcType=VARCHAR}
   </delete>
+  
+  <delete id="deleteByPoNo" parameterType="java.lang.String" >
+    delete from doc_po_details
+    where po_no = #{poNo,jdbcType=VARCHAR}
+  </delete>
+  
   <insert id="insert" parameterType="com.fsun.domain.model.DocPoDetails" >
     insert into doc_po_details (po_detail_id, po_no, line_no, 
       category_code, category_name, bar_code, 

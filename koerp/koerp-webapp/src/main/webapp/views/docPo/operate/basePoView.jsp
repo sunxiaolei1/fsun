@@ -90,10 +90,37 @@ function getOrderCancelData(){
 	     "params": {
 	    	"memo":  $("#memo",$orderfm).textbox("getValue")
 	      },
-	     "saveUrl": "${api}/doc/order/status/${cancelStatus}?orderNos="+ $("#orderNo",$orderfm).textbox("getValue")
+	     "saveUrl": "${api}/doc/po/status/${cancelStatus}?poNos="+ $("#poNo",$orderfm).textbox("getValue")
 	}
 	return saveData;
 	
+}
+
+/**
+ * 获取更新数据
+ */
+function getUpdateData(){
+	
+	var isValid0 = currOrderDetailDataGrid.datagrid("isValid");		
+	var isValid = $orderfm.form('validate');
+	if (!isValid || !isValid0){
+		$.messager.alert("错误", "提交的数据不正确!", "error");  
+		return null;
+	}			
+
+	var baseInfo = formJson($orderfm);
+	var fromShopName = $('#shopCombo', $orderfm).combogrid("getText");
+	baseInfo.fromShopName = fromShopName;
+	
+	var saveData = {
+	     "params": {
+	    	 "poNo": $("#poNo",$orderfm).textbox("getValue"),
+			 "header": baseInfo,
+			 "details": currDetailData
+			},
+	     "saveUrl": "${api}/doc/po/updateEntity"
+	}
+	return saveData;
 }
 
 /**

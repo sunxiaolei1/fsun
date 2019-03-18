@@ -28,8 +28,13 @@ var frozenColumns = [[
 	{field:'order_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docOrderType); 
 	}},
-	{field:'order_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.docOrderStatus); 
+	{field:'order_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){		
+		var spanHeader = "<b style='color:green;'>";
+		if(value=='B90'){
+			spanHeader = "<b style='color:red;'>";
+		}
+		var spanFooter = "</b>";
+		return spanHeader + formatter(value, window.parent.docOrderStatus) + spanFooter;
 	}}	
 ]];
 

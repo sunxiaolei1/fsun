@@ -18,6 +18,22 @@ function orderCancel(){
 }
 
 /**
+ * 更新单据
+ */
+function orderUpdate(){
+	//获取保存数据
+	var updateData = getUpdateData();
+	if(updateData!=null){		
+		if(typeof afterSaveFunc === 'function'){	
+			commonPost(updateData.saveUrl, JSON.stringify(updateData.params), null, afterSaveFunc);
+		}else{
+			commonPost(updateData.saveUrl, JSON.stringify(updateData.params), cancel);
+		}		
+	}
+}
+
+
+/**
  * 返回
  */
 function orderReturn(){

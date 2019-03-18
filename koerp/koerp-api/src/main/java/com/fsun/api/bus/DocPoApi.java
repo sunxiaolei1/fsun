@@ -55,4 +55,11 @@ public interface DocPoApi extends BaseApi<DocPoHeader, DocPoHeaderCondition> {
 	 */
 	public String saveEntity(DocPoDto docPoDto);
 
+	/**
+	 * 更新申请单实体对象
+	 * @param docPoDto
+	 * @return
+	 */
+	public String updateEntity(DocPoDto docPoDto);
+
 }

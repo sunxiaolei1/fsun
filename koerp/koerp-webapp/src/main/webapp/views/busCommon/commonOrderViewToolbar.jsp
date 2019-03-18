@@ -49,6 +49,7 @@
 	
 	<!-- 申请单 -->
 	<a href="#" id="docPo_cancel" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">撤销</a>
+	<a href="#" id="docPo_update" class="easyui-linkbutton" iconCls="icon-cog_edit" plain="true" onclick="orderUpdate()">更新</a>
 	
 	<!-- 退换货单 -->
 	<a href="#" id="refund_cancel" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">撤销</a>
@@ -70,7 +71,7 @@ var buttonsMap = {
 	"aftersaleBarter": ["refund_cancel","repair_refund","add_refund_remark","order_refresh","order_return"],
 	"docOrder": ["docOrder_cancel","order_refresh","order_return"],
 	"docAsn": ["docAsn_cancel","create_refund","order_refresh","order_return"],
-	"docPo": ["docPo_cancel","order_return","order_refresh"],
+	"docPo": ["docPo_cancel","docPo_update","order_return","order_refresh"],
 	"busOrder": ["order_cancel","add_order_remark","create_refund","create_barter","onekey_refund","order_refresh", "order_return"]
 }
 

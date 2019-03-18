@@ -29,7 +29,12 @@ var frozenColumns = [[
 		return formatter(value, window.parent.docAsnType); 
 	}},
 	{field:'asn_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.docAsnStatus); 
+		var spanHeader = "<b style='color:green;'>";
+		if(value=='A90'){
+			spanHeader = "<b style='color:red;'>";
+		}
+		var spanFooter = "</b>";
+		return spanHeader + formatter(value, window.parent.docAsnStatus) + spanFooter;
 	}}
 ]];
 

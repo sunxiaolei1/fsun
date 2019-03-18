@@ -164,6 +164,8 @@ public class BusOrderController extends BaseController {
 	@ResponseBody
 	public HttpResult findPage(BusOrderCondition condition) {
 		try {
+			BusUserDto currUser = super.getCurrentUser();
+			condition.setShopId(currUser.getShopId());
 			PageModel pageModel = busOrderApi.findPage(condition);
 			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
 					&& pageModel.getTotal()>0){

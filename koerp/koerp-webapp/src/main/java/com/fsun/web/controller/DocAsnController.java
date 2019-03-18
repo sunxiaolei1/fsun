@@ -92,6 +92,8 @@ public class DocAsnController extends BaseController {
 	@ResponseBody
 	public HttpResult findPage(DocAsnHeaderCondition condition) {
 		try {
+			BusUserDto currUser = super.getCurrentUser();
+			condition.setToShopId(currUser.getShopId());
 			PageModel pageModel = docAsnApi.findPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {

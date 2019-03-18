@@ -92,6 +92,8 @@ public class DocPoController extends BaseController {
 	@ResponseBody
 	public HttpResult findPage(DocPoHeaderCondition condition) {
 		try {
+			BusUserDto currUser = super.getCurrentUser();
+			condition.setToShopId(currUser.getShopId());
 			PageModel pageModel = docPoApi.findPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {
@@ -175,6 +177,22 @@ public class DocPoController extends BaseController {
 		}		
 	}
 
+	@RequestMapping(value="/updateEntity", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult updateEntity(@RequestBody DocPoDto docPoDto) {
+		try {
+			docPoDto.setCurrentUser(getCurrentUser());			
+			String poNo = docPoApi.updateEntity(docPoDto);
+			return success(poNo);
+		} catch(DocPoException e){
+			e.printStackTrace();
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}		
+	}
+	
 	
 	/****************************       私有方法            *************************************/
 	

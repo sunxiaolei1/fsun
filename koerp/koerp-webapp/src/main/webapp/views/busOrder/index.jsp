@@ -29,7 +29,14 @@ var frozenColumns = [[
 		return formatter(value, window.parent.orderType); 
 	}},
 	{field:'trade_status',title:'交易状态',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.tradeStatus); 
+		if(value){
+			var spanHeader = "<b style='color:green;'>";
+			if(value=='40'){
+				spanHeader = "<b style='color:red;'>";
+			}
+			var spanFooter = "</b>";
+			return spanHeader + formatter(value, window.parent.tradeStatus) + spanFooter;
+		}
 	}},
 	{field:'refund_status',title:'退货状态',width:100,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.refundStatus); 

@@ -14,12 +14,12 @@
 
 var shopInitFirst = true;
 
-function initShopComboGrid(defaultShop, notInShopIdsStr, $fm) {	
+function initShopComboGrid(defaultShop, defaultQ, notInShopIdsStr, $fm) {	
 	//方法中可以传入fm
 	if($fm!=null && $fm!=''){
 		$orderfm = $fm;
 	}	
-	if(defaultShop!=null && defaultShop!=''){		
+	if(defaultShop!=null && defaultShop!=''){	
 		$('#shopCombo', $orderfm).combogrid({
 			prompt:'请选择',
 	    	panelWidth:500,
@@ -29,9 +29,10 @@ function initShopComboGrid(defaultShop, notInShopIdsStr, $fm) {
 	        method: 'post',
 	        queryParams: {
 	        	"enabled": true, 
-	        	"q": defaultShop, 
+	        	"q": defaultQ, 
 	        	"notInShopIdsStr":notInShopIdsStr
 	        },
+	        url: '${api}/bus/shop/findPage',
 	        multiple: false,
 	        fitColumns: true,
 	        striped: true,

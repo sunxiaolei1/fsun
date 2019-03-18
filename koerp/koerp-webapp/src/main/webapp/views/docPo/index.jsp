@@ -29,7 +29,16 @@ var frozenColumns = [[
 		return formatter(value, window.parent.docPoType); 
 	}},
 	{field:'po_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.docPoStatus); 
+		var spanHeader = "<span style='color:#FF9900;'>";
+		if(value=='10'){
+			spanHeader = "<span style='color:green;'>";
+		}else if(value=='20'){
+			spanHeader = "<span style='color:#FF9900;'>";
+		}else if(value=='90'){
+			spanHeader = "<span style='color:red;'>";
+		}
+		var spanFooter = "</span>";
+		return spanHeader + formatter(value, window.parent.docPoStatus) + spanFooter; 
 	}}	
 ]];
 
@@ -47,6 +56,7 @@ var columns = [[
 	}}, */
 	{field:'created_name',title:'制单人',width:80,align:'center',sortable:true},
 	{field:'created_time',title:'制单时间',width:130,align:'center',sortable:true},
+	{field:'updated_time',title:'更新时间',width:130,align:'center',sortable:true},
 	{field:'memo',title:'备注',width:350,align:'center',sortable:true}			
 ]];
 

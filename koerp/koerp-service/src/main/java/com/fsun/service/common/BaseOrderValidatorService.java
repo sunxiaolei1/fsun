@@ -132,10 +132,17 @@ public abstract class BaseOrderValidatorService {
 	        case ADD_ORDER_REMARK:
 	        	isEnable = false;break;	                
 	        case CANCEL_DOC_PO: 	        	
-	        	if(DocPoStatusEnum.CANCEL.getCode().equals(poStatus)){
+	        	if(DocPoStatusEnum.CREATE.getCode().equals(poStatus) ||
+	        			DocPoStatusEnum.AUDIT_REFUSE.getCode().equals(poStatus)){
 	        		isEnable = true;
 	        	}      
-	        	break;	        
+	        	break;	
+	        case UPDATE_DOC_PO:
+	        	if(DocPoStatusEnum.CREATE.getCode().equals(poStatus) ||
+	        			DocPoStatusEnum.AUDIT_REFUSE.getCode().equals(poStatus)){
+	        		isEnable = true;
+	        	}      
+	        	break;
 	        default:  
 	        	isEnable = true;
 	    }  

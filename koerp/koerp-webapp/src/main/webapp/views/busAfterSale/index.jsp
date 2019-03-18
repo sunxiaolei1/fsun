@@ -28,8 +28,15 @@ var frozenColumns = [[
    	{field:'refund_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
    		return formatter(value, window.parent.refundType); 
    	}},
-   	{field:'refund_status',title:'退货状态',width:100,align:'center',sortable:true, formatter:function(value, row){
-   		return formatter(value, window.parent.refundStatus); 
+   	{field:'refund_status',title:'退货状态',width:100,align:'center',sortable:true, formatter:function(value, row){   		
+   		if(value){
+			var spanHeader = "<b style='color:green;'>";
+			if(value=='40'){
+				spanHeader = "<b style='color:red;'>";
+			}
+			var spanFooter = "</b>";
+			return spanHeader + formatter(value, window.parent.refundStatus) + spanFooter;
+		}
    	}},
    	/* {field:'trade_status',title:'换发状态',width:80,align:'center',sortable:true, formatter:function(value, row){
    		return formatter(value, window.parent.tradeStatus); 
@@ -43,14 +50,18 @@ var frozenColumns = [[
    var columns = [[		   	
    	{field:'order_id',title:'原订单号',width:140,align:'center',sortable:true},
    	{field:'barter_order_id',title:'换发单号',width:140,align:'center',sortable:true, formatter:function(value, row){
-   		return (value!=null && value!='')?value:"--"; 
+   		if(typeof(value) != "undefined"){
+   			return (value!=null && value!='')?value:"--"; 
+   		}	
    	}},
    	{field:'all_return',title:'整单退',width:70,align:'center',sortable:true, formatter:function(value, row){
-   		var allReturn = "否";
-   		if(value){
-   			allReturn = "<span style='color:red'>是</span>";
-   		}
-   		return allReturn;
+   		if(typeof(value) != "undefined"){
+   			var allReturn = "<b style='color:green;'>否</b>";
+   	   		if(value==true){
+   	   			allReturn = "<b style='color:red;'>是</b>";
+   	   		}
+   	   		return allReturn;
+   		} 		
    	}},
    	{field:'refund_price',title:'退单金额',width:80,align:'center',formatter:numBaseFormat},
    	{field:'diff_price',title:'差价补款',width:80,align:'center',formatter:numBaseFormat},
@@ -63,11 +74,13 @@ var frozenColumns = [[
    	{field:'memo',title:'备注',width:250,align:'center'}
    ]];
 var currDataGrid;
+var footerFirstColumn = "refund_id";
 
 $(function() {
 	
 	currDataGrid = $("#ordersDataGrid");
 	currDataGrid.datagrid({
+		view:footerStyleView,
 		width:500,
 		height:250,
 	    nowrap:false,
@@ -75,7 +88,7 @@ $(function() {
 	    border:true,
 	    collapsible:false,//是否可折叠的
 	    fit:true,//自动大小
-	    queryParams:{},
+	    queryParams:{firstColumn: footerFirstColumn},
 	    remoteSort:true,
 	    sortName:"refund_time",
         sortOrder:"desc",
@@ -95,6 +108,13 @@ $(function() {
 	    singleSelect: false,
 	    selectOnCheck: true,
 	    checkOnSelect: true,
+	    rowStyler:function(index,row){
+        	var rowStyle = "";        	
+        	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
+        		rowStyle = 'font-weight:bold;';  
+            }
+        	return rowStyle;
+		},
 	    onDblClickRow:function(rowIndex, rowData){
 	    	$(this).datagrid("unselectAll");
 			$(this).datagrid("selectRow",rowIndex);

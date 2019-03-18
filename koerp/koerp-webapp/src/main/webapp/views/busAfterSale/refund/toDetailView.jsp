@@ -183,7 +183,7 @@ $(function () {
 				return formatter(value, window.parent.brandCode); 
 			}},
 			{field:'property',title:'规格',width:120,align:'center',sortable:true},
-			{field:'originSalePrice',title:'原交易单价',width:70,align:'center',sortable:true},
+			{field:'originSalePrice',title:'原交易单价',width:70,align:'center'},
 			{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){
 				return formatter(value, window.parent.unitCode); 
 			}},

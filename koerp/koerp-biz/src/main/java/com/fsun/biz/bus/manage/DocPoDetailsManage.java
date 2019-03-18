@@ -13,4 +13,12 @@ import com.fsun.domain.model.DocPoDetails;
 @Component
 public class DocPoDetailsManage extends CrudManage<DocPoDetailsMapper, DocPoDetails>{
 
+	/**
+	 * 通过poNo删除明细
+	 * @param poNo
+	 */
+	public void deleteByPoNo(String poNo) {
+		mapper.deleteByPoNo(poNo);		
+	}
+
 }

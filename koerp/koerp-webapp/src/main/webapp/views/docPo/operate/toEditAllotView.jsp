@@ -112,6 +112,18 @@ var poColumns = [[
 			}
 		}
 	},
+	{field:"expectedQty",title:"审核数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:intNumBaseFormat
+	},
+	{field:"receiveQty",title:"签收数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:intNumBaseFormat
+	},
 	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}},
@@ -149,9 +161,10 @@ $(function () {
 			
 			/***************************              基本信息初始化                        ************************/			
 			var header = docPoDto.header;
-			if(header!=null){
+			if(header!=null){				
+				initShopComboGrid(header.fromShopId, header.fromShopName, header.toShopId);
+				delete header.fromShopId;
 				$orderfm.form("load", header);	
-				initShopComboGrid(header.fromShopName, header.toShopId);
 			}
 			
 			var details = docPoDto.details;	
@@ -183,6 +196,8 @@ function initAddSku(rowData){
 	skuDto.goodsName = rowData.goodsName;
 	skuDto.sku = rowData.sku; 
 	skuDto.property = rowData.property;
+	skuDto.expectedQty = 0;
+	skuDto.receiveQty = 0;
 	skuDto.orderedQty = 1; 
 	skuDto.unit = rowData.unit;
 	skuDto.costPrice = rowData.costPrice;
