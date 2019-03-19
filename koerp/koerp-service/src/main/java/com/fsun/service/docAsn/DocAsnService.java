@@ -19,6 +19,7 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocAsnDto;
 import com.fsun.domain.entity.DocAsnDetailsCondition;
 import com.fsun.domain.entity.DocAsnHeaderCondition;
+import com.fsun.domain.enums.DocAsnCheckStatusEnum;
 import com.fsun.domain.enums.DocAsnStatusEnum;
 import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.TradeFromEnum;
@@ -52,6 +53,18 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 			map.put("header", header);
 		}else{
 			map = docAsnHeaderManage.loadEntity(asnNo);
+			//调拨入库初始化
+			if(DocAsnTypeEnum.ALLOT_SI.getCode().equals(asnType)){
+				HashMap<String, Object> headerMap = (HashMap<String, Object>)map.get("header");
+				String asnStatus = (String)headerMap.get("asnStatus");
+				//如果是待签收状态
+				if(DocAsnStatusEnum.SI_DQS.getCode().equals(asnStatus)){
+					headerMap.put("iId", currUser.getId());
+					headerMap.put("checkUserId", currUser.getId());
+					headerMap.put("checkName", currUser.getRealname());
+					headerMap.put("checkStatus", DocAsnCheckStatusEnum.UNSIGN.getCode());
+				}
+			}
 		}
 		return map;
 	}

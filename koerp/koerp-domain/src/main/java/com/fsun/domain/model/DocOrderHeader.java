@@ -89,7 +89,7 @@ public class DocOrderHeader {
     private Date expectedTime;
 
     /**
-     * 用户自定义1
+     * 用户自定义1(用于记录调拨入库单号)
      * 表字段 : doc_order_header.user_define1
      */
     private String userDefine1;
@@ -167,13 +167,13 @@ public class DocOrderHeader {
     private String vehicleNo;
 
     /**
-     * 收货人id
+     * 领用人id
      * 表字段 : doc_order_header.onsignee_id
      */
     private String onsigneeId;
 
     /**
-     * 收货人
+     * 领用人
      * 表字段 : doc_order_header.onsign_name
      */
     private String onsignName;

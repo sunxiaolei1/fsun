@@ -57,7 +57,7 @@
   		</if>
   		
   		<!-- 用于领用出库查询 -->
-		<if test="inCustomerType != null">	
+		<if test="inCustomerType != null and inCustomerType.length>0">	
 		    and a.customer_type in
 			<foreach collection="inCustomerType" index="index" item="item" open="(" separator="," close=")" >
 				#{item} 

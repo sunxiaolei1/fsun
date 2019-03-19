@@ -89,7 +89,7 @@ public class DocOrderDetails {
     private String lineStatus;
 
     /**
-     * 用户自定义1
+     * 用户自定义1(用于记录原申请单对应的商品明细主键)
      * 表字段 : doc_order_details.user_define1
      */
     private String userDefine1;

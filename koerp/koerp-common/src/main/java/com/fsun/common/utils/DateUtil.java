@@ -266,6 +266,19 @@ public class DateUtil {
 		gregorianCalendar.set(Calendar.DATE, day - 1);
 		return gregorianCalendar.getTime();
 	}
+	
+	/**
+	 * 获取日期前x天
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static Date getDayBefore(Date date, int days) {
+		gregorianCalendar.setTime(date);
+		int day = gregorianCalendar.get(Calendar.DATE);
+		gregorianCalendar.set(Calendar.DATE, day - days);
+		return gregorianCalendar.getTime();
+	}
 
 	/**
 	 * 获取日期后一天
@@ -277,6 +290,19 @@ public class DateUtil {
 		gregorianCalendar.setTime(date);
 		int day = gregorianCalendar.get(Calendar.DATE);
 		gregorianCalendar.set(Calendar.DATE, day + 1);
+		return gregorianCalendar.getTime();
+	}
+	
+	/**
+	 * 获取日期后x天
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static Date getDayAfter(Date date, int days) {
+		gregorianCalendar.setTime(date);
+		int day = gregorianCalendar.get(Calendar.DATE);
+		gregorianCalendar.set(Calendar.DATE, day + days);
 		return gregorianCalendar.getTime();
 	}
 

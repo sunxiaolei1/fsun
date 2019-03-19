@@ -85,7 +85,7 @@
 		</if>
 		
 		<!-- 用于领用出库查询 -->
-		<if test="inTradeTypes != null">	
+		<if test="inTradeTypes != null and inTradeTypes.length>0">	
 		    and bus_vip_unpaid.trade_type in
 			<foreach collection="inTradeTypes" index="index" item="item" open="(" separator="," close=")" >
 				#{item} 

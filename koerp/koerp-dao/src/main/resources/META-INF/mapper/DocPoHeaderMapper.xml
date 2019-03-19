@@ -239,7 +239,7 @@
 		o.created_time as o_created_time,		
 		o.updated_name as o_updated_name,	
 		o.updated_time as o_updated_time,		
-		d.po_detail_id as po_detail_id,
+		d.po_detail_id as d_po_detail_id,
 		d.po_no as d_po_no,
 		d.line_no as d_line_no,
 		d.category_code as d_category_code,

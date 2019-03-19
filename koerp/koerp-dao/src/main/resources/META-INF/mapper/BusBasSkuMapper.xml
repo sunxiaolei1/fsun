@@ -85,7 +85,7 @@
   		</if>
   		
   		<!-- 用于价格策略列表查询 -->
-		<if test="notInSkus != null">	
+		<if test="notInSkus != null and notInSkus.length>0">	
 		    and sku not in
 			<foreach collection="notInSkus" index="index" item="item" open="(" separator="," close=")" >
 				#{item} 

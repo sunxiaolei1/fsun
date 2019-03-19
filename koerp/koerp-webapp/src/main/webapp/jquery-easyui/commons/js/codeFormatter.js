@@ -26,6 +26,7 @@ var docTradeTypeData = new Array();
 var busGoodsTypeData = new Array();
 var vipUnpaidPayModeData = new Array();
 var busPayTypeData = new Array();
+var docAsnCheckStatusData = new Array();
 
 var refundTypeData = new Array();
 var refundStatusData = new Array();
@@ -63,6 +64,7 @@ var docTradeType = {};
 var busGoodsType = {};
 var vipUnpaidPayMode = {};
 var busPayType = {};
+var docAsnCheckStatus = {};
 
 var refundType = {};
 var refundStatus = {};
@@ -103,6 +105,7 @@ $(function () {
 	busGoodsType = formatterCodeType(busGoodsTypeData); 
 	vipUnpaidPayMode = formatterCodeType(vipUnpaidPayModeData);
 	busPayType = formatterCodeType(busPayTypeData);
+	docAsnCheckStatus = formatterCodeType(docAsnCheckStatusData);
 	
 	refundType = formatterCodeType(refundTypeData);
 	refundStatus = formatterCodeType(refundStatusData);
@@ -195,8 +198,10 @@ function synchronizeData() {
         				refundOrderStatusData.push(item);
         			}else if(item.codeType == 'SkuAftersaleStatus'){
         				skuAftersaleStatusData.push(item);
+        			}else if(item.codeType == 'DocAsnCheckStatus'){
+        				docAsnCheckStatusData.push(item);
         			}
-      
+        			
     	        });
         		  		
         		isEnableData.unshift({
@@ -360,6 +365,10 @@ function synchronizeData() {
 					codeName:"请选择..."
 				});
 				
+				docAsnCheckStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
         	}
        	}
 	});

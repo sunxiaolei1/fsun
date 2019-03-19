@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -65,60 +66,7 @@ public class StringUtils {
 		return key;
 	}
 
-	public static List<String> split(String str) {
-		List<String> result = new ArrayList<String>();
-		if (!isEmpty(str)) {
-			String[] temp = str.split(",");
-			for (String string : temp) {
-				if (!isEmpty(string)) {
-					result.add(string);
-				}
-			}
-		}
-		return result;
-	}
 	
-	public static String join(final Iterable<?> iterable, final String separator) {
-        if (iterable == null) {
-            return null;
-        }
-        return join(iterable.iterator(), separator);
-    }
-	
-	public static String join(final Iterator<?> iterator, final String separator) {
-
-        // handle null, zero and one elements before building a buffer
-        if (iterator == null) {
-            return null;
-        }
-        if (!iterator.hasNext()) {
-            return EMPTY;
-        }
-        final Object first = iterator.next();
-        if (!iterator.hasNext()) {
-            @SuppressWarnings( "deprecation" ) // ObjectUtils.toString(Object) has been deprecated in 3.2
-            final String result = ObjectUtils.toString(first);
-            return result;
-        }
-
-        // two or more elements
-        final StringBuilder buf = new StringBuilder(256); // Java default is 16, probably too small
-        if (first != null) {
-            buf.append(first);
-        }
-
-        while (iterator.hasNext()) {
-            if (separator != null) {
-                buf.append(separator);
-            }
-            final Object obj = iterator.next();
-            if (obj != null) {
-                buf.append(obj);
-            }
-        }
-        return buf.toString();
-    }
-
 	public static String md5Encode(String inStr) {
 		MessageDigest md5 = null;
 		try {
@@ -237,4 +185,119 @@ public class StringUtils {
 		}
 		return (luhmSum % 10 == 0) ? '0' : (char) ((10 - luhmSum % 10) + '0');
 	}
+	
+	/**
+	 * 字符串转集合
+	 * @param str
+	 * @return
+	 */
+	public static List<String> split(String str) {
+		List<String> result = new ArrayList<String>();
+		if (!isEmpty(str)) {
+			String[] temp = str.split(",");
+			for (String string : temp) {
+				if (!isEmpty(string)) {
+					result.add(string);
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 集合转字符串
+	 * @param coll
+	 * @param delim
+	 * @return
+	 */
+	public static String collectionToDelimitedString(Collection<?> coll, String delim) {
+		return collectionToDelimitedString(coll, delim, "", "");
+	}
+
+	/**
+	 * 集合转字符串
+	 * @param coll
+	 * @return
+	 */
+	public static String collectionToCommaDelimitedString(Collection<?> coll) {
+		return collectionToDelimitedString(coll, ",");
+	}
+
+	/**
+	 * 集合转字符串
+	 * @param coll
+	 * @param delim
+	 * @param prefix
+	 * @param suffix
+	 * @return
+	 */
+	public static String collectionToDelimitedString(Collection<?> coll, String delim, String prefix, String suffix) {
+		if (coll==null || coll.size()==0) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		Iterator<?> it = coll.iterator();
+		while (it.hasNext()) {
+			sb.append(prefix).append(it.next()).append(suffix);
+			if (it.hasNext()) {
+				sb.append(delim);
+			}
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * 集合转字符串
+	 * @param iterable
+	 * @param separator
+	 * @return
+	 */
+	public static String join(final Iterable<?> iterable, final String separator) {
+        if (iterable == null) {
+            return null;
+        }
+        return join(iterable.iterator(), separator);
+    }
+	
+	/**
+	 * 集合转字符串
+	 * @param iterator
+	 * @param separator
+	 * @return
+	 */
+	public static String join(final Iterator<?> iterator, final String separator) {
+
+        // handle null, zero and one elements before building a buffer
+        if (iterator == null) {
+            return null;
+        }
+        if (!iterator.hasNext()) {
+            return EMPTY;
+        }
+        final Object first = iterator.next();
+        if (!iterator.hasNext()) {
+            @SuppressWarnings( "deprecation" ) // ObjectUtils.toString(Object) has been deprecated in 3.2
+            final String result = ObjectUtils.toString(first);
+            return result;
+        }
+
+        // two or more elements
+        final StringBuilder buf = new StringBuilder(256); // Java default is 16, probably too small
+        if (first != null) {
+            buf.append(first);
+        }
+
+        while (iterator.hasNext()) {
+            if (separator != null) {
+                buf.append(separator);
+            }
+            final Object obj = iterator.next();
+            if (obj != null) {
+                buf.append(obj);
+            }
+        }
+        return buf.toString();
+    }
+
+	
 }

@@ -37,7 +37,10 @@ function toAllotApplyDialog(){
 
 //调拨审核--打开出库审核页面
 function toStockOutAuditView(poDetailIds,toShopId){
-	var url = "${api}/doc/order/toStockOutAuditView?poDetailIds="+ poDetailIds+"&toShopId="+ toShopId;
+	//关闭申请选择页面
+	$("#ordersDialog").dialog("destroy");
+	//打开出库审核页面
+	var url = "${api}/doc/order/toAddView?orderType=11&poDetailIds="+ poDetailIds+"&toShopId="+ toShopId;
 	var icon = "icon-cog_edit";
 	var subtitle = "出库审核";
 	parent.addTab(subtitle, url, icon);	

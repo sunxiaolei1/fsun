@@ -8,4 +8,23 @@ import com.fsun.domain.model.DocPoDetails;
  */
 public class DocPoDetailsCondition extends DocPoDetails{
 
+	/**
+	 * 出库明细主键集合
+	 */
+	private String[] inPoDetailIds;
+
+	/**
+	 * @return the inPoDetailIds
+	 */
+	public String[] getInPoDetailIds() {
+		return inPoDetailIds;
+	}
+
+	/**
+	 * @param inPoDetailIds the inPoDetailIds to set
+	 */
+	public void setInPoDetailIds(String[] inPoDetailIds) {
+		this.inPoDetailIds = inPoDetailIds;
+	}
+
 }

@@ -7,5 +7,5 @@ import com.fsun.domain.model.DocOrderDetails;
  * @date 2018年12月20日
  */
 public class DocOrderDetailsCondition extends DocOrderDetails{
-
+	
 }

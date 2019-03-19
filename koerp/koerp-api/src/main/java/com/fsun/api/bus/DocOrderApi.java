@@ -7,6 +7,7 @@ import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
+import com.fsun.domain.entity.DocOrderInitCondition;
 import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.SysUser;
 
@@ -23,7 +24,7 @@ public interface DocOrderApi extends BaseApi<DocOrderHeader, DocOrderHeaderCondi
 	 * @param currUser
 	 * @return
 	 */
-	public HashMap<String, Object> getInitData(String orderNo, String orderType, BusUserDto currUser);
+	public HashMap<String, Object> getInitData(DocOrderInitCondition condition, BusUserDto currUser);
 	
 	/***
 	 * 分页查询

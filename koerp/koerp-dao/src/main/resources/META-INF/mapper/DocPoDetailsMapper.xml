@@ -55,6 +55,14 @@
   		<if test="sku != null and sku != ''">
   			and sku = #{sku}
   		</if>
+  		
+  		<!-- 用于领用出库查询 -->
+		<if test="inPoDetailIds != null and inPoDetailIds.length>0">	
+		    and po_detail_id in
+			<foreach collection="inPoDetailIds" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>
+		</if>
   				
 	</where>
   </sql>

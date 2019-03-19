@@ -274,7 +274,7 @@
 		o.delivery_time as o_delivery_time,
 		o.place_loading as o_place_loading,
 		o.route as o_route,
-		d.so_detail_id as so_detail_id,
+		d.so_detail_id as d_so_detail_id,
 		d.order_no as d_order_no,
 		d.line_no as d_line_no,
 		d.category_code as d_category_code,

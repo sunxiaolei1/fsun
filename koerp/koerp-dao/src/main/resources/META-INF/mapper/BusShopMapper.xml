@@ -47,7 +47,7 @@
   		</if>
   		
   		<!-- 用于查询黑名单用户对应的订单列表 -->
-		<if test="notInShopIds != null">	
+		<if test="notInShopIds != null and notInShopIds.length>0">	
 		    and shop_id not in
 			<foreach collection="notInShopIds" index="index" item="item" open="(" separator="," close=")" >
 				#{item} 

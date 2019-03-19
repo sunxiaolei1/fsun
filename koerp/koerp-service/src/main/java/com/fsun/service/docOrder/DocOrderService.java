@@ -1,17 +1,25 @@
 package com.fsun.service.docOrder;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.DocOrderApi;
+import com.fsun.biz.bus.manage.BusShopManage;
+import com.fsun.biz.bus.manage.DocAsnHeaderManage;
 import com.fsun.biz.bus.manage.DocOrderDetailsManage;
 import com.fsun.biz.bus.manage.DocOrderHeaderManage;
+import com.fsun.biz.bus.manage.DocPoDetailsManage;
+import com.fsun.biz.bus.manage.DocPoHeaderManage;
+import com.fsun.common.utils.DateUtil;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
@@ -19,12 +27,19 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
 import com.fsun.domain.entity.DocOrderDetailsCondition;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
+import com.fsun.domain.entity.DocOrderInitCondition;
+import com.fsun.domain.entity.DocPoDetailsCondition;
+import com.fsun.domain.enums.DocAsnStatusEnum;
 import com.fsun.domain.enums.DocOrderModeEnum;
 import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.TradeFromEnum;
+import com.fsun.domain.model.BusShop;
+import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocOrderDetails;
 import com.fsun.domain.model.DocOrderHeader;
+import com.fsun.domain.model.DocPoDetails;
+import com.fsun.domain.model.DocPoHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocOrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -43,20 +58,48 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 	
 	@Autowired
 	private DocOrderDetailsManage docOrderDetailsManage;
+	
+	@Autowired
+	private DocPoDetailsManage docPoDetailsManage;
+	
+	@Autowired
+	private DocPoHeaderManage docPoHeaderManage;
+	
+	@Autowired
+	private DocAsnHeaderManage docAsnHeaderManage;
+	
+	@Autowired
+	private BusShopManage busShopManage;
 
 	
 	@Override
-	public HashMap<String, Object> getInitData(String orderNo, String orderType, BusUserDto currUser) {
+	public HashMap<String, Object> getInitData(DocOrderInitCondition condition, BusUserDto currUser) {
 		HashMap<String, Object> map = new HashMap<>();
-		if(StringUtils.isEmpty(orderNo)){			
-			DocOrderHeader header = this.getInitHeader(orderType, currUser);
+		String orderNo = condition.getOrderNo();
+		if(StringUtils.isEmpty(orderNo)){	
+			String orderType = condition.getOrderType();
+			DocOrderHeader header = this.getInitHeader(condition, currUser);			
+			if(DocOrderTypeEnum.ALLOT_SO.getCode().equals(orderType)){
+				List<DocOrderDetails> details = this.getInitDetails(condition, header);
+				map.put("details", details);
+			}
+			//如果选择的是一个申请单据则需要同步收货信息
+			String poNo = header.getPoNo();
+			if(poNo!=null && !poNo.contains(",")){
+				DocPoHeader docPoHeader = docPoHeaderManage.load(poNo);
+				if(docPoHeader!=null){
+					header.setReceiveAddress(docPoHeader.getiAddress());
+					header.setContacts(docPoHeader.getiContact());
+					header.setMobile(docPoHeader.getiTel());
+				}			
+			}			
 			map.put("header", header);
 		}else{
 			map = docOrderHeaderManage.loadEntity(orderNo);
 		}
 		return map;
 	}
-	
+
 	@Override
 	public DocOrderHeader load(String id) {
 		return docOrderHeaderManage.load(id);
@@ -131,6 +174,10 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		String orderNo = docOrderDto.getOrderNo();
 		BusUserDto currUser = docOrderDto.getCurrentUser();
 		DocOrderHeader header = docOrderDto.getHeader();		
+		//如果是创建调拨出库单
+		if(DocOrderTypeEnum.ALLOT_SO.getCode().equals(header.getOrderType())){
+			return this.allotCargo(docOrderDto);
+		}		
 		//入参基本的校验
 		String iId = header.getiId();
 		if(!DocOrderTypeEnum.USE_SO.getCode().equals(header.getOrderType())){
@@ -148,9 +195,12 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		//初始化头信息
 		Date now = new Date();
 		header.setPrintCount(0);
+		header.setOrderTime(now);
 		header.setiAddress(currUser.getShopName());
 		header.setiContact(currUser.getRealname());
 		header.setiTel(currUser.getTelphone());
+		header.setiShopId(currUser.getShopId());
+		header.setiName(currUser.getRealname());
 		header.setDeliveryTime(header.getDeliveryTime()!=null?header.getDeliveryTime():now);
 		header.setCreatedName(currUser.getRealname());
 		header.setCreatedTime(now);
@@ -175,7 +225,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		docOrderHeaderManage.create(header);		
 		return orderNo;
 	}
-	
+
 	@Override
 	public HashMap<String, Object> loadEntity(String orderNo) {		
 		return docOrderHeaderManage.loadEntity(orderNo);
@@ -206,6 +256,12 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 				if(DocOrderStatusEnum.SO_CKQX.getCode().equals(oldStatus)
 					|| DocOrderStatusEnum.SO_CKWC.getCode().equals(oldStatus)){
 					isTrue = false;
+				}else if(DocOrderStatusEnum.SO_DDCK.getCode().equals(oldStatus)){
+					String asnNo = oldHeader.getUserDefine1();
+					DocAsnHeader docAsnHeader = docAsnHeaderManage.load(asnNo);
+					if(docAsnHeader==null || !DocAsnStatusEnum.SI_DQS.getCode().equals(docAsnHeader.getAsnStatus())){
+						isTrue = false;						
+					}
 				}
 				break;
 			default:
@@ -220,12 +276,29 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 	 * @param currentUser
 	 * @return
 	 */
-	private DocOrderHeader getInitHeader(String orderType, BusUserDto currUser){
+	private DocOrderHeader getInitHeader(DocOrderInitCondition condition, BusUserDto currUser){
 		DocOrderHeader header = new DocOrderHeader();
+		String orderType = condition.getOrderType();
 		String orderNo = docOrderHeaderManage.initOrderNo(orderType, currUser.getShopCode());
 		header.setOrderNo(orderNo);
 		switch (DocOrderTypeEnum.getByName(orderType)) {
-			case ALLOT_SO:			
+			case ALLOT_SO:	
+				header.setOrderType(orderType);
+				header.setiId(currUser.getId());
+				header.setFromShopId(currUser.getShopId());
+				header.setFromShopName(currUser.getShopName());
+				Date now = new Date();
+				header.setDeliveryTime(now);
+				header.setExpectedTime(DateUtil.getDayAfter(now, 3));				
+				//初始话入库店仓信息	
+				BusShop busShop = busShopManage.load(condition.getToShopId());
+				if(busShop!=null){	
+					header.setToShopId(busShop.getShopId());				
+					header.setToShopName(busShop.getShopName());
+					header.setReceiveAddress(busShop.getAddress());
+					header.setContacts(busShop.getContacts());
+					header.setMobile(busShop.getTel());
+				}
 				break;		
 			case SHORTAGE_SO:	
 				header.setOrderType(orderType);
@@ -252,5 +325,100 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		}
 		return header;
 	}
+	
+	/**
+	 * 初始化出库单明细信息
+	 * @param condition
+	 * @return
+	 */
+	private List<DocOrderDetails> getInitDetails(DocOrderInitCondition condition, DocOrderHeader header) {
+		
+		List<DocOrderDetails> details = new ArrayList<>();
+		String orderNo = header.getOrderNo();
+		String orderType = condition.getOrderType();
+		HashSet<String> poNoSet = new HashSet<>();
+		//初始化调拨明细
+		if(DocOrderTypeEnum.ALLOT_SO.getCode().equals(orderType)){
+			DocPoDetailsCondition condition0 = new DocPoDetailsCondition();
+			condition0.setInPoDetailIds(condition.getInPoDetailIds());
+			List<DocPoDetails> list = docPoDetailsManage.list(condition0);
+			for (DocPoDetails docPoDetails : list) {
+				DocOrderDetails detail = new DocOrderDetails();				
+				BeanUtils.copyProperties(docPoDetails, detail);	
+				//(用于记录原申请单对应的商品明细主键)
+				detail.setUserDefine1(docPoDetails.getPoDetailId());
+				detail.setOrderNo(orderNo);
+				detail.setPickedQty(BigDecimal.ZERO);				
+				detail.setShippedQty(docPoDetails.getOrderedQty());				
+				poNoSet.add(docPoDetails.getPoNo());
+				details.add(detail);
+			}
+			header.setPoNo(StringUtils.collectionToCommaDelimitedString(poNoSet));
+		}			
+		return details;
+	}
 
+	
+	/**
+	 * 调拨审核出库
+	 * @param docOrderDto
+	 * @return
+	 */
+	private String allotCargo(DocOrderDto docOrderDto) {
+		String orderNo = docOrderDto.getOrderNo();
+		BusUserDto currUser = docOrderDto.getCurrentUser();
+		DocOrderHeader header = docOrderDto.getHeader();		
+		//入参基本的校验
+		String iId = header.getiId();		
+		if(!currUser.getId().equals(iId)){
+			throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
+		}		
+		if(this.load(orderNo)!=null){
+			throw new DocOrderException(SCMErrorEnum.BUS_ORDER_EXISTED);
+		}			
+		List<DocOrderDetails> details = docOrderDto.getDetails();
+		if(details==null || details.size()==0){
+			throw new DocOrderException(SCMErrorEnum.BUS_ORDER_DETAIL_NOT_EXIST);
+		}		
+		//初始化头信息
+		Date now = new Date();
+		header.setPrintCount(0);
+		header.setDeliveryTime(now);
+		header.setOrderTime(now);
+		header.setiShopId(currUser.getShopId());
+		header.setiName(currUser.getRealname());
+		header.setiAddress(currUser.getShopName());
+		header.setiContact(currUser.getRealname());
+		header.setiTel(currUser.getTelphone());		
+		header.setCreatedName(currUser.getRealname());
+		header.setCreatedTime(now);
+		header.setUpdatedName(currUser.getRealname());
+		header.setUpdatedTime(now);
+		header.setOrderStatus(DocOrderStatusEnum.SO_DDCK.getCode());
+		header.setOrderSource(TradeFromEnum.PC.getCode());
+		BigDecimal orderPrice = BigDecimal.ZERO;
+		//初始化明细
+		int lineNo = 1;
+		for (DocOrderDetails docOrderDetails : details) {
+			docOrderDetails.setSoDetailId(PKMapping.GUUID(PKMapping.doc_order_details));			
+			docOrderDetails.setLineNo(lineNo++);			
+			BigDecimal totalPrice = docOrderDetails.getShippedQty().
+				multiply(docOrderDetails.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
+			docOrderDetails.setTotalPrice(totalPrice);
+			docOrderDetails.setCreatedTime(now);
+			orderPrice = orderPrice.add(totalPrice);
+			docOrderDetailsManage.create(docOrderDetails);
+			super.skuStockOut(header, docOrderDetails);
+		}
+		header.setOrderPrice(orderPrice);			
+		//生成调拨入库白单
+		String asnNo = docAsnHeaderManage.transferAllotStorage(header, details);
+		//更新调拨申请状态及明细
+		docPoHeaderManage.auditAllotApply(header, details);		
+		//创建出库单
+		header.setUserDefine1(asnNo);
+		docOrderHeaderManage.create(header);
+		return orderNo;
+	}
+	
 }

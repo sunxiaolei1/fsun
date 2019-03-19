@@ -35,7 +35,7 @@ public class DocAsnHeader {
     private String checkName;
 
     /**
-     * 审核状态 00 未审核，10 审核通过，20 审核不通过
+     * 审核状态 00 未签收，10 已签收
      * 表字段 : doc_asn_header.check_status
      */
     private String checkStatus;

@@ -194,7 +194,7 @@ public class DocAsnController extends BaseController {
 		switch (OrderOperateTypeEnum.getByCode(operateType)) {
 			case ADD:	
 				switch (DocAsnTypeEnum.getByName(asnType)) {
-					case ALLOT_SI:				
+					case ALLOT_SI:	
 						break;		
 					case OVER_SI:	
 						url = "/docAsn/operate/toAddOverSIView";
@@ -212,7 +212,8 @@ public class DocAsnController extends BaseController {
 				break;		
 			case EDIT:
 				switch (DocAsnTypeEnum.getByName(asnType)) {
-					case ALLOT_SI:				
+					case ALLOT_SI:	
+						url = "/docAsn/operate/toEditAllotSIView";
 						break;		
 					case OVER_SI:	
 						url = "/docAsn/operate/toEditOverSIView";

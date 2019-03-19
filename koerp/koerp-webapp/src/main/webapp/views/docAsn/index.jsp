@@ -32,31 +32,42 @@ var frozenColumns = [[
 		var spanHeader = "<b style='color:green;'>";
 		if(value=='A90'){
 			spanHeader = "<b style='color:red;'>";
+		}else if(value=='A00'|| value=='A10'){
+			spanHeader = "<b style='color:#FF9933;'>";
 		}
 		var spanFooter = "</b>";
 		return spanHeader + formatter(value, window.parent.docAsnStatus) + spanFooter;
 	}}
 ]];
 
-var columns = [[	
-	{field:'receiving_time',title:'单据时间',width:130,align:'center',sortable:true},
+var columns = [[
+	{field:'to_shop_id',title:'入库店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
+		return row.to_shop_name; 
+	}},
+	{field:'receiving_time',title:'入库时间',width:100,align:'center',sortable:true, formatter:function(value, row){
+		if(typeof value != "undefined"){
+			return formatterDate(dateParser(value));
+		}		
+	}},	
 	{field:'from_shop_id',title:'出库店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
 		return row.from_shop_name; 
+	}},	 
+	{field:'delivery_time',title:'出库时间',width:100,align:'center',sortable:true, formatter:function(value, row){
+		if(typeof value != "undefined"){
+			return formatterDate(dateParser(value));
+		}		
 	}},
-	{field:'to_shop_id',title:'入库店仓',width:120,align:'center',sortable:true, formatter:function(value, row){
-		return row.to_shop_name; 
-	}}, 
-	{field:'delivery_time',title:'出库时间',width:130,align:'center',sortable:true},
-	{field:'expected_time',title:'预期入库时间',width:130,align:'center',sortable:true},	
+	{field:'expected_time',title:'预期收货时间',width:130,align:'center',sortable:true},	
 	{field:'supplier_name',title:'供应商名称',width:100,align:'center',sortable:true},	
 	{field:'print_count',title:'是否打印',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return (row.print_count>0?"<span style='color:red;'>是</span>":"否"); 
 	}}, 
 	{field:'created_name',title:'制单人',width:80,align:'center',sortable:true},
-	{field:'memo',title:'备注',width:150,align:'center',sortable:true},	
-	{field:'ext_order_no',title:'外部订单号',width:120,align:'center',sortable:true},
-	{field:'po_no',title:'申请单号',width:120,align:'center',sortable:true},
-	{field:'order_no',title:'出库单号',width:120,align:'center',sortable:true}
+	{field:'created_time',title:'单据时间',width:130,align:'center',sortable:true},
+	{field:'memo',title:'备注',width:200,align:'center',sortable:true},	
+	{field:'ext_order_no',title:'外部订单号',width:140,align:'center',sortable:true},
+	{field:'po_no',title:'申请单号',width:150,align:'center',sortable:true},
+	{field:'order_no',title:'出库单号',width:150,align:'center',sortable:true}
 		
 ]];
 

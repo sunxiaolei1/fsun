@@ -63,10 +63,11 @@ function getRejectData(){
 function orderAudit(){
 	if(orderDetailIds.length>0){
 		if(poNoIsOne(selectedDetailRows)){
-			window.parent.toStockOutAuditView(orderDetailIds,selectedDetailRows[0].toShopId);
+			toStockOutAuditView(orderDetailIds,selectedDetailRows[0].toShopId);
 		}				
-	}
-	$.messager.alert('提示',"请选择至少一个申请单商品明细!",'info');	
+	}else{
+		$.messager.alert('提示',"请选择至少一个申请单商品明细!",'info');
+	}		
 }
 
 

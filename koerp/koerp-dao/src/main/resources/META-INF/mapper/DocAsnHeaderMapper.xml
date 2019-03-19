@@ -103,10 +103,10 @@
 		</if>
   		
   		<if test="startTime != null">
-			and a.receiving_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+			and a.created_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
 		</if>
 		<if test="endTime != null">
-			and a.receiving_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+			and a.created_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
 		</if>
   		
 	</where>
@@ -161,6 +161,8 @@
     <result column="o_i_contact" property="iContact"/>
     <result column="o_i_tel" property="iTel"/>
     <result column="o_receiving_time" property="receivingTime"/>
+    <result column="o_carrier_id" property="carrierId"/>
+    <result column="o_carrier_name" property="carrierName"/> 
   </resultMap>
   
   <resultMap id="DefinedResultMap" type="java.util.Map"> 	
@@ -241,6 +243,8 @@
 		o.i_contact as o_i_contact,
 		o.i_tel as o_i_tel,
 		o.receiving_time as o_receiving_time,
+		o.carrier_id as o_carrier_id,
+		o.carrier_name as o_carrier_name,
 		d.asn_detail_id as d_asn_detail_id,
 		d.asn_no as d_asn_no,
 		d.line_no as d_line_no,

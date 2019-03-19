@@ -21,6 +21,7 @@ import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
+import com.fsun.domain.entity.DocOrderInitCondition;
 import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
@@ -74,11 +75,10 @@ public class DocOrderController extends BaseController {
 	
 	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
 	@ResponseBody
-	public HttpResult getInitData(@RequestParam("orderNo") String orderNo, 
-			@RequestParam("orderType") String orderType){
+	public HttpResult getInitData(DocOrderInitCondition condition){
 		try {
 			BusUserDto currUser = super.getCurrentUser();
-			HashMap<String, Object> map = docOrderApi.getInitData(orderNo, orderType, currUser);
+			HashMap<String, Object> map = docOrderApi.getInitData(condition, currUser);
 			return success(map);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -176,7 +176,8 @@ public class DocOrderController extends BaseController {
 		}		
 	}
 	
-/****************************       私有方法            *************************************/
+	
+	/****************************       私有方法            *************************************/
 	
 	/**
 	 * 通过出库类型和操作类型获取对应的查看地址
@@ -189,7 +190,8 @@ public class DocOrderController extends BaseController {
 		switch (OrderOperateTypeEnum.getByCode(operateType)) {
 			case ADD:	
 				switch (DocOrderTypeEnum.getByName(orderType)) {
-					case ALLOT_SO:				
+					case ALLOT_SO:		
+						url = "/docOrder/operate/toStockOutAuditView";
 						break;		
 					case SHORTAGE_SO:	
 						url = "/docOrder/operate/toAddShortageSoView";
@@ -208,7 +210,8 @@ public class DocOrderController extends BaseController {
 				break;		
 			case EDIT:
 				switch (DocOrderTypeEnum.getByName(orderType)) {
-					case ALLOT_SO:				
+					case ALLOT_SO:
+						url = "/docOrder/operate/toEditStockOutView";
 						break;		
 					case SHORTAGE_SO:	
 						url = "/docOrder/operate/toEditShortageSoView";

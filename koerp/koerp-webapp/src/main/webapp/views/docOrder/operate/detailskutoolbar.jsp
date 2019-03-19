@@ -4,7 +4,7 @@
 <span style="float:right;margin-top:2px;">	
 	<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
 </span>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addSkuRow()">添加商品 </a>
+<a href="#" id="addGoodsBtn" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addSkuRow()">添加商品 </a>
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="delSkus()">删除</a> -->
 		
 <script type="text/javascript">
