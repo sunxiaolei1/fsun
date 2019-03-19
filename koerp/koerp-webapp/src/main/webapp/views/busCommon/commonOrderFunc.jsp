@@ -6,15 +6,37 @@
  * 取消订单
  */
 function orderCancel(){
-	//获取保存数据
-	var saveData = getOrderCancelData();
-	if(saveData!=null){		
-		if(typeof afterSaveFunc === 'function'){	
-			commonPost(saveData.saveUrl, JSON.stringify(saveData.params), null, afterSaveFunc);
-		}else{
-			commonPost(saveData.saveUrl, JSON.stringify(saveData.params), cancel);
-		}		
-	}	
+	$.messager.confirm('操作','确认要撤销？', function(r) {
+	    if(r){
+	    	var saveData = getOrderCancelData();
+	    	if(saveData!=null){		
+	    		if(typeof afterSaveFunc === 'function'){	
+	    			commonPost(saveData.saveUrl, JSON.stringify(saveData.params), null, afterSaveFunc);
+	    		}else{
+	    			commonPost(saveData.saveUrl, JSON.stringify(saveData.params), cancel);
+	    		}		
+	    	}		
+	    } 
+	});
+	
+}
+
+/**
+ * 驳回单据
+ */
+function orderReject(){
+	$.messager.confirm('操作','确认要驳回？', function(r) {
+	    if(r){
+	    	var saveData = getRejectData();
+	    	if(saveData!=null){		
+	    		if(typeof afterSaveFunc === 'function'){	
+	    			commonPost(saveData.saveUrl, JSON.stringify(saveData.params), null, afterSaveFunc);
+	    		}else{
+	    			commonPost(saveData.saveUrl, JSON.stringify(saveData.params));
+	    		}		
+	    	}	
+	    } 
+	});
 }
 
 /**
@@ -27,7 +49,7 @@ function orderUpdate(){
 		if(typeof afterSaveFunc === 'function'){	
 			commonPost(updateData.saveUrl, JSON.stringify(updateData.params), null, afterSaveFunc);
 		}else{
-			commonPost(updateData.saveUrl, JSON.stringify(updateData.params), cancel);
+			commonPost(updateData.saveUrl, JSON.stringify(updateData.params));
 		}		
 	}
 }

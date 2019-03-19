@@ -133,13 +133,13 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = false;break;	                
 	        case CANCEL_DOC_PO: 	        	
 	        	if(DocPoStatusEnum.CREATE.getCode().equals(poStatus) ||
-	        			DocPoStatusEnum.AUDIT_REFUSE.getCode().equals(poStatus)){
+	        			DocPoStatusEnum.AUDIT_REJECT.getCode().equals(poStatus)){
 	        		isEnable = true;
 	        	}      
 	        	break;	
 	        case UPDATE_DOC_PO:
 	        	if(DocPoStatusEnum.CREATE.getCode().equals(poStatus) ||
-	        			DocPoStatusEnum.AUDIT_REFUSE.getCode().equals(poStatus)){
+	        			DocPoStatusEnum.AUDIT_REJECT.getCode().equals(poStatus)){
 	        		isEnable = true;
 	        	}      
 	        	break;

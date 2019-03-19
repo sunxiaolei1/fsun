@@ -1,12 +1,14 @@
 package com.fsun.api.bus;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.fsun.api.base.BaseApi;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocPoDto;
 import com.fsun.domain.entity.DocPoHeaderCondition;
+import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.DocPoHeader;
 import com.fsun.domain.model.SysUser;
 
@@ -31,6 +33,13 @@ public interface DocPoApi extends BaseApi<DocPoHeader, DocPoHeaderCondition> {
 	 * @return
 	 */
 	public PageModel findListForPage(DocPoHeaderCondition condition);
+	
+	/**
+	 * 根据申请单号获取明细
+	 * @param poNo
+	 * @return
+	 */
+	public List<DocPoDetails> details(String poNo);
 
 	/**
 	 * 修改单据状态

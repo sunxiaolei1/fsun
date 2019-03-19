@@ -3,10 +3,12 @@ package com.fsun.biz.bus.manage;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fsun.biz.common.CrudManage;
 import com.fsun.common.utils.DateUtil;
+import com.fsun.dao.mapper.DocPoDetailsMapper;
 import com.fsun.dao.mapper.DocPoHeaderMapper;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.entity.DocPoHeaderCondition;

@@ -80,6 +80,28 @@
 			and a.created_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
 		</if>
   		
+  		<!-- 用于出库审核查询 -->
+		<if test="sku != null and sku != ''">	
+		    and a.po_no in (
+		    	SELECT 
+					distinct a1.po_no
+    			FROM doc_po_header a1
+    			LEFT JOIN doc_po_details d ON a1.po_no = d.po_no
+    			WHERE d.sku = #{sku,jdbcType=VARCHAR}					   			 		
+				<if test="fromShopId != null and fromShopId != ''">
+					and a1.from_shop_id = #{fromShopId}
+				</if>  		
+				<if test="toShopId != null and toShopId != ''">
+					and a1.to_shop_id = #{toShopId}
+				</if>  		
+				<if test="poStatus != null and poStatus != ''">
+					and a1.po_status = #{poStatus}
+				</if>  		
+				<if test="poType != null and poType != ''">
+					and a1.po_type = #{poType,jdbcType=VARCHAR}
+				</if>				
+		    )	
+		</if>		
 	</where>
   </sql>
   
@@ -96,7 +118,7 @@
 	SELECT 
 		<include refid="Base_Column_List" />
     FROM doc_po_header a 
-    	<include refid="conditions" />
+    <include refid="conditions" />
   </select>
   
   <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >

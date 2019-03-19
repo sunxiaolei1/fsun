@@ -24,6 +24,7 @@ import com.fsun.domain.entity.DocPoHeaderCondition;
 import com.fsun.domain.enums.DocPoStatusEnum;
 import com.fsun.domain.enums.DocPoTypeEnum;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
+import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.DocPoHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocPoException;
@@ -71,7 +72,23 @@ public class DocPoController extends BaseController {
 		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, poNo, null);
 		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
 		return modelAndView;
-	}		
+	}	
+	
+	/**
+	 * 跳转至调拨申请获取页面
+	 * @param poNo
+	 * @param poType
+	 * @param buttontype
+	 * @return
+	 */
+	@RequestMapping("/toAllotApplyView")
+	public ModelAndView toAllotApplyView() {				
+		ModelAndView modelAndView = new ModelAndView("/docPo/operate/toAllotApplyView");
+		BusUserDto currUser = super.getCurrentUser();
+		modelAndView.addObject("currShopId", currUser.getShopId());
+		modelAndView.addObject("rejectStatus", DocPoStatusEnum.AUDIT_REJECT.getCode());		
+		return modelAndView;
+	}
 	
 	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
 	@ResponseBody
@@ -126,6 +143,34 @@ public class DocPoController extends BaseController {
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}
+	
+	
+	/**
+	 * 跳转至调拨申请明细页面
+	 * @param poNo
+	 * @param poType
+	 * @param buttontype
+	 * @return
+	 */
+	@RequestMapping("/toAllotApplyDetailView")
+	public ModelAndView toAllotApplyDetailView() {				
+		ModelAndView modelAndView = new ModelAndView("/docPo/operate/toAllotApplyDetailView");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/details/{poNo}", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public HttpResult details(@PathVariable("poNo") String poNo) {
+		try {
+			List<DocPoDetails> list = docPoApi.details(poNo);
+			return success(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	
 
 
 	@RequestMapping(value="/status/{status}", method = {RequestMethod.POST})

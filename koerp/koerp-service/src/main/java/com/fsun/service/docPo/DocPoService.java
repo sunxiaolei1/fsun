@@ -18,6 +18,7 @@ import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocPoDto;
+import com.fsun.domain.entity.DocPoDetailsCondition;
 import com.fsun.domain.entity.DocPoHeaderCondition;
 import com.fsun.domain.enums.DocPoStatusEnum;
 import com.fsun.domain.enums.DocPoTypeEnum;
@@ -67,6 +68,13 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 	public List<DocPoHeader> list(DocPoHeaderCondition condition) {
 		return docPoHeaderManage.list(condition);
 	}
+	
+	@Override
+	public List<DocPoDetails> details(String poNo) {
+		DocPoDetailsCondition condition = new DocPoDetailsCondition();
+		condition.setPoNo(poNo);
+		return docPoDetailsManage.list(condition);
+	}
 
 	@Override
 	public PageModel findPage(DocPoHeaderCondition condition) {
@@ -98,18 +106,31 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 			DocPoHeader header = this.load(poNo);
 			if(header==null){
 				throw new DocPoException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+			}			
+			//根据审核状态判别对应的审核门店
+			String toShopId = header.getToShopId();
+			String fromShopId = header.getFromShopId();
+			if(status.equals(DocPoStatusEnum.AUDIT_PASS.getCode()) 
+				|| status.equals(DocPoStatusEnum.AUDIT_REJECT.getCode()) ){
+				if(!user.getShopId().equals(fromShopId)){
+					throw new DocPoException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
+				}
+			}else if(status.equals(DocPoStatusEnum.CANCEL.getCode())){
+				if(!user.getShopId().equals(toShopId)){
+					throw new DocPoException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
+				}
 			}
-			String shopId = header.getToShopId();
-			if(!user.getShopId().equals(shopId)){
-				throw new DocPoException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
-			}
+			//判别状态是否可用
 			if(!orderStatusValidator(status, header)){
 				throw new DocPoException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
 			}
 			header.setPoStatus(status);
 			header.setUpdatedName(user.getRealname());
 			header.setUpdatedTime(now);
-			header.setMemo(condition.getMemo());
+			String memo = condition.getMemo();
+			if(memo!=null && !memo.equals("")){
+				header.setMemo(memo);
+			}			
 			docPoHeaderManage.update(header);					
 		}
 	}
@@ -237,7 +258,7 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 				break;		
 			case AUDIT_PASS:			
 				break;	
-			case AUDIT_REFUSE:			
+			case AUDIT_REJECT:			
 				break;				
 			case CANCEL:						
 				if(DocPoStatusEnum.AUDIT_PASS.getCode().equals(oldStatus)

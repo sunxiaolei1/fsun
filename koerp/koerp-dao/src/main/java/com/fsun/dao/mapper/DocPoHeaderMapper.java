@@ -22,4 +22,5 @@ public interface DocPoHeaderMapper extends BaseMySqlMapper<DocPoHeader>{
 	 * @return
 	 */
 	public HashMap<String, Object> loadEntity(String poNo);
+
 }

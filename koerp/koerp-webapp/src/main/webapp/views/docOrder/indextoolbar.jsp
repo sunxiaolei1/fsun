@@ -9,6 +9,7 @@
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('12')">盘亏出库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('16')">领用出库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('15')">报损出库</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-user_comment" plain="true" onclick="toAllotApplyDialog()">调拨审核</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toPrintOrderView()">打印</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
@@ -25,6 +26,20 @@ function toAddView(orderType){
 	var url = "${api}/doc/order/toAddView?orderType="+ orderType;
 	var icon = "icon-add";
 	var subtitle = "创建出库单";
+	parent.addTab(subtitle, url, icon);	
+}
+
+//调拨审核--打开申请单选择页面
+function toAllotApplyDialog(){
+	var url = "${api}/doc/po/toAllotApplyView";	
+	commonDialog("ordersDialog", "可选申请单列表", "95%", "85%", url, "icon-vcard");
+}
+
+//调拨审核--打开出库审核页面
+function toStockOutAuditView(poDetailIds,toShopId){
+	var url = "${api}/doc/order/toStockOutAuditView?poDetailIds="+ poDetailIds+"&toShopId="+ toShopId;
+	var icon = "icon-cog_edit";
+	var subtitle = "出库审核";
 	parent.addTab(subtitle, url, icon);	
 }
 

@@ -2,6 +2,7 @@ package com.fsun.domain.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.fsun.domain.common.BaseOrderCondition;
 
@@ -226,7 +227,17 @@ public class DocPoHeaderCondition extends BaseOrderCondition{
      * 表字段 : doc_po_header.updated_time
      */
     private Date updatedTime;
-
+    
+    /**
+     * 商品SKU
+     */
+    private String sku;
+    
+    /**
+     * 包含申请单集合
+     */
+    List<String> inPoNos;
+    
     public String getPoNo() {
         return poNo;
     }
@@ -525,6 +536,28 @@ public class DocPoHeaderCondition extends BaseOrderCondition{
 	 */
 	public void setPrintCount(Integer printCount) {
 		this.printCount = printCount;
+	}
+
+	/**
+	 * @return the sku
+	 */
+	public String getSku() {
+		return sku;
+	}
+
+	/**
+	 * @param sku the sku to set
+	 */
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+
+	public List<String> getInPoNos() {
+		return inPoNos;
+	}
+
+	public void setInPoNos(List<String> inPoNos) {
+		this.inPoNos = inPoNos;
 	}
     
 }
