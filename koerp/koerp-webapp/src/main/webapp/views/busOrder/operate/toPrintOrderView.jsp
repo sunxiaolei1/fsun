@@ -189,7 +189,7 @@ function createTableOrderHead(div,header){
 	 var tbody = $("#"+div);		 
      var tr=$("<tr></tr>");
      tr.appendTo(tbody);
-     var td = $("<td colspan='2' >客户名称：<input style='width:320px;' value='"
+     var td = $("<td colspan='2' >客户名称：<input style='width:305px;' value='"
 			+ (customerName != null ? customerName : "")
 			+ "' /></td>");	 
 	 td.appendTo(tr);	
@@ -200,7 +200,7 @@ function createTableOrderHead(div,header){
 
 	 tr=$("<tr></tr>");
      tr.appendTo(tbody);
-     var td = $("<td colspan='2' >收货地址：<input style='width:320px;' value='"
+     var td = $("<td colspan='2' >收货地址：<input style='width:305px;' value='"
  			+ (address != null ? address : "")
  			+ "' /></td>");				 
 	 td.appendTo(tr);	
@@ -223,7 +223,7 @@ function createTableOrderHead(div,header){
 	 	 
 	 tr = $("<tr></tr>");
 	 tr.appendTo(tbody);	
-	 td = $("<td colspan='3' >注意事项：<input style='width:500px;' value='"
+	 td = $("<td colspan='3' >注意事项：<input style='width:480px;' value='"
 			+ ((sellerNotes != null && sellerNotes > 0) ? sellerNotes: '暂无') + "' /></td>");
 	 td.appendTo(tr);
 	 td = $("<td>经办人：<span>"+ (carrierName!=null?carrierName:"") +"</span></td>");			 

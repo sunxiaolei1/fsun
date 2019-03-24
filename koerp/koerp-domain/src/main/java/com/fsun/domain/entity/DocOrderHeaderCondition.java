@@ -101,7 +101,7 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
     private Date expectedTime;
 
     /**
-     * 用户自定义1
+     * 用户自定义1(用于记录调拨入库单号)
      * 表字段 : doc_order_header.user_define1
      */
     private String userDefine1;

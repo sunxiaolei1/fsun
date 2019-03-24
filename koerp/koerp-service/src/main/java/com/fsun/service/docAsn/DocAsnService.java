@@ -5,13 +5,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.DocAsnApi;
+import com.fsun.biz.bus.manage.BusShopManage;
 import com.fsun.biz.bus.manage.DocAsnDetailsManage;
 import com.fsun.biz.bus.manage.DocAsnHeaderManage;
+import com.fsun.biz.bus.manage.DocOrderDetailsManage;
+import com.fsun.biz.bus.manage.DocOrderHeaderManage;
+import com.fsun.biz.bus.manage.DocPoDetailsManage;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
@@ -19,12 +24,19 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocAsnDto;
 import com.fsun.domain.entity.DocAsnDetailsCondition;
 import com.fsun.domain.entity.DocAsnHeaderCondition;
+import com.fsun.domain.entity.DocPoDetailsCondition;
 import com.fsun.domain.enums.DocAsnCheckStatusEnum;
+import com.fsun.domain.enums.DocAsnSignTypeEnum;
 import com.fsun.domain.enums.DocAsnStatusEnum;
 import com.fsun.domain.enums.DocAsnTypeEnum;
+import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.TradeFromEnum;
+import com.fsun.domain.model.BusShop;
 import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
+import com.fsun.domain.model.DocOrderDetails;
+import com.fsun.domain.model.DocOrderHeader;
+import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocAsnException;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -37,12 +49,24 @@ import com.fsun.service.common.BaseOrderService;
  */
 @Service
 public class DocAsnService extends BaseOrderService implements DocAsnApi {
+	
+	@Autowired
+	private DocPoDetailsManage docPoDetailsManage;
 
 	@Autowired
 	private DocAsnHeaderManage docAsnHeaderManage;
 	
 	@Autowired
-	private DocAsnDetailsManage docAsnDetailsManage;	 
+	private DocAsnDetailsManage docAsnDetailsManage;
+	
+	@Autowired
+	private DocOrderHeaderManage docOrderHeaderManage;
+	
+	@Autowired
+	private DocOrderDetailsManage docOrderDetailsManage;
+	
+	@Autowired
+	private BusShopManage busShopManage;
 	
 	@Override
 	public HashMap<String, Object> getInitData(String asnNo, String asnType, BusUserDto currUser) {
@@ -112,7 +136,10 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		String asnNo = docAsnDto.getAsnNo();
 		BusUserDto currUser = docAsnDto.getCurrentUser();
 		DocAsnHeader header = docAsnDto.getHeader();
-		
+		//调拨入库
+		if(DocAsnTypeEnum.ALLOT_SI.getCode().equals(header.getAsnType())){
+			return this.allotSign(docAsnDto);
+		}
 		//入参基本的校验
 		String iId = header.getiId();
 		if(!currUser.getId().equals(iId)){
@@ -147,11 +174,13 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 			docAsnDetails.setLineNo(lineNo++);
 			BigDecimal orderQty = docAsnDetails.getReceiveQty().add(
 					docAsnDetails.getDamagedQty().add(docAsnDetails.getRejectedQty())
-			);
+			);				
 			docAsnDetails.setOrderQty(orderQty);
+			docAsnDetails.setExpectedQty(orderQty);
 			BigDecimal totalPrice = docAsnDetails.getOrderQty().multiply(docAsnDetails.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
 			docAsnDetails.setTotalPrice(totalPrice);
 			docAsnDetails.setCreatedTime(now);
+			docAsnDetails.setSignType(this.initSignType(docAsnDetails));		
 			orderPrice = orderPrice.add(totalPrice);
 			docAsnDetailsManage.create(docAsnDetails);
 			super.skuStockIn(header, docAsnDetails);
@@ -267,5 +296,238 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		}
 		return header;
 	}
+	
+	/**
+	 * 初始化签收类型
+	 * @param docAsnDetails
+	 * @return
+	 */
+	private String initSignType(DocAsnDetails docAsnDetails) {
+		
+		BigDecimal expectedQty = docAsnDetails.getExpectedQty();
+		BigDecimal receiveQty = docAsnDetails.getReceiveQty();
+		BigDecimal rejectedQty = docAsnDetails.getRejectedQty();
+		String signType = DocAsnSignTypeEnum.PART_SIGN.getCode();
+		if(expectedQty.compareTo(receiveQty)==0){
+			signType = DocAsnSignTypeEnum.ALL_SIGN.getCode();
+		}else if(expectedQty.compareTo(rejectedQty)==0){
+			signType = DocAsnSignTypeEnum.ALL_RETURN.getCode();
+		}
+		return signType;
+	}
 
+	/**
+	 * 签收入库操作
+	 * @param docAsnDto
+	 * @return
+	 */
+	private String allotSign(DocAsnDto docAsnDto){
+		
+		String asnNo = docAsnDto.getAsnNo();
+		BusUserDto currUser = docAsnDto.getCurrentUser();
+		DocAsnHeader header = docAsnDto.getHeader();
+		//入参基本的校验
+		String iId = header.getiId();
+		if(!currUser.getId().equals(iId)){
+			throw new DocAsnException(SCMErrorEnum.USER_ILLEGAL);
+		}
+		if(this.load(asnNo)==null){
+			throw new DocAsnException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}			
+		List<DocAsnDetails> details = docAsnDto.getDetails();
+		if(details==null || details.size()==0){
+			throw new DocAsnException(SCMErrorEnum.BUS_ORDER_DETAIL_NOT_EXIST);
+		}		
+		//初始化头信息
+		Date now = new Date();
+		header.setPrintCount(0);
+		header.setiAddress(currUser.getShopName());
+		header.setiContact(currUser.getRealname());
+		header.setiName(currUser.getRealname());
+		header.setiTel(currUser.getTelphone());
+		header.setReceivingTime(now);
+		header.setUpdatedName(currUser.getRealname());
+		header.setUpdatedTime(now);
+		//默认完全收货
+		header.setAsnStatus(DocAsnStatusEnum.SI_BFQS.getCode());
+		BigDecimal orderPrice = BigDecimal.ZERO;
+		//退货、签收及发货合计值
+		BigDecimal rejectedQty = BigDecimal.ZERO;		
+		BigDecimal receiveQty = BigDecimal.ZERO;
+		BigDecimal expectedQty = BigDecimal.ZERO;
+		//初始化明细	
+		for (DocAsnDetails docAsnDetails : details) {
+			BigDecimal totalPrice = BigDecimal.ZERO;
+			String signType = docAsnDetails.getSignType();
+			if(signType!=null && !DocAsnSignTypeEnum.ALL_RETURN.getCode().equals(signType)){
+				totalPrice = (docAsnDetails.getReceiveQty().add(docAsnDetails.getDamagedQty()))
+					.multiply(docAsnDetails.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
+				docAsnDetails.setTotalPrice(totalPrice);
+				docAsnDetails.setUpdatedTime(now);
+				docAsnDetailsManage.update(docAsnDetails);
+			}			
+			//金额合计
+			orderPrice = orderPrice.add(totalPrice);	
+			//入库存
+			super.skuStockIn(header, docAsnDetails);
+			//计算退货数量
+			rejectedQty = rejectedQty.add(docAsnDetails.getRejectedQty());
+			receiveQty = receiveQty.add(docAsnDetails.getReceiveQty());
+			expectedQty = expectedQty.add(docAsnDetails.getExpectedQty());			
+		}
+		//根据数量判别签收状态
+		if(expectedQty.compareTo(receiveQty)==0){
+			header.setAsnStatus(DocAsnStatusEnum.SI_WQSH.getCode());
+			//更新申请、出库明细对应的收货数量
+			this.synRelationOrders(header, details);
+		}else {			
+			//出现退货的情况下创建退货单
+			if(expectedQty.compareTo(rejectedQty)==0){
+				header.setAsnStatus(DocAsnStatusEnum.SI_JJSH.getCode());
+			}else{
+				//更新申请、出库明细对应的收货数量
+				this.synRelationOrders(header, details);
+			}						
+			//判别是否有退货数量，若存在则制作退货单
+			if(rejectedQty.compareTo(BigDecimal.ZERO)>0){
+				String refundOrderNo = this.transferAllotRefund(header, details);
+				header.setUserDefine1(refundOrderNo);
+			}			
+		}		
+		header.setOrderPrice(orderPrice);		
+		docAsnHeaderManage.update(header);
+		return asnNo;
+	}
+	
+	/**
+	 * 更新关联单据信息(申请单和出库单)
+	 * @param header
+	 * @param details
+	 */
+	private void synRelationOrders(DocAsnHeader header, List<DocAsnDetails> details) {		
+		//组装被签收商品的集合
+		Date now = new Date();
+		HashMap<String, BigDecimal> receiveSkuQtyMap = new HashMap<>();
+		for (DocAsnDetails docAsnDetails : details) {
+			String signType = docAsnDetails.getSignType();
+			if(signType!=null && !DocAsnSignTypeEnum.ALL_RETURN.getCode().equals(signType)){
+				BigDecimal receiveSkuQty = docAsnDetails.getReceiveQty().
+					add(docAsnDetails.getDamagedQty());
+				receiveSkuQtyMap.put(docAsnDetails.getUserDefine1(), receiveSkuQty);
+			}			
+		}		
+		//更新申请单明细
+		String poNos = header.getPoNo();
+		if(poNos!=null && !poNos.equals("")){
+		    for (String poNo : poNos.split(",")) {
+		    	DocPoDetailsCondition poDetailsCondition  = new DocPoDetailsCondition();
+				poDetailsCondition.setPoNo(poNo);
+				List<DocPoDetails> poDetailsList = docPoDetailsManage.list(poDetailsCondition);
+				if(poDetailsList==null || poDetailsList.size()==0){
+					throw new DocAsnException(SCMErrorEnum.BUS_ORDER_ILLEGAL);
+				}
+				for (DocPoDetails docPoDetails : poDetailsList) {
+					BigDecimal receiveQty = receiveSkuQtyMap.get(docPoDetails.getPoDetailId());
+					if(receiveQty!=null && receiveQty.compareTo(BigDecimal.ZERO)>0){
+						docPoDetails.setReceiveQty(receiveQty);
+						docPoDetails.setUpdatedTime(now);
+						docPoDetailsManage.update(docPoDetails);
+					}					
+				}
+			}		
+		}else{
+			throw new DocAsnException(SCMErrorEnum.BUS_ORDER_ILLEGAL);
+		}		
+		//更新出库单明细及状态
+		String orderNo = header.getOrderNo();
+		HashMap<String, Object> orderEntry = docOrderHeaderManage.loadEntity(orderNo);
+		if(orderEntry==null){
+			throw new DocAsnException(SCMErrorEnum.BUS_ORDER_ILLEGAL);
+		}		
+		DocOrderHeader orderHeader = new DocOrderHeader();
+		orderHeader.setOrderNo(orderNo);
+		orderHeader.setOrderStatus(DocOrderStatusEnum.SO_CKWC.getCode());
+		orderHeader.setUpdatedTime(now);
+		orderHeader.setUpdatedName(header.getUpdatedName());
+		docOrderHeaderManage.update(orderHeader);
+		List<HashMap<String, Object>> detailsListMap = (List<HashMap<String, Object>>) orderEntry.get("details");
+		for (HashMap<String, Object> detailsMap : detailsListMap) {
+			String poDetailId = (String) detailsMap.get("poDetailId");
+			String soDetailId = (String) detailsMap.get("soDetailId");
+			BigDecimal receiveQty = receiveSkuQtyMap.get(poDetailId);
+			if(receiveQty!=null && receiveQty.compareTo(BigDecimal.ZERO)>0){
+				DocOrderDetails docOrderDetails = new DocOrderDetails();			
+				docOrderDetails.setSoDetailId(soDetailId);
+				docOrderDetails.setReceiveQty(receiveQty);
+				docOrderDetails.setUpdatedTime(now);
+				docOrderDetailsManage.update(docOrderDetails);
+			}
+		}		
+	}
+
+	/**
+	 * 转换成调退入库单
+	 * @param header
+	 * @param details
+	 * @return
+	 */
+	private String transferAllotRefund(DocAsnHeader header, List<DocAsnDetails> details) {
+		DocOrderHeader oriOrderHeader = docOrderHeaderManage.load(header.getOrderNo());
+		Date now = new Date();
+		String createName = header.getUpdatedName();
+		if(oriOrderHeader!=null){	
+			BusShop busShop = busShopManage.load(oriOrderHeader.getFromShopId());	
+			if(busShop==null){
+				throw new DocAsnException(SCMErrorEnum.BUS_SHOP_NOT_EXIST);
+			}
+			DocAsnHeader newAsnHeader = new DocAsnHeader();
+			BeanUtils.copyProperties(header, newAsnHeader);
+			String refundAsnNo = docAsnHeaderManage.initAsnNo(
+				DocAsnTypeEnum.ALLOT_REFUND_SI.getCode(), busShop.getShopCode());
+			newAsnHeader.setAsnNo(refundAsnNo);
+			newAsnHeader.setCreatedTime(now);
+			newAsnHeader.setCreatedName(createName);
+			newAsnHeader.setUpdatedTime(now);
+			newAsnHeader.setUpdatedName(createName);
+			newAsnHeader.setAsnStatus(DocAsnStatusEnum.SI_WQSH.getCode());
+			newAsnHeader.setAsnType(DocAsnTypeEnum.ALLOT_REFUND_SI.getCode());
+			newAsnHeader.setCarrierId("");
+			newAsnHeader.setCarrierName("");
+			newAsnHeader.setReceivingTime(now);
+			newAsnHeader.setAddress(oriOrderHeader.getiAddress()!=null?oriOrderHeader.getiAddress():"");		
+			newAsnHeader.setMobile(oriOrderHeader.getiTel()!=null?oriOrderHeader.getiTel():"");
+			newAsnHeader.setMemo("");
+			newAsnHeader.setPrintCount(0);		
+			newAsnHeader.setToShopId(newAsnHeader.getFromShopId());
+			newAsnHeader.setToShopName(newAsnHeader.getFromShopName());
+			//创建明细
+			BigDecimal orderPrice = BigDecimal.ZERO;
+			int lineNo = 0;
+			for (DocAsnDetails docAsnDetails : details) {
+				BigDecimal rejectedQty = docAsnDetails.getRejectedQty();
+				if(rejectedQty!=null && rejectedQty.compareTo(BigDecimal.ZERO)>0){
+					DocAsnDetails newDocAsnDetails = new DocAsnDetails();
+					BeanUtils.copyProperties(docAsnDetails, newDocAsnDetails);
+					newDocAsnDetails.setAsnDetailId(PKMapping.GUUID(PKMapping.doc_asn_header));
+					newDocAsnDetails.setAsnNo(refundAsnNo);
+					newDocAsnDetails.setLineNo(lineNo++);
+					newDocAsnDetails.setDamagedQty(BigDecimal.ZERO);
+					newDocAsnDetails.setReceiveQty(rejectedQty);
+					newDocAsnDetails.setRejectedQty(BigDecimal.ZERO);
+					newDocAsnDetails.setCreatedTime(now);
+					BigDecimal totalPrice = rejectedQty.multiply(newDocAsnDetails.getPrice())
+						.setScale(2, BigDecimal.ROUND_HALF_UP);
+					newDocAsnDetails.setTotalPrice(totalPrice);
+					orderPrice = orderPrice.add(totalPrice);
+					docAsnDetailsManage.create(newDocAsnDetails);
+					//入库存
+					super.skuStockIn(newAsnHeader, newDocAsnDetails);
+				}			
+			}		
+			newAsnHeader.setOrderPrice(orderPrice);
+			docAsnHeaderManage.create(newAsnHeader);
+			return refundAsnNo;
+		}		
+		throw new DocAsnException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+	}
 }

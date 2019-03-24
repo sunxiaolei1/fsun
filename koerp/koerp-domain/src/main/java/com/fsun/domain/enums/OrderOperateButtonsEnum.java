@@ -22,6 +22,8 @@ public enum OrderOperateButtonsEnum {
 	
 	//入库单
 	CANCEL_DOC_ASN("docAsn_cancel","取消入库单"),
+	SIGN_DOC_ASN("docAsn_sign","签收入库"),
+	
 	
 	//出库单
 	CANCEL_DOC_ORDER("docOrder_cancel","取消出库单"),

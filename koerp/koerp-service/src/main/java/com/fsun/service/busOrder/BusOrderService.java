@@ -315,8 +315,9 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		header.setOrderTime(now);
 		header.setPayTime(now);
 		header.setCreatedTime(now);
-		header.setCreatedName(currUser.getRealname());
-
+		header.setCreatedName(currUser.getRealname());		
+		header.setUpdatedTime(now);
+		header.setUpdatedName(currUser.getRealname());
 		int lineNo = 1;
 		for (BusPayAccount payAccount : payAccounts) {
 			payAccount.setPayId(PKMapping.GUUID(PKMapping.bus_pay_account));

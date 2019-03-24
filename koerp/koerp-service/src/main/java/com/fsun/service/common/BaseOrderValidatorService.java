@@ -209,6 +209,11 @@ public abstract class BaseOrderValidatorService {
 	        		}	        		
 	        	}      
 	        	break;
+	        case SIGN_DOC_ASN:
+	        	if(DocAsnStatusEnum.SI_DQS.getCode().equals(asnStatus)){
+		        	isEnable = true;        		
+		        }   
+	        	break;
 	        case CREATE_REFUND: 
 	        	if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
 	        		|| DocAsnStatusEnum.SI_WQSH.getCode().equals(asnStatus))

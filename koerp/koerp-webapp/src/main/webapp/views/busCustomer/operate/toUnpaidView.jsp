@@ -97,7 +97,7 @@ var rachargeColumns = [[
 	//{field:"customerName",title:"客户名称", width:120,align:"center"},
 	{field:"shopName",title:"交易门店", width:120,align:"center"},
 	{field:"payMode",title:"支付方式", width:80,align:"center", formatter:function(value, row){
-		return formatter(value, window.parent.payMode); 
+		return formatter(value, window.parent.vipUnpaidPayMode); 
 	}},
 	{field:"tradeType",title:"交易类型", width:80,align:"center",sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeType); 

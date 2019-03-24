@@ -50,6 +50,12 @@ public class DocAsnController extends BaseController {
 		return "/docAsn/index";
 	}
 	
+	@RequestMapping("/toShowSignView")
+	public String toShowSignView() {
+		return "/docAsn/operate/showSignView";
+	}
+	
+	
 	@RequestMapping("/toAddView")
 	public ModelAndView toAddView(@RequestParam("asnType") String asnType) {
 		String url = this.getUrlByType(asnType, OrderOperateTypeEnum.ADD.getCode());

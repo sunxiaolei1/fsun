@@ -16,6 +16,7 @@ import com.fsun.dao.mapper.DocAsnDetailsMapper;
 import com.fsun.dao.mapper.DocAsnHeaderMapper;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.entity.DocAsnHeaderCondition;
+import com.fsun.domain.enums.DocAsnSignTypeEnum;
 import com.fsun.domain.enums.DocAsnStatusEnum;
 import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.DocGoodsTypeEnum;
@@ -115,16 +116,22 @@ public class DocAsnHeaderManage extends CrudManage<DocAsnHeaderMapper, DocAsnHea
 		header.setCreatedName(orderHeader.getUpdatedName());
 		header.setCreatedTime(orderHeader.getUpdatedTime());
 		this.create(header);
-		//初始化明细信息				
+		//初始化明细信息		
+		int lineNo = 0;
 		for (DocOrderDetails docOrderDetails : orderDetails) {
 			DocAsnDetails asnDetail = new DocAsnDetails();
 			BeanUtils.copyProperties(docOrderDetails, asnDetail);
 			asnDetail.setAsnDetailId(PKMapping.GUUID(PKMapping.doc_asn_details));
 			asnDetail.setAsnNo(asnNo);	
+			asnDetail.setLineNo(lineNo++);
 			asnDetail.setOrderQty(docOrderDetails.getOrderedQty());
 			asnDetail.setExpectedQty(docOrderDetails.getShippedQty());		
 			asnDetail.setGoodsType(DocGoodsTypeEnum.NORMAL.getValue());					
-			asnDetail.setReceiveQty(zero);
+			asnDetail.setReceiveQty(docOrderDetails.getShippedQty());
+			BigDecimal totalPrice = docOrderDetails.getShippedQty().multiply(docOrderDetails.getPrice())
+				.setScale(2, BigDecimal.ROUND_HALF_UP);
+			asnDetail.setTotalPrice(totalPrice);
+			asnDetail.setSignType(DocAsnSignTypeEnum.ALL_SIGN.getCode());
 			asnDetail.setRejectedQty(zero);
 			asnDetail.setDamagedQty(zero);			
 			docAsnDetailsMapper.insertSelective(asnDetail);			

@@ -205,6 +205,7 @@
       <result column="d_memo" property="memo"/>
       <result column="d_created_time" property="createdTime"/>
       <result column="d_updated_time" property="updatedTime"/>
+      <result column="d_sign_type" property="signType"/>      
     </collection>
     
   </resultMap>
@@ -280,7 +281,8 @@
 		d.rate_precent as d_rate_precent,
 		d.memo as d_memo,
 		d.created_time as d_created_time,
-		d.updated_time as d_updated_time
+		d.updated_time as d_updated_time,
+		d.sign_type as d_sign_type
     from doc_asn_header o
     left join doc_asn_details d on d.asn_no = o.asn_no
     where o.asn_no = #{asnNo,jdbcType=VARCHAR}

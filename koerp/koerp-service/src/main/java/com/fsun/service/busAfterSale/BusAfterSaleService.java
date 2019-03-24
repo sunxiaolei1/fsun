@@ -251,18 +251,22 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 			}	
 					
 			header.setUpdatedTime(now);
+			header.setUpdatedName(currUser.getRealname());
+			header.setUpdatedTime(now);
+			header.setMemo(condition.getMemo());			
 			if(RefundStatusEnum.getByValue(status)==RefundStatusEnum.CANCEL){	
 				//校验单据是否可取消退货单
 				if(!orderStatusValidator(header, OrderOperateButtonsEnum.CANCEL_REFUND)){
 					throw new AfterSaleException(SCMErrorEnum.BUS_REFUND_STATUS_INVALID);
 				}
 				//还原商品库存
+				header.setRefundStatus(status);
 				header.setRefundOrderStatus(RefundOrderStatusEnum.SOLVED.getValue());
 				BusRefundGoodsCondition condition0 = new BusRefundGoodsCondition();
 				condition0.setRefundId(refundId);
 				List<BusRefundGoods> details = busRefundGoodsManage.list(condition0);
 				for (BusRefundGoods refundGoods : details) {
-					super.skuStockIn(header, refundGoods);
+					super.skuStockOut(header, refundGoods);
 				}				
 				BusPayAccountCondition condition1 = new BusPayAccountCondition();
 				condition1.setOrderId(refundId);
@@ -290,9 +294,6 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 				busOrderManage.updateEach(busOrder);
 			}			
 			//更新头的状态
-			header.setRefundStatus(status);
-			header.setUpdatedName(currUser.getRealname());
-			header.setMemo(condition.getMemo());
 			busRefundManage.update(header);			
 		}
 		

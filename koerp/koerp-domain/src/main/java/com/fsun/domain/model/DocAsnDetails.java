@@ -237,6 +237,12 @@ public class DocAsnDetails {
      * 表字段 : doc_asn_details.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 签收类型
+     * 表字段 : doc_asn_details.sign_type
+     */
+    private String signType;
 
     public String getAsnDetailId() {
         return asnDetailId;
@@ -549,4 +555,18 @@ public class DocAsnDetails {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+	/**
+	 * @return the signType
+	 */
+	public String getSignType() {
+		return signType;
+	}
+
+	/**
+	 * @param signType the signType to set
+	 */
+	public void setSignType(String signType) {
+		this.signType = signType;
+	}
 }

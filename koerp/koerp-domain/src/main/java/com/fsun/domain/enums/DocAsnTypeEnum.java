@@ -14,6 +14,7 @@ public enum DocAsnTypeEnum {
 	PURCHASE_SI("23","采购入库"),
 	BACK_SI("24","销退入库"),	
 	SUNDRY_SI("25","杂收入库"),
+	ALLOT_REFUND_SI("29","调退入库"),
 	UNKNOW("UNKNOW","未知");
 	
 	/** 常量code */

@@ -31,7 +31,7 @@ var columns = [[
 		return row.shop_name; 
 	}},
 	{field:"pay_mode",title:"支付方式", width:60,align:"center", formatter:function(value, row){
-		return formatter(value, window.parent.payMode); 
+		return formatter(value, window.parent.vipUnpaidPayMode); 
 	}},
 	{field:"trade_type",title:"交易类型", width:80,align:"center",sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeType); 

@@ -54,6 +54,20 @@ function orderUpdate(){
 	}
 }
 
+/**
+ * 签收入库
+ */
+function orderSign(){
+	var saveData = getSignData();
+	if(saveData!=null){		
+		if(typeof afterSaveFunc === 'function'){	
+			commonPost(saveData.saveUrl, JSON.stringify(saveData.params), null, afterSaveFunc);
+		}else{
+			commonPost(saveData.saveUrl, JSON.stringify(saveData.params));
+		}		
+	}
+}
+
 
 /**
  * 返回

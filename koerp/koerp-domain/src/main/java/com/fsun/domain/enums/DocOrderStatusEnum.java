@@ -10,10 +10,10 @@ import java.util.List;
  */
 public enum DocOrderStatusEnum {
 	
-	SO_DSH("B00","出库待审核"),
-	SO_SHWC("B10","出库审核完成"),
+	SO_DSH("B00","待审核"),
+	SO_SHWC("B10","审核完成"),
 	SO_DDCK("B20","订单出库"),
-	SO_CKWC("B30","出库单完成"),
+	SO_CKWC("B30","出库完成"),
 	SO_CKQX("B90","出库取消"),
 	UNKNOW("UNKNOW","未知");
 	

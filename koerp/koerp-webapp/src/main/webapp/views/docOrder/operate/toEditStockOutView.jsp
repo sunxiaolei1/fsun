@@ -132,6 +132,16 @@ var soColumns = [[
 			}
 		}
 	},
+	{field:"receiveQty",title:"签收数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+			var style='font-weight:bold;color:green;';
+			if(rowData.orderedQty!=value){
+				style='font-weight:bold;color:red;';
+			}
+	    	return style;
+	    },
+	    formatter:intNumBaseFormat
+	},
 	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}}

@@ -71,12 +71,12 @@
 					<input id="address" name="address" 
 						class="easyui-textbox" style="width:400px;" readOnly/>
 				</td>
-	        	<th width="12%">签收人</th>
+	        	<th width="12%">审核人</th>
 				<td>
 					<input id="checkName" name="checkName" class="easyui-textbox" readOnly />
 					<input hidden="true" id="checkUserId" name="checkUserId" />								
 				</td>	
-				<th width="12%">签收状态</th>
+				<th width="12%">审核状态</th>
 				<td>
 					<input id="checkStatus" name="checkStatus" class="easyui-combobox" readOnly />								
 				</td>	        	
@@ -94,7 +94,7 @@
 
 <div style="height: 250px; width: 100%;">
 	<div id="detailskutoolbar" style="display:none;">
-		<%@include file="./detailskutoolbar.jsp"%>
+		<%@include file="./detailskusigntoolbar.jsp"%>
 	</div>
 	<table id="orderDetailDataGrid"></table>
 </div>					
@@ -112,6 +112,8 @@ var currOrderDetailDataGrid  = $("#orderDetailDataGrid");
 var $orderfm = $("#orderfm");
 var siColumns = [[
 	{field:'ck',checkbox:true},
+	//{field:'signType',hidden:true},
+	{field:'signType',title:"签收类型", width:80,align:"center"},
 	{field:"sku",title:"SKU", width:80,align:"center"},
 	{field:"goodsName",title:"商品名称", width:200,align:"center"},
 	{field:"barCode",title:"条形码", width:140,align:"center"},
@@ -140,31 +142,110 @@ var siColumns = [[
 	},
 	{field:"receiveQty",title:"签收数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
+			var style = 'font-weight:bold;color:green;';
+			if(rowData.expectedQty!=value){
+				style = 'font-weight:bold;color:red;';
+			}
+	    	return style;
+	    },
+	    formatter:intNumBaseFormat
+	},
+	/* {field:"damagedQty",title:"残次数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+			var style = 'font-weight:bold;color:green;';
+			if(value!=0){
+				style = 'font-weight:bold;color:red;';
+			}
+	    	return style;
+	    },
+	    formatter:intNumBaseFormat,
+		editor:{
+			type:'numberbox',
+			options:{					
+				min:0,
+				precision:0,
+				required: true
+			}
+		}
+	}, */
+	{field:"rejectedQty",title:"退货数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+			var style = 'font-weight:bold;color:green;background-color:#FF9933;';
+			if(value!=0){
+				style = 'font-weight:bold;color:red;background-color:#FF9933;';
+			}
+	    	return style;
+	    },
+	    formatter:intNumBaseFormat,
+		editor:{
+			type:'numberbox',
+			options:{					
+				min:0,
+				precision:0,
+				required: true
+			}
+		}
+	}
+]];
+
+var siViewColumns = [[
+	//{field:'signType',hidden:true},
+	{field:'signType',title:"签收类型", width:80,align:"center"},
+	{field:"sku",title:"SKU", width:80,align:"center"},
+	{field:"goodsName",title:"商品名称", width:200,align:"center"},
+	{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.brandCode); 
+	}},
+	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
+		return formatter(value, window.parent.categoryCode); 
+	}},
+	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
+		return formatter(value, window.parent.unitCode); 
+	}},
+	{field:"price",title:"单价", width:80,align:"center",formatter:numBaseFormat},
+	{field:"orderQty",title:"申请数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },
-	    formatter:intNumBaseFormat,
-		editor:{
-			type:'numberbox',
-			options:{					
-				min:0,
-				precision:0,
-				required: true
-			}
-		}
+	    formatter:intNumBaseFormat
 	},
-	{field:"damagedQty",title:"破损数量", width:80,align:"center",
+	{field:"expectedQty",title:"发货数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
-	    	return 'font-weight:bold;color:red;';
+	    	return 'font-weight:bold;color:green;';
 	    },
-	    formatter:intNumBaseFormat,
-		editor:{
-			type:'numberbox',
-			options:{					
-				min:0,
-				precision:0,
-				required: true
+	    formatter:intNumBaseFormat
+	},
+	{field:"receiveQty",title:"签收数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+			var style = 'font-weight:bold;color:green;';
+			if(rowData.expectedQty!=value){
+				style = 'font-weight:bold;color:red;';
 			}
-		}
+	    	return style;
+	    },
+	    formatter:intNumBaseFormat
+	},
+	/* {field:"damagedQty",title:"残次数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+			var style = 'font-weight:bold;color:green;';
+			if(value!=0){
+				style = 'font-weight:bold;color:red;';
+			}
+	    	return style;
+	    },
+	    formatter:intNumBaseFormat
+	}, */
+	{field:"rejectedQty",title:"退货数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+			var style = 'font-weight:bold;color:green;';
+			if(value!=0){
+				style = 'font-weight:bold;color:red;';
+			}
+	    	return style;
+	    },
+	    formatter:intNumBaseFormat
 	}
 ]];
 
@@ -209,8 +290,13 @@ $(function () {
 			if(details!=null && details.length>0){
 				currDetailData = details;
 				skuListReLoad();
-			}		
-	
+				//添加行编辑结束事件
+				currOrderDetailDataGrid.datagrid({					
+					onAfterEdit: function(rowIndex, rowData, changes){	
+						synAllotQty(rowIndex, rowData, changes);						
+				    }
+				});
+			}	
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			$.messager.alert("错误", errorThrown, "error");
@@ -218,5 +304,25 @@ $(function () {
 	});	
      
 });
+
+//同步签收数量
+function synAllotQty(rowIndex, rowData, changes){
+	var expectedQty = Number(rowData.expectedQty);
+	var receiveQty = Number(rowData.receiveQty);
+	var rejectedQty = Number(rowData.rejectedQty);
+	if(rejectedQty > expectedQty){
+		rowData.rejectedQty = expectedQty - receiveQty;	
+	}else{
+		rowData.receiveQty = expectedQty - rejectedQty;						
+	}
+	var signType = '20';
+	if(expectedQty==rowData.receiveQty){
+		signType = '10';
+	}else if(expectedQty==rowData.rejectedQty){
+		signType = '30';
+	}
+	rowData.signType = signType;
+	currOrderDetailDataGrid.datagrid("refreshRow", rowIndex);
+}
 
 </script>

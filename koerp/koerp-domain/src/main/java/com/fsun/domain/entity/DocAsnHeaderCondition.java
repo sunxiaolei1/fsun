@@ -191,7 +191,7 @@ public class DocAsnHeaderCondition extends BaseOrderCondition{
     private String mobile;
 
     /**
-     * 用户自定义1
+     * 用户自定义1(用于记录调拨退货入库单号)
      * 表字段 : doc_asn_header.user_define1
      */
     private String userDefine1;

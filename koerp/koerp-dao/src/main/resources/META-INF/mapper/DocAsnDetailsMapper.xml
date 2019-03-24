@@ -41,6 +41,7 @@
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="sign_type" property="signType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     asn_detail_id, asn_no, line_no, category_code, category_name, bar_code, brand_code, 
@@ -48,7 +49,7 @@
     receive_time, receive_qty, order_qty, expected_qty, damaged_qty, expected_time, rejected_qty, 
     rejected_time, unit, convert_qty, convert_unit, total_price, cost_price, lot_num, 
     price, user_define1, user_define2, user_define3, goods_type, volume, rate_precent, 
-    memo, created_time, updated_time
+    memo, created_time, updated_time, sign_type
   </sql>
   
   <sql id="conditions">
@@ -96,7 +97,7 @@
       cost_price, lot_num, price, 
       user_define1, user_define2, user_define3, 
       goods_type, volume, rate_precent, 
-      memo, created_time, updated_time
+      memo, created_time, updated_time, sign_type
       )
     values (#{asnDetailId,jdbcType=VARCHAR}, #{asnNo,jdbcType=VARCHAR}, #{lineNo,jdbcType=INTEGER}, 
       #{categoryCode,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, 
@@ -110,7 +111,8 @@
       #{costPrice,jdbcType=DECIMAL}, #{lotNum,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
       #{userDefine1,jdbcType=VARCHAR}, #{userDefine2,jdbcType=VARCHAR}, #{userDefine3,jdbcType=VARCHAR}, 
       #{goodsType,jdbcType=CHAR}, #{volume,jdbcType=DECIMAL}, #{ratePrecent,jdbcType=DECIMAL}, 
-      #{memo,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}
+      #{memo,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP},
+      #{signType,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.DocAsnDetails" >
@@ -233,6 +235,9 @@
       <if test="updatedTime != null" >
         updated_time,
       </if>
+      <if test="signType != null" >
+        sign_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="asnDetailId != null" >
@@ -351,6 +356,9 @@
       </if>
       <if test="updatedTime != null" >
         #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signType != null" >
+        #{signType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -471,6 +479,9 @@
       <if test="updatedTime != null" >
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="signType != null" >
+         sign_type = #{signType,jdbcType=VARCHAR},
+      </if>
     </set>
     where asn_detail_id = #{asnDetailId,jdbcType=VARCHAR}
   </update>
@@ -513,7 +524,8 @@
       rate_precent = #{ratePrecent,jdbcType=DECIMAL},
       memo = #{memo,jdbcType=VARCHAR},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      sign_type = #{signType,jdbcType=VARCHAR}
     where asn_detail_id = #{asnDetailId,jdbcType=VARCHAR}
   </update>
 </mapper>
