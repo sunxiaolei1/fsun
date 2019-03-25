@@ -98,7 +98,7 @@ var poColumns = [[
 	{field:'property',title:'规格',width:120,align:'center',sortable:true},
 	//{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"price",title:"单价", width:80,align:"center",formatter:numBaseFormat},
-	{field:"orderedQty",title:"数量", width:80,align:"center",
+	{field:"orderedQty",title:"申请数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },

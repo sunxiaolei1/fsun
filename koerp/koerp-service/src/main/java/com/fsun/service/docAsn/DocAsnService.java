@@ -331,23 +331,30 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		if(!currUser.getId().equals(iId)){
 			throw new DocAsnException(SCMErrorEnum.USER_ILLEGAL);
 		}
-		if(this.load(asnNo)==null){
+		DocAsnHeader oriDocAsnHeader = this.load(asnNo);
+		if(oriDocAsnHeader==null){
 			throw new DocAsnException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
 		}			
 		List<DocAsnDetails> details = docAsnDto.getDetails();
 		if(details==null || details.size()==0){
 			throw new DocAsnException(SCMErrorEnum.BUS_ORDER_DETAIL_NOT_EXIST);
-		}		
+		}	
+		//获取收货门店信息
+		BusShop currShop = busShopManage.load(currUser.getShopId());
+		if(currShop==null){
+			throw new DocAsnException(SCMErrorEnum.BUS_SHOP_NOT_EXIST);
+		}
 		//初始化头信息
 		Date now = new Date();
 		header.setPrintCount(0);
-		header.setiAddress(currUser.getShopName());
-		header.setiContact(currUser.getRealname());
+		header.setiAddress(currShop.getAddress());
+		header.setiContact(currShop.getContacts());
 		header.setiName(currUser.getRealname());
 		header.setiTel(currUser.getTelphone());
 		header.setReceivingTime(now);
 		header.setUpdatedName(currUser.getRealname());
 		header.setUpdatedTime(now);
+		header.setCheckStatus(DocAsnCheckStatusEnum.SIGNED.getCode());		
 		//默认完全收货
 		header.setAsnStatus(DocAsnStatusEnum.SI_BFQS.getCode());
 		BigDecimal orderPrice = BigDecimal.ZERO;
@@ -358,22 +365,23 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		//初始化明细	
 		for (DocAsnDetails docAsnDetails : details) {
 			BigDecimal totalPrice = BigDecimal.ZERO;
+			docAsnDetails.setUpdatedTime(now);
+			//计算退货数量
+			rejectedQty = rejectedQty.add(docAsnDetails.getRejectedQty());
+			receiveQty = receiveQty.add(docAsnDetails.getReceiveQty());
+			expectedQty = expectedQty.add(docAsnDetails.getExpectedQty());	
+			//存在入库商品则入库操作
 			String signType = docAsnDetails.getSignType();
 			if(signType!=null && !DocAsnSignTypeEnum.ALL_RETURN.getCode().equals(signType)){
 				totalPrice = (docAsnDetails.getReceiveQty().add(docAsnDetails.getDamagedQty()))
 					.multiply(docAsnDetails.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
 				docAsnDetails.setTotalPrice(totalPrice);
-				docAsnDetails.setUpdatedTime(now);
-				docAsnDetailsManage.update(docAsnDetails);
-			}			
-			//金额合计
-			orderPrice = orderPrice.add(totalPrice);	
-			//入库存
-			super.skuStockIn(header, docAsnDetails);
-			//计算退货数量
-			rejectedQty = rejectedQty.add(docAsnDetails.getRejectedQty());
-			receiveQty = receiveQty.add(docAsnDetails.getReceiveQty());
-			expectedQty = expectedQty.add(docAsnDetails.getExpectedQty());			
+				//金额合计
+				orderPrice = orderPrice.add(totalPrice);	
+				//入库存
+				super.skuStockIn(header, docAsnDetails);
+			}				
+			docAsnDetailsManage.update(docAsnDetails);					
 		}
 		//根据数量判别签收状态
 		if(expectedQty.compareTo(receiveQty)==0){
@@ -390,7 +398,7 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 			}						
 			//判别是否有退货数量，若存在则制作退货单
 			if(rejectedQty.compareTo(BigDecimal.ZERO)>0){
-				String refundOrderNo = this.transferAllotRefund(header, details);
+				String refundOrderNo = this.transferAllotRefund(oriDocAsnHeader, header, details);
 				header.setUserDefine1(refundOrderNo);
 			}			
 		}		
@@ -452,7 +460,7 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		docOrderHeaderManage.update(orderHeader);
 		List<HashMap<String, Object>> detailsListMap = (List<HashMap<String, Object>>) orderEntry.get("details");
 		for (HashMap<String, Object> detailsMap : detailsListMap) {
-			String poDetailId = (String) detailsMap.get("poDetailId");
+			String poDetailId = (String) detailsMap.get("userDefine1");
 			String soDetailId = (String) detailsMap.get("soDetailId");
 			BigDecimal receiveQty = receiveSkuQtyMap.get(poDetailId);
 			if(receiveQty!=null && receiveQty.compareTo(BigDecimal.ZERO)>0){
@@ -471,24 +479,30 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 	 * @param details
 	 * @return
 	 */
-	private String transferAllotRefund(DocAsnHeader header, List<DocAsnDetails> details) {
-		DocOrderHeader oriOrderHeader = docOrderHeaderManage.load(header.getOrderNo());
+	private String transferAllotRefund(DocAsnHeader oriDocAsnHeader, DocAsnHeader currHeader, List<DocAsnDetails> details) {
+		DocOrderHeader oriOrderHeader = docOrderHeaderManage.load(oriDocAsnHeader.getOrderNo());
 		Date now = new Date();
-		String createName = header.getUpdatedName();
 		if(oriOrderHeader!=null){	
 			BusShop busShop = busShopManage.load(oriOrderHeader.getFromShopId());	
 			if(busShop==null){
 				throw new DocAsnException(SCMErrorEnum.BUS_SHOP_NOT_EXIST);
 			}
 			DocAsnHeader newAsnHeader = new DocAsnHeader();
-			BeanUtils.copyProperties(header, newAsnHeader);
+			BeanUtils.copyProperties(oriDocAsnHeader, newAsnHeader);
 			String refundAsnNo = docAsnHeaderManage.initAsnNo(
 				DocAsnTypeEnum.ALLOT_REFUND_SI.getCode(), busShop.getShopCode());
 			newAsnHeader.setAsnNo(refundAsnNo);
+			//当前头信息取值
+			newAsnHeader.setUpdatedName(currHeader.getUpdatedName());
+			newAsnHeader.setiAddress(currHeader.getiAddress());
+			newAsnHeader.setiContact(currHeader.getiContact());
+			newAsnHeader.setiName(currHeader.getiName());
+			newAsnHeader.setiTel(currHeader.getiTel());
+			newAsnHeader.setiId(currHeader.getiId());
+			//原头信息取值
 			newAsnHeader.setCreatedTime(now);
-			newAsnHeader.setCreatedName(createName);
+			newAsnHeader.setCreatedName(currHeader.getUpdatedName());
 			newAsnHeader.setUpdatedTime(now);
-			newAsnHeader.setUpdatedName(createName);
 			newAsnHeader.setAsnStatus(DocAsnStatusEnum.SI_WQSH.getCode());
 			newAsnHeader.setAsnType(DocAsnTypeEnum.ALLOT_REFUND_SI.getCode());
 			newAsnHeader.setCarrierId("");

@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 入库单签收审核状态
  * @author fsun
  * @date 2019年3月19日
  */
 public enum DocAsnCheckStatusEnum {
 	
-	UNSIGN("00","未签收"),
-	SIGNED("10","已签收"),
+	UNSIGN("00","未审核"),
+	SIGNED("10","已审核"),
 	UNKNOW("UNKNOW","未知");
 	
 	/** 常量code */

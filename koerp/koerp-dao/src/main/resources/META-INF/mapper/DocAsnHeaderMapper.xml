@@ -203,6 +203,9 @@
       <result column="d_volume" property="volume"/> 
       <result column="d_rate_precent" property="ratePrecent"/>
       <result column="d_memo" property="memo"/>
+      <result column="d_user_define1" property="userDefine1"/>
+      <result column="d_user_define2" property="userDefine2"/>
+      <result column="d_user_define3" property="userDefine3"/>    
       <result column="d_created_time" property="createdTime"/>
       <result column="d_updated_time" property="updatedTime"/>
       <result column="d_sign_type" property="signType"/>      
@@ -280,6 +283,9 @@
 		d.volume as d_volume,
 		d.rate_precent as d_rate_precent,
 		d.memo as d_memo,
+		d.user_define1 as d_user_define1,
+		d.user_define2 as d_user_define2,
+		d.user_define3 as d_user_define3,
 		d.created_time as d_created_time,
 		d.updated_time as d_updated_time,
 		d.sign_type as d_sign_type

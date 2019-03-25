@@ -212,6 +212,8 @@ public class DocAsnController extends BaseController {
 						break;
 					case SUNDRY_SI:			
 						break;
+					case ALLOT_REFUND_SI:			
+						break;
 					default:
 						break;
 				}
@@ -230,6 +232,9 @@ public class DocAsnController extends BaseController {
 					case BACK_SI:			
 						break;
 					case SUNDRY_SI:			
+						break;
+					case ALLOT_REFUND_SI:
+						url = "/docAsn/operate/toEditAllotRefundSIView";
 						break;
 					default:
 						break;

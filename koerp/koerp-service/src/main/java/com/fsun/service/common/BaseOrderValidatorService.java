@@ -197,11 +197,14 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = true; break;	        	
 	        case ADD_ORDER_REMARK:
 	        	break;	                       
-	        case CANCEL_DOC_ASN: 	  
+	        case CANCEL_DOC_ASN: 
 	        	if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
 	        		|| DocAsnStatusEnum.SI_WQSH.getCode().equals(asnStatus))){
-	        		if(!DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType)){
-	        			isEnable = true;
+	        		//采购入库、调拨签收入库及调退入库单据在签收之后不可撤销
+	        		if(!DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType) 
+	        			&& !DocAsnTypeEnum.ALLOT_REFUND_SI.getCode().equals(asnType)
+	        				&& !DocAsnTypeEnum.ALLOT_SI.getCode().equals(asnType)){
+	        			isEnable = true;	        			
 	        		}else{
 	        			if(orderNo==null || orderNo.equals("")){
 	        				isEnable = true;

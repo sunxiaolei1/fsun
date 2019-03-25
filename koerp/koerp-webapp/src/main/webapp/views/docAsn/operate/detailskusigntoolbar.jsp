@@ -4,8 +4,8 @@
 <span style="float:right;margin-top:2px;">	
 	<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
 </span>
-<a href="#" class="easyui-linkbutton" iconCls="icon-cart_full" plain="true" onclick="allSigned()">整单签收</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-cart_delete" plain="true" onclick="allRejected()">整单退</a>
+<a href="#" id="signedGoodsBtn" class="easyui-linkbutton" iconCls="icon-cart_full" plain="true" onclick="allSigned()">整单签收</a>
+<a href="#" id="rejectedGoodsBtn" class="easyui-linkbutton" iconCls="icon-cart_delete" plain="true" onclick="allRejected()">整单退</a>
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-cart_error" plain="true" onclick="allDamaged()">整单报损</a> -->
 		
 <script type="text/javascript">

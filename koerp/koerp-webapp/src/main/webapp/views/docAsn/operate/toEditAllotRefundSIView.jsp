@@ -40,59 +40,33 @@
 				<td colspan="3" >
 					<input id="toShopName" name="toShopName" 
 						class="easyui-textbox" style="width:400px;" readOnly />								
-				</td>	        		        		
-				<th width="12%">经办人</th>
-				<td>
-					<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly />
 				</td>
-	        	<th width="12%">预期收货时间</th>
-				<td>
-					<input id="expectedTime" name="expectedTime" class="easyui-datetimebox" disabled />
-				</td>				        		            													        						        									
-	        </tr>
-	        <tr>		        	
-				<th width="12%">出库店仓</th>
-				<td colspan="3" >
-					<input id="fromShopName" name="fromShopName" 
-						class="easyui-textbox" style="width:400px;" readOnly />								
-				</td>
-				<th width="12%">联系方式</th>
-				<td>
-					<input id="mobile" name="mobile" class="easyui-textbox" readOnly />								
-				</td>	
 				<th width="12%">出库时间</th>
 				<td>
 					<input id="deliveryTime" name="deliveryTime" class="easyui-datebox" disabled />								
-				</td>	        			        		            													        						        									
-	        </tr>
-	        <tr>
-				<th width="12%">发货地址</th>
-				<td colspan="3">
-					<input id="address" name="address" 
-						class="easyui-textbox" style="width:400px;" readOnly/>
 				</td>
-	        	<th width="12%">审核人</th>
+	        	<th width="12%">调退时间</th>
 				<td>
-					<input id="checkName" name="checkName" class="easyui-textbox" readOnly />
-					<input hidden="true" id="checkUserId" name="checkUserId" />								
-				</td>	
-				<th width="12%">审核状态</th>
-				<td>
-					<input id="checkStatus" name="checkStatus" class="easyui-combobox" readOnly />								
-				</td>	        	
-	        </tr>
+					<input id="receivingTime" name="receivingTime" class="easyui-datetimebox" disabled />								
+				</td>	        		        							        					        		            													        						        											        														        			        		            													        						        									
+	        </tr>	        
 	        <tr>
+	        	<th width="12%">出库店仓</th>
+				<td colspan="3" >
+					<input id="fromShopName" name="fromShopName" data-options="multiline:true" 
+						class="easyui-textbox" style="width:400px;height:46px;" readOnly />								
+				</td>
 	        	<th width="12%">备注</th>
-				<td colspan="7">
+				<td colspan="3">
 					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:800px;height:46px;"/>
+						class="easyui-textbox" style="width:400px;height:46px;"/>
 				</td>	        	
 	        </tr>
 		</table>
 	</form>			
 </div>	
 
-<div style="height: 250px; width: 100%;">
+<div style="height: 320px; width: 100%;">
 	<div id="detailskutoolbar" style="display:none;">
 		<%@include file="./detailskusigntoolbar.jsp"%>
 	</div>
@@ -112,8 +86,6 @@ var currOrderDetailDataGrid  = $("#orderDetailDataGrid");
 var $orderfm = $("#orderfm");
 var siColumns = [[
 	{field:'ck',checkbox:true},
-	{field:'signType',hidden:true},
-	//{field:'signType',title:"签收类型", width:80,align:"center"},
 	{field:"sku",title:"SKU", width:80,align:"center"},
 	{field:"goodsName",title:"商品名称", width:200,align:"center"},
 	{field:"barCode",title:"条形码", width:140,align:"center"},
@@ -140,116 +112,18 @@ var siColumns = [[
 	    },
 	    formatter:intNumBaseFormat
 	},
-	{field:"receiveQty",title:"签收数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-			var style = 'font-weight:bold;color:green;';
-			if(rowData.expectedQty!=value){
-				style = 'font-weight:bold;color:red;';
-			}
-	    	return style;
-	    },
-	    formatter:intNumBaseFormat
-	},
-	/* {field:"damagedQty",title:"残次数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-			var style = 'font-weight:bold;color:green;';
-			if(value!=0){
-				style = 'font-weight:bold;color:red;';
-			}
-	    	return style;
-	    },
-	    formatter:intNumBaseFormat,
-		editor:{
-			type:'numberbox',
-			options:{					
-				min:0,
-				precision:0,
-				required: true
-			}
-		}
-	}, */
-	{field:"rejectedQty",title:"退货数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-			var style = 'font-weight:bold;color:green;background-color:#FF9933;';
-			if(value!=0){
-				style = 'font-weight:bold;color:red;background-color:#FF9933;';
-			}
-	    	return style;
-	    },
-	    formatter:intNumBaseFormat,
-		editor:{
-			type:'numberbox',
-			options:{					
-				min:0,
-				precision:0,
-				required: true
-			}
-		}
-	}
-]];
-
-var siViewColumns = [[
-	//{field:'signType',hidden:true},
-	{field:'signType',title:"签收类型", width:80,align:"center"},
-	{field:"sku",title:"SKU", width:80,align:"center"},
-	{field:"goodsName",title:"商品名称", width:200,align:"center"},
-	{field:"barCode",title:"条形码", width:140,align:"center"},
-	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.brandCode); 
-	}},
-	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
-		return formatter(value, window.parent.categoryCode); 
-	}},
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
-	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
-		return formatter(value, window.parent.unitCode); 
-	}},
-	{field:"price",title:"单价", width:80,align:"center",formatter:numBaseFormat},
-	{field:"orderQty",title:"申请数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-	    	return 'font-weight:bold;color:green;';
-	    },
-	    formatter:intNumBaseFormat
-	},
-	{field:"expectedQty",title:"发货数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-	    	return 'font-weight:bold;color:green;';
-	    },
-	    formatter:intNumBaseFormat
-	},
-	{field:"receiveQty",title:"签收数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-			var style = 'font-weight:bold;color:green;';
-			if(rowData.expectedQty!=value){
-				style = 'font-weight:bold;color:red;';
-			}
-	    	return style;
-	    },
-	    formatter:intNumBaseFormat
-	},
-	/* {field:"damagedQty",title:"残次数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-			var style = 'font-weight:bold;color:green;';
-			if(value!=0){
-				style = 'font-weight:bold;color:red;';
-			}
-	    	return style;
-	    },
-	    formatter:intNumBaseFormat
-	}, */
-	{field:"rejectedQty",title:"退货数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-			var style = 'font-weight:bold;color:green;';
-			if(value!=0){
-				style = 'font-weight:bold;color:red;';
-			}
-	    	return style;
+	{field:"receiveQty",title:"调退数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){			
+			return 'font-weight:bold;color:red;';	
 	    },
 	    formatter:intNumBaseFormat
 	}
 ]];
 
 $(function () { 
+	
+	$("#signedGoodsBtn").css("visibility", "hidden");
+	$("#rejectedGoodsBtn").css("visibility", "hidden");
 	
 	$('#asnType', $orderfm).combobox({  
 		prompt: '请选择...',
@@ -284,10 +158,6 @@ $(function () {
 			var header = docAsnDto.header;
 			if(header!=null){
 				$orderfm.form("load", header);	
-				if(header.checkStatus=='10'){
-					$("#signedGoodsBtn").css("visibility", "hidden");
-					$("#rejectedGoodsBtn").css("visibility", "hidden");
-				}
 			}
 			
 			var details = docAsnDto.details;	
