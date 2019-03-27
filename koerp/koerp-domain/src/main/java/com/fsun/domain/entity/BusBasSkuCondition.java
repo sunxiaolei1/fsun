@@ -241,6 +241,12 @@ public class BusBasSkuCondition extends SortCondition {
     private Boolean isVipAppoint;
     
     /**
+     * 是否是指定渠道商品,1是,-0 否
+     * 表字段 : bus_bas_sku.is_channel_appoint
+     */
+    private Boolean isChannelAppoint;
+    
+    /**
      * 模糊查询
      */
     private String q;
@@ -603,6 +609,20 @@ public class BusBasSkuCondition extends SortCondition {
 
 	public void setTradeType(String tradeType) {
 		this.tradeType = tradeType;
+	}
+
+	/**
+	 * @return the isChannelAppoint
+	 */
+	public Boolean getIsChannelAppoint() {
+		return isChannelAppoint;
+	}
+
+	/**
+	 * @param isChannelAppoint the isChannelAppoint to set
+	 */
+	public void setIsChannelAppoint(Boolean isChannelAppoint) {
+		this.isChannelAppoint = isChannelAppoint;
 	}
 
 }

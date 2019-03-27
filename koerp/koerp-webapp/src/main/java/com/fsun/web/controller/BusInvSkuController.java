@@ -16,7 +16,6 @@ import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.entity.BusInvSkuCondition;
 import com.fsun.domain.entity.BusInvSkuDetailsCondition;
-import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.model.BusInvSku;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;

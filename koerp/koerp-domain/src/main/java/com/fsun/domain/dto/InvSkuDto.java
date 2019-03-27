@@ -22,7 +22,7 @@ public class InvSkuDto extends BusBasSku {
 	private BigDecimal vipPrice;
 	
 	/**
-	 * 内供价
+	 * 餐饮价
 	 */
 	private BigDecimal supplyPrice;
 

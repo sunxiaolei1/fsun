@@ -93,24 +93,33 @@
 				<span style="font-weight:bold;margin:0 5px;">排序码<span style="color:red;">*</span></span>
 				<input name="sortCode" id="sortCode" class="easyui-numberspinner" required
 					data-options="min:1, precision:0,increment:1,value:1" style="width: 100px;" />	
+			</td>	      				
+		</tr>
+		<tr>
+        	<th width="12%"></th>
+			<td colspan="3">
 				<label for="isVipAppoint" >
 					<input type="checkbox" id="isVipAppoint" name="isVipAppoint" style="zoom:130%;vertical-align:middle;" />
 					是否作为普通会员指定VIP商品
 				</label>
-			</td>	      				
-		</tr>
+				<label for="isChannelAppoint" style="margin-left:30px;">
+					<input type="checkbox" id="isChannelAppoint" name="isChannelAppoint" style="zoom:130%;vertical-align:middle;" />
+					是否作为渠道指定商品
+				</label>
+			</td>		        	
+        </tr>
 		<tr>
         	<th width="12%">商品详情</th>
 			<td colspan="3">
 				<input id="descr" name="descr"  data-options="multiline:true" 
-					class="easyui-textbox" style="width:640px;height:75px;"/>
+					class="easyui-textbox" style="width:640px;height:60px;"/>
 			</td>		        	
         </tr>
         <tr>
         	<th width="12%">备注</th>
 			<td colspan="3">
 				<input id="memo" name="memo"  data-options="multiline:true" 
-					class="easyui-textbox" style="width:640px;height:75px;"/>
+					class="easyui-textbox" style="width:640px;height:60px;"/>
 			</td>		        	
         </tr>		        			       
 	</table>			
@@ -186,6 +195,7 @@ $(function () {
 		var unitName = $("#unit", $orderfm).combobox("getText");
 		baseInfo.unitName = unitName;
 		baseInfo.isVipAppoint = $("#isVipAppoint", $orderfm).prop("checked")?1:0;
+		baseInfo.isChannelAppoint = $("#isChannelAppoint", $orderfm).prop("checked")?1:0;
 		commonPost("${api}/bus/basSku/save", JSON.stringify(baseInfo), afterSaveFunc);	
 	});
      
@@ -216,6 +226,10 @@ function initInfo($orderfm, skuId){
 					$("#isVipAppoint", $orderfm).attr("checked", true); 
 				}
 				delete data.isVipAppoint;
+				if(data.isChannelAppoint!=null && data.isChannelAppoint==1){				
+					$("#isChannelAppoint", $orderfm).attr("checked", true); 
+				}
+				delete data.isChannelAppoint;
 				$("#sku", $orderfm).textbox("disable");
 				$orderfm.form("load", data);
 			},

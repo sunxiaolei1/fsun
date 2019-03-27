@@ -53,7 +53,10 @@ var columns =
 		}},
 		{field:'is_vip_appoint',title:'商品指定VIP',width:120,align:'center',sortable:true, formatter:function(value, row){
 			return formatter(value, window.parent.isTrue); 
-		}},	
+		}},
+		{field:'is_channel_appoint',title:'商品指定渠道',width:120,align:'center',sortable:true, formatter:function(value, row){
+			return formatter(value, window.parent.isTrue); 
+		}},
 		{field:"created_time",title:"创建时间",width:130, align:'center'},
 		{field:"updated_time",title:"更新时间",width:130, align:'center'},
 		{field:'memo',title:'备注',width:150,align:'center',sortable:true}		

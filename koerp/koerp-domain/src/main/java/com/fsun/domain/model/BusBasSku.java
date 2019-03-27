@@ -233,6 +233,12 @@ public class BusBasSku {
     private Boolean isVipAppoint;
     
     /**
+     * 是否是指定渠道商品,1是,-0 否
+     * 表字段 : bus_bas_sku.is_channel_appoint
+     */
+    private Boolean isChannelAppoint;
+    
+    /**
      * 销售单价(用于商品选择带出的单价)
      */
     private BigDecimal salePrice;
@@ -553,5 +559,19 @@ public class BusBasSku {
 	 */
 	public void setSalePrice(BigDecimal salePrice) {
 		this.salePrice = salePrice;
+	}
+
+	/**
+	 * @return the isChannelAppoint
+	 */
+	public Boolean getIsChannelAppoint() {
+		return isChannelAppoint;
+	}
+
+	/**
+	 * @param isChannelAppoint the isChannelAppoint to set
+	 */
+	public void setIsChannelAppoint(Boolean isChannelAppoint) {
+		this.isChannelAppoint = isChannelAppoint;
 	}
 }

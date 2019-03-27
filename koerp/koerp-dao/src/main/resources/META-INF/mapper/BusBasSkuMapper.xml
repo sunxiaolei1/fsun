@@ -40,13 +40,14 @@
     <result column="created_id" property="createdId" jdbcType="VARCHAR" />
     <result column="updated_id" property="updatedId" jdbcType="VARCHAR" />
     <result column="is_vip_appoint" property="isVipAppoint" jdbcType="BIT" />
+    <result column="is_channel_appoint" property="isChannelAppoint" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
     sku_id, bar_code, sku, parent_sku_id, category_code, product_type, brand_code, assist_id, 
     goods_name, en_name, property, market_price, cost_price, origin_sale_price, warning_qty, 
     qty, unit, unit_name, convert_qty, convert_unit, keywords, memo, descr, status, is_recommend, 
     on_shelf_time, off_shelf_time, sort_code, is_enabled, ext_0, ext_1, rate_precent, 
-    settle_type, created_time, updated_time, created_id, updated_id, is_vip_appoint
+    settle_type, created_time, updated_time, created_id, updated_id, is_vip_appoint, is_channel_appoint
   </sql>
   
   
@@ -134,7 +135,7 @@
       sort_code, is_enabled, ext_0, 
       ext_1, rate_precent, settle_type, 
       created_time, updated_time, created_id, 
-      updated_id, is_vip_appoint)
+      updated_id, is_vip_appoint, is_channel_appoint)
     values (#{skuId,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, 
       #{parentSkuId,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, #{productType,jdbcType=SMALLINT}, 
       #{brandCode,jdbcType=VARCHAR}, #{assistId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
@@ -147,7 +148,7 @@
       #{sortCode,jdbcType=INTEGER}, #{isEnabled,jdbcType=BIT}, #{ext0,jdbcType=VARCHAR}, 
       #{ext1,jdbcType=VARCHAR}, #{ratePrecent,jdbcType=DECIMAL}, #{settleType,jdbcType=INTEGER}, 
       #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{createdId,jdbcType=VARCHAR}, 
-      #{updatedId,jdbcType=VARCHAR}, #{isVipAppoint,jdbcType=BIT})
+      #{updatedId,jdbcType=VARCHAR}, #{isVipAppoint,jdbcType=BIT}, #{isChannelAppoint,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusBasSku" >
     insert into bus_bas_sku
@@ -266,6 +267,9 @@
       <if test="isVipAppoint != null" >
         is_vip_appoint,
       </if>
+      <if test="isChannelAppoint != null" >
+        is_channel_appoint,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="skuId != null" >
@@ -381,6 +385,9 @@
       </if>
       <if test="isVipAppoint != null" >
         #{isVipAppoint,jdbcType=BIT},
+      </if>
+      <if test="isChannelAppoint != null" >
+        #{isChannelAppoint,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -498,6 +505,9 @@
       <if test="isVipAppoint != null" >
         is_vip_appoint = #{isVipAppoint,jdbcType=BIT},
       </if>
+      <if test="isChannelAppoint != null" >
+        is_channel_appoint = #{isChannelAppoint,jdbcType=BIT},
+      </if>
     </set>
     where sku_id = #{skuId,jdbcType=VARCHAR}
   </update>
@@ -539,7 +549,8 @@
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       created_id = #{createdId,jdbcType=VARCHAR},
       updated_id = #{updatedId,jdbcType=VARCHAR},
-      is_vip_appoint = #{isVipAppoint,jdbcType=BIT}
+      is_vip_appoint = #{isVipAppoint,jdbcType=BIT},
+      is_channel_appoint = #{isChannelAppoint,jdbcType=BIT}
     where sku_id = #{skuId,jdbcType=VARCHAR}
   </update>
 </mapper>

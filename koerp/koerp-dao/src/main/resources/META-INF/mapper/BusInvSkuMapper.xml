@@ -80,7 +80,8 @@
 		inv_sku.qty as qty,
 		bas_sku.convert_qty as convertQty,
 		bas_sku.convert_unit as convertUnit,	
-		bas_sku.is_vip_appoint as isVipAppoint
+		bas_sku.is_vip_appoint as isVipAppoint,
+		bas_sku.is_channel_appoint as isChannelAppoint
 	from bus_rul_sku rul_sku
 	LEFT JOIN bus_rul_shop rul_shop on rul_shop.rul_id = rul_sku.rul_id
 	LEFT JOIN bus_inv_sku inv_sku on rul_shop.shop_id = inv_sku.shop_id and rul_sku.sku = inv_sku.sku

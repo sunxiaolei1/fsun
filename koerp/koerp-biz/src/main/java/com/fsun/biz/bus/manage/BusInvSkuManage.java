@@ -69,6 +69,7 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 				map.put("convertQty", invSkuDto.getConvertQty());
 				map.put("convertUnit", invSkuDto.getConvertUnit());
 				map.put("isVipAppoint", invSkuDto.getIsVipAppoint());
+				map.put("isChannelAppoint", invSkuDto.getIsChannelAppoint());
 				map.put("costPrice", invSkuDto.getCostPrice());
 				map.put("marketPrice", invSkuDto.getMarketPrice());
 				map.put("originSalePrice", invSkuDto.getSalePrice());
@@ -182,7 +183,7 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 	 */
 	private BigDecimal getSalePriceByCustomer(BusCustomer busCustomer, InvSkuDto invSkuDto, BusVipCondition busVipCondition){
 		BigDecimal realSalePrice = null;		
-		//内供价
+		//餐饮价
 		BigDecimal supplyPrice = invSkuDto.getSupplyPrice();		
 		//分销价
 		BigDecimal marketPrice = invSkuDto.getMarketPrice();
@@ -192,11 +193,21 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 		BigDecimal vipPrice = invSkuDto.getVipPrice();	
 		//是否是外部会员指定vip价商品
 		boolean isVipAppoint = invSkuDto.getIsVipAppoint();
+		//是否是渠道指定价商品
+		boolean isChannelAppoint = invSkuDto.getIsChannelAppoint();
 		
 		if(busCustomer!=null){
 			switch (CustomerTypeEnum.getByCode(busCustomer.getCustomerType())) {
 				case NG:	
 					realSalePrice = supplyPrice;
+					break;
+				case LT:	
+					//商品指定渠道
+					if(isChannelAppoint){
+						realSalePrice = marketPrice;
+					}else{
+						realSalePrice = vipPrice;
+					}
 					break;
 				case VIP:	
 					//会员卡类型

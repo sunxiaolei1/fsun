@@ -14,6 +14,7 @@ public enum PayModeEnum {
 	CASH_PAY((short)2, "现金"),
 	ALI_PAY((short)3, "支付宝"),
 	WECHAT_PAY((short)4, "微信"),
+	OTHER((short)5, "其他"),
 	UNPAY((short)6, "挂账"),
 	VIP_PAY((short)7, "会员卡"),
 	DISCOUNT((short)100, "活动优惠"),

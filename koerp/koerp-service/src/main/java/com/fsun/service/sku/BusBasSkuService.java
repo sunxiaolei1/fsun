@@ -105,6 +105,7 @@ public class BusBasSkuService implements BusBasSkuApi {
 			busBasSku.setMemo(domain.getMemo());
 			busBasSku.setDescr(domain.getDescr());
 			busBasSku.setIsVipAppoint(domain.getIsVipAppoint());
+			busBasSku.setIsChannelAppoint(domain.getIsChannelAppoint());
 			busBasSku.setSortCode(domain.getSortCode());
 			busBasSku.setUpdatedId(currentUser.getId());
 			busBasSku.setUpdatedTime(now);
