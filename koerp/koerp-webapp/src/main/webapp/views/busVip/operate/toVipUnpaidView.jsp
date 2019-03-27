@@ -56,7 +56,7 @@ var vipUnpaidColumns = [[
 	{field:'unpaidId',checkbox:true},
 	{field:"shopName",title:"交易门店", width:120,align:"center"},
 	{field:"payMode",title:"支付方式", width:80,align:"center", formatter:function(value, row){
-		return formatter(value, window.parent.vipUnpaidPayMode); 
+		return formatter(value, window.parent.payMode); 
 	}},
 	{field:"tradeType",title:"交易类型", width:80,align:"center",sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeType); 

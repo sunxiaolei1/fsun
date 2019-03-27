@@ -104,7 +104,16 @@ function initOrderPagePublicInfo(LODOP, docOrderDto){
 	//LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 	
 	var now = new Date();
- 	LODOP.ADD_PRINT_HTM(14,"3%","50%",14,"打印时间："+now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate());
+ 	LODOP.ADD_PRINT_HTM(14,"2%","50%",14,"打印时间："+now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate());
+	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
+	
+	var header = docOrderDto.header;
+	var orderType = formatter(header.orderType, parent.orderType);
+	var createManName = header.cashName;
+
+	LODOP.SET_PRINT_STYLE("FontSize",12);
+	LODOP.SET_PRINT_STYLE("Bold",1);
+	LODOP.ADD_PRINT_TEXT(40,"2%","50%",14, "制单人: "+ createManName);
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 
 	LODOP.ADD_PRINT_HTM(14,"80%","50%",14,"<font color='#0000ff'><span tdata='pageNO'>第##页</span>/<span tdata='pageCount'>共##页</span></font>");
@@ -113,7 +122,7 @@ function initOrderPagePublicInfo(LODOP, docOrderDto){
 
 	LODOP.SET_PRINT_STYLE("FontSize",19);
 	LODOP.SET_PRINT_STYLE("Bold",1);
-	LODOP.ADD_PRINT_TEXT(20,"28%","90%",20,'${applicationScope.companyName}销售单');
+	LODOP.ADD_PRINT_TEXT(20,"25%","90%",20,'${applicationScope.companyName}'+ orderType);
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 	
 	LODOP.SET_PRINT_STYLE("FontSize",13);
@@ -173,60 +182,38 @@ function createOneOrderPage(LODOP,docOrderDto,currRow, printType){
 /******************************************    创建送货单的表头信息     ************************************/
 function createTableOrderHead(div,header){
 	 var customerName = header.buyerName;
-	 var orderType = formatter(header.orderType, parent.orderType);
-	 var createManName = header.cashName;
 	 var address = header.address;
 	 var mobile = header.mobile;
 	 var receiveName = header.receiveName;
 	 
-/* 	 var orderPrice = header.orderPrice;
-	 var payPrice = header.payPrice;
-	 var dibPrice = header.dibPrice;	
-	 var discountPrice = numBaseFormat(orderPrice - (payPrice - dibPrice)); */
 	 var sellerNotes = header.sellerNotes;
 	 var carrierName =  header.carrierName;
 	 
 	 var tbody = $("#"+div);		 
      var tr=$("<tr></tr>");
      tr.appendTo(tbody);
-     var td = $("<td colspan='2' >客户名称：<input style='width:305px;' value='"
+     var td = $("<td>客户名称：<input style='width:400px;' value='"
 			+ (customerName != null ? customerName : "")
 			+ "' /></td>");	 
 	 td.appendTo(tr);	
-	 td = $("<td>单据类型：<span>"+ (orderType!=null?orderType:"") +"</span></td>");			 
-	 td.appendTo(tr);
-	 td = $("<td>制单人：<span>"+ (createManName!=null?createManName:"") +"</span></td>");			 
+	 td = $("<td>收  货  人：<input style='width:120px;' value='"+ (receiveName!=null?receiveName:"") +"' /></td>");			 
 	 td.appendTo(tr);	
 
 	 tr=$("<tr></tr>");
      tr.appendTo(tbody);
-     var td = $("<td colspan='2' >收货地址：<input style='width:305px;' value='"
+     var td = $("<td >收货地址：<input style='width:400px;' value='"
  			+ (address != null ? address : "")
  			+ "' /></td>");				 
 	 td.appendTo(tr);	
-	 td = $("<td>联系方式：<span>"+ (mobile!=null?mobile:"") +"</span></td>");			 
-	 td.appendTo(tr);
-	 td = $("<td>收货人：<span>"+ (receiveName!=null?receiveName:"") +"</span></td>");			 
-	 td.appendTo(tr);
-
-	 /* tr=$("<tr></tr>");
-     tr.appendTo(tbody);
-     td = $("<td>订单金额：<span>"+ (orderPrice!=null?orderPrice:"") +"</span></td>");			 
-	 td.appendTo(tr);
-	 td = $("<td>商家优惠：<span>"+ (discountPrice!=null?discountPrice:"") +"</span></td>");			 
-	 td.appendTo(tr);
-     td = $("<td>实付金额：<span>"+ (payPrice!=null?payPrice:"") +"</span></td>");			 
+	 td = $("<td>联系方式：<input style='width:120px;' value='"+ (mobile!=null?mobile:"") +"' /></td>");			 
 	 td.appendTo(tr);	
-	 td = $("<td>找零金额：<span>"+ (dibPrice!=null?dibPrice:"") +"</span></td>");			 
-	 td.appendTo(tr);	 */ 
-	
-	 	 
+		 	 
 	 tr = $("<tr></tr>");
 	 tr.appendTo(tbody);	
-	 td = $("<td colspan='3' >注意事项：<input style='width:480px;' value='"
+	 td = $("<td>注意事项：<input style='width:400px;' value='"
 			+ ((sellerNotes != null && sellerNotes.length > 0) ? sellerNotes: '暂无') + "' /></td>");
 	 td.appendTo(tr);
-	 td = $("<td>经办人：<span>"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
+	 td = $("<td>经  办  人：<input style='width:120px;' value='"+ (carrierName!=null?carrierName:"") +"' /></td>");			 
 	 td.appendTo(tr);
 	 
 }
