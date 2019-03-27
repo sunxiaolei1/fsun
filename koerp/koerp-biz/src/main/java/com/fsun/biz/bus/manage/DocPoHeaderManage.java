@@ -108,8 +108,15 @@ public class DocPoHeaderManage extends CrudManage<DocPoHeaderMapper, DocPoHeader
 				DocPoHeader poHeader = new DocPoHeader();
 				poHeader.setPoNo(poNo);
 				poHeader.setUpdatedName(header.getUpdatedName());
-				poHeader.setUpdatedTime(header.getUpdatedTime());
+				poHeader.setUpdatedTime(header.getUpdatedTime());				
+				//审核信息
 				poHeader.setPoStatus(DocPoStatusEnum.AUDIT_PASS.getCode());
+				poHeader.setAuditTime(now);
+				poHeader.setAuditorId(header.getiId());
+				poHeader.setAuditor(header.getUpdatedName());
+				poHeader.setRelationNo(header.getOrderNo());
+				poHeader.setDeliveryTime(header.getDeliveryTime());
+				poHeader.setExpectedTime(header.getExpectedTime());
 				mapper.updateByPrimaryKeySelective(poHeader);
 			}
 		}

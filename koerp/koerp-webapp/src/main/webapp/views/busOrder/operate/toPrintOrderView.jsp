@@ -224,7 +224,7 @@ function createTableOrderHead(div,header){
 	 tr = $("<tr></tr>");
 	 tr.appendTo(tbody);	
 	 td = $("<td colspan='3' >注意事项：<input style='width:480px;' value='"
-			+ ((sellerNotes != null && sellerNotes > 0) ? sellerNotes: '暂无') + "' /></td>");
+			+ ((sellerNotes != null && sellerNotes.length > 0) ? sellerNotes: '暂无') + "' /></td>");
 	 td.appendTo(tr);
 	 td = $("<td>经办人：<span>"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
 	 td.appendTo(tr);

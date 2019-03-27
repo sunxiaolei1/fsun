@@ -238,6 +238,26 @@ public class DocPoHeaderCondition extends BaseOrderCondition{
      */
     List<String> inPoNos;
     
+    /**
+     * 审核人id
+     */
+    private String auditorId;
+    
+    /**
+     * 审核人
+     */
+    private String auditor;
+    
+    /**
+     * 关联单号
+     */
+    private String relationNo;
+
+    /**
+     * 发货时间
+     */
+    private Date deliveryTime;
+    
     public String getPoNo() {
         return poNo;
     }
@@ -558,6 +578,44 @@ public class DocPoHeaderCondition extends BaseOrderCondition{
 
 	public void setInPoNos(List<String> inPoNos) {
 		this.inPoNos = inPoNos;
+	}
+
+	public String getAuditor() {
+		return auditor;
+	}
+
+	public void setAuditor(String auditor) {
+		this.auditor = auditor;
+	}
+
+	public String getRelationNo() {
+		return relationNo;
+	}
+
+	public void setRelationNo(String relationNo) {
+		this.relationNo = relationNo;
+	}
+
+	public Date getDeliveryTime() {
+		return deliveryTime;
+	}
+
+	public void setDeliveryTime(Date deliveryTime) {
+		this.deliveryTime = deliveryTime;
+	}
+
+	/**
+	 * @return the auditorId
+	 */
+	public String getAuditorId() {
+		return auditorId;
+	}
+
+	/**
+	 * @param auditorId the auditorId to set
+	 */
+	public void setAuditorId(String auditorId) {
+		this.auditorId = auditorId;
 	}
     
 }

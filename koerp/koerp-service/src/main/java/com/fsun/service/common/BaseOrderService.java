@@ -11,6 +11,7 @@ import com.fsun.biz.bus.manage.BusInvSkuManage;
 import com.fsun.common.utils.DateUtil;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.domain.dto.BusUserDto;
+import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.DocTradeStatusEnum;
 import com.fsun.domain.enums.DocTradeTypeEnum;
@@ -226,7 +227,7 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
     	busInvSkuDetails.setTradeStatus(orderHeader.getOrderStatus());
     	busInvSkuDetails.setTradeTime(orderHeader.getDeliveryTime());
     	busInvSkuDetails.setTradeType(orderHeader.getOrderType());
-    	//busInvSkuDetails.setTradeRelationNo(tradeRelnullationNo);   	
+    	
     	busInvSkuDetails.setCreatedTime(new Date());
     	//交易商品明细
     	busInvSkuDetails.setDamagedQty(BigDecimal.ZERO);
@@ -238,6 +239,12 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
     	busInvSkuDetails.setTradeLineNo(docOrderDetails.getLineNo());
     	busInvSkuDetails.setTradeOrderDetailId(docOrderDetails.getSoDetailId());    	
     	busInvSkuDetails.setUnit(docOrderDetails.getUnit());
+    	//调拨单出库单关联调拨明细对应的申请单号,采购退货对应采购申请单
+    	String orderType = orderHeader.getOrderType();  	
+    	if(DocOrderTypeEnum.ALLOT_SO.getCode().equals(orderType) 
+    		|| DocOrderTypeEnum.PURCHASE_SO.getCode().equals(orderType)){
+    		busInvSkuDetails.setTradeRelationNo(docOrderDetails.getUserDefine1()); 
+    	} 	
     	return busInvSkuDetails;
 	}
     
@@ -328,7 +335,6 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
     	busInvSkuDetails.setTradeStatus(asnHeader.getAsnStatus());
     	busInvSkuDetails.setTradeTime(asnHeader.getReceivingTime());
     	busInvSkuDetails.setTradeType(asnHeader.getAsnType());
-    	//busInvSkuDetails.setTradeRelationNo(tradeRelnullationNo);   	
     	busInvSkuDetails.setCreatedTime(new Date());
     	//交易商品明细
     	busInvSkuDetails.setDamagedQty(docAsnDetails.getDamagedQty());
@@ -340,6 +346,15 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
     	busInvSkuDetails.setTradeLineNo(docAsnDetails.getLineNo());
     	busInvSkuDetails.setTradeOrderDetailId(docAsnDetails.getAsnDetailId());    	
     	busInvSkuDetails.setUnit(docAsnDetails.getUnit());
+    	
+    	//入库单类型是调拨入库、调退入库及销退入库则取出库单号, 否则取外部单号
+    	busInvSkuDetails.setTradeRelationNo(asnHeader.getExtOrderNo());
+    	String asnType = asnHeader.getAsnType();    	
+    	if(DocAsnTypeEnum.ALLOT_REFUND_SI.getCode().equals(asnType) 
+    		|| DocAsnTypeEnum.ALLOT_SI.getCode().equals(asnType)
+    			|| DocAsnTypeEnum.BACK_SI.getCode().equals(asnType)){
+    		busInvSkuDetails.setTradeRelationNo(asnHeader.getOrderNo());
+    	}    	
     	return busInvSkuDetails;
     }
 

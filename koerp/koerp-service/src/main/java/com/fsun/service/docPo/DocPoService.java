@@ -115,6 +115,9 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 				if(!user.getShopId().equals(fromShopId)){
 					throw new DocPoException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
 				}
+				header.setAuditor(user.getRealname());
+				header.setAuditorId(user.getId());
+				header.setAuditTime(now);
 			}else if(status.equals(DocPoStatusEnum.CANCEL.getCode())){
 				if(!user.getShopId().equals(toShopId)){
 					throw new DocPoException(SCMErrorEnum.BUS_SHOP_ILLEGAL);

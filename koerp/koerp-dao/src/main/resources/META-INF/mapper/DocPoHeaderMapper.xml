@@ -37,14 +37,18 @@
     <result column="created_name" property="createdName" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_name" property="updatedName" jdbcType="VARCHAR" />
-    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />      
+    <result column="auditor_id" property="auditorId" jdbcType="VARCHAR" />
+    <result column="auditor" property="auditor" jdbcType="VARCHAR" />
+    <result column="relation_no" property="relationNo" jdbcType="VARCHAR" />
+    <result column="delivery_time" property="deliveryTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
     po_no, print_count, po_type, po_status, po_source, to_shop_id, to_shop_name, from_shop_id, from_shop_name, 
     order_price, expected_time, user_define1, user_define2, user_define3, memo, descr, 
     i_shop_id, i_id, i_name, i_address, i_zip_code, i_contact, i_tel, supplier_id, supplier_name, 
     supplier_address, supplier_zip_code, supplier_contact, supplier_tel, volume, receiving_time, 
-    audit_time, created_name, created_time, updated_name, updated_time
+    audit_time, created_name, created_time, updated_name, updated_time, auditor_id, auditor, relation_no, delivery_time
   </sql>
   
   <sql id="conditions">
@@ -156,7 +160,11 @@
     <result column="o_created_name" property="createdName"/>  
     <result column="o_created_time" property="createdTime"/> 
     <result column="o_updated_name" property="updatedName"/>  
-    <result column="o_updated_time" property="updatedTime"/>  
+    <result column="o_updated_time" property="updatedTime"/>   
+    <result column="o_auditor_id" property="auditorId"/>
+    <result column="o_auditor" property="auditor"/>
+    <result column="o_relation_no" property="relationNo"/>
+    <result column="o_delivery_time" property="deliveryTime"/>
   </resultMap>
   
   <resultMap id="DefinedResultMap" type="java.util.Map"> 	
@@ -238,7 +246,11 @@
 		o.created_name as o_created_name,	
 		o.created_time as o_created_time,		
 		o.updated_name as o_updated_name,	
-		o.updated_time as o_updated_time,		
+		o.updated_time as o_updated_time,
+		o.auditor_id as o_auditor_id,	
+		o.auditor as o_auditor,
+		o.relation_no as o_relation_no,
+		o.delivery_time as o_delivery_time,
 		d.po_detail_id as d_po_detail_id,
 		d.po_no as d_po_no,
 		d.line_no as d_line_no,
@@ -310,7 +322,7 @@
       supplier_address, supplier_zip_code, supplier_contact, 
       supplier_tel, volume, receiving_time, audit_time,
       created_name, created_time, updated_name, 
-      updated_time)
+      updated_time, auditor_id, auditor, relation_no, delivery_time)
     values (#{poNo,jdbcType=VARCHAR}, #{printCount,jdbcType=INTEGER}, #{poType,jdbcType=CHAR}, #{poStatus,jdbcType=CHAR}, 
       #{poSource,jdbcType=CHAR}, #{toShopId,jdbcType=VARCHAR}, #{toShopName,jdbcType=VARCHAR}, 
       #{fromShopId,jdbcType=VARCHAR}, #{fromShopName,jdbcType=VARCHAR}, #{orderPrice,jdbcType=DECIMAL}, 
@@ -321,8 +333,9 @@
       #{iTel,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, 
       #{supplierAddress,jdbcType=VARCHAR}, #{supplierZipCode,jdbcType=VARCHAR}, #{supplierContact,jdbcType=VARCHAR}, 
       #{supplierTel,jdbcType=VARCHAR}, #{volume,jdbcType=DECIMAL}, #{receivingTime,jdbcType=TIMESTAMP}, 
-      #{auditTime,jdbcType=TIMESTAMP},#{createdName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
-      #{updatedName,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP})
+      #{auditTime,jdbcType=TIMESTAMP}, #{createdName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedName,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, #{auditorId,jdbcType=VARCHAR},
+      #{auditor,jdbcType=VARCHAR}, #{relationNo,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.DocPoHeader" >
     insert into doc_po_header
@@ -435,6 +448,18 @@
       <if test="updatedTime != null" >
         updated_time,
       </if>
+      <if test="auditorId != null" >
+        auditor_id,
+      </if>
+      <if test="auditor != null" >
+        auditor,
+      </if>
+      <if test="relationNo != null" >
+        relation_no,
+      </if>
+      <if test="deliveryTime != null" >
+        delivery_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="poNo != null" >
@@ -544,6 +569,18 @@
       </if>
       <if test="updatedTime != null" >
         #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditorId != null" >
+        #{auditorId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditor != null" >
+        #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="relationNo != null" >
+        #{relationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryTime != null" >
+        #{deliveryTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -655,6 +692,18 @@
       <if test="updatedTime != null" >
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="auditorId != null" >
+        auditor_id = #{auditorId,jdbcType=VARCHAR},
+      </if>     
+      <if test="auditor != null" >
+        auditor = #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="relationNo != null" >
+        relation_no = #{relationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryTime != null" >
+        delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where po_no = #{poNo,jdbcType=VARCHAR}
   </update>
@@ -694,7 +743,11 @@
       created_name = #{createdName,jdbcType=VARCHAR},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_name = #{updatedName,jdbcType=VARCHAR},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      auditor_id = #{auditorId,jdbcType=VARCHAR},
+      auditor = #{auditor,jdbcType=VARCHAR},
+      relation_no = #{relationNo,jdbcType=VARCHAR},
+      delivery_time = #{deliveryTime,jdbcType=TIMESTAMP}
     where po_no = #{poNo,jdbcType=VARCHAR}
   </update>
 </mapper>

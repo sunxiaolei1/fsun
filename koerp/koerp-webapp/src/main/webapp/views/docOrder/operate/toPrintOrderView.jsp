@@ -233,7 +233,7 @@ function createTableOrderHead(div,header){
 	 tr = $("<tr></tr>");
 	 tr.appendTo(tbody);
 	 td = $("<td colspan='4' >备注：<input style='width:600px;' value='"
-			+ ((memo != null && memo > 0) ? memo: '暂无') + "' /></td>");
+			+ ((memo != null && memo.length > 0) ? memo: '暂无') + "' /></td>");
 	 td.appendTo(tr);
 	 
 }

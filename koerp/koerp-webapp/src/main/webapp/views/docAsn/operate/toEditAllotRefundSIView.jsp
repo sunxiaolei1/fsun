@@ -112,9 +112,17 @@ var siColumns = [[
 	    },
 	    formatter:intNumBaseFormat
 	},
-	{field:"receiveQty",title:"调退数量", width:80,align:"center",
+	{field:"rejectedQty",title:"调退数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){			
 			return 'font-weight:bold;color:red;';	
+	    },
+	    formatter:function(value, row){
+	    	return intNumBaseFormat(row.receiveQty);
+	    }
+	},
+	{field:"receiveQty",title:"收货数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){			
+			return 'font-weight:bold;color:green;';	
 	    },
 	    formatter:intNumBaseFormat
 	}

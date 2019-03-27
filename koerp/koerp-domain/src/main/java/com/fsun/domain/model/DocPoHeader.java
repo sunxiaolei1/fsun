@@ -71,7 +71,7 @@ public class DocPoHeader {
     private Date expectedTime;
 
     /**
-     * 用户自定义1
+     * 用户自定义1(出库单号)
      * 表字段 : doc_po_header.user_define1
      */
     private String userDefine1;
@@ -219,7 +219,27 @@ public class DocPoHeader {
      * 表字段 : doc_po_header.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 审核人id
+     */
+    private String auditorId;
+    
+    /**
+     * 审核人
+     */
+    private String auditor;
+    
+    /**
+     * 关联单号
+     */
+    private String relationNo;
 
+    /**
+     * 发货时间
+     */
+    private Date deliveryTime;
+    
     public String getPoNo() {
         return poNo;
     }
@@ -520,5 +540,42 @@ public class DocPoHeader {
 		this.printCount = printCount;
 	}
 
-	
+	public String getAuditor() {
+		return auditor;
+	}
+
+	public void setAuditor(String auditor) {
+		this.auditor = auditor;
+	}
+
+	public String getRelationNo() {
+		return relationNo;
+	}
+
+	public void setRelationNo(String relationNo) {
+		this.relationNo = relationNo;
+	}
+
+	public Date getDeliveryTime() {
+		return deliveryTime;
+	}
+
+	public void setDeliveryTime(Date deliveryTime) {
+		this.deliveryTime = deliveryTime;
+	}
+
+	/**
+	 * @return the auditorId
+	 */
+	public String getAuditorId() {
+		return auditorId;
+	}
+
+	/**
+	 * @param auditorId the auditorId to set
+	 */
+	public void setAuditorId(String auditorId) {
+		this.auditorId = auditorId;
+	}
+
 }
