@@ -398,13 +398,13 @@ function initAddSku(rowData){
 	skuDto.isGift = false; 
 	skuDto.giftCount = 0; 
 	skuDto.giftPrice = 0; 
-	skuDto.qty = 1; 
+	skuDto.qty = rowData.qty; 
 	skuDto.unit = rowData.unit;
 	skuDto.costPrice = rowData.costPrice;
 	skuDto.marketPrice = rowData.marketPrice;
 	skuDto.originSalePrice = rowData.originSalePrice;
 	skuDto.salePrice = rowData.salePrice;
-	skuDto.totalPrice = skuDto.salePrice * (skuDto.qty - skuDto.giftCount);
+	skuDto.totalPrice = skuDto.salePrice * (skuDto.qty-skuDto.giftCount);
 	skuDto.couponPrice = skuDto.giftPrice + (skuDto.qty-skuDto.giftCount)*(skuDto.originSalePrice-skuDto.salePrice);
 	skuDto.totalPartPrice = skuDto.totalPrice;
 		

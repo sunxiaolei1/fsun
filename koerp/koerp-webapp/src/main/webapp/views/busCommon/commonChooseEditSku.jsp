@@ -230,6 +230,11 @@ function querySku() {
  */
 function delSkuOne(rowIndex){
 	
+	if (!currDatagrid.datagrid("isValid")){
+		$.messager.alert("错误", "编辑行的数据不正确!", "error");  
+		return null;
+	}
+	
 	var rowData = currDatagrid.datagrid("getRows")[rowIndex];					
 	for(var i in currCheckedSkus) {	
 		if(existSku(currCheckedSkus[i], rowData.sku)) {
