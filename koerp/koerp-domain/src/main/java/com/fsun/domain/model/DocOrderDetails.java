@@ -95,7 +95,7 @@ public class DocOrderDetails {
     private String userDefine1;
 
     /**
-     * 用户自定义2
+     * 用户自定义2(用于记录原入库单对应的商品明细主键)
      * 表字段 : doc_order_details.user_define2
      */
     private String userDefine2;

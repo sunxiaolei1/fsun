@@ -169,6 +169,27 @@ $(function () {
      
 });
 
+
+/**
+ * 创建退货单
+ */
+function toCreateAsnRefundView(){
+	var asnNo = $("#asnNo", $orderfm).textbox("getValue");
+	var rows = currOrderDetailDataGrid.datagrid("getSelections");
+	if(rows.length==0){
+		$.messager.alert("提示", "请勾选要退货的商品", "info");
+		return;
+	}
+	var asnDetailIds = [];
+	$.each(rows, function(){
+		asnDetailIds.push(this.asnDetailId);
+	});
+	var url = "${api}/doc/asn/refund/toAddView/" + asnNo+"?asnDetailIds="+ asnDetailIds.join(",");
+	var icon = "icon-book_add";
+	var subtitle = "创建退货单";
+	parent.addTab(subtitle, url, icon);	
+}
+
 /******************************    供选择商品的子页面使用      ********************************/
 
 
@@ -181,7 +202,7 @@ function initAddSku(rowData){
 	skuDto.goodsName = rowData.goodsName;
 	skuDto.sku = rowData.sku; 
 	skuDto.property = rowData.property;
-	skuDto.receiveQty = 1; 
+	skuDto.receiveQty = rowData.qty;  
 	skuDto.damagedQty = 0; 
 	skuDto.rejectedQty = 0; 
 	skuDto.unit = rowData.unit;

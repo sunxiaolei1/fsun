@@ -8,14 +8,18 @@
 %>
 
 <!-- 查询条件 -->
-<%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
+<%@include file="../../addtoolbar.jsp"%>
 	
 <div class="fsun-wrap">
 	<form id="orderfm">
 		<span class="title" style="top: 35px;">单据基本信息</span>		
 		<input id="iId" name="iId" hidden="true" />	
+		<input id="supplierId" name="supplierId" hidden="true" />
+		<input id="supplierAddress" name="supplierAddress" hidden="true" />
+		<input id="supplierContact" name="supplierContact" hidden="true" />
+		<input id="supplierTel" name="supplierTel" hidden="true" />
 		<input id="fromShopId" name="fromShopId" hidden="true" />	
-		<input id="orderPrice" name="orderPrice" hidden="true" />	
+		<input id="orderPrice" name="orderPrice" hidden="true" />			
 		<table class="nb-formTable" style="width:100%;margin-top:2px;">
 	        <tr>
 	            <th width="12%">单据编号<span style="color:red;">*</span></th>
@@ -24,18 +28,45 @@
 				</td>
 				<th width="12%">单据类型<span style="color:red;">*</span></th>
 				<td>
-					<input id="orderType" name="orderType" class="easyui-combobox" readOnly required/>								
-				</td>					
+					<input id="orderType" name="orderType" class="easyui-combobox" required readOnly />								
+				</td>
 				<th width="12%">出库店仓<span style="color:red;">*</span></th>
-				<td colspan="3" >
-					<input id="fromShopName" name="fromShopName" class="easyui-textbox" style="width:256px;" readOnly />								
-				</td>								
-	        </tr>		               		
+				<td>
+					<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly />								
+				</td>
+				<th width="12%">入库单号</th>
+				<td >
+					<input id="userDefine1" name="userDefine1" class="easyui-textbox" readOnly />								
+				</td>																
+	        </tr>	
+	        <tr>  
+	        	<th width="12%">出库时间</th>
+				<td>
+					<input id="deliveryTime" name="deliveryTime" class="easyui-datetimebox" editable=false />							
+				</td>          
+				<th width="12%">供应商</th>
+				<td>
+					<input id="supplierName" name="supplierName" class="easyui-textbox" readOnly />							
+				</td>					
+				<th width="12%">收货人</th>
+				<td>
+					<input id="contacts" name="contacts" class="easyui-textbox" />								
+				</td>
+	        	<th width="12%">联系方式</th>
+				<td>
+					<input id="mobile" name="mobile" class="easyui-textbox" />								
+				</td>	        									
+	        </tr>
 	        <tr>
+				<th width="12%">收货地址</th>
+				<td colspan="3">
+					<input id="address" name="address" class="easyui-textbox" 
+						data-options="multiline:true"  style="width:400px;height:46px;" />
+				</td>
 	        	<th width="12%">备注</th>
-				<td colspan="7">
+				<td colspan="3">
 					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:800px;height:50px;" />
+						class="easyui-textbox" style="width:400px;height:46px;" />
 				</td>	        	
 	        </tr>
 		</table>
@@ -57,8 +88,8 @@
 <script type="text/javascript">
 
 var currDetailData = []; 
-var currOrderDetailDataGrid = $("#orderDetailDataGrid");
-var $orderfm = $("#orderfm");   
+var currOrderDetailDataGrid  = $("#orderDetailDataGrid");
+var $orderfm = $("#orderfm");
 var soColumns = [[
 	{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
@@ -73,7 +104,13 @@ var soColumns = [[
 	{field:'property',title:'规格',width:120,align:'center',sortable:true},
 	//{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"price",title:"单价", width:80,align:"center",formatter:numBaseFormat},
-	{field:"shippedQty",title:"数量", width:80,align:"center",
+	{field:"orderedQty",title:"采购数量", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:intNumBaseFormat
+	},
+	{field:"shippedQty",title:"退货数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },
@@ -97,7 +134,6 @@ var soColumns = [[
 	}
 ]];
 
-
 $(function () { 
 	
 	$('#orderType', $orderfm).combobox({  
@@ -112,10 +148,10 @@ $(function () {
 	
 	$.ajax({
 		type : "GET",
-		url : "${api}/doc/order/getInitData",
+		url : "${api}/doc/order/purchaseSo/getInitData",
 		data:{
-			"orderNo":"${orderNo}",
-			"orderType": "${orderType}"
+			"asnNo": "${asnNo}",
+			"asnDetailIds": "${asnDetailIds}"
 		},
 		contentType:"application/json;charset=utf-8",	   
 		dataType : "json",
@@ -143,8 +179,6 @@ $(function () {
      
 });
 
-
-
 /******************************    供选择商品的子页面使用      ********************************/
 
 
@@ -157,13 +191,15 @@ function initAddSku(rowData){
 	skuDto.goodsName = rowData.goodsName;
 	skuDto.sku = rowData.sku; 
 	skuDto.property = rowData.property;
-	skuDto.shippedQty = rowData.qty; 
-	skuDto.orderedQty = rowData.qty; 
+	skuDto.receiveQty = rowData.qty; 
+	skuDto.damagedQty = 0; 
+	skuDto.rejectedQty = 0; 
 	skuDto.unit = rowData.unit;
 	skuDto.costPrice = rowData.costPrice;
 	skuDto.price = rowData.salePrice;
-	skuDto.totalPrice = rowData.salePrice * skuDto.shippedQty;
-		
+	skuDto.totalPrice = rowData.salePrice * skuDto.receiveQty;
+	
+	
 	skuDto.barCode = rowData.barCode;  
 	skuDto.categoryCode = rowData.categoryCode;  
 	skuDto.categoryName = formatter(rowData.categoryCode, window.parent.categoryCode); 

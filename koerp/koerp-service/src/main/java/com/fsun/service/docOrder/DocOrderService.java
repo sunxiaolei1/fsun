@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.DocOrderApi;
 import com.fsun.biz.bus.manage.BusShopManage;
+import com.fsun.biz.bus.manage.DocAsnDetailsManage;
 import com.fsun.biz.bus.manage.DocAsnHeaderManage;
 import com.fsun.biz.bus.manage.DocOrderDetailsManage;
 import com.fsun.biz.bus.manage.DocOrderHeaderManage;
@@ -25,6 +26,7 @@ import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
+import com.fsun.domain.entity.DocAsnDetailsCondition;
 import com.fsun.domain.entity.DocOrderDetailsCondition;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
 import com.fsun.domain.entity.DocOrderInitCondition;
@@ -35,6 +37,7 @@ import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.TradeFromEnum;
 import com.fsun.domain.model.BusShop;
+import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocOrderDetails;
 import com.fsun.domain.model.DocOrderHeader;
@@ -69,6 +72,9 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 	private DocAsnHeaderManage docAsnHeaderManage;
 	
 	@Autowired
+	private DocAsnDetailsManage docAsnDetailsManage;
+	
+	@Autowired
 	private BusShopManage busShopManage;
 
 	
@@ -98,6 +104,58 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 			map = docOrderHeaderManage.loadEntity(orderNo);
 		}
 		return map;
+	}
+	
+	@Override
+	public DocOrderDto getPurchaseSoInitData(DocOrderInitCondition condition, 
+		BusUserDto currUser) {
+		
+		DocOrderDto docOrderDto = new DocOrderDto();
+		//初始化头信息	
+		DocOrderHeader header = new DocOrderHeader();
+		String asnNo = condition.getAsnNo();
+		DocAsnHeader docAsnHeader = docAsnHeaderManage.load(asnNo);
+		String orderNo = docOrderHeaderManage.initOrderNo(DocOrderTypeEnum.PURCHASE_SO.getCode(),
+				currUser.getShopCode());
+		header.setOrderNo(orderNo);
+		header.setOrderType(DocOrderTypeEnum.PURCHASE_SO.getCode());
+		header.setDeliveryTime(new Date());
+		header.setSupplierId(docAsnHeader.getSupplierId());
+		header.setSupplierName(docAsnHeader.getSupplierName());
+		header.setSupplierAddress(docAsnHeader.getSupplierAddress());
+		header.setSupplierContact(docAsnHeader.getSupplierContact());
+		header.setSupplierTel(docAsnHeader.getSupplierTel());	
+		header.setAddress(docAsnHeader.getSupplierAddress());
+		header.setContacts(docAsnHeader.getSupplierContact());
+		header.setMobile(docAsnHeader.getSupplierTel());
+		header.setFromShopId(docAsnHeader.getToShopId());
+		header.setFromShopName(docAsnHeader.getToShopName());
+		header.setUserDefine1(docAsnHeader.getAsnNo());
+		header.setPoNo(docAsnHeader.getPoNo());
+		docOrderDto.setHeader(header);
+		//初始化明细信息
+		List<DocOrderDetails> details = new ArrayList<>();
+		DocAsnDetailsCondition condition0 = new DocAsnDetailsCondition();
+		condition0.setAsnNo(asnNo);
+		List<DocAsnDetails> list = docAsnDetailsManage.list(condition0);
+		String asnDetailIds = condition.getAsnDetailIds();
+		for (DocAsnDetails docAsnDetails : list) {
+			if(asnDetailIds.contains(docAsnDetails.getAsnDetailId())){
+				DocOrderDetails docOrderDetails = new DocOrderDetails();
+				BeanUtils.copyProperties(docAsnDetails, docOrderDetails);
+				docOrderDetails.setUserDefine2(docAsnDetails.getAsnDetailId());
+				docOrderDetails.setUpdatedTime(null);
+				docOrderDetails.setOrderNo(orderNo);
+				docOrderDetails.setOrderedQty(docAsnDetails.getReceiveQty());
+				docOrderDetails.setShippedQty(docAsnDetails.getReceiveQty());
+				docOrderDetails.setReceiveQty(BigDecimal.ZERO);			
+				docOrderDetails.setPickedQty(BigDecimal.ZERO);
+				docOrderDetails.setSubQty(BigDecimal.ZERO);
+				details.add(docOrderDetails);
+			}			
+		}
+		docOrderDto.setDetails(details);
+		return docOrderDto;
 	}
 
 	@Override

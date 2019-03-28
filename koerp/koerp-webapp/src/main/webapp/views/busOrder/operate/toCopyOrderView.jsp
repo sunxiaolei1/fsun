@@ -480,7 +480,7 @@ function initAddSku(rowData){
 	skuDto.isGift = false; 
 	skuDto.giftCount = 0; 
 	skuDto.giftPrice = 0; 
-	skuDto.qty = 1; 
+	skuDto.qty = rowData.qty; 
 	skuDto.unit = rowData.unit;
 	skuDto.costPrice = rowData.costPrice;
 	skuDto.marketPrice = rowData.marketPrice;

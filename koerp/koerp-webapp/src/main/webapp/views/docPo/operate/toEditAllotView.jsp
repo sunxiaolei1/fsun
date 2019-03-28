@@ -198,7 +198,7 @@ function initAddSku(rowData){
 	skuDto.property = rowData.property;
 	skuDto.expectedQty = 0;
 	skuDto.receiveQty = 0;
-	skuDto.orderedQty = 1; 
+	skuDto.orderedQty = rowData.qty; 
 	skuDto.unit = rowData.unit;
 	skuDto.costPrice = rowData.costPrice;
 	skuDto.price = rowData.salePrice;

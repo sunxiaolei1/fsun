@@ -23,6 +23,7 @@ public enum OrderOperateButtonsEnum {
 	//入库单
 	CANCEL_DOC_ASN("docAsn_cancel","取消入库单"),
 	SIGN_DOC_ASN("docAsn_sign","签收入库"),
+	CREATE_ASN_REFUND("create_asn_refund","创建退货单"),
 	
 	
 	//出库单

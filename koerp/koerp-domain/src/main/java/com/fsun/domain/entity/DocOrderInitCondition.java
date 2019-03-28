@@ -16,6 +16,15 @@ public class DocOrderInitCondition {
 	private String poDetailIds;
 	
 	private String[] inPoDetailIds;
+	
+	
+	/**************************           采购退货参数                     ********************************/
+	
+	private String asnNo;
+	
+	private String asnDetailIds;
+	
+	private String[] inAsnDetailIds;
 
 	public String getOrderNo() {
 		return orderNo;
@@ -58,6 +67,33 @@ public class DocOrderInitCondition {
 
 	public void setInPoDetailIds(String[] inPoDetailIds) {
 		this.inPoDetailIds = inPoDetailIds;
+	}
+
+	public String getAsnNo() {
+		return asnNo;
+	}
+
+	public void setAsnNo(String asnNo) {
+		this.asnNo = asnNo;
+	}
+
+	public String getAsnDetailIds() {
+		return asnDetailIds;
+	}
+
+	public void setAsnDetailIds(String asnDetailIds) {
+		this.asnDetailIds = asnDetailIds;
+		if(asnDetailIds!=null && !asnDetailIds.equals("")){
+			this.inAsnDetailIds = asnDetailIds.split(",");
+		}
+	}
+
+	public String[] getInAsnDetailIds() {
+		return inAsnDetailIds;
+	}
+
+	public void setInAsnDetailIds(String[] inAsnDetailIds) {
+		this.inAsnDetailIds = inAsnDetailIds;
 	}
 	
 }

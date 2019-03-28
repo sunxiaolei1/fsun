@@ -290,6 +290,10 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 			case BACK_SI:					
 				break;
 			case SUNDRY_SI:					
+				header.setAsnType(asnType);
+				header.setiId(currUser.getId());
+				header.setToShopId(currUser.getShopId());
+				header.setToShopName(currUser.getShopName());
 				break;
 			default:
 				break;

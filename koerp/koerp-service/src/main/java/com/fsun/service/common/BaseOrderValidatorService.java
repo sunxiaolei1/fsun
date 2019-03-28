@@ -217,7 +217,7 @@ public abstract class BaseOrderValidatorService {
 		        	isEnable = true;        		
 		        }   
 	        	break;
-	        case CREATE_REFUND: 
+	        case CREATE_ASN_REFUND: 
 	        	if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
 	        		|| DocAsnStatusEnum.SI_WQSH.getCode().equals(asnStatus))
 	        			&& DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType)

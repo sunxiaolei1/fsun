@@ -185,8 +185,17 @@ public class DocAsnController extends BaseController {
 	}
 
 	
-	
-	
+	@RequestMapping("/refund/toAddView/{asnNo}")
+	public ModelAndView toRefundAddView(@PathVariable("asnNo") String asnNo,
+			@RequestParam("asnDetailIds") String asnDetailIds) {
+		String url = "/docOrder/operate/toAddPurchaseSoView";
+		ModelAndView modelAndView = new ModelAndView(url);		
+		modelAndView.addObject("asnNo", asnNo);	
+		modelAndView.addObject("asnDetailIds", asnDetailIds);	
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
+		return modelAndView;
+	}	
 	
 	
 	/****************************       私有方法            *************************************/
@@ -212,7 +221,8 @@ public class DocAsnController extends BaseController {
 						break;
 					case BACK_SI:			
 						break;
-					case SUNDRY_SI:			
+					case SUNDRY_SI:	
+						url = "/docAsn/operate/toAddOverSIView";
 						break;
 					case ALLOT_REFUND_SI:			
 						break;
@@ -233,7 +243,8 @@ public class DocAsnController extends BaseController {
 						break;
 					case BACK_SI:			
 						break;
-					case SUNDRY_SI:			
+					case SUNDRY_SI:	
+						url = "/docAsn/operate/toEditOverSIView";
 						break;
 					case ALLOT_REFUND_SI:
 						url = "/docAsn/operate/toEditAllotRefundSIView";

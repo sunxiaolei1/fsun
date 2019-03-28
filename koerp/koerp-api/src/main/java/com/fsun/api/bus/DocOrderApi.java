@@ -57,5 +57,14 @@ public interface DocOrderApi extends BaseApi<DocOrderHeader, DocOrderHeaderCondi
 	 * @return
 	 */
 	public String saveEntity(DocOrderDto docOrderDto);
+
+	/**
+	 * 初始化采购退货信息
+	 * @param condition
+	 * @param currUser
+	 * @return
+	 */
+	public DocOrderDto getPurchaseSoInitData(
+		DocOrderInitCondition condition, BusUserDto currUser);
 	
 }

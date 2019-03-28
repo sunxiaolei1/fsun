@@ -7,6 +7,7 @@
 %>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('22')">盘盈入库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('23')">采购入库</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('25')">杂收入库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>

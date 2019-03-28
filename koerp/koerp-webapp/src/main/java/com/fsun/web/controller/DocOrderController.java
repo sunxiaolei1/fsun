@@ -88,6 +88,19 @@ public class DocOrderController extends BaseController {
 		}
 	}
 	
+	@RequestMapping(value="/purchaseSo/getInitData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getPurchaseSoInitData(DocOrderInitCondition condition){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			DocOrderDto docOrderDto = docOrderApi.getPurchaseSoInitData(condition, currUser);
+			return success(docOrderDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
 	
 	@RequestMapping(value="/findPage", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
