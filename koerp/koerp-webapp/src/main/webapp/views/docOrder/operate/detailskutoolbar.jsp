@@ -60,7 +60,7 @@ function addSkuRow() {
         closable: true,
         collapsible: false,
         resizable: true,
-        onClose: function () {
+        onClose: function () {       	
             $(this).dialog("destroy");
         }
     });

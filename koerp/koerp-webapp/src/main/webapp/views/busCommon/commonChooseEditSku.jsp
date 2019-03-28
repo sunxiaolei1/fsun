@@ -91,9 +91,9 @@ $(function() {
 			{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
 				return formatter(value, window.parent.categoryCode); 
 			}},
-			{field: "property", title: "规格", width: 120, align: "center"},
-			{field: "qty", title: "数量", width: 60, align: "center"},
+			{field: "property", title: "规格", width: 120, align: "center"},			
 			{field: "salePrice", title: "单价", width: 60, align: "center",formatter:numBaseFormat},						
+			{field: "qty", title: "数量", width: 60, align: "center"},
 			{field:"unit",title:"单位", width:60,align:"center", formatter:function(value, row){
 				return formatter(value, window.parent.unitCode); 
 			}},
@@ -122,17 +122,66 @@ $(function() {
 				}
 			}
 		]],
+		onBeforeLoad:function(param){
+			var columnOption = $(this).datagrid("getColumnOption", "qty");
+    		columnOption.editor = {
+    			type:'numberbox',
+    			options:{					
+    				min:1,
+    				precision:0,
+    				required: true
+    			}
+    		};
+	    	columnOption.styler = function(value, rowData, rowIndex){
+    	    	return 'font-weight:bold;color:green;';
+    	    };
+	    	if('1' == '${hasEditPricePower}'){
+	    		var columnOption = $(this).datagrid("getColumnOption", "salePrice");
+	    		columnOption.editor = {
+	    			type:'numberbox',
+	    			options:{					
+	    				min:0,
+	    				precision:2,
+	    				required: true
+	    			}
+	    		};
+		    	columnOption.styler = function(value, rowData, rowIndex){
+	    	    	return 'font-weight:bold;color:green;';
+	    	    };
+	    	}else{
+	    		//领用出库单价显示
+	    		if('16'==currTradeType){
+	    			
+	    		}else{
+	    			$(this).datagrid("hideColumn", "salePrice");
+	    		}	    		
+	    	}    	
+	    },	
+	    onAfterEdit: function(rowIndex, rowData, changes){
+	    	$.each(currCheckedSkus, function(){	    		
+	    		if(rowData.sku == this.sku){
+	    			setRowSkuQty(this, rowData);	    			
+	    			this.price = rowData.salePrice;
+	    			//currDatagrid.datagrid("refreshRow", rowIndex);
+	    			//刷新父页面商品列表
+	    			skuListReLoad(true);
+	    			return;
+	    		}
+	    	});	    	    	
+	    },
 		showFooter: true,
-		loadFilter: function(data){				
-			$.each(data.rows, function(){
-				this.qty = 1;
-				this.selected = false;
-				var seletedSku = getSeletedSku(this.sku, currCheckedSkus);				
-				if(seletedSku!=null){						
-					this.qty = getSkuQty(seletedSku);				
-					this.selected = true;				
-				}	
-			});
+		loadFilter: function(data){	
+			if(typeof data != "undefined"){
+				$.each(data.rows, function(){
+					this.selected = false;
+					var seletedSku = getSeletedSku(this.sku, currCheckedSkus);				
+					if(seletedSku!=null){							
+						this.qty = getSkuQty(seletedSku);
+						this.salePrice = getSkuPrice(seletedSku);
+						this.selected = true;				
+					}	
+				});
+			}		
 			return data;
 		},
 		rowStyler:function(index, row){	
@@ -200,6 +249,12 @@ function delSkuOne(rowIndex){
  * 添加一个商品
  */
 function addSkuOne(rowIndex){
+		
+	if (!currDatagrid.datagrid("isValid")){
+		$.messager.alert("错误", "编辑行的数据不正确!", "error");  
+		return null;
+	}
+	
 	var rowData = currDatagrid.datagrid("getRows")[rowIndex];
 	if(rowData.qty>=0){
 		var oldRow = getSeletedSku(rowData.sku, currCheckedSkus);

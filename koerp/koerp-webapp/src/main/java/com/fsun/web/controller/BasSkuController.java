@@ -49,8 +49,11 @@ public class BasSkuController extends BaseController {
 	}
 	
 	@RequestMapping("/toChooseEditSku")
-	public String toChooseEditSku() {
-		return "/busCommon/commonChooseEditSku";
+	public ModelAndView toChooseEditSku() {
+		ModelAndView modelAndView = new ModelAndView("/busCommon/commonChooseEditSku");
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
+		return modelAndView;
 	}	
 	
 	@RequestMapping(value="/{skuId}", method = RequestMethod.GET)

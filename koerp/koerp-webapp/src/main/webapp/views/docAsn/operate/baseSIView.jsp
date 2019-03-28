@@ -26,6 +26,24 @@ $(function () {
 	    showFooter:true,
 	    toolbar: "#detailskutoolbar",
 	    columns: siColumns,
+	    onBeforeLoad:function(param){
+	    	if('1' == '${hasEditPricePower}'){
+	    		var columnOption = $(this).datagrid("getColumnOption", "price");
+	    		columnOption.editor = {
+	    			type:'numberbox',
+	    			options:{					
+	    				min:0,
+	    				precision:2,
+	    				required: true
+	    			}
+	    		};
+		    	columnOption.styler = function(value, rowData, rowIndex){
+	    	    	return 'font-weight:bold;color:green;';
+	    	    };
+	    	}else{
+	    		$(this).datagrid("hideColumn", "price");
+	    	}    	
+	    },	
 	    loadFilter:function(data) { 
 	    	//排序拦截器
     		sortFilter($(this), data);
@@ -116,7 +134,7 @@ function showSignView(){
 	                return "";
 	            },
 	            rowStyler: function(index,row){
-	            	if(row &&　typeof row.signType != "undefined"){
+	            	if(row && typeof row.signType != "undefined"){
 	            		if(row.signType=='10'){ 		                
 		                    return 'color:green;font-weight:bold;';  
 		                }else if(row.signType=='20'){ 
@@ -236,6 +254,20 @@ function getSkuQty(skuDto){
 	return skuDto.receiveQty;
 }
 
+/**
+ * 更新一行中sku的数量
+ */
+function setRowSkuQty(targetRow, sourceRow){
+	targetRow.receiveQty = sourceRow.qty;
+}
+
+
+/**
+ * 获取一行中sku的单价
+ */
+function getSkuPrice(skuDto){
+	return skuDto.price;
+}
 
 /**
  * 补发商品列表中是否存在该sku对应的商品

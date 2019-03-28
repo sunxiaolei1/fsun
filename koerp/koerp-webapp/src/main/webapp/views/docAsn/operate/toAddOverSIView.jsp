@@ -156,7 +156,7 @@ function initAddSku(rowData){
 	skuDto.goodsName = rowData.goodsName;
 	skuDto.sku = rowData.sku; 
 	skuDto.property = rowData.property;
-	skuDto.receiveQty = 1; 
+	skuDto.receiveQty = rowData.qty; 
 	skuDto.damagedQty = 0; 
 	skuDto.rejectedQty = 0; 
 	skuDto.unit = rowData.unit;

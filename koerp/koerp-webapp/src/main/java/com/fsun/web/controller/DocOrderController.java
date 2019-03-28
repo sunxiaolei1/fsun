@@ -55,7 +55,9 @@ public class DocOrderController extends BaseController {
 	public ModelAndView toAddView(@RequestParam("orderType") String orderType) {
 		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.ADD.getCode());
 		ModelAndView modelAndView = new ModelAndView(url);		
-		modelAndView.addObject("orderType", orderType);		
+		modelAndView.addObject("orderType", orderType);
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
 		return modelAndView;
 	}	
 	

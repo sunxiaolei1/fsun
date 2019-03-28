@@ -60,7 +60,9 @@ public class DocAsnController extends BaseController {
 	public ModelAndView toAddView(@RequestParam("asnType") String asnType) {
 		String url = this.getUrlByType(asnType, OrderOperateTypeEnum.ADD.getCode());
 		ModelAndView modelAndView = new ModelAndView(url);		
-		modelAndView.addObject("asnType", asnType);		
+		modelAndView.addObject("asnType", asnType);	
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
 		return modelAndView;
 	}	
 	

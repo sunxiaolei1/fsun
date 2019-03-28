@@ -26,6 +26,24 @@ $(function () {
 	    showFooter:true,
 	    toolbar: "#detailskutoolbar",
 	    columns: poColumns,
+	    onBeforeLoad:function(param){
+	    	if('1' == '${hasEditPricePower}'){
+	    		var columnOption = $(this).datagrid("getColumnOption", "price");
+	    		columnOption.editor = {
+	    			type:'numberbox',
+	    			options:{					
+	    				min:0,
+	    				precision:2,
+	    				required: true
+	    			}
+	    		};
+		    	columnOption.styler = function(value, rowData, rowIndex){
+	    	    	return 'font-weight:bold;color:green;';
+	    	    };
+	    	}else{
+	    		$(this).datagrid("hideColumn", "price");
+	    	}    	
+	    },	
 	    loadFilter:function(data) { 
 	    	//排序拦截器
     		sortFilter($(this), data);
@@ -138,6 +156,20 @@ function afterSaveFunc(){
  */
 function getSkuQty(skuDto){
 	return skuDto.shippedQty;
+}
+
+/**
+ * 更新一行中sku的数量
+ */
+function setRowSkuQty(targetRow, sourceRow){
+	targetRow.shippedQty = sourceRow.qty;
+}
+
+/**
+ * 获取一行中sku的单价
+ */
+function getSkuPrice(skuDto){
+	return skuDto.price;
 }
 
 /**

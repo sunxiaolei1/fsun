@@ -26,7 +26,23 @@ $(function () {
 	    fitColumns:true,
 	    showFooter:true,
 	    toolbar: "#detailskutoolbar",
-	    columns: soColumns,
+	    columns: soColumns,	    
+	    onBeforeLoad:function(param){
+	    	if('1' == '${hasEditPricePower}'){
+	    		var columnOption = $(this).datagrid("getColumnOption", "salePrice");	    		
+		    	columnOption.editor = {
+	    			type:'numberbox',
+	    			options:{					
+	    				min:0,
+	    				precision:2,
+	    				required: true
+	    			}
+	    		};
+		    	columnOption.styler = function(value, rowData, rowIndex){
+	    	    	return 'font-weight:bold;color:green;';
+	    	    };
+	    	}    	
+	    },	
 	    loadFilter:function(data) {     		
     		var fields = ["totalPrice","giftPrice","couponPrice"];       		
     		//排序拦截器
