@@ -27,13 +27,12 @@
 					<input id="asnType" name="asnType" class="easyui-combobox" required readOnly />								
 				</td>
 				<th width="12%">入库店仓<span style="color:red;">*</span></th>
-				<td>
-					<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly />								
-				</td>
-				<th width="12%">退货单号</th>
-				<td >
-					<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly />								
-				</td>																
+				<td colspan="3">
+					<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly style="width:300px;"/>	
+					<input id="orderNo" name="orderNo" hidden=true />
+					<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach"  style="margin-left:10px;"
+						plain="false" onclick="openRefundView()">退货明细</a>								
+				</td>																				
 	        </tr>	
 	        <tr>
 	        	<th width="12%">外部订单号</th>
@@ -68,7 +67,7 @@
 		</table>
 	</form>			
 </div>	
-<div style="height: 350px; width: 100%;">
+<div style="height: 320px; width: 100%;">
 	<div id="detailskutoolbar" style="display:none;">
 		<%@include file="./detailskutoolbar.jsp"%>
 	</div>
@@ -188,6 +187,17 @@ function toCreateAsnRefundView(){
 	var icon = "icon-book_add";
 	var subtitle = "创建退货单";
 	parent.addTab(subtitle, url, icon);	
+}
+
+//打开退换货明细
+function openRefundView(){
+	var orderNo = $("#orderNo", $orderfm).val();
+	if(orderNo==""){
+		$.messager.alert("提示", "暂无明细!", "info");
+		return;
+	}
+	var url = "${api}/doc/order/purchaseSo/toBaseDetailView/"+ orderNo;	
+	commonDialog("ordersDialog", "退货明细", "90%", "90%", url, "icon-book_open");
 }
 
 /******************************    供选择商品的子页面使用      ********************************/

@@ -200,7 +200,7 @@ public abstract class BaseOrderValidatorService {
 	        case CANCEL_DOC_ASN: 
 	        	if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
 	        		|| DocAsnStatusEnum.SI_WQSH.getCode().equals(asnStatus))){
-	        		//采购入库、调拨签收入库及调退入库单据在签收之后不可撤销
+	        		//调拨签收入库及调退入库单据在签收之后不可撤销,采购入库在生成有效的采购退货单之后
 	        		if(!DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType) 
 	        			&& !DocAsnTypeEnum.ALLOT_REFUND_SI.getCode().equals(asnType)
 	        				&& !DocAsnTypeEnum.ALLOT_SI.getCode().equals(asnType)){

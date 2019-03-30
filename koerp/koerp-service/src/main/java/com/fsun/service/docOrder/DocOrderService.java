@@ -115,11 +115,15 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		DocOrderHeader header = new DocOrderHeader();
 		String asnNo = condition.getAsnNo();
 		DocAsnHeader docAsnHeader = docAsnHeaderManage.load(asnNo);
+		if(!docAsnHeader.getToShopId().equals(currUser.getShopId())){
+			throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
+		}		
 		String orderNo = docOrderHeaderManage.initOrderNo(DocOrderTypeEnum.PURCHASE_SO.getCode(),
 				currUser.getShopCode());
 		header.setOrderNo(orderNo);
 		header.setOrderType(DocOrderTypeEnum.PURCHASE_SO.getCode());
 		header.setDeliveryTime(new Date());
+		header.setiId(currUser.getId());
 		header.setSupplierId(docAsnHeader.getSupplierId());
 		header.setSupplierName(docAsnHeader.getSupplierName());
 		header.setSupplierAddress(docAsnHeader.getSupplierAddress());
@@ -220,6 +224,18 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 				for (DocOrderDetails docOrderDetails2 : docOrderDetails) {
 					super.skuStockIn(header, docOrderDetails2);
 				}
+				
+				//如果是采购退货单则需要更新采购入库单关联的对应退货单号
+				if(DocOrderTypeEnum.PURCHASE_SO.getCode().equals(header.getOrderType())){			
+					DocAsnHeader docAsnHeader = docAsnHeaderManage.load(header.getUserDefine1());
+					if(docAsnHeader==null){
+						throw new DocOrderException(SCMErrorEnum.BUS_RELATION_ORDER_NOT_EXIST);
+					}
+					docAsnHeader.setOrderNo("");
+					docAsnHeader.setUpdatedTime(now);
+					docAsnHeader.setUpdatedName(user.getRealname());
+					docAsnHeaderManage.update(docAsnHeader);
+				}
 			}
 			
 		}
@@ -280,6 +296,19 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 			super.skuStockOut(header, docOrderDetails);
 		}
 		header.setOrderPrice(orderPrice);
+		
+		//如果是采购退货单则需要更新采购入库单关联的对应退货单号
+		if(DocOrderTypeEnum.PURCHASE_SO.getCode().equals(header.getOrderType())){			
+			DocAsnHeader docAsnHeader = docAsnHeaderManage.load(header.getUserDefine1());
+			if(docAsnHeader==null){
+				throw new DocOrderException(SCMErrorEnum.BUS_RELATION_ORDER_NOT_EXIST);
+			}
+			docAsnHeader.setOrderNo(orderNo);
+			docAsnHeader.setUpdatedTime(now);
+			docAsnHeader.setUpdatedName(currUser.getRealname());
+			docAsnHeaderManage.update(docAsnHeader);
+		}
+		
 		docOrderHeaderManage.create(header);		
 		return orderNo;
 	}
@@ -301,6 +330,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 	private boolean orderStatusValidator(String currOrderStatus, DocOrderHeader oldHeader){
 		boolean isTrue = true;
 		String oldStatus = oldHeader.getOrderStatus();
+		String orderType = oldHeader.getOrderType();
 		switch (DocOrderStatusEnum.getByName(currOrderStatus)) {
 			case SO_DSH:			
 				break;		
@@ -316,10 +346,19 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 					isTrue = false;
 				}else if(DocOrderStatusEnum.SO_DDCK.getCode().equals(oldStatus)){
 					String asnNo = oldHeader.getUserDefine1();
-					DocAsnHeader docAsnHeader = docAsnHeaderManage.load(asnNo);
+					DocAsnHeader docAsnHeader = docAsnHeaderManage.load(asnNo);									
+					//没有关联入库单的或者调拨入库单为待签收状态才能取消
 					if(docAsnHeader==null || !DocAsnStatusEnum.SI_DQS.getCode().equals(docAsnHeader.getAsnStatus())){
-						isTrue = false;						
-					}
+						if(DocOrderTypeEnum.ALLOT_SO.getCode().equals(orderType)){							
+							isTrue = false;	
+						}else if(DocOrderTypeEnum.PURCHASE_SO.getCode().equals(orderType)){
+							//采购入库单为完全收货或者部分收货状态才能取消
+							if(!DocAsnStatusEnum.SI_BFQS.getCode().equals(docAsnHeader.getAsnStatus())
+								&& !DocAsnStatusEnum.SI_WQSH.getCode().equals(docAsnHeader.getAsnStatus())){
+								isTrue = false;
+							}
+						}					
+					}	
 				}
 				break;
 			default:

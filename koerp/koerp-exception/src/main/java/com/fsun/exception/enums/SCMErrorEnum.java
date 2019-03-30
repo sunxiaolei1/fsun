@@ -35,6 +35,7 @@ public enum SCMErrorEnum {
 	BUS_ORDER_UNPAY_NOT_EXIST(2010, "单据不存在"),
 	BUS_ORDER_UNPAY_STATUS_INVALID(2011, "单据状态不可用"),
 	BUS_ORDER_ILLEGAL(2012, "单据非法，请联系管理员!"),
+	BUS_RELATION_ORDER_NOT_EXIST(2013, "关联单据不存在!"),
 	
 	BUS_REFUND_NOT_EXIST(3001, "单据不存在"),
 	BUS_REFUND_DETAIL_NOT_EXIST(3002, "单据商品不存在"),

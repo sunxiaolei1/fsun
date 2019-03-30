@@ -25,6 +25,7 @@ import com.fsun.domain.entity.DocOrderInitCondition;
 import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
+import com.fsun.domain.enums.RefundStatusEnum;
 import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocOrderException;
@@ -87,20 +88,6 @@ public class DocOrderController extends BaseController {
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}
-	
-	@RequestMapping(value="/purchaseSo/getInitData", method = {RequestMethod.GET})
-	@ResponseBody
-	public HttpResult getPurchaseSoInitData(DocOrderInitCondition condition){
-		try {
-			BusUserDto currUser = super.getCurrentUser();
-			DocOrderDto docOrderDto = docOrderApi.getPurchaseSoInitData(condition, currUser);
-			return success(docOrderDto);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return failure(SCMErrorEnum.SYSTEM_ERROR);
-		}
-	}
-	
 	
 	@RequestMapping(value="/findPage", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
@@ -192,6 +179,30 @@ public class DocOrderController extends BaseController {
 	}
 	
 	
+	/******************************          采购退货                          *************************************/
+	
+	@RequestMapping(value="/purchaseSo/toBaseDetailView/{orderNo}", method = {RequestMethod.GET})
+	public ModelAndView toPurchaseSoBaseDetailView(@PathVariable("orderNo") String orderNo){
+		ModelAndView modelAndView = new ModelAndView("/docOrder/operate/toPurchaseSoSimpleView"); 		
+		modelAndView.addObject("orderNo", orderNo);
+		modelAndView.addObject("cancelStatus", DocOrderStatusEnum.SO_CKQX.getCode());	
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/purchaseSo/getInitData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getPurchaseSoInitData(DocOrderInitCondition condition){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			DocOrderDto docOrderDto = docOrderApi.getPurchaseSoInitData(condition, currUser);
+			return success(docOrderDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}	
+	
+	
 	/****************************       私有方法            *************************************/
 	
 	/**
@@ -231,7 +242,8 @@ public class DocOrderController extends BaseController {
 					case SHORTAGE_SO:	
 						url = "/docOrder/operate/toEditShortageSoView";
 						break;	
-					case PURCHASE_SO:			
+					case PURCHASE_SO:
+						url = "/docOrder/operate/toEditPurchaseSoView";
 						break;
 					case LOSE_SO:
 						url = "/docOrder/operate/toEditShortageSoView";
