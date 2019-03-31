@@ -299,14 +299,13 @@ $(function () {
 			
 			var details = docAsnDto.details;	
 			if(details!=null && details.length>0){
-				currDetailData = details;
-				skuListReLoad();
+				currDetailData = details;				
 				//添加行编辑结束事件
 				currOrderDetailDataGrid.datagrid({					
 					onAfterEdit: function(rowIndex, rowData, changes){	
 						synAllotQty(rowIndex, rowData, changes);						
 				    }
-				});
+				}).datagrid("loadData", currDetailData);
 			}	
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
