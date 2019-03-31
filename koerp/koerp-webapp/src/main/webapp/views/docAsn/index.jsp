@@ -30,14 +30,36 @@ var frozenColumns = [[
 	}},
 	{field:'asn_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		var spanHeader = "<b style='color:green;'>";
-		if(value=='A90'){
+		if(value=='A90' || value=='A91'){
 			spanHeader = "<b style='color:red;'>";
 		}else if(value=='A00'|| value=='A10'){
 			spanHeader = "<b style='color:#FF9933;'>";
 		}
 		var spanFooter = "</b>";
 		return spanHeader + formatter(value, window.parent.docAsnStatus) + spanFooter;
-	}}
+	}},
+	{field:'is_refund',title:'存在退货',width:80,align:'center', 
+		formatter:function(value, row){
+			var spanDiv = "<b style='color:green;'>--</b>";		
+			if(row.asn_type=="23"){
+				//采购入库存在退货
+				if(row.order_no!=null && row.order_no!=''){
+					spanDiv = "<b style='color:red;'>是</b>";
+				}else{
+					spanDiv = "<b style='color:green;'>否</b>";
+				}
+			}else if(row.asn_type=="21"){
+				//调拨入库存在退货
+				spanDiv = "<b style='color:green;'>否</b>";
+				if(row.asn_status =="A10" || row.asn_status =="A91"){
+					if(row.order_no!=null && row.order_no!=''){
+						spanDiv = "<b style='color:red;'>是</b>";
+					}
+				}				
+			}			
+			return spanDiv;
+		}
+     }
 ]];
 
 var columns = [[

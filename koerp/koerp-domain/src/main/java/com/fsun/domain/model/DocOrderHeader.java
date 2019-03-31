@@ -95,7 +95,7 @@ public class DocOrderHeader {
     private String userDefine1;
 
     /**
-     * 用户自定义2
+     * 用户自定义2(用于记录调退入库单号)
      * 表字段 : doc_order_header.user_define2
      */
     private String userDefine2;

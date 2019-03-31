@@ -29,7 +29,7 @@
 				<th width="12%">入库店仓<span style="color:red;">*</span></th>
 				<td colspan="3" >
 					<input id="toShopName" name="toShopName" class="easyui-textbox" 
-					  style="width:490px;" readOnly />								
+					  style="width:400px;" readOnly />								
 				</td>																
 	        </tr>	
 	        <tr>

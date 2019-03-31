@@ -195,7 +195,17 @@ public class DocAsnController extends BaseController {
 		//控制编辑单价权限		
 		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
 		return modelAndView;
-	}	
+	}
+	
+	@RequestMapping("/allotRefund/toBaseDetailView/{asnNo}")
+	public ModelAndView toRefundAddView(@PathVariable("asnNo") String asnNo) {
+		String url = "/docAsn/operate/toAllotRefundSimpleView";
+		ModelAndView modelAndView = new ModelAndView(url);		
+		modelAndView.addObject("asnNo", asnNo);		
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
+		return modelAndView;
+	}
 	
 	
 	/****************************       私有方法            *************************************/

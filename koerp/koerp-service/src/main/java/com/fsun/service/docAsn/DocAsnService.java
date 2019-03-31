@@ -544,6 +544,9 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 			}		
 			newAsnHeader.setOrderPrice(orderPrice);
 			docAsnHeaderManage.create(newAsnHeader);
+			//出库单记录调退入库单号
+			oriOrderHeader.setUserDefine2(newAsnHeader.getAsnNo());
+			docOrderHeaderManage.update(oriOrderHeader);
 			return refundAsnNo;
 		}		
 		throw new DocAsnException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);

@@ -163,6 +163,9 @@
     <result column="o_receiving_time" property="receivingTime"/>
     <result column="o_carrier_id" property="carrierId"/>
     <result column="o_carrier_name" property="carrierName"/> 
+    <result column="o_user_define1" property="userDefine1"/>
+    <result column="o_user_define2" property="userDefine2"/>
+    <result column="o_user_define3" property="userDefine3"/>
   </resultMap>
   
   <resultMap id="DefinedResultMap" type="java.util.Map"> 	
@@ -249,6 +252,9 @@
 		o.receiving_time as o_receiving_time,
 		o.carrier_id as o_carrier_id,
 		o.carrier_name as o_carrier_name,
+		o.user_define1 as o_user_define1, 
+      	o.user_define2 as o_user_define2, 
+      	o.user_define3 as o_user_define3,
 		d.asn_detail_id as d_asn_detail_id,
 		d.asn_no as d_asn_no,
 		d.line_no as d_line_no,

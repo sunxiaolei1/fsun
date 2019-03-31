@@ -18,15 +18,15 @@
 		<input id="orderPrice" name="orderPrice" hidden="true" />			
 		<table class="nb-formTable" style="width:100%;margin-top:2px;">
 	        <tr>
-	            <th width="12%">单据编号<span style="color:red;">*</span></th>
+	            <th width="12%">单据编号</th>
 				<td>
 					<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly />
 				</td>
-				<th width="12%">单据类型<span style="color:red;">*</span></th>
+				<th width="12%">单据类型</th>
 				<td>
 					<input id="orderType" name="orderType" class="easyui-combobox" required readOnly />								
 				</td>
-				<th width="12%">出库店仓<span style="color:red;">*</span></th>
+				<th width="12%">出库店仓</th>
 				<td>
 					<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly />								
 				</td>

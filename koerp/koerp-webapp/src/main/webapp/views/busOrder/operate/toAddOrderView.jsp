@@ -313,12 +313,6 @@ $(function () {
 	
 	initSalesmanGrid('');
 	
-	$('#salesman', $orderfm).combogrid({
-		onSelect:function(index, data){			
-			$('#carrierName', $orderfm).val(data.customer_name);      	
-        }
-    });
-	
 	initAllCustomerGrid('');
 	
 	$('#allCustomer', $orderfm).combogrid({

@@ -241,10 +241,11 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
     	busInvSkuDetails.setUnit(docOrderDetails.getUnit());
     	//调拨单出库单关联调拨明细对应的申请单号,采购退货对应采购申请单
     	String orderType = orderHeader.getOrderType();  	
-    	if(DocOrderTypeEnum.ALLOT_SO.getCode().equals(orderType) 
-    		|| DocOrderTypeEnum.PURCHASE_SO.getCode().equals(orderType)){
+    	if(DocOrderTypeEnum.ALLOT_SO.getCode().equals(orderType)){
     		busInvSkuDetails.setTradeRelationNo(docOrderDetails.getUserDefine1()); 
-    	} 	
+    	}else if(DocOrderTypeEnum.PURCHASE_SO.getCode().equals(orderType)){
+    		busInvSkuDetails.setTradeRelationNo(docOrderDetails.getOrderNo()); 
+    	}	
     	return busInvSkuDetails;
 	}
     

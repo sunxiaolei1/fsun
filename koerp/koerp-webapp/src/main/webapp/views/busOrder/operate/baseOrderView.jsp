@@ -123,6 +123,7 @@ function getSaveData(){
 
 	var baseInfo = formJson($orderfm);
 	var payAccountInfo = formJson($payAccountfm);
+	baseInfo.carrierName = $("#salesman", $orderfm).combogrid("getText");
 	baseInfo.receptPrice = payAccountInfo.receptPrice;
 	baseInfo.payPrice = payAccountInfo.payPrice;
 	baseInfo.dibPrice = payAccountInfo.dibPrice;

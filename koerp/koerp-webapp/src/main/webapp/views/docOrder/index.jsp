@@ -35,7 +35,21 @@ var frozenColumns = [[
 		}
 		var spanFooter = "</b>";
 		return spanHeader + formatter(value, window.parent.docOrderStatus) + spanFooter;
-	}}	
+	}},
+	{field:'is_refund',title:'存在退货',width:80,align:'center', 
+		formatter:function(value, row){
+			var spanDiv = "<b style='color:green;'>--</b>";		
+			if(row.order_type=="11"){
+				//调拨出库存在退货
+				if(row.user_define2!=null && row.user_define2!=''){
+					spanDiv = "<b style='color:red;'>是</b>";
+				}else{
+					spanDiv = "<b style='color:green;'>否</b>";
+				}
+			}
+			return spanDiv;
+		}
+     }
 ]];
 
 var columns = [[	

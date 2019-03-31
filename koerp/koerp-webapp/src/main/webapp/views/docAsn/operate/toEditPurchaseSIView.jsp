@@ -31,7 +31,7 @@
 					<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly style="width:300px;"/>	
 					<input id="orderNo" name="orderNo" hidden=true />
 					<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach"  style="margin-left:10px;"
-						plain="false" onclick="openRefundView()">退货明细</a>								
+						plain="false" disabled onclick="openRefundView()">退货明细</a>								
 				</td>																				
 	        </tr>	
 	        <tr>
@@ -150,7 +150,11 @@ $(function () {
 			/***************************              基本信息初始化                        ************************/			
 			var header = docAsnDto.header;
 			if(header!=null){
-				$orderfm.form("load", header);	
+				$orderfm.form("load", header);
+				var orderNo = header.orderNo;
+				if(orderNo!=null && orderNo!=''){
+					$("#refundLink").linkbutton("enable");
+				}				
 			}
 			
 			var details = docAsnDto.details;	
@@ -197,7 +201,7 @@ function openRefundView(){
 		return;
 	}
 	var url = "${api}/doc/order/purchaseSo/toBaseDetailView/"+ orderNo;	
-	commonDialog("ordersDialog", "退货明细", "90%", "90%", url, "icon-book_open");
+	commonDialog("ordersDialog", "退货明细", "95%", "90%", url, "icon-book_open");
 }
 
 /******************************    供选择商品的子页面使用      ********************************/

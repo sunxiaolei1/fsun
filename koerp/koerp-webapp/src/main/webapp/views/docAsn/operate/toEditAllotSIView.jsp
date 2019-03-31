@@ -86,6 +86,9 @@
 				<td colspan="7">
 					<input id="memo" name="memo"  data-options="multiline:true" 
 						class="easyui-textbox" style="width:800px;height:46px;"/>
+					<input id="userDefine1" name="userDefine1" hidden=true />
+					<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach"  style="margin-left:10px;"
+						plain="false" disabled onclick="openRefundView()">调退明细</a>
 				</td>	        	
 	        </tr>
 		</table>
@@ -288,6 +291,10 @@ $(function () {
 					$("#signedGoodsBtn").css("visibility", "hidden");
 					$("#rejectedGoodsBtn").css("visibility", "hidden");
 				}
+				var userDefine1 = header.userDefine1;
+				if(userDefine1!=null && userDefine1!=''){
+					$("#refundLink").linkbutton("enable");
+				}
 			}
 			
 			var details = docAsnDto.details;	
@@ -327,6 +334,17 @@ function synAllotQty(rowIndex, rowData, changes){
 	}
 	rowData.signType = signType;
 	currOrderDetailDataGrid.datagrid("refreshRow", rowIndex);
+}
+
+//打开退换货明细
+function openRefundView(){
+	var refundNo = $("#userDefine1", $orderfm).val();
+	if(refundNo==""){
+		$.messager.alert("提示", "暂无明细!", "info");
+		return;
+	}
+	var url = "${api}/doc/asn/allotRefund/toBaseDetailView/"+ refundNo;	
+	commonDialog("ordersDialog", "调退明细", "95%", "90%", url, "icon-book_open");
 }
 
 </script>
