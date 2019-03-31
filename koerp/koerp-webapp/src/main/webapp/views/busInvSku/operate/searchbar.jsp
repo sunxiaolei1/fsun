@@ -21,6 +21,7 @@
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
 						<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>						
+						<a id="exportBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-page_white_excel'" onclick="exportExcel()">导出</a>
 					</td>																			
 				</tr>									
 			</table>
@@ -60,5 +61,15 @@ function reset(){
 	commonReset();
 }
 
+//excel导出
+function exportExcel(){	
+	var queryParams = initQueryParams();
+	var url = "${api}/bus/invSku/details/exportExcel?tradeOrderNo="+ queryParams.tradeOrderNo 
+			+ "&sku="+ queryParams.sku 
+			+ "&shopId="+ queryParams.shopId
+			+ "&tradeType="+ queryParams.tradeType 
+			+ "&tradeStatus="+ queryParams.tradeStatus;
+	window.open(url); 
+}
 
 </script>

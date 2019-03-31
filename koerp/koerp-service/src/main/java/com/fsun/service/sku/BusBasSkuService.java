@@ -34,6 +34,19 @@ public class BusBasSkuService implements BusBasSkuApi {
 	public BusBasSku load(String id) {
 		return busBasSkuManage.load(id);
 	}
+	
+	@Override
+	public BusBasSku loadBySku(String sku) {
+		BusBasSkuCondition condition = new BusBasSkuCondition();
+		condition.setSku(sku);
+		List<BusBasSku> list = busBasSkuManage.list(condition);
+		if(list==null || list.size()==0){
+			throw new BasSkuException(SCMErrorEnum.BUS_SKU_NOT_EXIST);
+		}else if(list.size()>1){
+			throw new BasSkuException(SCMErrorEnum.BUS_SKU_ILLEGAL);
+		}
+		return list.get(0);	
+	}
 
 	@Override
 	public boolean unique(BusBasSkuCondition condition) {

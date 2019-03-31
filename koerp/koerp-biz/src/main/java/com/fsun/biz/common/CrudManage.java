@@ -76,6 +76,15 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	}
 	
 	/**
+	 * 导出excel
+	 * @param condition
+	 * @return
+	 */
+	public <C>List<HashMap<String, Object>> export(C condition) {
+		return mapper.export(condition);
+	}
+	
+	/**
 	 * 插入对象
 	 *
 	 * @param entity

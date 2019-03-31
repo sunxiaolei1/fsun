@@ -35,6 +35,13 @@ public interface BusBasSkuApi extends BaseApi<BusBasSku, BusBasSkuCondition> {
 	 */
 	public PageModel findListForPage(BusBasSkuCondition condition);
 
+	/**
+	 * 通过sku获取单个商品明细
+	 * @param sku
+	 * @return
+	 */
+	public BusBasSku loadBySku(String sku);
+
 	
 
 }

@@ -72,6 +72,27 @@
     	<include refid="conditions" />
   </select>
   
+  <select id="export" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusInvSkuDetailsCondition" >  
+	SELECT 
+		details.sku as sku, 
+		details.goods_name as goods_name, 
+		details.shop_name as shop_name,
+		details.qty as qty, 
+		details.lock_qty as lock_qty, 
+		details.damaged_qty as damaged_qty,			
+		details.trade_order_no as trade_order_no,
+		(select codes.code_name from bus_bas_codes codes where codes.code_code = details.trade_type 
+       		and codes.code_type='DocTradeType') as trade_type_name,     		
+       	(select codes.code_name from bus_bas_codes codes where codes.code_code = details.trade_status
+       		and codes.code_type='DocTradeStatus') as trade_status_name,
+		details.trade_time as trade_time,
+		details.trade_relation_no as trade_relation_no
+    FROM bus_inv_sku_details details  
+    	<include refid="conditions" />
+    order by details.trade_time desc
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

@@ -2,8 +2,6 @@ package com.fsun.biz.bus.manage;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,15 +77,6 @@ public class BusVipUnpaidManage extends CrudManage<BusVipUnpaidMapper, BusVipUnp
 			}
 		}
 		return super.create(busVipUnpaid);
-	}
-
-	/**
-	 * 导出excel
-	 * @param condition
-	 * @return
-	 */
-	public List<HashMap<String, Object>> export(BusVipUnpaidCondition condition) {
-		return mapper.export(condition);
 	}
 
 	/**

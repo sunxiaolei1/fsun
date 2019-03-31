@@ -39,7 +39,7 @@ var columns = [[
 	}},	
 	//{field:'trade_line_no',title:'行号',width:50,align:'center'},
 	{field:'trade_time',title:'交易时间',width:130,align:'center',sortable:true},
-	{field:'lot_num',title:'批次号',width:70,align:'center',sortable:true},
+	//{field:'lot_num',title:'批次号',width:70,align:'center',sortable:true},
 	{field:'trade_relation_no',title:'关联单号',width:140,align:'center'}
 ]];
 

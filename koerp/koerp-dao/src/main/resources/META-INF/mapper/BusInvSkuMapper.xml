@@ -137,6 +137,29 @@
     	<include refid="conditions" />
   </select>
   
+  <select id="export" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusInvSkuCondition" >    
+	SELECT 		
+		a.sku as sku, 
+		b.goods_name as goods_name, 
+		(SELECT c.shop_name FROM bus_shop c WHERE c.shop_id = a.shop_id) as shop_name,
+		a.qty as qty, 
+		a.lock_qty as lock_qty, 
+		a.damaged_qty as damaged_qty,			
+		b.bar_code as bar_code,
+		(select codes.code_name from bus_bas_codes codes where codes.code_code = b.brand_code 
+       		and codes.code_type='BrandCode') as brand_name,     		
+       	(select codes.code_name from bus_bas_codes codes where codes.code_code = b.category_code 
+       		and codes.code_type='CategoryCode') as category_name,
+		b.property as property,
+		b.unit_name as unit_name,
+		a.memo as memo
+    FROM bus_inv_sku a 
+    Left JOIN bus_bas_sku b on b.sku = a.sku   
+    	<include refid="conditions" />
+    order by a.sku desc
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

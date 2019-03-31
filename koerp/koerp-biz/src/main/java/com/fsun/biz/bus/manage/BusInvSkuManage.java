@@ -169,9 +169,6 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 		 }	
 	}
 	
-	
-	
-	
 	/*************************************          私有方法                   ****************************************/
 
 	/**
@@ -259,4 +256,5 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 		}
 		return realSalePrice;
 	}
+
 }

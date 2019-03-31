@@ -86,4 +86,14 @@ public class BusInvSkuService implements BusInvSkuApi {
 		footer.put(condition.getFirstColumn(), "合计:");	
 		return footer;
 	}
+
+	@Override
+	public List<HashMap<String, Object>> exportInvSku(BusInvSkuCondition condition) {
+		return busInvSkuManage.export(condition);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> exportInvSkuDetails(BusInvSkuDetailsCondition condition) {
+		return busInvSkuDetailsManage.export(condition);
+	}
 }

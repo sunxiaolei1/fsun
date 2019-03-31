@@ -11,19 +11,19 @@ import java.util.List;
  */
 public interface BaseMySqlMapper<T> {
 	
-	int deleteByPrimaryKey(Object primaryKey);
+	public int deleteByPrimaryKey(Object primaryKey);
 	
-	int delete(T record);
+	public int delete(T record);
 	
-    int insert(T record);
+	public int insert(T record);
 
-    int insertSelective(T record);
+    public int insertSelective(T record);
 
-    T selectByPrimaryKey(Object primaryKey);
+    public T selectByPrimaryKey(Object primaryKey);
     
-    <C>List<T> selectList(C condition);
+    public <C>List<T> selectList(C condition);
     
-    <C>List<HashMap<String, Object>> selectListMap(C condition);
+    public <C>List<HashMap<String, Object>> selectListMap(C condition);
     
     /**
 	 * 获取表单合计行
@@ -31,9 +31,16 @@ public interface BaseMySqlMapper<T> {
 	 * @return
 	 */
 	public <C>HashMap<String, Object> findFooter(C condition);
+	
+	/**
+	 * 导出excel
+	 * @param condition
+	 * @return
+	 */
+	public <C>List<HashMap<String, Object>> export(C condition);
 
-    int updateByPrimaryKeySelective(T record);
+	public int updateByPrimaryKeySelective(T record);
 
-    int updateByPrimaryKey(T record);
+	public int updateByPrimaryKey(T record);
 
 }

@@ -1,6 +1,7 @@
 package com.fsun.api.bus;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.fsun.api.base.BaseFooterApi;
 import com.fsun.domain.common.PageModel;
@@ -41,4 +42,18 @@ public interface BusInvSkuApi extends BaseFooterApi<BusInvSku, BusInvSkuConditio
 	 * @return
 	 */
 	public HashMap<String, Object> findDetailsFooter(BusInvSkuDetailsCondition condition);
+
+	/**
+	 * 商品库存汇总导出
+	 * @param condition
+	 * @return
+	 */
+	public List<HashMap<String, Object>> exportInvSku(BusInvSkuCondition condition);
+
+	/**
+	 * 库存商品交易明细导出
+	 * @param condition
+	 * @return
+	 */
+	public List<HashMap<String, Object>> exportInvSkuDetails(BusInvSkuDetailsCondition condition);
 }
