@@ -378,6 +378,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		return orderId;
 	}
 	
+	@Transactional
 	@Override
 	public void signPrint(String orderId) {
 		BusOrder header = busOrderManage.load(orderId);	

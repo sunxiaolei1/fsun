@@ -94,7 +94,11 @@ function getSaveData(){
 	}			
 
 	var baseInfo = formJson($orderfm);
-	
+	var orderType = baseInfo.orderType;
+	//调拨单
+	if(orderType=='11' && baseInfo.deliveryTime!=''){
+		baseInfo.deliveryTime = (baseInfo.deliveryTime +" 00:00:00");
+	}
 	var saveData = {
 	     "params": {
 	    	 "orderNo": $("#orderNo",$orderfm).textbox("getValue"),

@@ -39,7 +39,8 @@ var frozenColumns = [[
 		}
 	}},
 	{field:'refund_status',title:'退货状态',width:100,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.refundStatus); 
+		var refundStatus = formatter(value, window.parent.refundStatus);
+		return refundStatus!=null?"<b style='color:red;'>"+ refundStatus +"</b>":"--"; 
 	}},
 	{field:'shop_id',title:'所属店仓',width:130,align:'center',sortable:true, formatter:function(value, row){
 		return row.shop_name; 
@@ -55,7 +56,7 @@ var columns = [[
 	{field:'dib_price',title:'找零金额',width:80,align:'center',formatter:numBaseFormat},
 	{field:'recept_price',title:'实收金额',width:80,align:'center',formatter:numBaseFormat},
 	{field:'print_count',title:'已打印',width:60,align:'center', sortable:true, formatter:function(value, row){
-		return (row.print_count>0?"<span style='color:red;'>是</span>":(row.print_count==0?"否":"")); 
+		return (value>0?"<b style='color:green;'>是</b>":(value==0?"<b style='color:red;'>否</b>":"")); 
 	}},
 	{field:'buyer_name',title:'客户名称',width:100,align:'center',sortable:true},
 	{field:'carrier_name',title:'经办人',width:100,align:'center',sortable:true},

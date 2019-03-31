@@ -17,6 +17,7 @@
 <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125519344_easyicon_net_16" plain="true" onclick="show()">展开查询条件</a>
  -->
 <%@include file="./operate/toPrintOrderView.jsp"%>
+<%@include file="./operate/toPrintAllotView.jsp"%>
 
 <script type="text/javascript">
 
@@ -83,7 +84,11 @@ function toPrintOrderView(){
 		success : function(result) {		
 			var docOrderDto = result.entry;
 			if(docOrderDto!=null){
-				madeOrderView(docOrderDto, reflushDataGrid);
+				if(row.order_type=='11'){
+					madeAllotView(docOrderDto, reflushDataGrid);
+				}else{
+					madeOrderView(docOrderDto, reflushDataGrid);
+				}
 			}		
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {

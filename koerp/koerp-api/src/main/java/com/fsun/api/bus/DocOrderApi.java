@@ -66,5 +66,11 @@ public interface DocOrderApi extends BaseApi<DocOrderHeader, DocOrderHeaderCondi
 	 */
 	public DocOrderDto getPurchaseSoInitData(
 		DocOrderInitCondition condition, BusUserDto currUser);
+
+	/**
+	 * 打印标记
+	 * @param orderNo
+	 */
+	public void signPrint(String orderNo);
 	
 }

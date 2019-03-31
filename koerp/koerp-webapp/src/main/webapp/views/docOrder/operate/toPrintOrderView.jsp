@@ -167,7 +167,7 @@ function createOneOrderPage(LODOP,docOrderDto,currRow){
    		detailHeight -= 50;
 	}
     
-	CreateTableOrderContext(docOrderDto.details,8,"tableOrderData");
+	CreateTableOrderContext(header, docOrderDto.details,8,"tableOrderData");
 	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
     var strStyle='<style type="text/css"> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>';
 	LODOP.ADD_PRINT_TABLE(detailTop,"1%","99%",detailHeight,strStyle + document.getElementById("printTableOrder").innerHTML);
@@ -239,7 +239,7 @@ function createTableOrderHead(div,header){
 }
 
 /************************************  创建送货单的主体内容  ********************************/
-function CreateTableOrderContext(list,cellCount,div)
+function CreateTableOrderContext(header, list,cellCount,div)
 { 
      var tbody = $("#"+div);
 	 for(var i=0;i<list.length;i++)
@@ -252,8 +252,12 @@ function CreateTableOrderContext(list,cellCount,div)
 		var property = obj.property;
 		var qty = obj.shippedQty;
 		var unit = formatter(obj.unit, parent.unitCode);
-		var salePrice = obj.price;
-		var totalPrice =  obj.totalPrice;
+		var salePrice = 0;
+		var totalPrice = 0;
+		if(header.orderType==16){
+			salePrice = obj.price;
+			totalPrice = obj.totalPrice;
+		}
 		var j=1;
 		var td;		
 		while(j<=cellCount){		

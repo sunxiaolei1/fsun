@@ -25,7 +25,6 @@ import com.fsun.domain.entity.DocOrderInitCondition;
 import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
-import com.fsun.domain.enums.RefundStatusEnum;
 import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocOrderException;
@@ -149,6 +148,24 @@ public class DocOrderController extends BaseController {
 		}
 	}
 	
+	
+	@RequestMapping(value="/signPrint/{orderNo}", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult signPrint(@PathVariable("orderNo") String orderNo) {
+		try {
+			if (!StringUtils.isEmpty(orderNo)) {		
+				docOrderApi.signPrint(orderNo);
+				return success(SCMErrorEnum.SUCCESS.getErrorCode());
+			}
+			return failure(SCMErrorEnum.INVALID_PARAMS);
+		}catch(DocOrderException e){
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 	
 	@RequestMapping(value="/loadEntity/{orderNo}", method = RequestMethod.GET)
 	@ResponseBody

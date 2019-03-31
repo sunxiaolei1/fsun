@@ -155,14 +155,14 @@ function afterSaveFunc(){
  * 获取一行中sku的数量
  */
 function getSkuQty(skuDto){
-	return skuDto.shippedQty;
+	return skuDto.orderedQty;
 }
 
 /**
  * 更新一行中sku的数量
  */
 function setRowSkuQty(targetRow, sourceRow){
-	targetRow.shippedQty = sourceRow.qty;
+	targetRow.orderedQty = sourceRow.qty;
 }
 
 /**

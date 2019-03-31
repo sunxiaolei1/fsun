@@ -45,6 +45,7 @@ import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.DocPoHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocOrderException;
+import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
 
@@ -318,6 +319,24 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		return docOrderHeaderManage.loadEntity(orderNo);
 	}
 	
+	@Transactional
+	@Override
+	public void signPrint(String orderNo) {
+		DocOrderHeader header = docOrderHeaderManage.load(orderNo);	
+		if(header==null){
+			throw new OrderException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}	
+		String orderStatus = header.getOrderStatus();
+		if(DocOrderStatusEnum.SO_CKWC.getCode().equals(orderStatus) 
+			|| DocOrderStatusEnum.SO_CKQX.getCode().equals(orderStatus)){
+			throw new DocOrderException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
+		}
+		//累加打印次数
+		int printCount = (header.getPrintCount()!=null?header.getPrintCount():0);
+		header.setPrintCount(++printCount);
+		docOrderHeaderManage.update(header);		
+	}
+	
 
 	/****************************    私有方法          ******************************/
 	
@@ -382,6 +401,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 			case ALLOT_SO:	
 				header.setOrderType(orderType);
 				header.setiId(currUser.getId());
+				header.setiName(currUser.getRealname());
 				header.setFromShopId(currUser.getShopId());
 				header.setFromShopName(currUser.getShopName());
 				Date now = new Date();
