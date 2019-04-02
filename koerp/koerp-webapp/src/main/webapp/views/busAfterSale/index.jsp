@@ -71,6 +71,7 @@ var frozenColumns = [[
    	}},
    	{field:'refund_time',title:'退单时间',width:130,align:'center',sortable:true},
    	{field:'created_name',title:'制单人',width:80,align:'center'},
+   	{field:'updated_time',title:'更新时间',width:130,align:'center',sortable:true},
    	{field:'memo',title:'备注',width:250,align:'center'}
    ]];
 var currDataGrid;

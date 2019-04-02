@@ -46,8 +46,8 @@ function orderCancel(){
 	var row = rows[0];
 	$.messager.confirm("确认","确认要取消该单据("+ row.refund_id +")?",function(sure){
 		if(sure) {		
-			commonPost("${api}/bus/aftersale/status/${cancelStatus}", 
-				{"refundId": row.refund_id}, reflushDataGrid());		
+			commonPost("${api}/bus/aftersale/status/${cancelStatus}?refundIds="+ row.refund_id, 
+					JSON.stringify({}), reflushDataGrid);		
 		}
 	});
 }
