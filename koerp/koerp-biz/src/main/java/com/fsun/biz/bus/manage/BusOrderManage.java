@@ -11,9 +11,7 @@ import org.springframework.stereotype.Component;
 import com.fsun.biz.common.CrudManage;
 import com.fsun.common.utils.DateUtil;
 import com.fsun.dao.mapper.BusOrderMapper;
-import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusOrderDto;
-import com.fsun.domain.entity.BusOrderCondition;
 import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.ProductTypeEnum;
 import com.fsun.domain.model.BusGoods;
@@ -37,7 +35,7 @@ public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
 	 */
 	public String initOrderId(String orderType, String shopCode) {
 		String prefix = DateUtil.getNowDateStr().replace("-", "") + "0"+ orderType + shopCode;
-		List<String> list = mapper.getMaxOrderId(prefix);
+		List<String> list = mapper.getMaxNumber(prefix);
 		if(list!=null && list.size()>0){
 			String maxOrderNo = list.get(0);
 			return (Long.parseLong(maxOrderNo) + 1) + "";
@@ -46,25 +44,6 @@ public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
 		}
 	}
 
-
-	/**
-	 * 获取订单实体(头信息、商品明细、账单信息)
-	 * @param orderId
-	 * @return
-	 */
-	public HashMap<String, Object> loadEntity(String orderId) {
-		return mapper.loadEntity(orderId);
-	}
-
-	/**
-	 * 
-	 * @param condition
-	 * @return
-	 */
-	public PageModel findPage(BusOrderCondition condition) {
-		List<BusOrder> list = mapper.selectList(condition);
-		return new PageModel(list);
-	}
 
 	/**
 	 * 初始化商品分摊明细

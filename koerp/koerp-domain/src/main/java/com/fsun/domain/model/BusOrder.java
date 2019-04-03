@@ -39,7 +39,13 @@ public class BusOrder {
      * 表字段 : bus_order.pos_no
      */
     private String posNo;
-
+    
+    /**
+     * 寄提状态  0 未提取 1 部分提取 2 完全提取
+     * 表字段 : bus_order.take_status
+     */
+    private String takeStatus;  
+    
     /**
      * 卡类别
      * 表字段 : bus_order.card_type
@@ -1064,6 +1070,20 @@ public class BusOrder {
 	 */
 	public void setRefundId(String refundId) {
 		this.refundId = refundId;
+	}
+
+	/**
+	 * @return the takeStatus
+	 */
+	public String getTakeStatus() {
+		return takeStatus;
+	}
+
+	/**
+	 * @param takeStatus the takeStatus to set
+	 */
+	public void setTakeStatus(String takeStatus) {
+		this.takeStatus = takeStatus;
 	}
     
 }

@@ -34,6 +34,15 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	public T load(String id) {
 		return mapper.selectByPrimaryKey(id);
 	}
+	
+	/**
+	 * 获取对象
+	 * @param id
+	 * @return
+	 */
+	public HashMap<String, Object> loadEntity(Object id) {
+		return mapper.loadEntity(id);
+	}
 
 	/**
 	 * 查询列表数据
@@ -49,12 +58,12 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	 * 查询分页数据
 	 * @param condition
 	 * @return
-	
+	 */
 	public <C>PageModel findPage(C condition) {
 		List<T> list = mapper.selectList(condition);
 		return new PageModel(list);
 	}
-	 */
+	
 	
 	/**
 	 * 查询分页数据(Map)
@@ -89,7 +98,6 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	 *
 	 * @param entity
 	 */
-	@Transactional
 	public int create(T domain) {		
 		return mapper.insert(domain);		
 	}
@@ -98,7 +106,6 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	 * 属性非空更新对象
 	 * @param entity
 	 */
-	@Transactional
 	public int update(T domain) {		
 		return mapper.updateByPrimaryKeySelective(domain);		
 	}
@@ -107,7 +114,6 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	 * 更新对象所有属性
 	 * @param entity
 	 */
-	@Transactional
 	public int updateEach(T domain) {		
 		return mapper.updateByPrimaryKey(domain);		
 	}
@@ -117,7 +123,6 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	 *
 	 * @param entity
 	 */
-	@Transactional
 	public int delete(String id) {
 		return mapper.deleteByPrimaryKey(id);
 	}

@@ -12,8 +12,6 @@ import com.fsun.biz.common.CrudManage;
 import com.fsun.common.utils.DateUtil;
 import com.fsun.dao.mapper.DocPoDetailsMapper;
 import com.fsun.dao.mapper.DocPoHeaderMapper;
-import com.fsun.domain.common.PageModel;
-import com.fsun.domain.entity.DocPoHeaderCondition;
 import com.fsun.domain.enums.DocPoStatusEnum;
 import com.fsun.domain.model.DocOrderDetails;
 import com.fsun.domain.model.DocOrderHeader;
@@ -40,32 +38,13 @@ public class DocPoHeaderManage extends CrudManage<DocPoHeaderMapper, DocPoHeader
 	 */
 	public String initPoNo(String poType, String shopCode) {
 		String prefix = DateUtil.getNowDateStr().replace("-", "") + poType + shopCode;
-		List<String> list = mapper.getMaxPoNo(prefix);
+		List<String> list = mapper.getMaxNumber(prefix);
 		if(list!=null && list.size()>0){
 			String maxPoNo = list.get(0);
 			return (Long.parseLong(maxPoNo) + 1) + "";
 		}else{	
 			return prefix + "00001";
 		}
-	}
-
-	/**
-	 * 
-	 * @param condition
-	 * @return
-	 */
-	public PageModel findPage(DocPoHeaderCondition condition) {
-		List<DocPoHeader> list = mapper.selectList(condition);
-		return new PageModel(list);
-	}
-
-	/**
-	 * 
-	 * @param orderNo
-	 * @return
-	 */
-	public HashMap<String, Object> loadEntity(String poNo) {
-		return mapper.loadEntity(poNo);
 	}
 
 	/**

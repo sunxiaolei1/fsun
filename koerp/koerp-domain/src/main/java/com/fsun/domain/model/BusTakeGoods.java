@@ -11,10 +11,28 @@ public class BusTakeGoods {
     private String goodsId;
 
     /**
+     * 寄提单号
+     * 表字段 : bus_take_goods.take_id
+     */
+    private String takeId;
+
+    /**
      * 订单id
      * 表字段 : bus_take_goods.order_id
      */
     private String orderId;
+
+    /**
+     * 原商品主键
+     * 表字段 : bus_take_goods.ori_goods_id
+     */
+    private String oriGoodsId;
+
+    /**
+     * 门店信息
+     * 表字段 : bus_take_goods.shop_id
+     */
+    private String shopId;
 
     /**
      * 行号
@@ -29,6 +47,72 @@ public class BusTakeGoods {
     private String goodsName;
 
     /**
+     * 
+     * 表字段 : bus_take_goods.category_name
+     */
+    private String categoryName;
+
+    /**
+     * 分类id
+     * 表字段 : bus_take_goods.category_code
+     */
+    private String categoryCode;
+
+    /**
+     * 
+     * 表字段 : bus_take_goods.brand_name
+     */
+    private String brandName;
+
+    /**
+     * 品牌编码
+     * 表字段 : bus_take_goods.brand_code
+     */
+    private String brandCode;
+
+    /**
+     * 产品类型 1 单品，2 组合
+     * 表字段 : bus_take_goods.product_type
+     */
+    private Short productType;
+
+    /**
+     * 商品条码
+     * 表字段 : bus_take_goods.bar_code
+     */
+    private String barCode;
+
+    /**
+     * 单位
+     * 表字段 : bus_take_goods.unit
+     */
+    private String unit;
+
+    /**
+     * 换算数量
+     * 表字段 : bus_take_goods.convert_qty
+     */
+    private BigDecimal convertQty;
+
+    /**
+     * 换算单位
+     * 表字段 : bus_take_goods.convert_unit
+     */
+    private String convertUnit;
+
+    /**
+     * 市场价
+     * 表字段 : bus_take_goods.market_price
+     */
+    private BigDecimal marketPrice;
+
+    /**
+     * 原销售价
+     * 表字段 : bus_take_goods.origin_sale_price
+     */
+    private BigDecimal originSalePrice;
+
+    /**
      * sku
      * 表字段 : bus_take_goods.sku
      */
@@ -39,6 +123,18 @@ public class BusTakeGoods {
      * 表字段 : bus_take_goods.qty
      */
     private BigDecimal qty;
+
+    /**
+     * 原订单数量
+     * 表字段 : bus_take_goods.ori_qty
+     */
+    private BigDecimal oriQty;
+
+    /**
+     * 
+     * 表字段 : bus_take_goods.max_qty
+     */
+    private BigDecimal maxQty;
 
     /**
      * 实际销售价(销售价、会员价)
@@ -72,12 +168,36 @@ public class BusTakeGoods {
         this.goodsId = goodsId == null ? null : goodsId.trim();
     }
 
+    public String getTakeId() {
+        return takeId;
+    }
+
+    public void setTakeId(String takeId) {
+        this.takeId = takeId == null ? null : takeId.trim();
+    }
+
     public String getOrderId() {
         return orderId;
     }
 
     public void setOrderId(String orderId) {
         this.orderId = orderId == null ? null : orderId.trim();
+    }
+
+    public String getOriGoodsId() {
+        return oriGoodsId;
+    }
+
+    public void setOriGoodsId(String oriGoodsId) {
+        this.oriGoodsId = oriGoodsId == null ? null : oriGoodsId.trim();
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId == null ? null : shopId.trim();
     }
 
     public Integer getLineNo() {
@@ -96,6 +216,94 @@ public class BusTakeGoods {
         this.goodsName = goodsName == null ? null : goodsName.trim();
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName == null ? null : categoryName.trim();
+    }
+
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode == null ? null : categoryCode.trim();
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName == null ? null : brandName.trim();
+    }
+
+    public String getBrandCode() {
+        return brandCode;
+    }
+
+    public void setBrandCode(String brandCode) {
+        this.brandCode = brandCode == null ? null : brandCode.trim();
+    }
+
+    public Short getProductType() {
+        return productType;
+    }
+
+    public void setProductType(Short productType) {
+        this.productType = productType;
+    }
+
+    public String getBarCode() {
+        return barCode;
+    }
+
+    public void setBarCode(String barCode) {
+        this.barCode = barCode == null ? null : barCode.trim();
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit == null ? null : unit.trim();
+    }
+
+    public BigDecimal getConvertQty() {
+        return convertQty;
+    }
+
+    public void setConvertQty(BigDecimal convertQty) {
+        this.convertQty = convertQty;
+    }
+
+    public String getConvertUnit() {
+        return convertUnit;
+    }
+
+    public void setConvertUnit(String convertUnit) {
+        this.convertUnit = convertUnit == null ? null : convertUnit.trim();
+    }
+
+    public BigDecimal getMarketPrice() {
+        return marketPrice;
+    }
+
+    public void setMarketPrice(BigDecimal marketPrice) {
+        this.marketPrice = marketPrice;
+    }
+
+    public BigDecimal getOriginSalePrice() {
+        return originSalePrice;
+    }
+
+    public void setOriginSalePrice(BigDecimal originSalePrice) {
+        this.originSalePrice = originSalePrice;
+    }
+
     public String getSku() {
         return sku;
     }
@@ -110,6 +318,22 @@ public class BusTakeGoods {
 
     public void setQty(BigDecimal qty) {
         this.qty = qty;
+    }
+
+    public BigDecimal getOriQty() {
+        return oriQty;
+    }
+
+    public void setOriQty(BigDecimal oriQty) {
+        this.oriQty = oriQty;
+    }
+
+    public BigDecimal getMaxQty() {
+        return maxQty;
+    }
+
+    public void setMaxQty(BigDecimal maxQty) {
+        this.maxQty = maxQty;
     }
 
     public BigDecimal getSalePrice() {

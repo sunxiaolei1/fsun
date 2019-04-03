@@ -204,7 +204,7 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 			if(!user.getShopId().equals(shopId)){
 				throw new DocAsnException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
 			}
-			if(!asnStatusValidator(status, header)){
+			if(!this.asnStatusValidator(status, header)){
 				throw new DocAsnException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
 			}
 			header.setAsnStatus(status);

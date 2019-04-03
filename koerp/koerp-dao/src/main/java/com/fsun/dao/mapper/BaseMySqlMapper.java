@@ -11,6 +11,13 @@ import java.util.List;
  */
 public interface BaseMySqlMapper<T> {
 	
+	/**
+	 * 获取编码规则下的最大单号
+	 * @param prefix
+	 * @return
+	 */
+	public List<String> getMaxNumber(String prefix);
+	
 	public int deleteByPrimaryKey(Object primaryKey);
 	
 	public int delete(T record);
@@ -20,6 +27,13 @@ public interface BaseMySqlMapper<T> {
     public int insertSelective(T record);
 
     public T selectByPrimaryKey(Object primaryKey);
+    
+    /**
+     * 获取头及明细对象
+     * @param primaryKey
+     * @return
+     */
+    public HashMap<String, Object> loadEntity(Object primaryKey);
     
     public <C>List<T> selectList(C condition);
     

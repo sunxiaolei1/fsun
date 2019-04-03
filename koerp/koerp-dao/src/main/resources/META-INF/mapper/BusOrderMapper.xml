@@ -9,6 +9,7 @@
     <result column="ext_order_id" property="extOrderId" jdbcType="VARCHAR" />
     <result column="pos_no" property="posNo" jdbcType="VARCHAR" />
     <result column="card_type" property="cardType" jdbcType="CHAR" />
+    <result column="take_status" property="takeStatus" jdbcType="CHAR" />
     <result column="buyer_id" property="buyerId" jdbcType="VARCHAR" />
     <result column="buyer_name" property="buyerName" jdbcType="VARCHAR" />
     <result column="carrier_id" property="carrierId" jdbcType="VARCHAR" />
@@ -137,7 +138,7 @@
 	</where>
   </sql>
   
-  <select id="getMaxOrderId" resultType="java.lang.String" parameterType="java.lang.String" >    
+  <select id="getMaxNumber" resultType="java.lang.String" parameterType="java.lang.String" >    
 	select 
 		order_id 
 	from bus_order 
@@ -406,7 +407,7 @@
   <insert id="insert" parameterType="com.fsun.domain.model.BusOrder" >
     insert into bus_order (order_id, order_type, pay_type, 
       sys_order_id, ext_order_id, pos_no, 
-      card_type, buyer_id, buyer_name, 
+      take_status, card_type, buyer_id, buyer_name, 
       carrier_id, carrier_name, plat_id, 
       plat_name, plat_shop_id, shop_id, 
       shop_name, trade_from, trade_status, 
@@ -431,7 +432,7 @@
       created_name)
     values (#{orderId,jdbcType=VARCHAR}, #{orderType,jdbcType=SMALLINT}, #{payType,jdbcType=SMALLINT}, 
       #{sysOrderId,jdbcType=VARCHAR}, #{extOrderId,jdbcType=VARCHAR}, #{posNo,jdbcType=VARCHAR}, 
-      #{cardType,jdbcType=CHAR}, #{buyerId,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, 
+      #{takeStatus,jdbcType=CHAR}, #{cardType,jdbcType=CHAR}, #{buyerId,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, 
       #{carrierId,jdbcType=VARCHAR}, #{carrierName,jdbcType=VARCHAR}, #{platId,jdbcType=VARCHAR}, 
       #{platName,jdbcType=VARCHAR}, #{platShopId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
       #{shopName,jdbcType=VARCHAR}, #{tradeFrom,jdbcType=VARCHAR}, #{tradeStatus,jdbcType=CHAR}, 
@@ -478,6 +479,9 @@
       </if>
       <if test="cardType != null" >
         card_type,
+      </if>
+      <if test="takeStatus != null" >
+        take_status,
       </if>
       <if test="buyerId != null" >
         buyer_id,
@@ -706,6 +710,9 @@
       <if test="cardType != null" >
         #{cardType,jdbcType=CHAR},
       </if>
+      <if test="takeStatus != null" >
+         #{takeStatus,jdbcType=CHAR},
+      </if>    
       <if test="buyerId != null" >
         #{buyerId,jdbcType=VARCHAR},
       </if>
@@ -930,6 +937,9 @@
       <if test="posNo != null" >
         pos_no = #{posNo,jdbcType=VARCHAR},
       </if>
+      <if test="takeStatus != null" >
+         take_status = #{takeStatus,jdbcType=CHAR},
+      </if> 
       <if test="cardType != null" >
         card_type = #{cardType,jdbcType=CHAR},
       </if>
@@ -1147,6 +1157,7 @@
       sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
       ext_order_id = #{extOrderId,jdbcType=VARCHAR},
       pos_no = #{posNo,jdbcType=VARCHAR},
+      take_status = #{takeStatus,jdbcType=CHAR},
       card_type = #{cardType,jdbcType=CHAR},
       buyer_id = #{buyerId,jdbcType=VARCHAR},
       buyer_name = #{buyerName,jdbcType=VARCHAR},

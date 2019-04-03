@@ -29,7 +29,6 @@ import com.fsun.domain.entity.BusRefundCondition;
 import com.fsun.domain.entity.BusRefundGoodsCondition;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
-import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.RefundOrderStatusEnum;
@@ -49,7 +48,6 @@ import com.fsun.domain.model.BusRefundGoods;
 import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.AfterSaleException;
-import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
 

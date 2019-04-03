@@ -19,6 +19,11 @@ import com.fsun.domain.model.BusBasSku;
 @Component
 public class BusBasSkuManage extends CrudManage<BusBasSkuMapper, BusBasSku>{
 
+	/**
+	 * 
+	 * @param condition
+	 * @return
+	 */
 	public PageModel findPage(BusBasSkuCondition condition) {		
 		List<BusBasSku> list = mapper.selectList(condition);
 		this.formatSalePrice(list, condition.getTradeType());

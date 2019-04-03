@@ -96,7 +96,7 @@
     	<include refid="conditions" />
   </select>
   
-  <select id="getMaxRefundId" resultType="java.lang.String" parameterType="java.lang.String" >    
+  <select id="getMaxNumber" resultType="java.lang.String" parameterType="java.lang.String" >    
 	select 
 		refund_id 
 	from bus_refund 

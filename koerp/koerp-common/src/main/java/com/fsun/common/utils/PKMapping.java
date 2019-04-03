@@ -36,6 +36,7 @@ public class PKMapping {
   public static int doc_order_header = 1021;
   public static int doc_po_details = 1022;
   public static int doc_po_header = 1023;
+  public static int bus_take = 1024;
  
   /**
    *

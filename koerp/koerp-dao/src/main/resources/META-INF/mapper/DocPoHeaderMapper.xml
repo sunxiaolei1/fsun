@@ -291,7 +291,7 @@
     where o.po_no = #{poNo,jdbcType=VARCHAR}
   </select>
   
-   <select id="getMaxPoNo" resultType="java.lang.String" parameterType="java.lang.String" >    
+   <select id="getMaxNumber" resultType="java.lang.String" parameterType="java.lang.String" >    
 	select 
 		po_no 
 	from doc_po_header 

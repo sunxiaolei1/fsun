@@ -300,7 +300,7 @@
     where o.asn_no = #{asnNo,jdbcType=VARCHAR}
   </select>
   
-   <select id="getMaxAsnNo" resultType="java.lang.String" parameterType="java.lang.String" >    
+   <select id="getMaxNumber" resultType="java.lang.String" parameterType="java.lang.String" >    
 	select 
 		asn_no 
 	from doc_asn_header 

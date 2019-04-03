@@ -3,19 +3,109 @@
 <mapper namespace="com.fsun.dao.mapper.BusTakeGoodsMapper" >
   <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusTakeGoods" >
     <id column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="take_id" property="takeId" jdbcType="VARCHAR" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="ori_goods_id" property="oriGoodsId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
     <result column="line_no" property="lineNo" jdbcType="INTEGER" />
     <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="brand_code" property="brandCode" jdbcType="VARCHAR" />
+    <result column="product_type" property="productType" jdbcType="SMALLINT" />
+    <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="convert_qty" property="convertQty" jdbcType="DECIMAL" />
+    <result column="convert_unit" property="convertUnit" jdbcType="VARCHAR" />
+    <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="origin_sale_price" property="originSalePrice" jdbcType="DECIMAL" />
     <result column="sku" property="sku" jdbcType="VARCHAR" />
     <result column="qty" property="qty" jdbcType="DECIMAL" />
+    <result column="ori_qty" property="oriQty" jdbcType="DECIMAL" />
+    <result column="max_qty" property="maxQty" jdbcType="DECIMAL" />
     <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
     <result column="enabled" property="enabled" jdbcType="BIT" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    goods_id, order_id, line_no, goods_name, sku, qty, sale_price, enabled, memo, created_time
+    goods_id, take_id, order_id, ori_goods_id, shop_id, line_no, goods_name, category_name, 
+    category_code, brand_name, brand_code, product_type, bar_code, unit, convert_qty, 
+    convert_unit, market_price, origin_sale_price, sku, qty, ori_qty, max_qty, sale_price, 
+    enabled, memo, created_time
   </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="takeId != null and takeId != ''">
+  			and take_id = #{takeId}
+  		</if>
+  		
+  		<if test="sku != null and sku != ''">
+  			and sku = #{sku}
+  		</if>
+  				
+	</where>
+  </sql>
+  
+  <select id="selectList" resultMap="BaseResultMap" 
+  	parameterType="com.fsun.domain.entity.BusTakeGoodsCondition" >    
+	SELECT 
+		<include refid="Base_Column_List" />
+    FROM bus_take_goods
+    	<include refid="conditions" />
+  </select>
+  
+  <select id="getInvSkuByOrderId" resultMap="BaseResultMap" 
+  		parameterType="java.lang.String" >    
+	SELECT 
+		c.goods_name as goods_name,
+		c.category_name as category_name, 
+    	c.category_code as category_code, 
+    	c.brand_name as brand_name, 
+    	c.brand_code as brand_code, 
+    	c.product_type as product_type, 
+    	c.bar_code as bar_code, 
+    	c.unit as unit, 
+    	c.convert_qty as convert_qty, 
+    	c.convert_unit as convert_unit, 
+    	c.market_price as market_price, 
+    	c.origin_sale_price as origin_sale_price,
+		c.order_id as order_id,	
+		c.ori_goods_id as ori_goods_id,
+		c.ori_qty as ori_qty,
+		sum(c.ori_qty - c.taked_qty) as max_qty,
+		sum(c.ori_qty - c.taked_qty) as qty,
+		c.sale_price as sale_price,	
+		c.shop_id as shop_id,
+		c.sku as sku	 
+	from (
+		SELECT 
+	    	goods_name as goods_name,
+	    	category_name as category_name, 
+	    	category_code as category_code, 
+	    	brand_name as brand_name, 
+	    	brand_code as brand_code, 
+	    	product_type as product_type, 
+	    	bar_code as bar_code, 
+	    	unit as unit, 
+	    	convert_qty as convert_qty, 
+	    	convert_unit as convert_unit, 
+	    	market_price as market_price, 
+    		origin_sale_price as origin_sale_price,
+			order_id as order_id,	
+	    	ori_goods_id as ori_goods_id,
+	   	 	ori_qty as ori_qty,
+			sum(qty) as taked_qty,
+	    	sale_price as sale_price,	
+			shop_id as shop_id,
+			sku as sku 
+		from bus_take_goods where enabled = 1 and order_id = #{orderId,jdbcType=VARCHAR}
+		GROUP BY order_id, sku
+	) as c GROUP BY c.order_id, c.sku
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -27,12 +117,22 @@
     where goods_id = #{goodsId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.BusTakeGoods" >
-    insert into bus_take_goods (goods_id, order_id, line_no, 
-      goods_name, sku, qty, 
+    insert into bus_take_goods (goods_id, take_id, order_id, 
+      ori_goods_id, shop_id, line_no, 
+      goods_name, category_name, category_code, 
+      brand_name, brand_code, product_type, 
+      bar_code, unit, convert_qty, 
+      convert_unit, market_price, origin_sale_price, 
+      sku, qty, ori_qty, max_qty, 
       sale_price, enabled, memo, 
       created_time)
-    values (#{goodsId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{lineNo,jdbcType=INTEGER}, 
-      #{goodsName,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, 
+    values (#{goodsId,jdbcType=VARCHAR}, #{takeId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{oriGoodsId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{lineNo,jdbcType=INTEGER}, 
+      #{goodsName,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, 
+      #{brandName,jdbcType=VARCHAR}, #{brandCode,jdbcType=VARCHAR}, #{productType,jdbcType=SMALLINT}, 
+      #{barCode,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{convertQty,jdbcType=DECIMAL}, 
+      #{convertUnit,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, #{originSalePrice,jdbcType=DECIMAL}, 
+      #{sku,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, #{oriQty,jdbcType=DECIMAL}, #{maxQty,jdbcType=DECIMAL}, 
       #{salePrice,jdbcType=DECIMAL}, #{enabled,jdbcType=BIT}, #{memo,jdbcType=VARCHAR}, 
       #{createdTime,jdbcType=TIMESTAMP})
   </insert>
@@ -42,8 +142,17 @@
       <if test="goodsId != null" >
         goods_id,
       </if>
+      <if test="takeId != null" >
+        take_id,
+      </if>
       <if test="orderId != null" >
         order_id,
+      </if>
+      <if test="oriGoodsId != null" >
+        ori_goods_id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
       </if>
       <if test="lineNo != null" >
         line_no,
@@ -51,11 +160,50 @@
       <if test="goodsName != null" >
         goods_name,
       </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="categoryCode != null" >
+        category_code,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
+      </if>
+      <if test="brandCode != null" >
+        brand_code,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>
+      <if test="barCode != null" >
+        bar_code,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="convertQty != null" >
+        convert_qty,
+      </if>
+      <if test="convertUnit != null" >
+        convert_unit,
+      </if>
+      <if test="marketPrice != null" >
+        market_price,
+      </if>
+      <if test="originSalePrice != null" >
+        origin_sale_price,
+      </if>
       <if test="sku != null" >
         sku,
       </if>
       <if test="qty != null" >
         qty,
+      </if>
+      <if test="oriQty != null" >
+        ori_qty,
+      </if>
+      <if test="maxQty != null" >
+        max_qty,
       </if>
       <if test="salePrice != null" >
         sale_price,
@@ -74,8 +222,17 @@
       <if test="goodsId != null" >
         #{goodsId,jdbcType=VARCHAR},
       </if>
+      <if test="takeId != null" >
+        #{takeId,jdbcType=VARCHAR},
+      </if>
       <if test="orderId != null" >
         #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="oriGoodsId != null" >
+        #{oriGoodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
       </if>
       <if test="lineNo != null" >
         #{lineNo,jdbcType=INTEGER},
@@ -83,11 +240,50 @@
       <if test="goodsName != null" >
         #{goodsName,jdbcType=VARCHAR},
       </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null" >
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandCode != null" >
+        #{brandCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=SMALLINT},
+      </if>
+      <if test="barCode != null" >
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="convertQty != null" >
+        #{convertQty,jdbcType=DECIMAL},
+      </if>
+      <if test="convertUnit != null" >
+        #{convertUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="originSalePrice != null" >
+        #{originSalePrice,jdbcType=DECIMAL},
+      </if>
       <if test="sku != null" >
         #{sku,jdbcType=VARCHAR},
       </if>
       <if test="qty != null" >
         #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="oriQty != null" >
+        #{oriQty,jdbcType=DECIMAL},
+      </if>
+      <if test="maxQty != null" >
+        #{maxQty,jdbcType=DECIMAL},
       </if>
       <if test="salePrice != null" >
         #{salePrice,jdbcType=DECIMAL},
@@ -106,8 +302,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusTakeGoods" >
     update bus_take_goods
     <set >
+      <if test="takeId != null" >
+        take_id = #{takeId,jdbcType=VARCHAR},
+      </if>
       <if test="orderId != null" >
         order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="oriGoodsId != null" >
+        ori_goods_id = #{oriGoodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
       </if>
       <if test="lineNo != null" >
         line_no = #{lineNo,jdbcType=INTEGER},
@@ -115,11 +320,50 @@
       <if test="goodsName != null" >
         goods_name = #{goodsName,jdbcType=VARCHAR},
       </if>
+      <if test="categoryName != null" >
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null" >
+        category_code = #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandCode != null" >
+        brand_code = #{brandCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=SMALLINT},
+      </if>
+      <if test="barCode != null" >
+        bar_code = #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="convertQty != null" >
+        convert_qty = #{convertQty,jdbcType=DECIMAL},
+      </if>
+      <if test="convertUnit != null" >
+        convert_unit = #{convertUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null" >
+        market_price = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="originSalePrice != null" >
+        origin_sale_price = #{originSalePrice,jdbcType=DECIMAL},
+      </if>
       <if test="sku != null" >
         sku = #{sku,jdbcType=VARCHAR},
       </if>
       <if test="qty != null" >
         qty = #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="oriQty != null" >
+        ori_qty = #{oriQty,jdbcType=DECIMAL},
+      </if>
+      <if test="maxQty != null" >
+        max_qty = #{maxQty,jdbcType=DECIMAL},
       </if>
       <if test="salePrice != null" >
         sale_price = #{salePrice,jdbcType=DECIMAL},
@@ -138,11 +382,27 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusTakeGoods" >
     update bus_take_goods
-    set order_id = #{orderId,jdbcType=VARCHAR},
+    set take_id = #{takeId,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      ori_goods_id = #{oriGoodsId,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=VARCHAR},
       line_no = #{lineNo,jdbcType=INTEGER},
       goods_name = #{goodsName,jdbcType=VARCHAR},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      category_code = #{categoryCode,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      brand_code = #{brandCode,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=SMALLINT},
+      bar_code = #{barCode,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      convert_qty = #{convertQty,jdbcType=DECIMAL},
+      convert_unit = #{convertUnit,jdbcType=VARCHAR},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      origin_sale_price = #{originSalePrice,jdbcType=DECIMAL},
       sku = #{sku,jdbcType=VARCHAR},
       qty = #{qty,jdbcType=DECIMAL},
+      ori_qty = #{oriQty,jdbcType=DECIMAL},
+      max_qty = #{maxQty,jdbcType=DECIMAL},
       sale_price = #{salePrice,jdbcType=DECIMAL},
       enabled = #{enabled,jdbcType=BIT},
       memo = #{memo,jdbcType=VARCHAR},

@@ -1,7 +1,6 @@
 package com.fsun.biz.bus.manage;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -14,8 +13,6 @@ import com.fsun.common.utils.PKMapping;
 import com.fsun.dao.mapper.BusShopMapper;
 import com.fsun.dao.mapper.DocAsnDetailsMapper;
 import com.fsun.dao.mapper.DocAsnHeaderMapper;
-import com.fsun.domain.common.PageModel;
-import com.fsun.domain.entity.DocAsnHeaderCondition;
 import com.fsun.domain.enums.DocAsnSignTypeEnum;
 import com.fsun.domain.enums.DocAsnStatusEnum;
 import com.fsun.domain.enums.DocAsnTypeEnum;
@@ -43,25 +40,6 @@ public class DocAsnHeaderManage extends CrudManage<DocAsnHeaderMapper, DocAsnHea
 	private DocAsnDetailsMapper docAsnDetailsMapper;
 
 	/**
-	 * 获取单个对象
-	 * @param asnNo
-	 * @return
-	 */
-	public HashMap<String, Object> loadEntity(String asnNo) {
-		return mapper.loadEntity(asnNo);
-	}
-
-	/**
-	 * 获取列表
-	 * @param condition
-	 * @return
-	 */
-	public PageModel findPage(DocAsnHeaderCondition condition) {
-		List<DocAsnHeader> list = mapper.selectList(condition);
-		return new PageModel(list);
-	}
-
-	/**
 	 * 根据入库类型生成入库单号
 	 * @param asnType
 	 * @return
@@ -69,7 +47,7 @@ public class DocAsnHeaderManage extends CrudManage<DocAsnHeaderMapper, DocAsnHea
 	public String initAsnNo(String asnType, String shopCode) {
 		
 		String prefix = DateUtil.getNowDateStr().replace("-", "") + asnType + shopCode;
-		List<String> list = mapper.getMaxAsnNo(prefix);
+		List<String> list = mapper.getMaxNumber(prefix);
 		if(list!=null && list.size()>0){
 			String maxAsnNo = list.get(0);
 			return (Long.parseLong(maxAsnNo) + 1) + "";

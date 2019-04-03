@@ -313,7 +313,7 @@
     where o.order_no = #{orderNo,jdbcType=VARCHAR}
   </select>
   
-   <select id="getMaxOrderNo" resultType="java.lang.String" parameterType="java.lang.String" >    
+   <select id="getMaxNumber" resultType="java.lang.String" parameterType="java.lang.String" >    
 	select 
 		order_no 
 	from doc_order_header 
