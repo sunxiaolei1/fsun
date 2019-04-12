@@ -16,6 +16,7 @@ public enum DocTradeTypeEnum {
 	SALE_SO("14","销售出库",0),
 	LOSE_SO("15","报损出库",1),
 	USE_SO("16","领用出库",2),
+	TAKE_SO("17","寄提出库",0),
 	ALLOT_SI("21","调拨入库",1),
 	OVER_SI("22","盘盈入库",1),
 	PURCHASE_SI("23","采购入库",1),

@@ -50,7 +50,7 @@ public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondi
 	 * 一键退货
 	 * @param busRefundDto
 	 */
-	public String onekeyRefund(BusRefundDto busRefundDto);
+	public String allReturn(BusRefundDto busRefundDto);
 
 	/**
 	 * 创建换货单
@@ -83,5 +83,13 @@ public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondi
 	 * @param sysuser
 	 */
 	public void handleSign(String refundId, Short refundStatus, String memo, SysUser sysuser);
+
+	/**
+	 * 整单退初始化数据
+	 * @param orderId
+	 * @param currUser
+	 * @return
+	 */
+	public HashMap<String, Object> getAllRefundInitData(String orderId, BusUserDto currUser);
 
 }

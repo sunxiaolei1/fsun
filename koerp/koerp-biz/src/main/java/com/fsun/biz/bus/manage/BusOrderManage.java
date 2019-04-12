@@ -33,7 +33,7 @@ public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
 	 * @param shopCode
 	 * @return
 	 */
-	public String initOrderId(String orderType, String shopCode) {
+	public String initOrderId(Short orderType, String shopCode) {
 		String prefix = DateUtil.getNowDateStr().replace("-", "") + "0"+ orderType + shopCode;
 		List<String> list = mapper.getMaxNumber(prefix);
 		if(list!=null && list.size()>0){

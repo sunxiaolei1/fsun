@@ -34,6 +34,8 @@ import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
+import com.fsun.domain.enums.OrderTakeStatusEnum;
+import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.PayTypeEnum;
 import com.fsun.domain.enums.TradeFromEnum;
@@ -114,7 +116,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	}
 
 	@Override
-	public HashMap<String, Object> getInitData(String orderId, String orderType, BusUserDto currUser) {
+	public HashMap<String, Object> getInitData(String orderId, Short orderType, BusUserDto currUser) {
 		HashMap<String, Object> map = new HashMap<>();
 		if(StringUtils.isEmpty(orderId)){			
 			BusOrder header = this.getInitHeader(orderType, currUser);
@@ -126,7 +128,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	}
 	
 	@Override
-	public HashMap<String, Object> getInitCopyOrder(String orderId, String orderType, BusUserDto currUser){
+	public HashMap<String, Object> getInitCopyOrder(String orderId, Short orderType, BusUserDto currUser){
 		HashMap<String, Object> map = busOrderManage.loadEntity(orderId);		
 		String newOrderId = busOrderManage.initOrderId(orderType, currUser.getShopCode());
 		HashMap<String, Object> header = (HashMap<String, Object>) map.get("header");
@@ -206,13 +208,16 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 			if(OrderStatusEnum.getByCode(status)==OrderStatusEnum.CANCEL){	
 				//还原商品库存
 				header.setTradeStatus(TradeStatusEnum.CANCEL.getCode());
-				header.setFlowStatus(FlowStatusEnum.COMPLETED.getCode());
-				BusGoodsCondition condition0 = new BusGoodsCondition();
-				condition0.setOrderId(orderId);
-				List<BusGoods> details = busGoodsManage.list(condition0);
-				for (BusGoods busGoods : details) {
-					super.skuStockIn(header, busGoods);
-				}				
+				header.setFlowStatus(FlowStatusEnum.COMPLETED.getCode());				
+				//寄存订单商品不做库存加减
+				if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(header.getOrderType())){
+					BusGoodsCondition condition0 = new BusGoodsCondition();
+					condition0.setOrderId(orderId);
+					List<BusGoods> details = busGoodsManage.list(condition0);
+					for (BusGoods busGoods : details) {
+						super.skuStockIn(header, busGoods);
+					}
+				}								
 				BusPayAccountCondition condition1 = new BusPayAccountCondition();
 				condition1.setOrderId(orderId);
 				List<BusPayAccount> payAccounts = busPayAccountManage.list(condition1);
@@ -367,12 +372,19 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		Set<BusGoods> apportionDetails = new HashSet<>();
 		busOrderManage.initApportionDetails(busOrderDto, apportionDetails);
 		for (BusGoods busGoods : apportionDetails) {
+			BigDecimal calcTotalPrice = busGoods.getQty().multiply(busGoods.getSalePrice());
+			if(busGoods.getTotalPrice().compareTo(calcTotalPrice)!=0){
+				throw new OrderException(SCMErrorEnum.BUS_SKU_AMOUNT_ILLEGAL);
+			}
 			busGoods.setGoodsId(PKMapping.GUUID(PKMapping.bus_goods));
 			busGoods.setOrderId(orderId);
 			busGoods.setLineNo(lineNo++);			
 			busGoods.setCreatedTime(now);
 			busGoodsManage.create(busGoods);
-			super.skuStockOut(header, busGoods);
+			//寄存订单商品不做库存加减
+			if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(header.getOrderType())){
+				super.skuStockOut(header, busGoods);
+			}			
 		}
 		busOrderManage.create(header);		
 		return orderId;
@@ -508,17 +520,20 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	 * @param currentUser
 	 * @return
 	 */
-	private BusOrder getInitHeader(String orderType, BusUserDto currUser){
+	private BusOrder getInitHeader(Short orderType, BusUserDto currUser){
 		BusOrder header = new BusOrder();
 		String orderId = busOrderManage.initOrderId(orderType, currUser.getShopCode());
 		header.setOrderId(orderId);		
-		header.setOrderType(Short.valueOf(orderType));
+		header.setOrderType(orderType);
 		header.setShopId(currUser.getShopId());
 		header.setShopName(currUser.getShopName());
 		header.setCashId(currUser.getId());
 		header.setCashName(currUser.getRealname());
 		header.setPayType(PayTypeEnum.CURR_PAY.getValue());
 		header.setIsSettlemented(true);
+		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
+			header.setTakeStatus(OrderTakeStatusEnum.UNTAKE.getCode());
+		}
 		return header;
 	}
 

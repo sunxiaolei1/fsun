@@ -21,6 +21,7 @@ import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusTakeDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusTakeCondition;
+import com.fsun.domain.enums.BusTakeStatusEnum;
 import com.fsun.domain.model.BusTake;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.BusTakeException;
@@ -51,25 +52,62 @@ public class BusTakeController extends BaseController {
 	
 	@RequestMapping("/toAddView")
 	public ModelAndView toAddView() {
-		ModelAndView modelAndView = new ModelAndView("/busTake/toAddView");		
-		//控制编辑单价权限		
-		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
+		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toAddView");
 		return modelAndView;
 	}	
 	
+	/**
+	 * 跳转至寄提出库新增
+	 * @param orderId
+	 * @param buttontype
+	 * @return
+	 */
+	@RequestMapping("/toTakeOutView/{orderId}")
+	public ModelAndView toTakeOutView(@PathVariable("orderId") String orderId,
+		@RequestParam("buttontype") String buttontype) {				
+		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toTakeOutView");	
+		modelAndView.addObject("orderId", orderId);	
+		//单据状态权限控制按钮显示
+		modelAndView.addObject("buttontype", buttontype);
+		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, orderId, null);
+		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
+		return modelAndView;
+	}	
+	
+	/**
+	 * 跳转至提交对应的寄提出库明细预览页面
+	 * @return
+	 */
+	@RequestMapping("/toShowTakeOutView")
+	public ModelAndView toShowTakeOutView() {				
+		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toShowTakeOutView");	
+		return modelAndView;
+	}	
+
+	/**
+	 * 查看明细页面
+	 * @param takeId
+	 * @param buttontype
+	 * @return
+	 */
 	@RequestMapping("/toDetailView")
 	public ModelAndView toDetailView(@RequestParam("takeId") String takeId,
 		@RequestParam("buttontype") String buttontype) {				
-		ModelAndView modelAndView = new ModelAndView("/busTake/toDetailView");	
+		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toEditView");	
 		modelAndView.addObject("takeId", takeId);
-		modelAndView.addObject("cancelStatus", 0);		
+		modelAndView.addObject("cancelStatus", BusTakeStatusEnum.CANCEL.getCode());		
 		//单据状态权限控制按钮显示
 		modelAndView.addObject("buttontype", buttontype);
-		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, takeId, null);
+		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, null, takeId);
 		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
 		return modelAndView;
 	}		
 	
+	/**
+	 * 获取初始化数据
+	 * @param condition
+	 * @return
+	 */
 	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
 	@ResponseBody
 	public HttpResult getInitData(BusTakeCondition condition){

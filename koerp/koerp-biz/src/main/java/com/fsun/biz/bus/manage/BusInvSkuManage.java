@@ -99,7 +99,7 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 			return null;
 		}		
 		if(busInvSkus!=null && busInvSkus.size()>1){
-			throw new InvSkuException(SCMErrorEnum.BUS_SKU_ILLEGAL);
+			throw new InvSkuException(SCMErrorEnum.BUS_SKU_INV_ILLEGAL);
 		}
 		return busInvSkus.get(0);
 	}

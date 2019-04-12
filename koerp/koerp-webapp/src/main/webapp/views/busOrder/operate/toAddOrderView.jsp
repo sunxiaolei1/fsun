@@ -18,7 +18,8 @@
 		<input id="cashName" name="cashName" hidden="true" />
 		<input id="payType" name="payType" hidden="true" />
 		<input id="isSettlemented" name="isSettlemented" hidden="true" />	
-		<input id="originPrice" name="originPrice" hidden="true" />			
+		<input id="originPrice" name="originPrice" hidden="true" />	
+		<input id="takeStatus" name="takeStatus" hidden="true" />				
 		<table class="nb-formTable" style="width:100%;margin-top:2px;">
 	        <tr>
 	            <th width="12%">单据编号<span style="color:red;">*</span></th>

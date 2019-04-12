@@ -159,6 +159,17 @@ public class BusTakeGoods {
      * 表字段 : bus_take_goods.created_time
      */
     private Date createdTime;
+    
+    /**
+     * 规格
+     * 表字段 : bus_take_goods.property
+     */
+    private String property;
+    
+    /**
+     * 原订单实际可寄提的商品总数
+     */
+    private BigDecimal oriInvQty;
 
     public String getGoodsId() {
         return goodsId;
@@ -367,4 +378,32 @@ public class BusTakeGoods {
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
+
+	/**
+	 * @return the property
+	 */
+	public String getProperty() {
+		return property;
+	}
+
+	/**
+	 * @param property the property to set
+	 */
+	public void setProperty(String property) {
+		this.property = property;
+	}
+
+	/**
+	 * @return the oriInvQty
+	 */
+	public BigDecimal getOriInvQty() {
+		return oriInvQty;
+	}
+
+	/**
+	 * @param oriInvQty the oriInvQty to set
+	 */
+	public void setOriInvQty(BigDecimal oriInvQty) {
+		this.oriInvQty = oriInvQty;
+	}
 }

@@ -106,7 +106,7 @@ public class BusOrderController extends BaseController {
 	@RequestMapping(value="/getInitCopyOrder", method = {RequestMethod.GET})
 	@ResponseBody
 	public HttpResult getInitCopyOrder(@RequestParam("orderId") String orderId, 
-			@RequestParam("orderType") String orderType){
+			@RequestParam("orderType") Short orderType){
 		try {
 			BusUserDto currUser = super.getCurrentUser();
 			HashMap<String, Object> map = busOrderApi.getInitCopyOrder(orderId, orderType, currUser);
@@ -134,7 +134,7 @@ public class BusOrderController extends BaseController {
 	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
 	@ResponseBody
 	public HttpResult getInitData(@RequestParam("orderId") String orderId, 
-			@RequestParam("orderType") String orderType){
+			@RequestParam("orderType") Short orderType){
 		try {
 			BusUserDto currUser = super.getCurrentUser();
 			HashMap<String, Object> map = busOrderApi.getInitData(orderId, orderType, currUser);
@@ -325,14 +325,14 @@ public class BusOrderController extends BaseController {
 	}
 	
 	/**
-	 * 跳转至一键退货页面
-	 * @param sysorderid
+	 * 跳转至一键整单退货页面(可去除已寄提商品)
+	 * @param orderId
 	 * @return
 	 */
-	@RequestMapping(value="/refund/toOneKeyRefundView/{orderId}", method=RequestMethod.GET)
-	public ModelAndView toOneKeyRefundView(@PathVariable("orderId") String orderId) {
-		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/onekeyrefund"); 
-		modelAndView.addObject("orderId", orderId);		
+	@RequestMapping(value="/refund/toAllRefundView/{orderId}", method=RequestMethod.GET)
+	public ModelAndView toAllRefundView(@PathVariable("orderId") String orderId) {
+		ModelAndView modelAndView = new ModelAndView("/busAfterSale/refund/toAllRefundView"); 
+		modelAndView.addObject("orderId", orderId);	
 		return modelAndView;
 	}
 	
@@ -399,7 +399,7 @@ public class BusOrderController extends BaseController {
 						url = "/busOrder/operate/toAddOrderView";
 						break;						
 					case TAKE_ORDER:	
-						url = "/busOrder/operate/toAddTakeOrderView";
+						url = "/busOrder/operate/toAddOrderView";
 						break;					
 					default:
 						break;
@@ -411,7 +411,7 @@ public class BusOrderController extends BaseController {
 						url = "/busOrder/operate/toEditOrderView";
 						break;						
 					case TAKE_ORDER:	
-						url = "/busOrder/operate/toEditTakeOrderView";
+						url = "/busOrder/operate/toEditOrderView";
 						break;	
 					default:
 						break;

@@ -208,6 +208,12 @@ var soColumns = [[
 	    },
 	    formatter:intNumBaseFormat
 	},
+	{field:"untakeQty",title:"寄提库存", width:80,align:"center",
+		styler: function(value, rowData, rowIndex){
+	    	return 'font-weight:bold;color:green;';
+	    },
+	    formatter:intNumBaseFormat
+	},	
 	{field:"costPrice",title:"成本价", width:80, hidden:true},
 	{field:"totalPrice",title:"实付金额", width:80,align:"center",formatter:numBaseFormat},
 	{field:"totalPartPrice",title:"分摊金额", width:80, hidden:true},

@@ -13,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.BusAfterSaleApi;
 import com.fsun.api.bus.BusOrderApi;
+import com.fsun.biz.bus.manage.BusGoodsManage;
 import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusPayAccountManage;
 import com.fsun.biz.bus.manage.BusRefundGoodsManage;
 import com.fsun.biz.bus.manage.BusRefundManage;
+import com.fsun.biz.bus.manage.BusTakeDetailManage;
 import com.fsun.biz.bus.manage.BusVipUnpaidManage;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.common.utils.StringUtils;
@@ -27,9 +29,11 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusPayAccountCondition;
 import com.fsun.domain.entity.BusRefundCondition;
 import com.fsun.domain.entity.BusRefundGoodsCondition;
+import com.fsun.domain.entity.BusTakeGoodsCondition;
 import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
+import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.RefundOrderStatusEnum;
 import com.fsun.domain.enums.RefundReasonEnum;
@@ -45,6 +49,7 @@ import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusPayAccount;
 import com.fsun.domain.model.BusRefund;
 import com.fsun.domain.model.BusRefundGoods;
+import com.fsun.domain.model.BusTakeGoods;
 import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.AfterSaleException;
@@ -67,6 +72,12 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 	
 	@Autowired
 	private BusOrderManage busOrderManage;
+	
+	@Autowired
+	private BusGoodsManage busGoodsManage;
+	
+	@Autowired
+	private BusTakeDetailManage busTakeDetailManage;
 	
 	@Autowired
 	private BusPayAccountManage busPayAccountManage;
@@ -98,6 +109,19 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		}else{
 			map = this.loadEntity(refundId);
 		}
+		return map;
+	}
+	
+	@Override
+	public HashMap<String, Object> getAllRefundInitData(
+			String orderId, BusUserDto currUser) {		
+		HashMap<String, Object> map = busOrderApi.loadEntity(orderId);
+		HashMap<String, Object> orderHeaderMap = (HashMap<String, Object>) map.get("header");
+		orderHeaderMap.put("refundReason", RefundReasonEnum.GOODS_QUALITY.getValue());
+		orderHeaderMap.put("payMode", VipUnpaidPayModeEnum.CASH_PAY.getValue());
+		//通过订单号初始化整单退的退货商品明细
+		List<HashMap<String, Object>> invSkuList = busGoodsManage.initAllReturnGoodsByOrderId(orderId);
+		map.put("details", invSkuList);
 		return map;
 	}
 
@@ -209,7 +233,10 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 			busRefundGoods.setLineNo(lineNo++);			
 			busRefundGoods.setCreatedTime(now);
 			busRefundGoodsManage.create(busRefundGoods);
-			super.skuStockIn(refundHeader, busRefundGoods);
+			//寄存订单商品不做库存加减
+			if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(busOrder.getOrderType())){
+				super.skuStockIn(refundHeader, busRefundGoods);
+			}			
 		}	
 		
 		//更新原订单
@@ -223,10 +250,36 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		return refundId;
 	}
 
+	@Transactional
 	@Override
-	public String onekeyRefund(BusRefundDto busRefundDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public String allReturn(BusRefundDto busRefundDto) {
+		//正常的退货流程
+		String refundId = this.createForRefund(busRefundDto);
+		//获取退货订单信息
+		String orderId = busRefundDto.getRefundHeader().getOrderId();
+		BusOrder busOrder = busOrderManage.load(orderId);
+		if(busOrder==null){
+			throw new AfterSaleException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}
+		//如果是寄存单则同步更新寄提信息
+		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(busOrder.getOrderType())){
+			BusTakeGoodsCondition busTakeGoodsCondition = new BusTakeGoodsCondition();
+			busTakeGoodsCondition.setOrderId(orderId);
+			List<BusTakeGoods> list = busTakeDetailManage.list(busTakeGoodsCondition);			
+			//获取已被寄提的商品的库存数量
+			List<BusTakeGoods> invSkuList = busTakeDetailManage.getInvSkuByOrderId(orderId);
+			HashMap<String, BigDecimal> skuMap = new HashMap<>();
+			for (BusTakeGoods busTakeGoods : invSkuList) {
+				skuMap.put(busTakeGoods.getSku(), busTakeGoods.getOriQty()
+					.subtract(busTakeGoods.getMaxQty()));
+			}
+			//同步原订单实际可寄提的商品总数
+			for (BusTakeGoods busTakeGoods : list) {
+				busTakeGoods.setOriInvQty(skuMap.get(busTakeGoods.getSku()));
+				busTakeDetailManage.update(busTakeGoods);
+			}
+		}
+		return refundId;
 	}
 
 	@Override

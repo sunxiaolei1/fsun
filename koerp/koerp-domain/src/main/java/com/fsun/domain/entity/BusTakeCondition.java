@@ -1,5 +1,6 @@
 package com.fsun.domain.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fsun.domain.common.BaseOrderCondition;
@@ -39,6 +40,12 @@ public class BusTakeCondition extends BaseOrderCondition {
      * 表字段 : bus_take.take_name
      */
     private String takeName;
+    
+    /**
+     * 提货时间
+     * 表字段 : bus_take.take_time
+     */
+    private Date takeTime;
 
     /**
      * 卖家id
@@ -105,6 +112,11 @@ public class BusTakeCondition extends BaseOrderCondition {
      * 表字段 : bus_order.print_count
      */
     private Integer printCount;
+    
+    /**
+     * 原订单实际可寄提的商品总数
+     */
+    private BigDecimal oriInvQty;
 
     public String getTakeId() {
         return takeId;
@@ -244,5 +256,33 @@ public class BusTakeCondition extends BaseOrderCondition {
 	 */
 	public void setTakeStatus(String takeStatus) {
 		this.takeStatus = takeStatus;
+	}
+
+	/**
+	 * @return the takeTime
+	 */
+	public Date getTakeTime() {
+		return takeTime;
+	}
+
+	/**
+	 * @param takeTime the takeTime to set
+	 */
+	public void setTakeTime(Date takeTime) {
+		this.takeTime = takeTime;
+	}
+
+	/**
+	 * @return the oriInvQty
+	 */
+	public BigDecimal getOriInvQty() {
+		return oriInvQty;
+	}
+
+	/**
+	 * @param oriInvQty the oriInvQty to set
+	 */
+	public void setOriInvQty(BigDecimal oriInvQty) {
+		this.oriInvQty = oriInvQty;
 	}
 }

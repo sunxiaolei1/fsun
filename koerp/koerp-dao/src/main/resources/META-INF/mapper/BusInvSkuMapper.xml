@@ -113,6 +113,8 @@
 		a.qty as qty, 
 		a.lock_qty as lock_qty, 
 		a.damaged_qty as damaged_qty,
+		IFNULL(getTakedInvSkuByShopId(a.shop_id, a.sku), getOrderTakedInvSkuByShopId(a.shop_id, a.sku)) as take_inv_qty,
+        (a.qty + a.lock_qty + a.damaged_qty - IFNULL(getTakedInvSkuByShopId(a.shop_id, a.sku), getOrderTakedInvSkuByShopId(a.shop_id, a.sku)))  as vir_inv_qty,
 		b.goods_name as goods_name, 	
 		b.bar_code as bar_code,
 		b.brand_code as brand_code,

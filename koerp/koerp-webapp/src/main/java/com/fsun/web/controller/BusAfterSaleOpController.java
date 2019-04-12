@@ -60,17 +60,17 @@ public class BusAfterSaleOpController extends BaseController {
 	}
 	
 	/**
-	 * 一键退货
+	 * 一键整单退货
 	 * @param busRefundDto
 	 * @return
 	 */
-	@RequestMapping(value="/refund/onekey", method=RequestMethod.POST)
+	@RequestMapping(value="/refund/allReturn", method=RequestMethod.POST)
 	@ResponseBody
-	public HttpResult onekeyRefund(@RequestBody BusRefundDto busRefundDto) {
+	public HttpResult allRetuen(@RequestBody BusRefundDto busRefundDto) {
 		try {
 			BusUserDto currUser = super.getCurrentUser();
 			busRefundDto.setCurrUser(currUser);
-			busAfterSaleApi.onekeyRefund(busRefundDto);			
+			busAfterSaleApi.allReturn(busRefundDto);			
 			return success();
 		}catch (AfterSaleException e) {
 			e.printStackTrace();

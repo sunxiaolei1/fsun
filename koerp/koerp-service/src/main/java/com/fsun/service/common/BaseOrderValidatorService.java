@@ -1,5 +1,6 @@
 package com.fsun.service.common;
 
+import com.fsun.domain.enums.BusTakeStatusEnum;
 import com.fsun.domain.enums.DocAsnStatusEnum;
 import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.DocOrderStatusEnum;
@@ -7,10 +8,13 @@ import com.fsun.domain.enums.DocPoStatusEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
+import com.fsun.domain.enums.OrderTakeStatusEnum;
+import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.RefundStatusEnum;
 import com.fsun.domain.enums.TradeStatusEnum;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusRefund;
+import com.fsun.domain.model.BusTake;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.DocPoHeader;
@@ -34,6 +38,8 @@ public abstract class BaseOrderValidatorService {
 		String orderStatus = busOrder.getOrderStatus();
 		Short refundStatus = busOrder.getRefundStatus();
 		String tradeStatus = busOrder.getTradeStatus();
+		Short orderType = busOrder.getOrderType();
+		String takeStatus = busOrder.getTakeStatus();
 		switch (buttonsEnum){  	        
 	        case REFRESH: 	
 	        	isEnable = true; break;
@@ -46,7 +52,14 @@ public abstract class BaseOrderValidatorService {
 	        		&& FlowStatusEnum.STOCKOUT.getCode().equals(flowStatus)
 	        			&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
 	        				&& (refundStatus==null || refundStatus.equals(""))){
-	        		isEnable = true; 
+	        		//如果是寄存单类型，只要寄提过就不能取消单据
+	        		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
+	        			if(OrderTakeStatusEnum.UNTAKE.getCode().equals(takeStatus)){
+	        				isEnable = true; 
+	        			}
+	        		}else{
+	        			isEnable = true; 
+	        		}        		
 	        	}
 	        	break;
 	        case ONEKEY_REFUND:
@@ -62,7 +75,14 @@ public abstract class BaseOrderValidatorService {
 	        		&& FlowStatusEnum.STOCKOUT.getCode().equals(flowStatus)
 	        			&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)	
 	        				&& (refundStatus==null || refundStatus.equals(""))){
-	        		isEnable = true; 
+	        		//如果是寄存单类型，只要寄提过就不能创建退货单，可以一键退货
+	        		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
+	        			if(OrderTakeStatusEnum.UNTAKE.getCode().equals(takeStatus)){
+	        				isEnable = true; 
+	        			}
+	        		}else{
+	        			isEnable = true; 
+	        		}  
 	        	}
 	        	break;
 	        case CREATE_BARTER:  
@@ -72,6 +92,15 @@ public abstract class BaseOrderValidatorService {
 	        				&& (refundStatus==null || refundStatus.equals(""))){
 	        		isEnable = true; 
 	        	}
+	        	break;
+	        case ORDER_TAKE:
+	        	//订单已退货或者提货完成状态则不可寄提
+	        	if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)
+	        		&& (refundStatus==null || refundStatus.equals("")) 
+        				&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
+        					&& !OrderTakeStatusEnum.ALL_TAKE.getCode().equals(takeStatus)){
+			        isEnable = true;        		
+			    }
 	        	break;
 	        default:  
 	        	isEnable = true;
@@ -231,4 +260,67 @@ public abstract class BaseOrderValidatorService {
 		return isEnable;
 	}
 	
+	/**
+	 * 寄提单状态验证
+	 * @param header
+	 * @param buttonsEnum
+	 * @return
+	 */
+	protected boolean orderStatusValidator(BusTake header, BusOrder busOrder, 
+			OrderOperateButtonsEnum buttonsEnum) {
+		boolean isEnable = false;
+		if(header!=null && busOrder!=null){
+			//编辑操作
+			String busTakeStatus = header.getTakeStatus();
+			Short refundStatus = busOrder.getRefundStatus();
+			String tradeStatus = busOrder.getTradeStatus();
+			switch (buttonsEnum){  	        
+		        case REFRESH: 	
+		        	isEnable = true; break;     	
+		        case ADD_TAKE_REMARK:
+		        	isEnable = true; break;                      
+		        case CANCEL_TAKE:
+		        	//订单已退货或者提货完成状态则才可取消			        		        		
+	        		if((refundStatus==null || refundStatus.equals("")) 
+	        			&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
+	        				&& BusTakeStatusEnum.TAKED.getCode().equals(busTakeStatus)){
+				        isEnable = true;        		
+				    }     	        	        		
+		        	break;
+		        case RETURN_ORDER: 
+		        	isEnable = true; break; 
+		        case TAKE_OUT:
+		        	break;
+		        default:  
+		        	isEnable = true;
+		    }  						
+		}else if(busOrder!=null){
+			//新增操作
+			String orderTakeStatus = busOrder.getTakeStatus();
+			Short refundStatus = busOrder.getRefundStatus();
+			String tradeStatus = busOrder.getTradeStatus();
+			Short orderType = busOrder.getOrderType();
+			switch (buttonsEnum){  	
+				case REFRESH: 	
+		        	break;     	
+		        case ADD_TAKE_REMARK:
+		        	break;	                       
+		        case CANCEL_TAKE:
+		        	break;  
+		        case RETURN_ORDER: 
+		        	isEnable = true; break;   
+		        case TAKE_OUT:
+		        	if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)
+		        		&& (refundStatus==null || refundStatus.equals("")) 
+	        				&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
+	        					&& !OrderTakeStatusEnum.ALL_TAKE.getCode().equals(orderTakeStatus)){
+				        isEnable = true;        		
+				    }
+		        	break; 
+		        default:  
+		        	isEnable = true;
+		    }  
+		}		
+		return isEnable;
+	}
 }

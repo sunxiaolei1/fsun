@@ -65,12 +65,59 @@
   </sql>
   
   <select id="selectList" resultMap="BaseResultMap" 
-  	parameterType="com.fsun.domain.entity.BusGoodsCondition" >    
+  	parameterType="com.fsun.domain.entity.BusGoodsCondition" >
 	SELECT 
 		<include refid="Base_Column_List" />
     FROM bus_goods
     	<include refid="conditions" />
   </select>
+  
+  <select id="initAllReturnGoodsByOrderId" resultType="java.util.Map"
+  		parameterType="java.lang.String" >    
+	SELECT 
+		d.goods_id as goodsId, 
+		d.order_id as orderId, 
+		d.line_no as lineNo, 
+		d.category_name as categoryName, 
+		d.category_code as categoryCode, 
+    	d.brand_name as brandName, 
+    	d.brand_code as brandCode, 
+    	d.product_type as productType, 
+    	d.goods_name as goodsName, 
+    	d.bar_code as barCode, 
+    	d.sku as sku, 
+    	d.parent_sku as parentSku, 
+    	d.sku_id as skuId, 
+    	d.parent_sku_id as parentSkuId, 
+    	d.en_unit as enUnit, 
+    	d.rate_type as rateType, 
+    	d.qty as originQty, 
+        IFNULL(getTakedInvSkuByOrderId(o.order_id, d.sku),d.qty) as qty,
+    	d.unit as unit, 
+    	d.convert_qty as convertQty, 
+    	d.convert_unit as convertUnit, 
+    	d.market_price as marketPrice, 
+    	d.sale_price as salePrice,
+    	d.sale_price as originSalePrice, 
+    	0 as couponPrice,	
+    	(d.sale_price*IFNULL(getTakedInvSkuByOrderId(o.order_id, d.sku),d.qty)) as totalPrice,
+    	d.total_price as originTotalPrice, 
+    	d.cost_price as costPrice, 
+    	d.rate_precent as ratePrecent, 
+    	0 as isGift, 
+    	0 as giftCount, 
+    	0 as giftPrice,
+    	d.is_show as isShow, 
+    	d.property as property, 
+    	d.memo as memo,
+    	0 as discountPrice,
+    	0 as totalPartPrice,
+    	0 as partPrice
+    FROM bus_order o
+    left join bus_goods d on d.order_id = o.order_id
+    where o.order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 

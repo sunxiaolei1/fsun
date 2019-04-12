@@ -1,5 +1,8 @@
 package com.fsun.biz.bus.manage;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.fsun.biz.common.CrudManage;
@@ -12,5 +15,14 @@ import com.fsun.domain.model.BusGoods;
  */
 @Component
 public class BusGoodsManage extends CrudManage<BusGoodsMapper, BusGoods>{
+
+	/**
+	 * 通过订单号初始化整单退的退货商品明细
+	 * @param orderId
+	 * @return 
+	 */
+	public List<HashMap<String, Object>> initAllReturnGoodsByOrderId(String orderId) {
+		return mapper.initAllReturnGoodsByOrderId(orderId);
+	}
 
 }

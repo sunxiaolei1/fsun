@@ -68,6 +68,20 @@ function orderSign(){
 	}
 }
 
+/**
+ * 寄提出库
+ */
+function orderTakeOut(){
+	var saveData = getTakeOutData();
+	if(saveData!=null){		
+		if(typeof afterSaveFunc === 'function'){	
+			commonPost(saveData.saveUrl, JSON.stringify(saveData.params), null, afterSaveFunc);
+		}else{
+			commonPost(saveData.saveUrl, JSON.stringify(saveData.params));
+		}		
+	}
+}
+
 
 /**
  * 返回
@@ -87,9 +101,21 @@ function toOrderRemarkView(orderId){
 /**
  * 跳转到一键退货页面
  */
-function toOneKeyRefundView(orderId){
-	var url = "${api}/bus/order/toOneKeyRefundView/"+ orderId;	
-	commonDialog("ordersDialog", "一键退货", "95%", "85%", url, "icon-mouse_add");
+function toAllRefundView(orderId){	
+	var url = "${api}/bus/order/refund/toAllRefundView/"+ orderId;	
+	var icon = "icon-mouse_add";
+	var subtitle = "一键退货";
+	parent.addTab(subtitle, url, icon);	
+}
+
+/**
+ * 跳转至寄提出库页面
+ */
+function toCreateTakeView(orderId){
+	var url = "${api}/bus/take/toTakeOutView/" + orderId +"?buttontype=busTake";
+	var icon = "icon-user_edit";
+	var subtitle = "创建寄提单";
+	parent.addTab(subtitle, url, icon);	
 }
 
 /**

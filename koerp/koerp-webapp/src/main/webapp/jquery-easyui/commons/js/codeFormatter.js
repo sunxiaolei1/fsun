@@ -35,6 +35,9 @@ var refundReasonData = new Array();
 var refundOrderStatusData = new Array();
 var skuAftersaleStatusData = new Array();
 
+var orderTakeStatusData =  new Array();
+var busTakeStatusData =  new Array();
+
 /**************************   ecorder    *********************************/
 
 var isTrue = {'false': '否', 'true': '是'};
@@ -73,6 +76,9 @@ var refundStatus = {};
 var refundReason = {};
 var refundOrderStatus = {};
 var skuAftersaleStatus = {};
+
+var orderTakeStatus =  {};
+var busTakeStatus =  {};
 
 $(function () {
 	synchronizeData();	
@@ -115,6 +121,9 @@ $(function () {
 	refundReason = formatterCodeType(refundReasonData);
 	refundOrderStatus = formatterCodeType(refundOrderStatusData);
 	skuAftersaleStatus = formatterCodeType(skuAftersaleStatusData);
+	
+	orderTakeStatus = formatterCodeType(orderTakeStatusData);
+	busTakeStatus = formatterCodeType(busTakeStatusData);
 });
 
 function formatterCodeType(result) {
@@ -205,8 +214,11 @@ function synchronizeData() {
         				docAsnCheckStatusData.push(item);
         			}else if(item.codeType == 'DocAsnSignType'){
         				docAsnSignTypeData.push(item);
+        			}else if(item.codeType == 'OrderTakeStatus'){
+        				orderTakeStatusData.push(item);
+        			}else if(item.codeType == 'BusTakeStatus'){
+        				busTakeStatusData.push(item);
         			}
-        			
         			
     	        });
         		  		
@@ -377,6 +389,16 @@ function synchronizeData() {
 				});
 				
 				docAsnSignTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+				
+				orderTakeStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		busTakeStatusData.unshift({
         			codeCode:"",
 					codeName:"请选择..."
 				});

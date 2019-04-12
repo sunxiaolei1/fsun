@@ -80,7 +80,7 @@
     <result column="created_name" property="createdName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    order_id, order_type, pay_type, sys_order_id, ext_order_id, pos_no, card_type, buyer_id, 
+    order_id, order_type, pay_type, sys_order_id, ext_order_id, pos_no, card_type, take_status, buyer_id, 
     buyer_name, carrier_id, carrier_name, plat_id, plat_name, plat_shop_id, shop_id, 
     shop_name, trade_from, trade_status, order_status, refund_id, refund_status, refund_time, refund_sponsor, 
     refund_type, refund_reason, flow_status, is_valid, origin_price, order_price, ship_price, 
@@ -219,6 +219,7 @@
     <result column="o_refund_id" property="refundId"/>
     <result column="o_refund_type" property="refundType"/>
     <result column="o_seller_notes" property="sellerNotes"/>
+    <result column="o_take_status" property="takeStatus"/>    
   </resultMap>
   
   <resultMap id="DefinedResultMap" type="java.util.Map"> 	
@@ -242,6 +243,7 @@
       <result column="d_parent_sku_id" property="parentSkuId"/>
       <result column="d_en_unit" property="enUnit"/> 
       <result column="d_qty" property="qty"/>
+      <result column="d_untake_qty" property="untakeQty"/>      
       <result column="d_unit" property="unit"/>
       <result column="d_convert_qty" property="convertQty"/>
       <result column="d_convert_unit" property="convertUnit"/>
@@ -328,6 +330,7 @@
 		o.refund_id as o_refund_id,
 		o.refund_type as o_refund_type,
 		o.seller_notes as o_seller_notes,
+		o.take_status as o_take_status,
 		d.goods_id as d_goods_id,
 		d.order_id as d_order_id ,
 		d.line_no as d_line_no,
@@ -343,8 +346,9 @@
 		d.parent_sku as d_parent_sku, 
 		d.sku_id as d_sku_id,
 		d.parent_sku_id as d_parent_sku_id,
-		d.en_unit as d_en_unit ,
+		d.en_unit as d_en_unit,
 		d.qty as d_qty,
+		IFNULL(getTakedInvSkuByOrderId(o.order_id, d.sku),getOrderTakedInvSkuByOrderId(o.order_id, d.sku)) as d_untake_qty,
 		d.unit as d_unit,
 		d.convert_qty as d_convert_qty,
 		d.convert_unit as d_convert_unit,

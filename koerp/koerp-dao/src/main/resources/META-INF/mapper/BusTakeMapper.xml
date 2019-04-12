@@ -7,6 +7,7 @@
     <result column="buyer_id" property="buyerId" jdbcType="VARCHAR" />
     <result column="buyer_name" property="buyerName" jdbcType="VARCHAR" />
     <result column="take_name" property="takeName" jdbcType="VARCHAR" />
+    <result column="take_time" property="takeTime" jdbcType="TIMESTAMP" />    
     <result column="seller_id" property="sellerId" jdbcType="VARCHAR" />
     <result column="seller_name" property="sellerName" jdbcType="VARCHAR" />
     <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
@@ -21,7 +22,7 @@
   </resultMap>
   
   <sql id="Base_Column_List" >
-    take_id, order_id, buyer_id, buyer_name, take_name, seller_id, seller_name, shop_id, 
+    take_id, order_id, buyer_id, buyer_name, take_name, take_time, seller_id, seller_name, shop_id, 
     shop_name, print_count, memo, take_status, created_time, created_name, updated_time, updated_name
   </sql>
   
@@ -44,7 +45,7 @@
   			and a.buyer_id = #{buyerId}
   		</if>
   		
-  		<if test="takeStatus != null">
+  		<if test="takeStatus != null and takeStatus!='' ">
   			and a.take_status = #{takeStatus}
   		</if>
 
@@ -88,6 +89,7 @@
     <result column="o_buyer_id" property="buyerId"/>
     <result column="o_buyer_name" property="buyerName"/>
     <result column="o_take_name" property="takeName" />
+    <result column="o_take_time" property="takeTime" />
     <result column="o_seller_id" property="sellerId"/>
     <result column="o_seller_name" property="sellerName"/>
     <result column="o_shop_id" property="shopId"/>
@@ -136,6 +138,7 @@
 		o.buyer_id as o_buyer_id,
 		o.buyer_name as o_buyer_name,
 		o.take_name as o_take_name,
+		o.take_time as o_take_time,
 		o.seller_id as o_seller_id,
 		o.seller_name as o_seller_name,
 		o.shop_id as o_shop_id,
@@ -188,13 +191,13 @@
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.BusTake" >
     insert into bus_take (take_id, order_id, buyer_id, 
-      buyer_name, take_name, seller_id, 
+      buyer_name, take_name, take_time, seller_id, 
       seller_name, shop_id, shop_name, 
       print_count, memo, take_status, created_time, 
       created_name, updated_time, updated_name
       )
     values (#{takeId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{buyerId,jdbcType=VARCHAR}, 
-      #{buyerName,jdbcType=VARCHAR}, #{takeName,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR}, 
+      #{buyerName,jdbcType=VARCHAR}, #{takeName,jdbcType=VARCHAR}, #{takeTime,jdbcType=TIMESTAMP}, #{sellerId,jdbcType=VARCHAR}, 
       #{sellerName,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
       #{printCount,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR}, #{takeStatus,jdbcType=CHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{createdName,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, #{updatedName,jdbcType=VARCHAR}
@@ -218,6 +221,9 @@
       <if test="takeName != null" >
         take_name,
       </if>
+      <if test="takeTime != null" >
+        take_time,
+      </if>    
       <if test="sellerId != null" >
         seller_id,
       </if>
@@ -268,6 +274,9 @@
       <if test="takeName != null" >
         #{takeName,jdbcType=VARCHAR},
       </if>
+      <if test="takeTime != null" >
+        #{takeTime,jdbcType=TIMESTAMP},
+      </if> 
       <if test="sellerId != null" >
         #{sellerId,jdbcType=VARCHAR},
       </if>
@@ -318,6 +327,9 @@
       <if test="takeName != null" >
         take_name = #{takeName,jdbcType=VARCHAR},
       </if>
+      <if test="takeTime != null" >
+        take_time = #{takeTime,jdbcType=TIMESTAMP},
+      </if> 
       <if test="sellerId != null" >
         seller_id = #{sellerId,jdbcType=VARCHAR},
       </if>
@@ -331,7 +343,7 @@
         shop_name = #{shopName,jdbcType=VARCHAR},
       </if>
       <if test="printCount != null" >
-        #{printCount,jdbcType=INTEGER},
+        print_count = #{printCount,jdbcType=INTEGER},
       </if> 
       <if test="memo != null" >
         memo = #{memo,jdbcType=VARCHAR},
@@ -360,6 +372,7 @@
       buyer_id = #{buyerId,jdbcType=VARCHAR},
       buyer_name = #{buyerName,jdbcType=VARCHAR},
       take_name = #{takeName,jdbcType=VARCHAR},
+      take_time = #{takeTime,jdbcType=TIMESTAMP},
       seller_id = #{sellerId,jdbcType=VARCHAR},
       seller_name = #{sellerName,jdbcType=VARCHAR},
       shop_id = #{shopId,jdbcType=VARCHAR},

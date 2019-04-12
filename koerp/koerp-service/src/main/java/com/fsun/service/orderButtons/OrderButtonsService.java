@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 import com.fsun.api.bus.OrderButtonsApi;
 import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusRefundManage;
+import com.fsun.biz.bus.manage.BusTakeManage;
 import com.fsun.biz.bus.manage.DocAsnHeaderManage;
 import com.fsun.biz.bus.manage.DocOrderHeaderManage;
 import com.fsun.biz.bus.manage.DocPoHeaderManage;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusRefund;
+import com.fsun.domain.model.BusTake;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.DocPoHeader;
@@ -41,6 +43,9 @@ public class OrderButtonsService extends BaseOrderValidatorService implements Or
 	
 	@Autowired
 	private DocPoHeaderManage docPoHeaderManage;
+	
+	@Autowired
+	private BusTakeManage busTakeManage;
 		
 	/**
 	 * 获取要隐藏的按钮集合
@@ -75,6 +80,18 @@ public class OrderButtonsService extends BaseOrderValidatorService implements Or
 		}else if("busOrder".equals(buttontype)){
 			BusOrder busOrder = busOrderManage.load(orderId);
 			this.appendHiddenButtons(busOrder, allButtons, hiddenbuttons);
+		}else if("busTake".equals(buttontype)){
+			BusTake busTake = null;
+			BusOrder busOrder = null;
+			if(refundId!=null){
+				busTake = busTakeManage.load(refundId);
+				if(busTake!=null){
+					busOrder = busOrderManage.load(busTake.getOrderId());
+				}				
+			}else{
+				busOrder = busOrderManage.load(orderId);
+			}			
+			this.appendHiddenButtons(busTake, busOrder, allButtons, hiddenbuttons);
 		}
 		return hiddenbuttons;
 	}
@@ -84,6 +101,24 @@ public class OrderButtonsService extends BaseOrderValidatorService implements Or
 
 	/***********************************  私有方法     ************************************/
 	
+	/**
+	 * 寄提单追加需要隐藏的按钮
+	 * @param header
+	 * @param allButtons
+	 * @param hiddenbuttons
+	 */
+	private void appendHiddenButtons(BusTake header, BusOrder busOrder, 
+		List<OrderOperateButtonsEnum> allButtons, List<String> hiddenbuttons) {
+		boolean isValid = false;
+		//遍历状态对应的按钮是否有效
+		for (OrderOperateButtonsEnum buttonsEnum : allButtons) {
+			isValid = this.orderStatusValidator(header, busOrder,buttonsEnum);
+			if(!isValid && !hiddenbuttons.contains(buttonsEnum.getCode())){
+				hiddenbuttons.add(buttonsEnum.getCode());
+			}
+		}	
+	}
+
 	/**
 	 * 出库单追加需要隐藏的按钮
 	 * @param header

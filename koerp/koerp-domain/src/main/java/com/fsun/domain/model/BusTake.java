@@ -38,6 +38,12 @@ public class BusTake {
      * 表字段 : bus_take.take_name
      */
     private String takeName;
+    
+    /**
+     * 提货时间
+     * 表字段 : bus_take.take_time
+     */
+    private Date takeTime;
 
     /**
      * 卖家id
@@ -243,5 +249,19 @@ public class BusTake {
 	 */
 	public void setTakeStatus(String takeStatus) {
 		this.takeStatus = takeStatus;
+	}
+
+	/**
+	 * @return the takeTime
+	 */
+	public Date getTakeTime() {
+		return takeTime;
+	}
+
+	/**
+	 * @param takeTime the takeTime to set
+	 */
+	public void setTakeTime(Date takeTime) {
+		this.takeTime = takeTime;
 	}
 }

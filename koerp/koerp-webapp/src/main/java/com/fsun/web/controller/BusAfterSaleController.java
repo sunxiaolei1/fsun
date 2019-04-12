@@ -147,6 +147,19 @@ public class BusAfterSaleController extends BaseController {
 		}
 	}
 	
+	@RequestMapping(value="/refund/all/getInitData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getAllRefundInitData(@RequestParam("orderId") String orderId){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = busAfterSaleApi.getAllRefundInitData(orderId, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
 	/******************************************        refund end     *****************************************/
 	
 

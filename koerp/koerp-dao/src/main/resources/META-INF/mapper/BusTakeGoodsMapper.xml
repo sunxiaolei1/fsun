@@ -28,12 +28,14 @@
     <result column="enabled" property="enabled" jdbcType="BIT" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="ori_inv_qty" property="oriInvQty" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
     goods_id, take_id, order_id, ori_goods_id, shop_id, line_no, goods_name, category_name, 
     category_code, brand_name, brand_code, product_type, bar_code, unit, convert_qty, 
     convert_unit, market_price, origin_sale_price, sku, qty, ori_qty, max_qty, sale_price, 
-    enabled, memo, created_time
+    enabled, memo, created_time, property, ori_inv_qty
   </sql>
   
   <sql id="conditions">
@@ -58,13 +60,14 @@
   </select>
   
   <select id="getInvSkuByOrderId" resultMap="BaseResultMap" 
-  		parameterType="java.lang.String" >    
-	SELECT 
+  		parameterType="java.lang.String" > 
+  	SELECT 
 		c.goods_name as goods_name,
 		c.category_name as category_name, 
     	c.category_code as category_code, 
     	c.brand_name as brand_name, 
     	c.brand_code as brand_code, 
+    	c.property as property,
     	c.product_type as product_type, 
     	c.bar_code as bar_code, 
     	c.unit as unit, 
@@ -75,8 +78,9 @@
 		c.order_id as order_id,	
 		c.ori_goods_id as ori_goods_id,
 		c.ori_qty as ori_qty,
-		sum(c.ori_qty - c.taked_qty) as max_qty,
-		sum(c.ori_qty - c.taked_qty) as qty,
+    	c.ori_inv_qty as ori_inv_qty,
+		sum(c.ori_inv_qty - c.taked_qty) as max_qty,
+		0 as qty,
 		c.sale_price as sale_price,	
 		c.shop_id as shop_id,
 		c.sku as sku	 
@@ -87,6 +91,7 @@
 	    	category_code as category_code, 
 	    	brand_name as brand_name, 
 	    	brand_code as brand_code, 
+	    	property as property,
 	    	product_type as product_type, 
 	    	bar_code as bar_code, 
 	    	unit as unit, 
@@ -97,6 +102,7 @@
 			order_id as order_id,	
 	    	ori_goods_id as ori_goods_id,
 	   	 	ori_qty as ori_qty,
+			ori_inv_qty as ori_inv_qty,
 			sum(qty) as taked_qty,
 	    	sale_price as sale_price,	
 			shop_id as shop_id,
@@ -125,7 +131,7 @@
       convert_unit, market_price, origin_sale_price, 
       sku, qty, ori_qty, max_qty, 
       sale_price, enabled, memo, 
-      created_time)
+      created_time, property, ori_inv_qty)
     values (#{goodsId,jdbcType=VARCHAR}, #{takeId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
       #{oriGoodsId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{lineNo,jdbcType=INTEGER}, 
       #{goodsName,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, 
@@ -134,7 +140,7 @@
       #{convertUnit,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, #{originSalePrice,jdbcType=DECIMAL}, 
       #{sku,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, #{oriQty,jdbcType=DECIMAL}, #{maxQty,jdbcType=DECIMAL}, 
       #{salePrice,jdbcType=DECIMAL}, #{enabled,jdbcType=BIT}, #{memo,jdbcType=VARCHAR}, 
-      #{createdTime,jdbcType=TIMESTAMP})
+      #{createdTime,jdbcType=TIMESTAMP}, #{property,jdbcType=VARCHAR}, #{oriInvQty,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusTakeGoods" >
     insert into bus_take_goods
@@ -172,6 +178,9 @@
       <if test="brandCode != null" >
         brand_code,
       </if>
+      <if test="property != null" >
+        property,
+      </if>      
       <if test="productType != null" >
         product_type,
       </if>
@@ -217,6 +226,9 @@
       <if test="createdTime != null" >
         created_time,
       </if>
+      <if test="oriInvQty != null" >
+        ori_inv_qty,
+      </if>     
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="goodsId != null" >
@@ -252,6 +264,9 @@
       <if test="brandCode != null" >
         #{brandCode,jdbcType=VARCHAR},
       </if>
+      <if test="property != null" >
+        #{property,jdbcType=VARCHAR},
+      </if> 
       <if test="productType != null" >
         #{productType,jdbcType=SMALLINT},
       </if>
@@ -297,6 +312,9 @@
       <if test="createdTime != null" >
         #{createdTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="oriInvQty != null" >
+        #{oriInvQty,jdbcType=DECIMAL},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusTakeGoods" >
@@ -331,6 +349,9 @@
       </if>
       <if test="brandCode != null" >
         brand_code = #{brandCode,jdbcType=VARCHAR},
+      </if>
+      <if test="property != null" >
+        property = #{property,jdbcType=VARCHAR},
       </if>
       <if test="productType != null" >
         product_type = #{productType,jdbcType=SMALLINT},
@@ -377,6 +398,9 @@
       <if test="createdTime != null" >
         created_time = #{createdTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="oriInvQty != null" >
+        ori_inv_qty = #{oriInvQty,jdbcType=DECIMAL},
+      </if>
     </set>
     where goods_id = #{goodsId,jdbcType=VARCHAR}
   </update>
@@ -392,6 +416,7 @@
       category_code = #{categoryCode,jdbcType=VARCHAR},
       brand_name = #{brandName,jdbcType=VARCHAR},
       brand_code = #{brandCode,jdbcType=VARCHAR},
+      property = #{property,jdbcType=VARCHAR},
       product_type = #{productType,jdbcType=SMALLINT},
       bar_code = #{barCode,jdbcType=VARCHAR},
       unit = #{unit,jdbcType=VARCHAR},
@@ -406,7 +431,8 @@
       sale_price = #{salePrice,jdbcType=DECIMAL},
       enabled = #{enabled,jdbcType=BIT},
       memo = #{memo,jdbcType=VARCHAR},
-      created_time = #{createdTime,jdbcType=TIMESTAMP}
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      ori_inv_qty = #{oriInvQty,jdbcType=DECIMAL}
     where goods_id = #{goodsId,jdbcType=VARCHAR}
   </update>
 </mapper>

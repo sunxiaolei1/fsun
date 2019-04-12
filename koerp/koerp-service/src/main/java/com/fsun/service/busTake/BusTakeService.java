@@ -21,6 +21,7 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusTakeCondition;
 import com.fsun.domain.entity.BusTakeGoodsCondition;
 import com.fsun.domain.enums.BusTakeStatusEnum;
+import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderTakeStatusEnum;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusTake;
@@ -48,13 +49,13 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 
 	@Override
 	public PageModel findPage(BusTakeCondition condition) {
-		List<BusTake> list = busTakeManage.list(condition);
-		return new PageModel(list);
+		return busTakeManage.findMapPage(condition);
+		
 	}
 
 	@Override
 	public PageModel findListForPage(BusTakeCondition condition) {
-		return busTakeManage.findMapPage(condition);
+		return  busTakeManage.findPage(condition);
 	}
 
 	@Override
@@ -90,7 +91,8 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 			header.setShopName(currUser.getShopName());
 			header.setBuyerId(busOrder.getBuyerId());
 			header.setBuyerName(busOrder.getBuyerName());
-			header.setTakeName(busOrder.getBuyerName());			
+			header.setTakeName(busOrder.getBuyerName());
+			header.setTakeTime(new Date());
 			map.put("header", header);
 			//获取订单下的商品库存信息					
 			map.put("details", busTakeDetailManage.getInvSkuByOrder(busOrder));						
@@ -119,13 +121,10 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 		if(busOrder==null){
 			throw new BusTakeException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
 		}	
-		//订单已退货或者提货完成状态
-		Short refundStatus = busOrder.getRefundStatus();
-		String takeStatus = busOrder.getTakeStatus();
-		if(refundStatus!=null || (takeStatus!=null 
-			&& OrderTakeStatusEnum.ALL_TAKE.getCode().equals(takeStatus))){
-			throw new BusTakeException(SCMErrorEnum.BUS_ORDER_ILLEGAL);
-		}
+		//状态校验
+		if(!orderStatusValidator(null, busOrder, OrderOperateButtonsEnum.TAKE_OUT)){
+	    	throw new BusTakeException(SCMErrorEnum.BUS_ORDER_ILLEGAL);
+	    }
 		//明细不能为空
 		List<BusTakeGoods> details = busTakeDto.getDetails();
 		if(details==null || details.size()==0){
@@ -136,27 +135,59 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 		header.setPrintCount(0);
 		header.setTakeStatus(BusTakeStatusEnum.TAKED.getCode());
 		header.setCreatedName(currUser.getRealname());
+		header.setUpdatedName(currUser.getRealname());
 		header.setCreatedTime(now);
+		header.setUpdatedTime(now);
 		busTakeManage.create(header);		
 		//获取订单下的商品库存信息
 		List<BusTakeGoods> invSkuList = busTakeDetailManage.getInvSkuByOrder(busOrder);
 		//初始化明细
 		int lineNo = 1;
+		boolean hasExist;
+		boolean hasAllTake = true;
+		BigDecimal takeOutQty = BigDecimal.ZERO;
 		for (BusTakeGoods busTakeGoods : details) {		
 			BigDecimal qty = busTakeGoods.getQty();
+			hasExist = false;
 			for (BusTakeGoods oldBusTakeGoods : invSkuList) {
-				if(oldBusTakeGoods.getOriGoodsId().equals(busTakeGoods.getOriGoodsId())
-					|| oldBusTakeGoods.getMaxQty().compareTo(qty)<0){
-					throw new BusTakeException(SCMErrorEnum.BUS_SKU_ILLEGAL);
+				if(oldBusTakeGoods.getOriGoodsId().equals(busTakeGoods.getOriGoodsId())){
+					if(oldBusTakeGoods.getMaxQty().compareTo(qty)<0){
+						throw new BusTakeException(SCMErrorEnum.BUS_SKU_INV_ILLEGAL);
+					}else if(oldBusTakeGoods.getMaxQty().compareTo(qty)>0){
+						hasAllTake = false;
+					}
+					hasExist = true;
 				}
 			}
-			busTakeGoods.setGoodsId(PKMapping.GUUID(PKMapping.bus_take_goods));
-			busTakeGoods.setTakeId(takeId);
-			busTakeGoods.setLineNo(lineNo++);
-			busTakeGoods.setCreatedTime(now);	
-			busTakeGoods.setEnabled(true);
-			busTakeDetailManage.create(busTakeGoods);
-		}				
+			if(!hasExist){
+				throw new BusTakeException(SCMErrorEnum.BUS_SKU_INV_ILLEGAL);
+			}
+			//存在提货数量
+			if(qty.compareTo(BigDecimal.ZERO)>0){
+				busTakeGoods.setGoodsId(PKMapping.GUUID(PKMapping.bus_take_goods));
+				busTakeGoods.setTakeId(takeId);
+				busTakeGoods.setLineNo(lineNo++);
+				busTakeGoods.setCreatedTime(now);	
+				busTakeGoods.setEnabled(true);
+				busTakeGoods.setShopId(header.getShopId());
+				busTakeDetailManage.create(busTakeGoods);
+				this.skuStockOut(header, busTakeGoods);
+			}
+			takeOutQty = takeOutQty.add(qty);			
+		}		
+		//寄提出库总数量==0
+		if(takeOutQty.compareTo(BigDecimal.ZERO)==0){
+			throw new BusTakeException(SCMErrorEnum.BUS_SKU_INV_ILLEGAL);
+		}		
+		//记录提货状态
+		if(hasAllTake){
+			busOrder.setTakeStatus(OrderTakeStatusEnum.ALL_TAKE.getCode());
+		}else{
+			busOrder.setTakeStatus(OrderTakeStatusEnum.PART_TAKE.getCode());
+		}	
+		busOrder.setUpdatedName(currUser.getRealname());
+		busOrder.setUpdatedTime(now);
+		busOrderManage.update(busOrder);
 		return takeId;
 	}
 
@@ -176,27 +207,35 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 			if(!this.takeStatusValidator(status, header)){
 				throw new BusTakeException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
 			}
-			header.setTakeStatus(status);
-			header.setUpdatedName(user.getRealname());
-			header.setUpdatedTime(now);
-			header.setMemo(condition.getMemo());
-			busTakeManage.update(header);				
+			//更新明细
 			if(BusTakeStatusEnum.getByCode(status)==BusTakeStatusEnum.CANCEL){
+				//单据状态校验
+				BusOrder busOrder = busOrderManage.load(header.getOrderId());
+				if(!orderStatusValidator(header, busOrder, OrderOperateButtonsEnum.CANCEL_TAKE)){
+			    	throw new BusTakeException(SCMErrorEnum.BUS_ORDER_ILLEGAL);
+			    }				
 				BusTakeGoodsCondition condition0 = new BusTakeGoodsCondition();
 				condition0.setTakeId(takeId);
 				List<BusTakeGoods> busTakeGoods = busTakeDetailManage.list(condition0);
 				for (BusTakeGoods busTakeGoods2 : busTakeGoods) {
 					busTakeGoods2.setEnabled(false);
 					busTakeDetailManage.update(busTakeGoods2);
+					this.skuStockIn(header, busTakeGoods2);
 				}
 			}
+			//更新头信息
+			header.setTakeStatus(status);
+			header.setUpdatedName(user.getRealname());
+			header.setUpdatedTime(now);
+			header.setMemo(condition.getMemo());
+			busTakeManage.update(header);
 		}
 	}
 	
 	
 	
 	/************************************        私有方法              ************************************/
-	
+
 	/**
 	 * 验证寄提单状态是否可用
 	 * @param currTakeStatus

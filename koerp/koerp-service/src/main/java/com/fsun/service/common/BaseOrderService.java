@@ -25,6 +25,8 @@ import com.fsun.domain.model.BusInvSkuDetails;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusRefund;
 import com.fsun.domain.model.BusRefundGoods;
+import com.fsun.domain.model.BusTake;
+import com.fsun.domain.model.BusTakeGoods;
 import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocOrderDetails;
@@ -191,10 +193,92 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
     	return busInvSkuManage.stockOut(busInvSku); 
 	}
     
+    /**
+     * 寄提出库
+     * @param header
+     * @param busTakeGoods
+     * @return
+     */
+    protected BusInvSku skuStockOut(BusTake header, BusTakeGoods busTakeGoods) {
+    	//计算库存
+    	BusInvSku busInvSku = this.getInitInvSku(header.getShopId(), busTakeGoods);
+    	   	
+    	BusInvSkuDetails busInvSkuDetails = this.getInitInvSkuDetails(header, busTakeGoods);    	   	
+    	busInvSkuDetails.setDamagedQty(BigDecimal.ZERO); 	
+    	busInvSkuDetails.setLockQty(BigDecimal.ZERO);
+    	busInvSkuDetails.setQty(busTakeGoods.getQty().negate());  
+    	busInvSkuDetailsManage.create(busInvSkuDetails);    	
+    	return busInvSkuManage.stockOut(busInvSku); 
+	}
     
+    /**
+     * 寄提商品入库存
+     * @param header
+     * @param busTakeGoods
+     */
+    protected BusInvSku skuStockIn(BusTake header, BusTakeGoods busTakeGoods) {
+    	//计算库存
+    	BusInvSku busInvSku = this.getInitInvSku(header.getShopId(), busTakeGoods);
+    	   	
+    	BusInvSkuDetails busInvSkuDetails = this.getInitInvSkuDetails(header, busTakeGoods);    	   	
+    	
+    	busInvSkuDetailsManage.create(busInvSkuDetails);    	
+    	return busInvSkuManage.stockIn(busInvSku);
+	}
+	
+
 	/*****************************   私有方法       *********************************/
 
     /**
+     * 单条寄提出库获取初始库存信息
+     * @param shopId
+     * @param busTakeGoods
+     * @return
+     */
+    private BusInvSku getInitInvSku(String shopId, BusTakeGoods busTakeGoods) {
+    	BusInvSku busInvSku = new BusInvSku();
+    	busInvSku.setShopId(shopId);
+    	busInvSku.setSku(busTakeGoods.getSku());
+    	//入库时暂不考虑占用数量
+    	busInvSku.setLockQty(BigDecimal.ZERO);
+    	busInvSku.setQty(busTakeGoods.getQty());   	
+    	busInvSku.setDamagedQty(BigDecimal.ZERO);
+    	return busInvSku;
+	}
+    
+    /**
+     * 单条寄提出库获取初始库存交易明细信息
+     * @param header
+     * @param busTakeGoods
+     * @return
+     */
+    private BusInvSkuDetails getInitInvSkuDetails(BusTake header, BusTakeGoods busTakeGoods) {
+    	BusInvSkuDetails busInvSkuDetails = new BusInvSkuDetails();
+    	//交易头信息
+    	busInvSkuDetails.setShopId(header.getShopId());
+    	busInvSkuDetails.setShopName(header.getShopName());
+    	busInvSkuDetails.setTradeOrderNo(header.getTakeId());    	
+    	busInvSkuDetails.setTradeTime(header.getUpdatedTime());
+    	
+    	String tradeStatus = header.getTakeStatus();
+    	busInvSkuDetails.setTradeStatus(tradeStatus);   	    	
+        busInvSkuDetails.setTradeType(DocTradeTypeEnum.TAKE_SO.getCode());    	
+    	busInvSkuDetails.setCreatedTime(new Date());
+    	busInvSkuDetails.setTradeRelationNo(header.getOrderId());   	    	
+    	//交易商品明细
+    	busInvSkuDetails.setDamagedQty(BigDecimal.ZERO);
+    	busInvSkuDetails.setGoodsName(busTakeGoods.getGoodsName());
+    	busInvSkuDetails.setId(PKMapping.GUUID(PKMapping.bus_inv_sku_details));
+    	busInvSkuDetails.setLockQty(BigDecimal.ZERO);
+    	busInvSkuDetails.setQty(busTakeGoods.getQty()); 
+    	busInvSkuDetails.setSku(busTakeGoods.getSku());
+    	busInvSkuDetails.setTradeLineNo(busTakeGoods.getLineNo());
+    	busInvSkuDetails.setTradeOrderDetailId(busTakeGoods.getGoodsId());    	
+    	busInvSkuDetails.setUnit(busTakeGoods.getUnit());
+    	return busInvSkuDetails;
+	}
+
+	/**
      * 单条出库获取初始库存信息
      * @param shopId
      * @param docOrderDetails

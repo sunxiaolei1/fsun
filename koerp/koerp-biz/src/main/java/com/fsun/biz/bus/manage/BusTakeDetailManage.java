@@ -26,7 +26,18 @@ public class BusTakeDetailManage extends CrudManage<BusTakeGoodsMapper, BusTakeG
 	
 	@Autowired
 	private BusGoodsMapper busGoodsMapper;
-
+	
+	/**
+	 * 获取已被寄提的商品的库存数量
+	 * @param orderId
+	 * @return
+	 */
+	public List<BusTakeGoods> getInvSkuByOrderId(String orderId){
+		List<BusTakeGoods> oriInvSkuList = mapper.getInvSkuByOrderId(orderId);
+		return oriInvSkuList;
+	}
+	
+	
 	/**
 	 * 获取订单下的商品库存信息
 	 * @param orderId
@@ -53,7 +64,8 @@ public class BusTakeDetailManage extends CrudManage<BusTakeGoodsMapper, BusTakeG
 					BeanUtils.copyProperties(busGoods, busTakeGoods);
 					busTakeGoods.setMaxQty(busGoods.getQty());					
 					busTakeGoods.setOriGoodsId(busGoods.getGoodsId());
-					busTakeGoods.setOriQty(busGoods.getQty());										
+					busTakeGoods.setOriQty(busGoods.getQty());	
+					busTakeGoods.setOriInvQty(busGoods.getQty());
 					busTakeGoods.setEnabled(true);
 					takeGoodsList.add(busTakeGoods);
 				}						
@@ -79,7 +91,8 @@ public class BusTakeDetailManage extends CrudManage<BusTakeGoodsMapper, BusTakeG
 						BeanUtils.copyProperties(busGoods, busTakeGoods);
 						busTakeGoods.setMaxQty(busGoods.getQty());					
 						busTakeGoods.setOriGoodsId(busGoods.getGoodsId());
-						busTakeGoods.setOriQty(busGoods.getQty());										
+						busTakeGoods.setOriQty(busGoods.getQty());
+						busTakeGoods.setOriInvQty(busGoods.getQty());
 						busTakeGoods.setEnabled(true);
 						takeGoodsList.add(busTakeGoods);
 					}					

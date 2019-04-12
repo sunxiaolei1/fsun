@@ -38,6 +38,19 @@ var frozenColumns = [[
 			return spanHeader + formatter(value, window.parent.tradeStatus) + spanFooter;
 		}
 	}},
+	{field:'take_status',title:'寄提状态',width:80,align:'center',sortable:true, formatter:function(value, row){
+		if(value){
+			var spanHeader = "<b style='color:green;'>";
+			if(value=='00'){
+				spanHeader = "<b style='color:red;'>";
+			}else if(value=='10'){
+				spanHeader = "<b style='color:#FF9933;'>";
+			}
+			var spanFooter = "</b>";
+			return spanHeader + formatter(value, window.parent.orderTakeStatus) + spanFooter;
+		}
+		return "--";
+	}},
 	{field:'refund_status',title:'退货状态',width:100,align:'center',sortable:true, formatter:function(value, row){
 		var refundStatus = formatter(value, window.parent.refundStatus);
 		return refundStatus!=null?"<b style='color:red;'>"+ refundStatus +"</b>":"--"; 

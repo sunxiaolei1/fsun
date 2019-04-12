@@ -14,11 +14,17 @@ public enum OrderOperateButtonsEnum {
 	REFRESH("order_refresh","刷新"),  //**共用	
 	RETURN_ORDER("order_return","返回"), //**共用	
 	
-	//销售单
+	//销售单	
+	ORDER_TAKE("order_take","创建寄提单"),
 	CREATE_REFUND("create_refund","创建退货单"),
 	CREATE_BARTER("create_barter","创建换货单"),
 	ADD_ORDER_REMARK("add_order_remark","添加备注"),
 	CANCEL_ORDER("order_cancel","取消订单"),
+	
+	//寄提单
+	TAKE_OUT("take_out","寄提出库"),
+	ADD_TAKE_REMARK("add_take_remark","添加备注"),
+	CANCEL_TAKE("take_cancel","取消单据"),
 	
 	//入库单
 	CANCEL_DOC_ASN("docAsn_cancel","取消入库单"),
