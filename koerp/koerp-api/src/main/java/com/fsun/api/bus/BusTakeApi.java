@@ -78,4 +78,10 @@ public interface BusTakeApi {
 	public void changeStatus(String[] split, String status, 
 		SysUser user, BusTakeCondition condition);
 
+	/**
+	 * 打印标记
+	 * @param orderNo
+	 */
+	public void signPrint(String takeId);
+
 }

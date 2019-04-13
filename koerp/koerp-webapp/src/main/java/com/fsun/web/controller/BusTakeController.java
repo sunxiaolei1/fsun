@@ -188,7 +188,7 @@ public class BusTakeController extends BaseController {
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}
-
+		
 	@RequestMapping(value="/status/{status}", method = {RequestMethod.POST})
 	@ResponseBody
 	public HttpResult changeStatus(@PathVariable("status") String status, 
@@ -204,6 +204,24 @@ public class BusTakeController extends BaseController {
 			e.printStackTrace();
 			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
 		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/signPrint/{takeId}", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult signPrint(@PathVariable("takeId") String takeId) {
+		try {
+			if (!StringUtils.isEmpty(takeId)) {		
+				busTakeApi.signPrint(takeId);
+				return success(SCMErrorEnum.SUCCESS.getErrorCode());
+			}
+			return failure(SCMErrorEnum.INVALID_PARAMS);
+		}catch(BusTakeException e){
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		}catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}

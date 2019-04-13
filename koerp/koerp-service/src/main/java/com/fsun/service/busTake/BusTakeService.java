@@ -21,13 +21,17 @@ import com.fsun.domain.dto.BusTakeDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusTakeCondition;
 import com.fsun.domain.enums.BusTakeStatusEnum;
+import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusTake;
 import com.fsun.domain.model.BusTakeGoods;
+import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.BusTakeException;
+import com.fsun.exception.bus.DocOrderException;
+import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
 
@@ -253,6 +257,24 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 		}
 	}
 	
+	@Transactional
+	@Override
+	public void signPrint(String takeId) {
+		BusTake header = busTakeManage.load(takeId);	
+		if(header==null){
+			throw new BusTakeException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}	
+		String takeStatus = header.getTakeStatus();
+		if(BusTakeStatusEnum.CANCEL.getCode().equals(takeStatus) 
+			|| BusTakeStatusEnum.COMPLETE.getCode().equals(takeStatus)){
+			throw new BusTakeException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
+		}
+		//累加打印次数
+		int printCount = (header.getPrintCount()!=null?header.getPrintCount():0);
+		header.setPrintCount(++printCount);
+		busTakeManage.update(header);
+	}
+	
 	
 	/************************************        私有方法              ************************************/
 
@@ -285,6 +307,5 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 		}
 		return isTrue;
 	}
-	
 
 }
