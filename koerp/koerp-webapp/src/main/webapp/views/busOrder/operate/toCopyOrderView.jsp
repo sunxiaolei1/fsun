@@ -441,13 +441,16 @@ $(function () {
 							});	
 						}						
 					}
-					currCustomer = data;			
+					currCustomer = data;
 		        }
 		    });
 			
 			var details = busOrderDto.details;	
 			if(details!=null && details.length>0){
-				currDetailData = details;
+				$.each(details, function(){
+					delete this.untakeQty;
+					currDetailData.push(this);
+				});
 				skuListReLoad();
 			}		
 	

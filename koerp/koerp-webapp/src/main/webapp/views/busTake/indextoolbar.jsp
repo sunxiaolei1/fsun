@@ -7,6 +7,7 @@
 	request.setAttribute("api", basePath);
 %>
 
+<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView()">创建寄提单</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
@@ -14,6 +15,47 @@
  -->
 
 <script type="text/javascript">
+
+//跳转至新增界面
+function toAddView(){
+	
+	$("<div></div>").dialog({
+        id: "ordersDialog",
+        title: "关联寄存单",
+        width: "96%",
+        height: "90%",
+        iconCls: "icon-chart_line",
+        closed: false,
+        cache: false,
+        href: "${api}/bus/order/toSelectTakeOrderView",	       
+        modal: true,
+        minimizable: false,
+        maximizable: false,
+        closable: true,
+        collapsible: false,
+        resizable: true,
+        buttons:[
+         	{
+         		text:"确定",iconCls:"icon-disk",
+                handler: function (data) {                     	
+                	transferToCreateTakeView(function(){
+            			$('#ordersDialog').dialog("destroy");
+                	});	            	
+                }
+             },
+             {
+                 text:"关闭",
+                 iconCls:"icon-cancel",
+                 handler:function(){
+                 	$('#ordersDialog').dialog("destroy");
+                 }
+             }
+         ],
+        onClose: function () {
+            $(this).dialog("destroy");
+        }
+    });
+}
 
 //跳转至编辑界面
 function toDetailView(){

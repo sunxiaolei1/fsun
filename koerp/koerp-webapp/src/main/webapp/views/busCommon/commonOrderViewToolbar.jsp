@@ -41,7 +41,8 @@
 	<a href="#" id="create_refund" class="easyui-linkbutton" iconCls="icon-book_add" plain="true" onclick="toCreateRefundView('${orderId}')">创建退货单</a>
 	<a href="#" id="create_barter" class="easyui-linkbutton" iconCls="icon-book_red" plain="true" onclick="toCreateBarterView('${orderId}')">创建换货单</a>
 	<a href="#" id="onekey_refund" class="easyui-linkbutton" iconCls="icon-mouse_add" plain="true" onclick="toAllRefundView('${orderId}')">一键退货</a>
-	
+	<a href="#" id="take_goods_history" class="easyui-linkbutton" iconCls="icon-book_red" plain="true" onclick="toTakeGoodsHistoryView('${orderId}')">寄提详情</a>
+
 	<!-- 入库单 -->	
 	<a href="#" id="docAsn_cancel" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">撤销</a>
 	<a href="#" id="create_asn_refund" class="easyui-linkbutton" iconCls="icon-book_add" plain="true" onclick="toCreateAsnRefundView()">创建退货单</a>	
@@ -81,7 +82,7 @@ var buttonsMap = {
 	"docAsn": ["docAsn_sign","docAsn_cancel","create_asn_refund","order_refresh","order_return"],
 	"docPo": ["docPo_cancel","docPo_update","order_return","order_refresh"],
 	"busTake": ["take_cancel", "add_take_remark","take_out","order_refresh", "order_return"],
-	"busOrder": ["order_cancel","add_order_remark","order_take","create_refund","onekey_refund","order_refresh", "order_return"]
+	"busOrder": ["order_cancel","add_order_remark","order_take","create_refund","onekey_refund","take_goods_history","order_refresh","order_return"]
 	//"busOrder": ["order_cancel","add_order_remark","create_refund","create_barter","onekey_refund","order_refresh", "order_return"]
 }
 

@@ -60,28 +60,6 @@ public class BusAfterSaleOpController extends BaseController {
 	}
 	
 	/**
-	 * 一键整单退货
-	 * @param busRefundDto
-	 * @return
-	 */
-	@RequestMapping(value="/refund/allReturn", method=RequestMethod.POST)
-	@ResponseBody
-	public HttpResult allRetuen(@RequestBody BusRefundDto busRefundDto) {
-		try {
-			BusUserDto currUser = super.getCurrentUser();
-			busRefundDto.setCurrUser(currUser);
-			busAfterSaleApi.allReturn(busRefundDto);			
-			return success();
-		}catch (AfterSaleException e) {
-			e.printStackTrace();
-			return failure(SCMException.CODE_BIZ, e.getErrorMsg());
-		}catch (Exception e) {
-			e.printStackTrace();
-			return failure(SCMErrorEnum.SYSTEM_ERROR);
-		}
-	}
-	
-	/**
 	 * 创建换货单
 	 * @param busBarterDto
 	 * @return

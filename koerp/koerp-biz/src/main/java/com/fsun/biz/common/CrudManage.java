@@ -53,6 +53,15 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	public <C>List<T> list(C condition) {
 		return mapper.selectList(condition);
 	}
+	
+	/**
+	 * 通过headerId获取明细
+	 * @param headerId
+	 * @return
+	 */
+	public List<T> listByHeaderId(String headerId){
+		return null;		
+	}
 
 	/**
 	 * 查询分页数据

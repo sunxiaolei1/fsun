@@ -83,6 +83,13 @@ function orderTakeOut(){
 }
 
 
+//打开商品提货明细
+function toTakeGoodsHistoryView(orderId){
+	var url = "${api}/bus/take/toGoodsHistoryView/"+ orderId;	
+	commonDialog("ordersDialog", "寄提出库明细(寄存单号:"+ orderId +")", "96%", "90%", url, "icon-book_open");
+}
+
+
 /**
  * 返回
  */

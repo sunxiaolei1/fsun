@@ -51,7 +51,7 @@ public abstract class BaseOrderValidatorService {
 	        	if(OrderStatusEnum.CONFIRMED.getCode().equals(orderStatus)
 	        		&& FlowStatusEnum.STOCKOUT.getCode().equals(flowStatus)
 	        			&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
-	        				&& (refundStatus==null || refundStatus.equals(""))){
+	        				&& refundStatus==null){
 	        		//如果是寄存单类型，只要寄提过就不能取消单据
 	        		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
 	        			if(OrderTakeStatusEnum.UNTAKE.getCode().equals(takeStatus)){
@@ -75,14 +75,15 @@ public abstract class BaseOrderValidatorService {
 	        		&& FlowStatusEnum.STOCKOUT.getCode().equals(flowStatus)
 	        			&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)	
 	        				&& (refundStatus==null || refundStatus.equals(""))){
+	        		isEnable = true; 
 	        		//如果是寄存单类型，只要寄提过就不能创建退货单，可以一键退货
-	        		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
+	        		/*if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
 	        			if(OrderTakeStatusEnum.UNTAKE.getCode().equals(takeStatus)){
 	        				isEnable = true; 
 	        			}
 	        		}else{
 	        			isEnable = true; 
-	        		}  
+	        		}*/  
 	        	}
 	        	break;
 	        case CREATE_BARTER:  
@@ -96,7 +97,7 @@ public abstract class BaseOrderValidatorService {
 	        case ORDER_TAKE:
 	        	//订单已退货或者提货完成状态则不可寄提
 	        	if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)
-	        		&& (refundStatus==null || refundStatus.equals("")) 
+	        		//&& (refundStatus==null || refundStatus.equals("")) 
         				&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
         					&& !OrderTakeStatusEnum.ALL_TAKE.getCode().equals(takeStatus)){
 			        isEnable = true;        		
@@ -281,11 +282,16 @@ public abstract class BaseOrderValidatorService {
 		        	isEnable = true; break;                      
 		        case CANCEL_TAKE:
 		        	//订单已退货或者提货完成状态则才可取消			        		        		
-	        		if((refundStatus==null || refundStatus.equals("")) 
+		        	/*if((refundStatus==null || refundStatus.equals("")) 
 	        			&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
 	        				&& BusTakeStatusEnum.TAKED.getCode().equals(busTakeStatus)){
 				        isEnable = true;        		
-				    }     	        	        		
+				    }*/ 
+	        		//订单提货完成状态则才可取消			        		        		
+	        		if(TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
+	        				&& BusTakeStatusEnum.TAKED.getCode().equals(busTakeStatus)){
+				        isEnable = true;        		
+				    } 
 		        	break;
 		        case RETURN_ORDER: 
 		        	isEnable = true; break; 
@@ -311,7 +317,7 @@ public abstract class BaseOrderValidatorService {
 		        	isEnable = true; break;   
 		        case TAKE_OUT:
 		        	if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)
-		        		&& (refundStatus==null || refundStatus.equals("")) 
+		        		//&& (refundStatus==null || refundStatus.equals("")) 
 	        				&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
 	        					&& !OrderTakeStatusEnum.ALL_TAKE.getCode().equals(orderTakeStatus)){
 				        isEnable = true;        		

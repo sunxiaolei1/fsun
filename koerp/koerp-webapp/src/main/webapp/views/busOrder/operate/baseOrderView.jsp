@@ -78,11 +78,28 @@ $(function () {
 	    		rowData.totalPrice = 0;
 	    		rowData.couponPrice = 0;
 	    	}
-	    		    	   	
+	    	$(this).datagrid("refreshRow", rowIndex);
+	    	//同步订单头信息
+	    	syncOrderHeaderInfo();	    	
 	    }
 	});
      
 });
+
+/**
+ * 同步订单头信息
+ */
+function syncOrderHeaderInfo(){
+	var couponPrice = 0;
+	var orderPrice = 0;
+	$.each(currDetailData, function(){
+		couponPrice = couponPrice + Number(this.couponPrice);
+		orderPrice = orderPrice + Number(this.totalPrice);
+	});		   	    	
+   	$("#orderPrice", $orderfm).numberbox("setValue", orderPrice);
+    $("#couponPrice", $orderfm).numberbox("setValue", couponPrice);
+    $("#toZeroPrice", $orderfm).numberbox("setValue", (Math.round(orderPrice*100)%10)/100);
+}
 
 /**
  * 删除单个

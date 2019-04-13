@@ -466,6 +466,11 @@ public class BusOrderCondition extends BaseOrderCondition {
      * 表字段 : bus_order.created_name
      */
     private String createdName;
+    
+    /**
+     * 用于寄存单查询的关键字搜索(包括手机号、客户名称、单据编号)
+     */
+    private String keywords;
 
     public String getOrderId() {
         return orderId;
@@ -1091,6 +1096,20 @@ public class BusOrderCondition extends BaseOrderCondition {
 	 */
 	public void setTakeStatus(String takeStatus) {
 		this.takeStatus = takeStatus;
+	}
+
+	/**
+	 * @return the keywords
+	 */
+	public String getKeywords() {
+		return keywords;
+	}
+
+	/**
+	 * @param keywords the keywords to set
+	 */
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
 	}
 
 }

@@ -178,6 +178,24 @@ public class BusOrderController extends BaseController {
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}
+	
+	/**
+	 * 获取寄存单据的列表(带分页)
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/findTakePage", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findTakePage(BusOrderCondition condition) {
+		try {
+			PageModel pageModel = busOrderApi.findTakePage(condition);			
+			return success(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
 
 	@RequestMapping(value="/findListForPage", method = {RequestMethod.POST})
 	@ResponseBody
@@ -379,6 +397,17 @@ public class BusOrderController extends BaseController {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}		
+	}
+	
+	/**
+	 * 跳转至寄存单选择界面
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping(value="/toSelectTakeOrderView", method=RequestMethod.GET)
+	public ModelAndView toSelectTakeOrderView() {
+		ModelAndView modelAndView = new ModelAndView("/busOrder/operate/toSelectTakeOrderView"); 
+		return modelAndView;
 	}
 	
 	

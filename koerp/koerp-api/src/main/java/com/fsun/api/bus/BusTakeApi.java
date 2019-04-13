@@ -37,6 +37,13 @@ public interface BusTakeApi {
 	 * @return
 	 */
 	public List<BusTake> list(BusTakeCondition condition);
+	
+	/**
+	 * 通过订单号获取订单下商品的提货流水
+	 * @param orderId
+	 * @return
+	 */
+	public List<HashMap<String, Object>> getTakeGoodsByOrderId(String orderId);
 
 	/**
 	 * 获取单据对象

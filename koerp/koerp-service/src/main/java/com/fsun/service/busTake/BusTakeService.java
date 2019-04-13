@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.BusTakeApi;
+import com.fsun.biz.bus.manage.BusGoodsManage;
 import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusTakeDetailManage;
 import com.fsun.biz.bus.manage.BusTakeManage;
@@ -19,10 +20,9 @@ import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusTakeDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusTakeCondition;
-import com.fsun.domain.entity.BusTakeGoodsCondition;
 import com.fsun.domain.enums.BusTakeStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
-import com.fsun.domain.enums.OrderTakeStatusEnum;
+import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusTake;
 import com.fsun.domain.model.BusTakeGoods;
@@ -40,6 +40,9 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 	
 	@Autowired
 	private BusOrderManage busOrderManage;
+	
+	@Autowired
+	private BusGoodsManage busGoodsManage;
 	
 	@Autowired
 	private BusTakeManage busTakeManage;
@@ -64,6 +67,11 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 	}
 
 	@Override
+	public List<HashMap<String, Object>> getTakeGoodsByOrderId(String orderId) {
+		return busTakeDetailManage.getTakeGoodsByOrderId(orderId);
+	}
+	
+	@Override
 	public HashMap<String, Object> loadEntity(String takeId) {
 		return busTakeManage.loadEntity(takeId);
 	}
@@ -78,11 +86,11 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 				throw new BusTakeException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
 			}
 			if(!busOrder.getShopId().equals(currUser.getShopId())){
-				throw new BusTakeException(SCMErrorEnum.USER_ILLEGAL);
+				//throw new BusTakeException(SCMErrorEnum.USER_ILLEGAL);
 			}
 			//头信息
 			BusTake header = new BusTake();
-			takeId = busTakeManage.initNumber(orderId, "JT");
+			takeId = busTakeManage.initNumber(orderId, "JT", currUser.getShopCode());
 			header.setTakeId(takeId);
 			header.setOrderId(orderId);
 			header.setSellerId(currUser.getId());
@@ -95,7 +103,7 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 			header.setTakeTime(new Date());
 			map.put("header", header);
 			//获取订单下的商品库存信息					
-			map.put("details", busTakeDetailManage.getInvSkuByOrder(busOrder));						
+			map.put("details", busTakeDetailManage.initTakeDetails(busOrder, takeId, currUser));						
 		}else{
 			map = busTakeManage.loadEntity(takeId);
 		}
@@ -138,24 +146,26 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 		header.setUpdatedName(currUser.getRealname());
 		header.setCreatedTime(now);
 		header.setUpdatedTime(now);
-		busTakeManage.create(header);		
-		//获取订单下的商品库存信息
-		List<BusTakeGoods> invSkuList = busTakeDetailManage.getInvSkuByOrder(busOrder);
+		busTakeManage.create(header);
+		
+		//获取订单下的商品库存信息校验寄提单商品的有效性		
+		List<BusGoods> busGoodsList = busGoodsManage.listByHeaderId(header.getOrderId());
 		//初始化明细
 		int lineNo = 1;
 		boolean hasExist;
-		boolean hasAllTake = true;
 		BigDecimal takeOutQty = BigDecimal.ZERO;
 		for (BusTakeGoods busTakeGoods : details) {		
 			BigDecimal qty = busTakeGoods.getQty();
 			hasExist = false;
-			for (BusTakeGoods oldBusTakeGoods : invSkuList) {
-				if(oldBusTakeGoods.getOriGoodsId().equals(busTakeGoods.getOriGoodsId())){
-					if(oldBusTakeGoods.getMaxQty().compareTo(qty)<0){
+			for (BusGoods busGoods : busGoodsList) {
+				if(busGoods.getGoodsId().equals(busTakeGoods.getOriGoodsId())){
+					BigDecimal diffQty = busGoods.getUntakeQty().subtract(qty);
+					if(diffQty.compareTo(BigDecimal.ZERO)<0){
 						throw new BusTakeException(SCMErrorEnum.BUS_SKU_INV_ILLEGAL);
-					}else if(oldBusTakeGoods.getMaxQty().compareTo(qty)>0){
-						hasAllTake = false;
 					}
+					busGoods.setUntakeQty(diffQty);
+					busGoods.setUpdatedTime(now);
+					busGoodsManage.update(busGoods);
 					hasExist = true;
 				}
 			}
@@ -165,11 +175,8 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 			//存在提货数量
 			if(qty.compareTo(BigDecimal.ZERO)>0){
 				busTakeGoods.setGoodsId(PKMapping.GUUID(PKMapping.bus_take_goods));
-				busTakeGoods.setTakeId(takeId);
 				busTakeGoods.setLineNo(lineNo++);
-				busTakeGoods.setCreatedTime(now);	
-				busTakeGoods.setEnabled(true);
-				busTakeGoods.setShopId(header.getShopId());
+				busTakeGoods.setCreatedTime(now);				
 				busTakeDetailManage.create(busTakeGoods);
 				this.skuStockOut(header, busTakeGoods);
 			}
@@ -179,15 +186,9 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 		if(takeOutQty.compareTo(BigDecimal.ZERO)==0){
 			throw new BusTakeException(SCMErrorEnum.BUS_SKU_INV_ILLEGAL);
 		}		
-		//记录提货状态
-		if(hasAllTake){
-			busOrder.setTakeStatus(OrderTakeStatusEnum.ALL_TAKE.getCode());
-		}else{
-			busOrder.setTakeStatus(OrderTakeStatusEnum.PART_TAKE.getCode());
-		}	
-		busOrder.setUpdatedName(currUser.getRealname());
-		busOrder.setUpdatedTime(now);
-		busOrderManage.update(busOrder);
+		//同步当前寄存单对应的寄提状态
+		busOrderManage.synOrderTakeStatus(busGoodsList, busOrder, currUser.getRealname());
+		
 		return takeId;
 	}
 
@@ -207,31 +208,50 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 			if(!this.takeStatusValidator(status, header)){
 				throw new BusTakeException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
 			}
+			
 			//更新明细
 			if(BusTakeStatusEnum.getByCode(status)==BusTakeStatusEnum.CANCEL){
 				//单据状态校验
 				BusOrder busOrder = busOrderManage.load(header.getOrderId());
 				if(!orderStatusValidator(header, busOrder, OrderOperateButtonsEnum.CANCEL_TAKE)){
 			    	throw new BusTakeException(SCMErrorEnum.BUS_ORDER_ILLEGAL);
-			    }				
-				BusTakeGoodsCondition condition0 = new BusTakeGoodsCondition();
-				condition0.setTakeId(takeId);
-				List<BusTakeGoods> busTakeGoods = busTakeDetailManage.list(condition0);
-				for (BusTakeGoods busTakeGoods2 : busTakeGoods) {
-					busTakeGoods2.setEnabled(false);
-					busTakeDetailManage.update(busTakeGoods2);
-					this.skuStockIn(header, busTakeGoods2);
+			    }
+				//更新头信息
+				header.setTakeStatus(status);
+				header.setUpdatedName(user.getRealname());
+				header.setUpdatedTime(now);
+				header.setMemo(condition.getMemo());
+				
+				List<BusTakeGoods> busTakeGoodsList = busTakeDetailManage.listByHeaderId(takeId);
+				List<BusGoods> busGoodsList = busGoodsManage.listByHeaderId(header.getOrderId());
+				for (BusTakeGoods busTakeGoods : busTakeGoodsList) {
+					//回退库存
+					this.skuStockIn(header, busTakeGoods);
+					//回退寄存单商品可用寄提库存
+					for (BusGoods busGoods : busGoodsList) {
+						if(busGoods.getGoodsId().equals(busTakeGoods.getOriGoodsId())){
+							busGoods.setUntakeQty(busGoods.getUntakeQty().add(busTakeGoods.getQty()));
+							busGoods.setUpdatedTime(now);
+							busGoodsManage.update(busGoods);
+						}
+					}
+					//更新商品状态
+					busTakeGoods.setEnabled(false);
+					busTakeDetailManage.update(busTakeGoods);
 				}
+				//同步当前寄存单对应的寄提状态
+				busOrderManage.synOrderTakeStatus(busGoodsList, busOrder, user.getRealname());
+			}else{
+				//更新头信息
+				header.setTakeStatus(status);
+				header.setUpdatedName(user.getRealname());
+				header.setUpdatedTime(now);
+				header.setMemo(condition.getMemo());
 			}
-			//更新头信息
-			header.setTakeStatus(status);
-			header.setUpdatedName(user.getRealname());
-			header.setUpdatedTime(now);
-			header.setMemo(condition.getMemo());
+			
 			busTakeManage.update(header);
 		}
 	}
-	
 	
 	
 	/************************************        私有方法              ************************************/

@@ -208,7 +208,7 @@ var soColumns = [[
 	    },
 	    formatter:intNumBaseFormat
 	},
-	{field:"untakeQty",title:"寄提库存", width:80,align:"center",
+	{field:"untakeQty",title:"可提货库存", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },

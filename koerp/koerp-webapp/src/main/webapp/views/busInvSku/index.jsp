@@ -67,7 +67,7 @@ $(function() {
 	    queryParams:{firstColumn: footerFirstColumn},
 	    remoteSort:true,
 	    sortName:"sku",
-        sortOrder:"desc",
+        sortOrder:"asc",
 	    //idField:"blackid",
 	    singleSelect:true,//是否单选
 	    pagination:true,//分页控件

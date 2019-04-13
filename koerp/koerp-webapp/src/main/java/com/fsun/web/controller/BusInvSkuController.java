@@ -152,6 +152,8 @@ public class BusInvSkuController extends BaseController {
 			fieldMap.put("qty", "可用数量");
 			fieldMap.put("lock_qty", "冻结数量");
 			fieldMap.put("damaged_qty", "破损数量");
+			fieldMap.put("take_inv_qty", "寄提库存");
+			fieldMap.put("vir_inv_qty", "虚拟库存");			
 			fieldMap.put("bar_code", "条形码");
 			fieldMap.put("brand_name", "品牌");
 			fieldMap.put("category_name", "商品分类");

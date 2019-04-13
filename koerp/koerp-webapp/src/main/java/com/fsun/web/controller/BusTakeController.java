@@ -83,6 +83,17 @@ public class BusTakeController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toShowTakeOutView");	
 		return modelAndView;
 	}	
+	
+	/**
+	 * 跳转至寄存单对应的寄提出库明细页面
+	 * @return
+	 */
+	@RequestMapping("/toGoodsHistoryView/{orderId}")
+	public ModelAndView toGoodsHistoryView(@PathVariable("orderId") String orderId) {				
+		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toGoodsHistoryView");	
+		modelAndView.addObject("orderId", orderId);
+		return modelAndView;
+	}
 
 	/**
 	 * 查看明细页面
@@ -154,6 +165,23 @@ public class BusTakeController extends BaseController {
 	public HttpResult list(BusTakeCondition condition) {
 		try {
 			List<BusTake> list = busTakeApi.list(condition);
+			return success(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	/**
+	 * 获取寄存单对应的寄提流水
+	 * @param orderId
+	 * @return
+	 */
+	@RequestMapping(value="/goodsHistory/{orderId}", method = RequestMethod.GET)
+	@ResponseBody
+	public HttpResult getTakeGoodsByOrderId(@PathVariable("orderId") String orderId) {
+		try {
+			List<HashMap<String, Object>> list = busTakeApi.getTakeGoodsByOrderId(orderId);
 			return success(list);
 		} catch (Exception e) {
 			e.printStackTrace();

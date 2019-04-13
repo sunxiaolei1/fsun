@@ -389,11 +389,17 @@ $(function () {
 			$("#extOrderId",$orderfm).val(header.extOrderId);
 			$("#shopId",$orderfm).val(header.shopId);
 			$("#buyerId",$orderfm).val(header.buyerId);
-			
-			currOrderDetails = orderDto.details;
-			if(currOrderDetails!=null && currOrderDetails.length>0){				
-				$.each(currOrderDetails, function(){
+				
+			if(orderDto.details!=null){	
+				var orderType = header.orderType;
+				$.each(orderDto.details, function(){
 					this.skuAftersaleStatus = 10;
+					if(orderType==2){
+						this.qty = this.untakeQty;
+					}	
+					if(this.qty>0){
+						currOrderDetails.push(this);
+					}				
 				});
 				currOrderDetailDataGrid.datagrid("loadData", currOrderDetails);		
 			}
@@ -444,6 +450,7 @@ function refundOne(rowIndex){
     rowdata.giftCount = 0;
     rowdata.giftPrice = 0;
     delete rowdata.skuAftersaleStatus;
+    delete rowdata.untakeQty;
     delete rowdata.nid;
 	currRefundDetails.push(rowdata);
 	currRefundDetailDataGrid.datagrid("loadData",currRefundDetails);	

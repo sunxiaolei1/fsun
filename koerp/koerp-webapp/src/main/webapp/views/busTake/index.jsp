@@ -24,7 +24,7 @@
 
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
-	{field:'take_id',title:'单据编号',width:170,align:'center',sortable:true},	
+	{field:'take_id',title:'单据编号',width:200,align:'center',sortable:true},	
 	{field:'order_id',title:'寄存单号',width:140,align:'center',sortable:true},	
 	{field:'take_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		var spanHeader = "";

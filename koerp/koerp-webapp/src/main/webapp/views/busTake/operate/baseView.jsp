@@ -32,6 +32,12 @@ $(function () {
     		//分页拦截器
     		return pagerFilter($(this), data);   
         },
+        onAfterEdit: function(rowIndex, rowData, changes){	
+        	if(rowData.maxQty < changes.qty){
+        		rowData.qty = rowData.maxQty;
+        	}
+        	$(this).datagrid("refreshRow", rowIndex);				
+	    },
 	    loadMsg:"数据加载中请稍后……",
 	    emptyMsg:"没有符合条件的记录"
 	});

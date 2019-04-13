@@ -21,6 +21,7 @@
     <result column="total_part_price" property="totalPartPrice" jdbcType="DECIMAL" />
     <result column="rate_type" property="rateType" jdbcType="VARCHAR" />
     <result column="qty" property="qty" jdbcType="DECIMAL" />
+    <result column="untake_qty" property="untakeQty" jdbcType="DECIMAL" />
     <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="convert_qty" property="convertQty" jdbcType="DECIMAL" />
     <result column="convert_unit" property="convertUnit" jdbcType="VARCHAR" />
@@ -45,7 +46,7 @@
   <sql id="Base_Column_List" >
     goods_id, order_id, line_no, goods_type, category_name, category_code, brand_name, 
     brand_code, product_type, goods_name, bar_code, sku, parent_sku, sku_id, parent_sku_id, 
-    en_unit, total_part_price, rate_type, qty, unit, convert_qty, convert_unit, market_price, 
+    en_unit, total_part_price, rate_type, qty, untake_qty, unit, convert_qty, convert_unit, market_price, 
     origin_sale_price, sale_price, part_price, coupon_price, discount_price, total_price, cost_price, 
     rate_precent, is_gift, gift_count, gift_price, is_show, property, memo, created_time, 
     updated_time
@@ -92,7 +93,7 @@
     	d.en_unit as enUnit, 
     	d.rate_type as rateType, 
     	d.qty as originQty, 
-        IFNULL(getTakedInvSkuByOrderId(o.order_id, d.sku),d.qty) as qty,
+        d.untake_qty as qty,
     	d.unit as unit, 
     	d.convert_qty as convertQty, 
     	d.convert_unit as convertUnit, 
@@ -100,7 +101,7 @@
     	d.sale_price as salePrice,
     	d.sale_price as originSalePrice, 
     	0 as couponPrice,	
-    	(d.sale_price*IFNULL(getTakedInvSkuByOrderId(o.order_id, d.sku),d.qty)) as totalPrice,
+    	(d.sale_price * d.untake_qty) as totalPrice,
     	d.total_price as originTotalPrice, 
     	d.cost_price as costPrice, 
     	d.rate_precent as ratePrecent, 
@@ -136,7 +137,7 @@
       goods_name, bar_code, sku, 
       parent_sku, sku_id, parent_sku_id, 
       en_unit, total_part_price, rate_type, 
-      qty, unit, convert_qty, 
+      qty, untake_qty, unit, convert_qty, 
       convert_unit, market_price, origin_sale_price, 
       sale_price, part_price, coupon_price, discount_price, 
       total_price, cost_price, rate_precent, 
@@ -149,7 +150,7 @@
       #{goodsName,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, 
       #{parentSku,jdbcType=VARCHAR}, #{skuId,jdbcType=VARCHAR}, #{parentSkuId,jdbcType=VARCHAR}, 
       #{enUnit,jdbcType=VARCHAR}, #{totalPartPrice,jdbcType=DECIMAL}, #{rateType,jdbcType=VARCHAR}, 
-      #{qty,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, #{convertQty,jdbcType=DECIMAL}, 
+      #{qty,jdbcType=DECIMAL}, #{untakeQty,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, #{convertQty,jdbcType=DECIMAL}, 
       #{convertUnit,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, #{originSalePrice,jdbcType=DECIMAL}, 
       #{salePrice,jdbcType=DECIMAL}, #{partPrice,jdbcType=DECIMAL}, #{couponPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
       #{totalPrice,jdbcType=DECIMAL}, #{costPrice,jdbcType=DECIMAL}, #{ratePrecent,jdbcType=DECIMAL}, 
@@ -217,6 +218,9 @@
       <if test="qty != null" >
         qty,
       </if>
+      <if test="untakeQty != null" >
+        untake_qty,
+      </if>    
       <if test="unit != null" >
         unit,
       </if>
@@ -335,6 +339,9 @@
       </if>
       <if test="qty != null" >
         #{qty,jdbcType=DECIMAL},
+      </if>
+      <if test="untakeQty != null" >
+        #{untakeQty,jdbcType=DECIMAL},
       </if>
       <if test="unit != null" >
         #{unit,jdbcType=VARCHAR},
@@ -455,6 +462,9 @@
       <if test="qty != null" >
         qty = #{qty,jdbcType=DECIMAL},
       </if>
+      <if test="untakeQty != null" >
+        untake_qty = #{untakeQty,jdbcType=DECIMAL},
+      </if>
       <if test="unit != null" >
         unit = #{unit,jdbcType=VARCHAR},
       </if>
@@ -538,6 +548,7 @@
       total_part_price = #{totalPartPrice,jdbcType=DECIMAL},
       rate_type = #{rateType,jdbcType=VARCHAR},
       qty = #{qty,jdbcType=DECIMAL},
+      untake_qty = #{untakeQty,jdbcType=DECIMAL},
       unit = #{unit,jdbcType=VARCHAR},
       convert_qty = #{convertQty,jdbcType=DECIMAL},
       convert_unit = #{convertUnit,jdbcType=VARCHAR},

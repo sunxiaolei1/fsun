@@ -2,6 +2,7 @@ package com.fsun.biz.bus.manage;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -11,8 +12,9 @@ import org.springframework.stereotype.Component;
 import com.fsun.biz.common.CrudManage;
 import com.fsun.dao.mapper.BusGoodsMapper;
 import com.fsun.dao.mapper.BusTakeGoodsMapper;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusGoodsCondition;
-import com.fsun.domain.enums.OrderTakeStatusEnum;
+import com.fsun.domain.entity.BusTakeGoodsCondition;
 import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusTakeGoods;
@@ -27,15 +29,23 @@ public class BusTakeDetailManage extends CrudManage<BusTakeGoodsMapper, BusTakeG
 	@Autowired
 	private BusGoodsMapper busGoodsMapper;
 	
+	@Override
+	public List<BusTakeGoods> listByHeaderId(String headerId) {
+		BusTakeGoodsCondition condition = new BusTakeGoodsCondition();
+		condition.setTakeId(headerId);
+		return mapper.selectList(condition);	
+	}
+	
 	/**
-	 * 获取已被寄提的商品的库存数量
+	 * 通过订单号获取订单下商品的提货流水
 	 * @param orderId
 	 * @return
 	 */
-	public List<BusTakeGoods> getInvSkuByOrderId(String orderId){
-		List<BusTakeGoods> oriInvSkuList = mapper.getInvSkuByOrderId(orderId);
-		return oriInvSkuList;
+	public List<HashMap<String, Object>> getTakeGoodsByOrderId(String orderId){
+		return mapper.getTakeGoodsByOrderId(orderId);
 	}
+	
+	
 	
 	
 	/**
@@ -43,14 +53,16 @@ public class BusTakeDetailManage extends CrudManage<BusTakeGoodsMapper, BusTakeG
 	 * @param orderId
 	 * @return
 	 */
-	public List<BusTakeGoods> getInvSkuByOrder(BusOrder busOrder) {	
+	/*public List<BusTakeGoods> getInvSkuByOrder1(BusOrder busOrder) {	
 		
 		List<BusTakeGoods> takeGoodsList = new ArrayList<>();
 		String orderId = busOrder.getOrderId();
 		Short refundStatus = busOrder.getRefundStatus();
 		String takeStatus = busOrder.getTakeStatus();
-		if(refundStatus!=null || (takeStatus!=null 
-			&& OrderTakeStatusEnum.ALL_TAKE.getCode().equals(takeStatus))){
+		Short orderType = busOrder.getOrderType();
+		if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType) 
+			|| (refundStatus!=null && !refundStatus.equals("")) 
+				|| OrderTakeStatusEnum.ALL_TAKE.getCode().equals(takeStatus)){
 			//存在退货过的或者是寄提单已提货完成的寄存单，则取空数组
 			return takeGoodsList;
 		}else{
@@ -66,6 +78,7 @@ public class BusTakeDetailManage extends CrudManage<BusTakeGoodsMapper, BusTakeG
 					busTakeGoods.setOriGoodsId(busGoods.getGoodsId());
 					busTakeGoods.setOriQty(busGoods.getQty());	
 					busTakeGoods.setOriInvQty(busGoods.getQty());
+					busTakeGoods.setQty(BigDecimal.ZERO);
 					busTakeGoods.setEnabled(true);
 					takeGoodsList.add(busTakeGoods);
 				}						
@@ -93,6 +106,7 @@ public class BusTakeDetailManage extends CrudManage<BusTakeGoodsMapper, BusTakeG
 						busTakeGoods.setOriGoodsId(busGoods.getGoodsId());
 						busTakeGoods.setOriQty(busGoods.getQty());
 						busTakeGoods.setOriInvQty(busGoods.getQty());
+						busTakeGoods.setQty(BigDecimal.ZERO);
 						busTakeGoods.setEnabled(true);
 						takeGoodsList.add(busTakeGoods);
 					}					
@@ -100,6 +114,40 @@ public class BusTakeDetailManage extends CrudManage<BusTakeGoodsMapper, BusTakeG
 			}
 			return takeGoodsList;
 		}		
+	}*/
+
+	/**
+	 * 初始化寄提商品明细
+	 * @param busOrder
+	 * @param currUser
+	 * @return
+	 */
+	public List<BusTakeGoods> initTakeDetails(BusOrder busOrder, String takeId, BusUserDto currUser) {
+		
+		List<BusTakeGoods> takeGoodsList = new ArrayList<>();
+		String orderId = busOrder.getOrderId();
+		if(orderId!=null){
+			BusGoodsCondition condition = new BusGoodsCondition();
+			condition.setOrderId(orderId);
+			List<BusGoods> busGoodsList= busGoodsMapper.selectList(condition);
+			for (BusGoods busGoods : busGoodsList) {
+				BigDecimal untakeQty = busGoods.getUntakeQty();
+				if(untakeQty.compareTo(BigDecimal.ZERO)>0){
+					BusTakeGoods busTakeGoods = new BusTakeGoods();
+					BeanUtils.copyProperties(busGoods, busTakeGoods);
+					busTakeGoods.setMaxQty(busGoods.getUntakeQty());					
+					busTakeGoods.setOriGoodsId(busGoods.getGoodsId());
+					busTakeGoods.setOriQty(busGoods.getQty());
+					busTakeGoods.setOriInvQty(busGoods.getUntakeQty());
+					busTakeGoods.setQty(BigDecimal.ZERO);
+					busTakeGoods.setEnabled(true);
+					busTakeGoods.setShopId(currUser.getShopId());
+					busTakeGoods.setTakeId(takeId);
+					takeGoodsList.add(busTakeGoods);
+				}				
+			}
+		}
+		return takeGoodsList;
 	}
 
 }

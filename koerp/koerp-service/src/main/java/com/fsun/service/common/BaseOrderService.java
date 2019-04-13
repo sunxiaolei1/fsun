@@ -17,6 +17,8 @@ import com.fsun.domain.enums.DocTradeStatusEnum;
 import com.fsun.domain.enums.DocTradeTypeEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
+import com.fsun.domain.enums.OrderTakeStatusEnum;
+import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.RefundStatusEnum;
 import com.fsun.domain.enums.TradeStatusEnum;
 import com.fsun.domain.model.BusGoods;
@@ -580,12 +582,22 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		String tradeStatus = busOrder.getTradeStatus();
 		String flowStatus = busOrder.getFlowStatus();
 		Short refundStatus = busOrder.getRefundStatus();
+		if(refundStatus!=null){
+			throw new AfterSaleException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
+		}
 		if(!((FlowStatusEnum.COMPLETED.getCode().equals(flowStatus) 
 				|| FlowStatusEnum.STOCKOUT.getCode().equals(flowStatus))
-				&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus)
-					&& refundStatus == null)){
+				&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus))){
 			throw new AfterSaleException(SCMErrorEnum.BUS_REFUND_STATUS_INVALID);
 		}
+		//判别如果是寄存单已经寄提过则不可以创建默认的退货单， 但可以一键整单退
+		/*Short orderType = busOrder.getOrderType() ;
+		String takeStatus = busOrder.getTakeStatus();
+		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
+			if(takeStatus!=null && !OrderTakeStatusEnum.UNTAKE.getCode().equals(takeStatus)){
+				throw new AfterSaleException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
+			}
+		}*/
 	}
 	
 	/**

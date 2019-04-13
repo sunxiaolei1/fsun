@@ -156,7 +156,7 @@ $(function () {
 	    pageList: GLOBAL_PAGE_SIZE_LIST,
 	    columns: refundColumns,
 	    loadFilter:function(data) {     		
-    		var fields = ["totalPrice"];       		
+    		var fields = ["qty", "totalPrice"];       		
     		//排序拦截器
     		sortFilter($(this), data);		
     	    //分页拦截器

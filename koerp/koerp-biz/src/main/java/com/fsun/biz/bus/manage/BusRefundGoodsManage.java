@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.fsun.biz.common.CrudManage;
 import com.fsun.dao.mapper.BusRefundGoodsMapper;
 import com.fsun.domain.dto.BusRefundDto;
+import com.fsun.domain.entity.BusRefundGoodsCondition;
 import com.fsun.domain.enums.ProductTypeEnum;
 import com.fsun.domain.model.BusRefund;
 import com.fsun.domain.model.BusRefundGoods;
@@ -21,6 +22,13 @@ import com.fsun.domain.model.BusRefundGoods;
  */
 @Component
 public class BusRefundGoodsManage extends CrudManage<BusRefundGoodsMapper, BusRefundGoods>{
+	
+	@Override
+	public List<BusRefundGoods> listByHeaderId(String headerId) {
+		BusRefundGoodsCondition condition = new BusRefundGoodsCondition();
+		condition.setRefundId(headerId);
+		return mapper.selectList(condition);		
+	}
 
 	/**
 	 * 初始化商品分摊明细

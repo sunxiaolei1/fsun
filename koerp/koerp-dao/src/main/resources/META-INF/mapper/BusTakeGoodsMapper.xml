@@ -59,57 +59,39 @@
     	<include refid="conditions" />
   </select>
   
-  <select id="getInvSkuByOrderId" resultMap="BaseResultMap" 
-  		parameterType="java.lang.String" > 
-  	SELECT 
-		c.goods_name as goods_name,
-		c.category_name as category_name, 
-    	c.category_code as category_code, 
-    	c.brand_name as brand_name, 
-    	c.brand_code as brand_code, 
-    	c.property as property,
-    	c.product_type as product_type, 
-    	c.bar_code as bar_code, 
-    	c.unit as unit, 
-    	c.convert_qty as convert_qty, 
-    	c.convert_unit as convert_unit, 
-    	c.market_price as market_price, 
-    	c.origin_sale_price as origin_sale_price,
-		c.order_id as order_id,	
-		c.ori_goods_id as ori_goods_id,
-		c.ori_qty as ori_qty,
-    	c.ori_inv_qty as ori_inv_qty,
-		sum(c.ori_inv_qty - c.taked_qty) as max_qty,
-		0 as qty,
-		c.sale_price as sale_price,	
-		c.shop_id as shop_id,
-		c.sku as sku	 
-	from (
-		SELECT 
-	    	goods_name as goods_name,
-	    	category_name as category_name, 
-	    	category_code as category_code, 
-	    	brand_name as brand_name, 
-	    	brand_code as brand_code, 
-	    	property as property,
-	    	product_type as product_type, 
-	    	bar_code as bar_code, 
-	    	unit as unit, 
-	    	convert_qty as convert_qty, 
-	    	convert_unit as convert_unit, 
-	    	market_price as market_price, 
-    		origin_sale_price as origin_sale_price,
-			order_id as order_id,	
-	    	ori_goods_id as ori_goods_id,
-	   	 	ori_qty as ori_qty,
-			ori_inv_qty as ori_inv_qty,
-			sum(qty) as taked_qty,
-	    	sale_price as sale_price,	
-			shop_id as shop_id,
-			sku as sku 
-		from bus_take_goods where enabled = 1 and order_id = #{orderId,jdbcType=VARCHAR}
-		GROUP BY order_id, sku
-	) as c GROUP BY c.order_id, c.sku
+  <select id="getTakeGoodsByOrderId" resultType="java.util.Map" 
+  		parameterType="java.lang.String" >   	
+	SELECT 
+		a.goods_id as goods_id,
+    	a.goods_name as goods_name,
+    	a.category_name as category_name, 
+    	a.category_code as category_code, 
+    	a.brand_name as brand_name, 
+    	a.brand_code as brand_code, 
+    	a.property as property,
+    	a.product_type as product_type, 
+    	a.bar_code as bar_code, 
+    	a.unit as unit, 
+    	a.convert_qty as convert_qty, 
+    	a.convert_unit as convert_unit, 
+    	a.market_price as market_price, 
+   		a.origin_sale_price as origin_sale_price,
+		a.order_id as order_id,	
+    	a.ori_goods_id as ori_goods_id,
+    	a.qty as qty,   	
+   	 	a.ori_qty as ori_qty,
+   	 	a.max_qty as max_qty,
+		a.ori_inv_qty as ori_inv_qty,		
+    	a.sale_price as sale_price,	
+		a.shop_id as shop_id ,
+		(select s.shop_name from bus_shop s where s.shop_id = a.shop_id) as shop_name,
+		a.sku as sku,
+		a.take_id as take_id,
+		a.line_no as line_no,
+		t.take_time as take_time
+	from bus_take t
+	left join bus_take_goods a on a.take_id = t.take_id
+	where a.enabled = 1 and a.order_id = #{orderId,jdbcType=VARCHAR}
   </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >

@@ -255,7 +255,8 @@ $(function () {
 			
 			var refundPrice = 0;
 			$.each(orderDto.details, function(){
-				if(this.qty>0){
+				delete this.untakeQty;
+				if(this.qty>0){				
 					refundPrice = (refundPrice + Number(this.totalPrice)); 
 					currRefundDetails.push(this);	
 				}			
@@ -339,7 +340,7 @@ function getSaveData(){
 			 "refundDetails": currRefundDetails,
 			 "payAccounts": payAccounts
 			},
-	     "saveUrl": "${api}/bus/aftersale/refund/allReturn"
+	     "saveUrl": "${api}/bus/aftersale/refund/create"
 	}
 	return saveData;
 }

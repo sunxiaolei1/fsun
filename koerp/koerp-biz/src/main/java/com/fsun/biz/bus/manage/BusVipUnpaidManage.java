@@ -2,6 +2,7 @@ package com.fsun.biz.bus.manage;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,13 @@ public class BusVipUnpaidManage extends CrudManage<BusVipUnpaidMapper, BusVipUnp
 	
 	@Autowired
 	private BusVipManage busVipManage;
+		
+	@Override
+	public List<BusVipUnpaid> listByHeaderId(String headerId) {
+		BusVipUnpaidCondition condition = new BusVipUnpaidCondition();
+		condition.setPayId(headerId);
+		return mapper.selectList(condition);		
+	}
 	
 	/**
 	 * 取消账单

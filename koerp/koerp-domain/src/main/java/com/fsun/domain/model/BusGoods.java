@@ -117,6 +117,12 @@ public class BusGoods {
      * 表字段 : bus_goods.qty
      */
     private BigDecimal qty;
+    
+    /**
+     * 寄提库存数量
+     * 表字段 : bus_goods.untake_qty
+     */
+    private BigDecimal untakeQty;
 
     /**
      * 单位
@@ -573,5 +579,19 @@ public class BusGoods {
 	 */
 	public void setSkuAftersaleStatus(Short skuAftersaleStatus) {
 		this.skuAftersaleStatus = skuAftersaleStatus;
+	}
+
+	/**
+	 * @return the untakeQty
+	 */
+	public BigDecimal getUntakeQty() {
+		return untakeQty;
+	}
+
+	/**
+	 * @param untakeQty the untakeQty to set
+	 */
+	public void setUntakeQty(BigDecimal untakeQty) {
+		this.untakeQty = untakeQty;
 	}
 }

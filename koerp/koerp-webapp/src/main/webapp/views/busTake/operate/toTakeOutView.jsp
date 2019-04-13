@@ -147,12 +147,7 @@ $(function () {
 			var details = docTakeDto.details;	
 			if(details!=null && details.length>0){
 				currDetailData = details;				
-				//添加行编辑结束事件
-				currOrderDetailDataGrid.datagrid({					
-					onAfterEdit: function(rowIndex, rowData, changes){	
-										
-				    }
-				}).datagrid("loadData", currDetailData);
+				currOrderDetailDataGrid.datagrid("loadData", currDetailData);
 			}	
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {

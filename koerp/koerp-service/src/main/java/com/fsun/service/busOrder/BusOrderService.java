@@ -25,10 +25,7 @@ import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusOrderDto;
 import com.fsun.domain.dto.BusUserDto;
-import com.fsun.domain.entity.BusGoodsCondition;
 import com.fsun.domain.entity.BusOrderCondition;
-import com.fsun.domain.entity.BusPayAccountCondition;
-import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
 import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
@@ -93,6 +90,12 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 
 	@Override
 	public PageModel findPage(BusOrderCondition condition) {
+		return busOrderManage.findMapPage(condition);
+	}
+	
+	@Override
+	public PageModel findTakePage(BusOrderCondition condition) {
+		condition.setOrderType(OrderTypeEnum.TAKE_ORDER.getValue());
 		return busOrderManage.findMapPage(condition);
 	}
 	
@@ -210,24 +213,21 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 				header.setTradeStatus(TradeStatusEnum.CANCEL.getCode());
 				header.setFlowStatus(FlowStatusEnum.COMPLETED.getCode());				
 				//寄存订单商品不做库存加减
-				if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(header.getOrderType())){
-					BusGoodsCondition condition0 = new BusGoodsCondition();
-					condition0.setOrderId(orderId);
-					List<BusGoods> details = busGoodsManage.list(condition0);
-					for (BusGoods busGoods : details) {
-						super.skuStockIn(header, busGoods);
+				List<BusGoods> details = busGoodsManage.listByHeaderId(orderId);
+				for (BusGoods busGoods : details) {
+					if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(header.getOrderType())){										
+						super.skuStockIn(header, busGoods);																
 					}
+					//清除寄提库存
+					busGoods.setUntakeQty(BigDecimal.ZERO);
+					busGoodsManage.update(busGoods);
 				}								
-				BusPayAccountCondition condition1 = new BusPayAccountCondition();
-				condition1.setOrderId(orderId);
-				List<BusPayAccount> payAccounts = busPayAccountManage.list(condition1);
+				List<BusPayAccount> payAccounts = busPayAccountManage.listByHeaderId(orderId);
 				for (BusPayAccount busPayAccount : payAccounts) {
 					Short payMode = busPayAccount.getPayMode();
 					if(PayModeEnum.UNPAY.getValue().equals(payMode) 
 							|| PayModeEnum.VIP_PAY.getValue().equals(payMode)){						
-						BusVipUnpaidCondition condition2 = new BusVipUnpaidCondition();
-						condition2.setPayId(busPayAccount.getPayId());
-						List<BusVipUnpaid> list = busVipUnpaidManage.list(condition2);
+						List<BusVipUnpaid> list = busVipUnpaidManage.listByHeaderId(busPayAccount.getPayId());
 						if(list!=null && list.size()==1){
 							busVipUnpaidManage.cancel(list.get(0), currUser);
 						}else{
@@ -372,7 +372,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		Set<BusGoods> apportionDetails = new HashSet<>();
 		busOrderManage.initApportionDetails(busOrderDto, apportionDetails);
 		for (BusGoods busGoods : apportionDetails) {
-			BigDecimal calcTotalPrice = busGoods.getQty().multiply(busGoods.getSalePrice());
+			BigDecimal calcTotalPrice = busGoods.getQty().multiply(busGoods.getSalePrice()).setScale(2, BigDecimal.ROUND_HALF_UP);;
 			if(busGoods.getTotalPrice().compareTo(calcTotalPrice)!=0){
 				throw new OrderException(SCMErrorEnum.BUS_SKU_AMOUNT_ILLEGAL);
 			}
@@ -380,11 +380,14 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 			busGoods.setOrderId(orderId);
 			busGoods.setLineNo(lineNo++);			
 			busGoods.setCreatedTime(now);
-			busGoodsManage.create(busGoods);
 			//寄存订单商品不做库存加减
-			if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(header.getOrderType())){
+			if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(header.getOrderType())){				
 				super.skuStockOut(header, busGoods);
+				busGoods.setUntakeQty(BigDecimal.ZERO);
+			}else{
+				busGoods.setUntakeQty(busGoods.getQty());
 			}			
+			busGoodsManage.create(busGoods);
 		}
 		busOrderManage.create(header);		
 		return orderId;
@@ -488,6 +491,9 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		String oldStatus = oldHeader.getOrderStatus();
 		String tradeStatus = oldHeader.getTradeStatus();
 		String flowStatus = oldHeader.getFlowStatus();
+		Short orderType = oldHeader.getOrderType();
+		String takeStatus = oldHeader.getTakeStatus();
+		Short refundStatus = oldHeader.getRefundStatus();
 		switch (OrderStatusEnum.getByCode(currOrderStatus)) {
 			case UNCONFIRM:			
 				break;		
@@ -507,6 +513,15 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 						|| FlowStatusEnum.COMPLETED.getCode().equals(flowStatus)){
 					isTrue = false;
 				}
+				//如果是寄存单类型，只要寄提过就不能取消单据
+        		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
+        			if(!OrderTakeStatusEnum.UNTAKE.getCode().equals(takeStatus)){
+        				isTrue = false; 
+        			}
+        		}
+        		if(refundStatus!=null){
+        			isTrue = false; 
+        		}
 				break;
 			default:
 				break;

@@ -88,6 +88,13 @@ public interface BusOrderApi extends BaseFooterApi<BusOrder, BusOrderCondition> 
 	 * @param currUser
 	 */
 	public void appendRemark(BusOrderCondition condition, BusUserDto currUser);
+
+	/**
+	 * 寄存列表查询
+	 * @param condition
+	 * @return
+	 */
+	public PageModel findTakePage(BusOrderCondition condition);
 	
 
 }

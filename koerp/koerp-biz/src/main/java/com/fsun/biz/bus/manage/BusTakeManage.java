@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.fsun.biz.common.CrudManage;
 import com.fsun.dao.mapper.BusTakeMapper;
+import com.fsun.domain.entity.BusTakeCondition;
 import com.fsun.domain.model.BusTake;
 
 /**
@@ -20,16 +21,24 @@ public class BusTakeManage extends CrudManage<BusTakeMapper, BusTake>{
 	 * @param orderId
 	 * @return
 	 */
-	public String initNumber(String orderId, String sign) {
-		String prefix = orderId + sign;
+	public String initNumber(String orderId, String sign, String shopCode) {
+		String prefix = orderId + sign + shopCode;
 		List<String> list = mapper.getMaxNumber(prefix);
 		if(list!=null && list.size()>0){
-			String maxNumber = list.get(0);
-			String num = maxNumber.substring(prefix.length());			
-			return prefix + (Integer.parseInt(num) + 1);
+			String newPrefix = orderId + sign;
+			String num =  list.get(0).substring(newPrefix.length());			
+			return newPrefix + (Integer.parseInt(num) + 1);
 		}else{	
-			return prefix + "101";
+			return prefix + "01";
 		}
 	}
+	
+	@Override
+	public List<BusTake> listByHeaderId(String headerId) {
+		BusTakeCondition condition = new BusTakeCondition();
+		condition.setOrderId(headerId);
+		return mapper.selectList(condition);		
+	}
+
 
 }

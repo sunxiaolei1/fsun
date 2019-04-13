@@ -47,12 +47,6 @@ public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondi
 	public String createForRefund(BusRefundDto busRefundDto);
 
 	/**
-	 * 一键退货
-	 * @param busRefundDto
-	 */
-	public String allReturn(BusRefundDto busRefundDto);
-
-	/**
 	 * 创建换货单
 	 * @param busBarterDto
 	 */

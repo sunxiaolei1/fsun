@@ -26,11 +26,7 @@ import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusBarterDto;
 import com.fsun.domain.dto.BusRefundDto;
 import com.fsun.domain.dto.BusUserDto;
-import com.fsun.domain.entity.BusPayAccountCondition;
 import com.fsun.domain.entity.BusRefundCondition;
-import com.fsun.domain.entity.BusRefundGoodsCondition;
-import com.fsun.domain.entity.BusTakeGoodsCondition;
-import com.fsun.domain.entity.BusVipUnpaidCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderTypeEnum;
@@ -49,7 +45,6 @@ import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusPayAccount;
 import com.fsun.domain.model.BusRefund;
 import com.fsun.domain.model.BusRefundGoods;
-import com.fsun.domain.model.BusTakeGoods;
 import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.AfterSaleException;
@@ -161,18 +156,23 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 	@Transactional
 	@Override
 	public String createForRefund(BusRefundDto busRefundDto) {
+		
 		BusUserDto currUser = busRefundDto.getCurrUser();
 		BusRefund refundHeader = busRefundDto.getRefundHeader();
 		List<BusRefundGoods> refundDetailsList = busRefundDto.getRefundDetails();
 		List<BusGoods> orderDetailsList = busRefundDto.getOrderDetails();
 		
 		BusOrder busOrder = busOrderManage.load(refundHeader.getOrderId());
+		//如果是寄提单则需要数据获取对应的订单商品明细
+		Short orderType = busOrder.getOrderType();
+		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
+			orderDetailsList = busGoodsManage.listByHeaderId(refundHeader.getOrderId());
+		}	
 		//基础验证
-		this.baseInfoValidator(refundHeader, busOrder, currUser);
+		this.baseInfoValidator(refundHeader, busOrder, currUser);	
 		//退单公式校验器
 		boolean allReturn = this.orderAmountValidater(refundHeader, 
 			refundDetailsList, busOrder, orderDetailsList);
-		
 		//初始化单头信息
 		Date now = new Date();
 		BigDecimal refundPrice = refundHeader.getRefundPrice();	
@@ -236,9 +236,10 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 			//寄存订单商品不做库存加减
 			if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(busOrder.getOrderType())){
 				super.skuStockIn(refundHeader, busRefundGoods);
+			}else{
+				this.synOrderUnTakeQty(orderDetailsList, busRefundGoods, now, true);
 			}			
-		}	
-		
+		}			
 		//更新原订单
 		busOrder.setRefundId(refundId);
 		busOrder.setRefundStatus(refundHeader.getRefundStatus());
@@ -247,38 +248,6 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		busOrder.setRefundTime(now);
 		busOrder.setRefundSponsor(RefundSponsorEnum.SELLER.getValue());
 		busOrderManage.update(busOrder);
-		return refundId;
-	}
-
-	@Transactional
-	@Override
-	public String allReturn(BusRefundDto busRefundDto) {
-		//正常的退货流程
-		String refundId = this.createForRefund(busRefundDto);
-		//获取退货订单信息
-		String orderId = busRefundDto.getRefundHeader().getOrderId();
-		BusOrder busOrder = busOrderManage.load(orderId);
-		if(busOrder==null){
-			throw new AfterSaleException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
-		}
-		//如果是寄存单则同步更新寄提信息
-		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(busOrder.getOrderType())){
-			BusTakeGoodsCondition busTakeGoodsCondition = new BusTakeGoodsCondition();
-			busTakeGoodsCondition.setOrderId(orderId);
-			List<BusTakeGoods> list = busTakeDetailManage.list(busTakeGoodsCondition);			
-			//获取已被寄提的商品的库存数量
-			List<BusTakeGoods> invSkuList = busTakeDetailManage.getInvSkuByOrderId(orderId);
-			HashMap<String, BigDecimal> skuMap = new HashMap<>();
-			for (BusTakeGoods busTakeGoods : invSkuList) {
-				skuMap.put(busTakeGoods.getSku(), busTakeGoods.getOriQty()
-					.subtract(busTakeGoods.getMaxQty()));
-			}
-			//同步原订单实际可寄提的商品总数
-			for (BusTakeGoods busTakeGoods : list) {
-				busTakeGoods.setOriInvQty(skuMap.get(busTakeGoods.getSku()));
-				busTakeDetailManage.update(busTakeGoods);
-			}
-		}
 		return refundId;
 	}
 
@@ -300,7 +269,10 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 			if(!currUser.getShopId().equals(shopId)){
 				throw new AfterSaleException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
 			}	
-					
+			BusOrder busOrder = busOrderManage.load(header.getOrderId());
+			if(busOrder==null){
+				throw new AfterSaleException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+			}
 			header.setUpdatedTime(now);
 			header.setUpdatedName(currUser.getRealname());
 			header.setUpdatedTime(now);
@@ -313,21 +285,21 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 				//还原商品库存
 				header.setRefundStatus(status);
 				header.setRefundOrderStatus(RefundOrderStatusEnum.SOLVED.getValue());
-				BusRefundGoodsCondition condition0 = new BusRefundGoodsCondition();
-				condition0.setRefundId(refundId);
-				List<BusRefundGoods> details = busRefundGoodsManage.list(condition0);
+				List<BusRefundGoods> details = busRefundGoodsManage.listByHeaderId(refundId);
+				List<BusGoods> busGoodsList = busGoodsManage.listByHeaderId(header.getOrderId());
 				for (BusRefundGoods refundGoods : details) {
-					super.skuStockOut(header, refundGoods);
+					//寄存订单商品不做库存加减
+					if(!OrderTypeEnum.TAKE_ORDER.getValue().equals(busOrder.getOrderType())){
+						super.skuStockOut(header, refundGoods);
+					}else{
+						this.synOrderUnTakeQty(busGoodsList, refundGoods, now, false);
+					}				
 				}				
-				BusPayAccountCondition condition1 = new BusPayAccountCondition();
-				condition1.setOrderId(refundId);
-				List<BusPayAccount> payAccounts = busPayAccountManage.list(condition1);
+				List<BusPayAccount> payAccounts = busPayAccountManage.listByHeaderId(refundId);
 				for (BusPayAccount busPayAccount : payAccounts) {
 					Short payMode = busPayAccount.getPayMode();
 					if(PayModeEnum.UNPAY.getValue().equals(payMode)){						
-						BusVipUnpaidCondition condition2 = new BusVipUnpaidCondition();
-						condition2.setPayId(busPayAccount.getPayId());
-						List<BusVipUnpaid> list = busVipUnpaidManage.list(condition2);
+						List<BusVipUnpaid> list = busVipUnpaidManage.listByHeaderId(busPayAccount.getPayId());
 						if(list!=null && list.size()==1){
 							busVipUnpaidManage.cancel(list.get(0), currUser);
 						}else{
@@ -335,7 +307,6 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 						}
 					}
 				}
-				BusOrder busOrder = busOrderManage.load(header.getOrderId());
 				busOrder.setRefundId(null);
 				busOrder.setRefundStatus(null);
 				busOrder.setRefundType(null);
@@ -377,7 +348,7 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 			map = busOrderApi.loadEntity(orderId);
 			HashMap<String, Object> orderHeaderMap = (HashMap<String, Object>) map.get("header");
 			orderHeaderMap.put("refundReason", RefundReasonEnum.GOODS_QUALITY.getValue());
-			orderHeaderMap.put("payMode", VipUnpaidPayModeEnum.CASH_PAY.getValue());			
+			orderHeaderMap.put("payMode", VipUnpaidPayModeEnum.CASH_PAY.getValue());
 		}else if(RefundTypeEnum.EXCHANGE_ORDER.getValue().equals(refundType)){
 			
 		}
@@ -455,5 +426,31 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		return busVipUnpaid;
 	}
 
-
+	/**
+	 * 同步原订单下的可寄提商品库存
+	 * @param busGoodsList
+	 * @param busRefundGoods
+	 * @param now
+	 * @param synType true为退货、false为取消退货
+	 */
+	private void synOrderUnTakeQty(List<BusGoods> busGoodsList, BusRefundGoods busRefundGoods,
+			Date now, boolean synType){
+		for (BusGoods busGoods : busGoodsList) {
+			if (busGoods.getSku().equals(busRefundGoods.getSku())) {
+				BigDecimal untakeQty = null;
+				if(synType){
+					untakeQty = busGoods.getUntakeQty().subtract(busRefundGoods.getQty());
+					if(untakeQty.compareTo(BigDecimal.ZERO)<0){
+						throw new AfterSaleException(SCMErrorEnum.BUS_REFUND_SKU_QTY_ILLEGAL);
+					}
+				}else{
+					untakeQty = busGoods.getUntakeQty().add(busRefundGoods.getQty());
+				}							
+				busGoods.setUntakeQty(untakeQty);
+				busGoods.setUpdatedTime(now);
+				busGoodsManage.update(busGoods);
+			}
+		}
+	}
+	
 }

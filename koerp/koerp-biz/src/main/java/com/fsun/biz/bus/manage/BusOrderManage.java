@@ -2,6 +2,7 @@ package com.fsun.biz.bus.manage;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,7 @@ import com.fsun.biz.common.CrudManage;
 import com.fsun.common.utils.DateUtil;
 import com.fsun.dao.mapper.BusOrderMapper;
 import com.fsun.domain.dto.BusOrderDto;
+import com.fsun.domain.enums.OrderTakeStatusEnum;
 import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.enums.ProductTypeEnum;
 import com.fsun.domain.model.BusGoods;
@@ -43,6 +45,34 @@ public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
 			return prefix + "00001";
 		}
 	}
+	
+	/**
+	 * 同步当前寄存单对应的寄提状态
+	 * @param busGoodsList
+	 * @param busOrder
+	 * @param currUserName
+	 */
+	public void synOrderTakeStatus(List<BusGoods> busGoodsList, BusOrder busOrder, String currUserName){
+		//更新寄存单寄提状态
+		BigDecimal untakeQty = BigDecimal.ZERO;
+		BigDecimal qty = BigDecimal.ZERO;
+		for (BusGoods busGoods : busGoodsList) {
+			qty = qty.add(busGoods.getQty());
+			untakeQty = untakeQty.add(busGoods.getUntakeQty());
+		}	
+		if(untakeQty.compareTo(BigDecimal.ZERO)==0){
+			busOrder.setTakeStatus(OrderTakeStatusEnum.ALL_TAKE.getCode());
+		}else{
+			if(qty.compareTo(untakeQty)==0){
+				busOrder.setTakeStatus(OrderTakeStatusEnum.UNTAKE.getCode());
+			}else{
+				busOrder.setTakeStatus(OrderTakeStatusEnum.PART_TAKE.getCode());
+			}	
+		}				
+		busOrder.setUpdatedName(currUserName);
+		busOrder.setUpdatedTime(new Date());
+		mapper.updateByPrimaryKey(busOrder);
+	}
 
 
 	/**
@@ -72,8 +102,6 @@ public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
         this.settleChildren(totalReceptPrice, totalPrice, firstGoods, secondGoodsMap, priceMap, apportionDetails);
 	}
 
-	
-	
 	
 	/************************************    私有方法       **************************************/
 	

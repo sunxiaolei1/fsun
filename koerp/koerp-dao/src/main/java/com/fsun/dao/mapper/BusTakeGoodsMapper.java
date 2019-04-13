@@ -1,5 +1,6 @@
 package com.fsun.dao.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.fsun.dao.config.Mapper;
@@ -9,10 +10,10 @@ import com.fsun.domain.model.BusTakeGoods;
 public interface BusTakeGoodsMapper extends BaseMySqlMapper<BusTakeGoods>{
 
 	/**
-	 * 通过订单号获取订单下商品的库存
+	 * 通过订单号获取订单下商品的提货流水
 	 * @param orderId
 	 * @return
 	 */
-	public List<BusTakeGoods> getInvSkuByOrderId(String orderId);
+	public List<HashMap<String, Object>> getTakeGoodsByOrderId(String orderId);
    
 }

@@ -100,6 +100,13 @@
   			and a.order_id like concat(concat('%',#{q}),'%')
   		</if>
   		
+  		<if test="keywords != null and keywords != ''">
+  			and (a.order_id like concat(concat('%',#{keywords}),'%')
+  				or a.buyer_name like concat(concat('%',#{keywords}),'%')
+  				or a.mobile like concat(concat('%',#{keywords}),'%')
+  			)
+  		</if>
+  		 		
   		<if test="orderId != null and orderId != ''">
   			and a.order_id = #{orderId}
   		</if>
@@ -348,7 +355,7 @@
 		d.parent_sku_id as d_parent_sku_id,
 		d.en_unit as d_en_unit,
 		d.qty as d_qty,
-		IFNULL(getTakedInvSkuByOrderId(o.order_id, d.sku),getOrderTakedInvSkuByOrderId(o.order_id, d.sku)) as d_untake_qty,
+		d.untake_qty as d_untake_qty,
 		d.unit as d_unit,
 		d.convert_qty as d_convert_qty,
 		d.convert_unit as d_convert_unit,
