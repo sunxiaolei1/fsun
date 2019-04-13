@@ -30,7 +30,7 @@ var frozenColumns = [[
 
 var columns = [[
 
-	{field:'trade_order_no',title:'单据编号',width:180,align:'center',sortable:true},		
+	{field:'trade_order_no',title:'单据编号',width:220,align:'center',sortable:true},		
 	{field:'trade_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docTradeType); 
 	}},
