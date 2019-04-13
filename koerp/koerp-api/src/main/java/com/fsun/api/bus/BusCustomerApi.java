@@ -2,7 +2,7 @@ package com.fsun.api.bus;
 
 import java.util.HashMap;
 
-import com.fsun.api.base.BaseApi;
+import com.fsun.api.base.BaseFooterApi;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusCustomerCondition;
 import com.fsun.domain.model.BusCustomer;
@@ -13,7 +13,7 @@ import com.fsun.domain.model.SysUser;
  * @author sunxiaolei
  *
  */
-public interface BusCustomerApi extends BaseApi<BusCustomer, BusCustomerCondition> {
+public interface BusCustomerApi extends BaseFooterApi<BusCustomer, BusCustomerCondition> {
 
 	/**
 	 * 批量改变状态

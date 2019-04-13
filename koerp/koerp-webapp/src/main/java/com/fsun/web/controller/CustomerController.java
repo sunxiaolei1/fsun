@@ -110,6 +110,11 @@ public class CustomerController extends BaseController {
 	public HttpResult findPage(BusCustomerCondition condition) {
 		try {
 			PageModel pageModel = customerApi.findPage(condition);
+			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
+					&& pageModel.getTotal()>0){
+				HashMap<String, Object> footer = customerApi.findFooter(condition);
+				return success(pageModel, new Object[]{footer});
+			}
 			return success(pageModel);
 		} catch (Exception e) {
 			e.printStackTrace();

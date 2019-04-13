@@ -460,6 +460,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		busVipUnpaid.setTradeStatus(Short.valueOf(TradeStatusEnum.COMPLETED.getCode()));	
 		busVipUnpaid.setGiftPrice(payAccount.getDiscountAmount());
 		busVipUnpaid.setTradePrice(payAccount.getReceptPrice());
+		busVipUnpaid.setMemo(header.getSellerNotes());
 		if(TradeTypeEnum.VIP_CONSUME.getValue().equals(tradeType)){			
 			if(cardNo!=null && !cardNo.equals("")){
 				BigDecimal giftPrice = busVipManage.syncGiftPrice(cardNo, busVipUnpaid.getTradePrice());

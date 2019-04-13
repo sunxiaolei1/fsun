@@ -30,6 +30,7 @@ var columns =
 			return formatter(value, window.parent.busCustomerType); 
 		}},
 		{field:'customer_name',title:'客户名称',width:150,align:'center',sortable:true},
+		{field:"arrears_price",title:"挂账欠款(元)",width:80, align:'center',formatter:numBaseFormat},
 		{field:'tel',title:'手机号',width:120,align:'center',sortable:true},
 		{field:'salesman',title:'所属销售代表',width:100,align:'center',sortable:true, formatter:function(value, row){
 			return row.salesman_name; 
@@ -42,11 +43,13 @@ var columns =
 	]];
 
 var currDataGrid;
+var footerFirstColumn = "customer_code";
 
 $(function() {
 	
 	currDataGrid = $("#ordersDataGrid");
 	currDataGrid.datagrid({
+		view:footerStyleView,
 		width:500,
 		height:250,
 	    nowrap:false,
@@ -54,7 +57,7 @@ $(function() {
 	    border:true,
 	    collapsible:false,//是否可折叠的
 	    fit:true,//自动大小
-	    queryParams:{},
+	    queryParams:{firstColumn: footerFirstColumn},
 	    remoteSort:true,
 	    sortName:"customer_code",
         sortOrder:"desc",
@@ -74,6 +77,13 @@ $(function() {
 	    singleSelect: false,
 	    selectOnCheck: true,
 	    checkOnSelect: true,
+	    rowStyler:function(index,row){
+        	var rowStyle = "";        	
+        	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
+        		rowStyle = 'font-weight:bold;';  
+            }
+        	return rowStyle;
+		},
 	    onDblClickRow:function(rowIndex, rowData){
 	    	$(this).datagrid("unselectAll");
 			$(this).datagrid("selectRow",rowIndex);

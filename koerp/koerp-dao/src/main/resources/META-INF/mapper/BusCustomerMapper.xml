@@ -88,7 +88,8 @@
 		a.tel, 
 		a.memo, 
 		a.salesman, 
-    	a.credit_price, 
+    	a.credit_price,
+    	IFNULL(getArrearsByCustomerCode(a.customer_code), 0) as arrears_price,
     	a.enabled, 
     	a.created_time, 
     	a.updated_time, 
@@ -175,6 +176,15 @@
 	from bus_customer 
 	where customer_type = #{customerType,jdbcType=VARCHAR}  
 	order by customer_code desc 
+  </select>
+  
+  <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusCustomerCondition" >    
+	SELECT 
+		sum(IFNULL(getArrearsByCustomerCode(a.customer_code), 0)) as arrears_price, 
+		sum(a.credit_price) as credit_price
+    FROM bus_customer a 
+    	<include refid="conditions" />
   </select>
   
   

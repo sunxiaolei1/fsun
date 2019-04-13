@@ -54,6 +54,13 @@ public class BusCustomerService implements BusCustomerApi {
 	}
 	
 	@Override
+	public HashMap<String, Object> findFooter(BusCustomerCondition condition) {
+		HashMap<String, Object> footer = busCustomerManage.findFooter(condition);
+		footer.put(condition.getFirstColumn(), "合计:");	
+		return footer;
+	}
+	
+	@Override
 	public HashMap<String, Object> initUnpaidData(String customerCode, BusUserDto currUser) {		
 		HashMap<String, Object> map = busCustomerManage.initUnpaidData(customerCode);		
 		HashMap<String, Object> headerMap = (HashMap<String, Object>)map.get("header");
