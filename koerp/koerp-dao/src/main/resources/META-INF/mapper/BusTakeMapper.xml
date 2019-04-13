@@ -30,7 +30,8 @@
   	<where>  	
   		<if test="q != null and q != ''">
   			and (a.take_id like concat(concat('%',#{q}),'%') 
-  			or a.order_id like concat(concat('%',#{q}),'%')) 
+  			or a.order_id like concat(concat('%',#{q}),'%')
+  			or a.take_name like concat(concat('%',#{q}),'%')) 
   		</if>
   		
   		<if test="orderId != null and orderId != ''">

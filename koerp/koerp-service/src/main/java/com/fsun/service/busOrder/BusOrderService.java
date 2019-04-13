@@ -140,6 +140,9 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		header.put("cashName", currUser.getRealname());
 		header.put("payType", PayTypeEnum.CURR_PAY.getValue());
 		header.put("isSettlemented", true);
+		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
+			header.put("takeStatus", OrderTakeStatusEnum.UNTAKE.getCode());
+		}
 		
 		List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");
 		for (HashMap<String, Object> goodsMap : details) {
