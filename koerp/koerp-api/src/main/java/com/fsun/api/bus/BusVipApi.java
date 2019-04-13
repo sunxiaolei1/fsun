@@ -2,7 +2,7 @@ package com.fsun.api.bus;
 
 import java.util.HashMap;
 
-import com.fsun.api.base.BaseApi;
+import com.fsun.api.base.BaseFooterApi;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusVipCondition;
 import com.fsun.domain.model.BusVip;
@@ -13,7 +13,7 @@ import com.fsun.domain.model.SysUser;
  * @author sunxiaolei
  *
  */
-public interface BusVipApi extends BaseApi<BusVip, BusVipCondition> {
+public interface BusVipApi extends BaseFooterApi<BusVip, BusVipCondition> {
 	
 	/**
 	 * 根据会员卡号判断是否已存在，不允许会员卡号相同

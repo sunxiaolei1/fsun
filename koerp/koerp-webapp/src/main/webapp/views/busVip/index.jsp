@@ -38,11 +38,14 @@ var columns =
 		{field:"enable_price",title:"可用余额",width:80, align:'center',formatter:numBaseFormat},
 		{field:"gift_price",title:"赠送金额",width:80, align:'center',formatter:numBaseFormat},
 		{field:"neg_balance",title:"允许负余额",width:80, align:'center', formatter:function(value, row){
-			var neg_balance = '否';
-			if(row.card_type==2 || row.card_type==3){
-				neg_balance = '是';
+			if(row.card_type!=null && row.card_type!=''){
+				var neg_balance = '否';
+				if(row.card_type==2 || row.card_type==3){
+					neg_balance = '是';
+				}
+				return neg_balance;
 			}
-			return neg_balance;
+			return "";			
 		}},
 		{field:"enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
 			return formatter(value, window.parent.isEnable); 
@@ -51,11 +54,13 @@ var columns =
 	]];
 
 var currDataGrid;
+var footerFirstColumn = "customer_name";
 
 $(function() {
 	
 	currDataGrid = $("#ordersDataGrid");
 	currDataGrid.datagrid({
+		view:footerStyleView,
 		width:500,
 		height:250,
 	    nowrap:false,
@@ -63,7 +68,7 @@ $(function() {
 	    border:true,
 	    collapsible:false,//是否可折叠的
 	    fit:true,//自动大小
-	    queryParams:{},
+	    queryParams:{firstColumn: footerFirstColumn},
 	    remoteSort:true,
 	    sortName:"customer_code",
         sortOrder:"desc",
@@ -83,6 +88,13 @@ $(function() {
 	    singleSelect: false,
 	    selectOnCheck: true,
 	    checkOnSelect: true,
+	    rowStyler:function(index,row){
+        	var rowStyle = "";        	
+        	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
+        		rowStyle = 'font-weight:bold;';  
+            }
+        	return rowStyle;
+		},
 	    onDblClickRow:function(rowIndex, rowData){
 	    	$(this).datagrid("unselectAll");
 			$(this).datagrid("selectRow",rowIndex);

@@ -112,6 +112,11 @@ public class BusVipController extends BaseController {
 	public HttpResult findPage(BusVipCondition condition) {
 		try {
 			PageModel pageModel = busVipApi.findPage(condition);
+			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
+					&& pageModel.getTotal()>0){
+				HashMap<String, Object> footer = busVipApi.findFooter(condition);
+				return success(pageModel, new Object[]{footer});
+			}
 			return success(pageModel);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -49,6 +49,13 @@ public class BusVipService implements BusVipApi {
 	}
 	
 	@Override
+	public HashMap<String, Object> findFooter(BusVipCondition condition) {
+		HashMap<String, Object> footer = busVipManage.findFooter(condition);
+		footer.put(condition.getFirstColumn(), "合计:");	
+		return footer;
+	}
+	
+	@Override
 	public HashMap<String, Object> initActiveData(BusUserDto currUser) {
 		
 		HashMap<String, Object> map = new HashMap<>();	

@@ -180,6 +180,15 @@
     where vip.card_no = #{cardNo,jdbcType=VARCHAR}
   </select>
   
+  <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusVipCondition" >    
+	SELECT 
+		sum(vip.enable_price) as enable_price, 
+		sum(vip.gift_price) as gift_price
+    FROM bus_vip vip 
+    	<include refid="conditions" />
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from bus_vip
     where id = #{id,jdbcType=VARCHAR}
