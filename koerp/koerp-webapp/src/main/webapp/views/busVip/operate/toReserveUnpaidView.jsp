@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
 	request.setAttribute("api", basePath);
 %>
-<!-- 会员卡或备用金充值时出现未结款挂账的记录 -->
+<!-- 会员卡充值时出现未结款挂账的记录 -->	
 <div class="fsun-wrap">
 	<form id="vipUnpaidfm">
 		<span class="title" style="top: 30px;">基本信息</span>						

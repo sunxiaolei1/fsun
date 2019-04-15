@@ -53,13 +53,30 @@ public class BusVipUnpaidController extends BaseController {
 	@Autowired
 	private HttpServletRequest request;
 	
+	/**
+	 * 会员卡充值消费报表汇总
+	 * @return
+	 */
 	@RequestMapping(value="/summary/vip/index")
 	public String vipIndex() {
 		return "/summary/vip/index";
 	}
 	
+	/**
+	 * 挂账结款报表汇总
+	 * @return
+	 */
 	@RequestMapping(value="/summary/unpaid/index")
 	public String unpaidIndex() {
+		return "/summary/unpaid/index";
+	}
+	
+	/**
+	 * 备用金充值消费报表汇总
+	 * @return
+	 */
+	@RequestMapping(value="/summary/reserve/index")
+	public String reserveIndex() {
 		return "/summary/unpaid/index";
 	}
 	
@@ -213,13 +230,18 @@ public class BusVipUnpaidController extends BaseController {
 		}		
 	}
 	
+	/**
+	 * 保存会员卡充值出现对应客户存在挂账的情况
+	 * @param busVipUnpaidDto
+	 * @return
+	 */
 	@RequestMapping(value="/saveEntity", method = {RequestMethod.POST})
 	@ResponseBody
 	public HttpResult saveEntity(@RequestBody BusVipUnpaidDto busVipUnpaidDto) {
 		
 		BusAccessLogCondition condition = new BusAccessLogCondition();
 		condition.setCreatedTime(new Date());
-		condition.setExt0("挂账充值交易记录");
+		condition.setExt0("会员卡充值及挂账结款交易记录");
 		condition.setIp(request.getRemoteAddr());
 		condition.setRequestStatus((short)200);
 		condition.setRequestType((short)0);
@@ -252,13 +274,18 @@ public class BusVipUnpaidController extends BaseController {
 		}		
 	}
 	
+	/**
+	 * 会员开卡
+	 * @param activeCardDto
+	 * @return
+	 */
 	@RequestMapping(value="/active", method = {RequestMethod.POST})
 	@ResponseBody
 	public HttpResult active(@RequestBody ActiveCardDto activeCardDto) {
 		
 		BusAccessLogCondition condition = new BusAccessLogCondition();
 		condition.setCreatedTime(new Date());
-		condition.setExt0("挂账充值交易记录");
+		condition.setExt0("会员开卡");
 		condition.setIp(request.getRemoteAddr());
 		condition.setRequestStatus((short)200);
 		condition.setRequestType((short)0);

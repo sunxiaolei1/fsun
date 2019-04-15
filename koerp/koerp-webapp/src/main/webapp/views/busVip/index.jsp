@@ -35,8 +35,24 @@ var columns =
 		{field:'mobile',title:'手机号',width:120,align:'center',sortable:true},					
 		{field:"cn_name",title:"持卡人",width:80, align:'center'},
 		{field:"vip_time",title:"开卡时间",width:120, align:'center'},
-		{field:"enable_price",title:"可用余额",width:80, align:'center',formatter:numBaseFormat},
-		{field:"gift_price",title:"赠送金额",width:80, align:'center',formatter:numBaseFormat},
+		{field:"enable_price",title:"可用余额",width:80, align:'center',formatter:numBaseFormat,
+			styler:function(value){
+				if(value == 0){
+					return 'color:red;font-weight:bold';
+				}else{
+					return 'color:green;font-weight:bold';
+				}
+			}	
+		},
+		{field:"gift_price",title:"赠送金额",width:80, align:'center',formatter:numBaseFormat,
+			styler:function(value){
+				if(value == 0){
+					return 'color:red;font-weight:bold';
+				}else{
+					return 'color:green;font-weight:bold';
+				}
+			}
+		},
 		{field:"neg_balance",title:"允许负余额",width:80, align:'center', formatter:function(value, row){
 			if(row.card_type!=null && row.card_type!=''){
 				var neg_balance = '否';
@@ -47,9 +63,18 @@ var columns =
 			}
 			return "";			
 		}},
-		{field:"enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
-			return formatter(value, window.parent.isEnable); 
-		}},
+		{field:"enabled",title:"状态", width:60,align:'center', 
+			formatter:function(value, row){
+				return formatter(value, window.parent.isEnable); 
+			},
+			styler:function(value){
+				if(value == 1){
+					return 'color:green;font-weight:bold';
+				}else{
+					return 'color:red;font-weight:bold';
+				}
+			}
+		},
 		{field:'memo',title:'备注',width:150,align:'center',sortable:true}		
 	]];
 

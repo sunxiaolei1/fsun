@@ -10,13 +10,15 @@ import java.util.List;
 public enum PayModeEnum {
 
 	UNKNOW(null,"未知"),
-	UNOIN_PAY((short)1, "银行卡"),
+	UNOIN_PAY((short)1, "扫码"),
 	CASH_PAY((short)2, "现金"),
 	ALI_PAY((short)3, "支付宝"),
 	WECHAT_PAY((short)4, "微信"),
 	OTHER((short)5, "其他"),
 	UNPAY((short)6, "挂账"),
 	VIP_PAY((short)7, "会员卡"),
+	TRANSFER_PAY((short)8, "转账"),
+	RESERVE_PAY((short)9, "备用金"),
 	DISCOUNT((short)100, "活动优惠"),
 	TO_ZERO((short)900, "抹零");
 	

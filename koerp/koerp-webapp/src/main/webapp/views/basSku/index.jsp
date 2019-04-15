@@ -48,15 +48,42 @@ var columns =
 		{field:"market_price",title:"分销价",width:80, align:'center',formatter:numBaseFormat},
 		{field:"cost_price",title:"成本价",width:80, align:'center',formatter:numBaseFormat},
 		{field:"sort_code",title:"排序码",width:80, align:'center',sortable:true},		
-		{field:"is_enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
-			return formatter(value, window.parent.isEnable); 
-		}},
-		{field:'is_vip_appoint',title:'商品指定VIP',width:120,align:'center',sortable:true, formatter:function(value, row){
-			return formatter(value, window.parent.isTrue); 
-		}},
-		{field:'is_channel_appoint',title:'商品指定渠道',width:120,align:'center',sortable:true, formatter:function(value, row){
-			return formatter(value, window.parent.isTrue); 
-		}},
+		{field:"is_enabled",title:"状态", width:60,align:'center', 
+			formatter:function(value, row){
+				return formatter(value, window.parent.isEnable); 
+			},
+			styler:function(value){
+				if(value == 1){
+					return 'color:green;font-weight:bold';
+				}else{
+					return 'color:red;font-weight:bold';
+				}
+			}
+		},
+		{field:'is_vip_appoint',title:'商品指定VIP',width:120,align:'center',sortable:true, 
+			formatter:function(value, row){
+				return formatter(value, window.parent.isTrue); 
+			},
+			styler:function(value){
+				if(value == 1){
+					return 'color:green;font-weight:bold';
+				}else{
+					return 'color:red;font-weight:bold';
+				}
+			}
+		},
+		{field:'is_channel_appoint',title:'商品指定渠道',width:120,align:'center',sortable:true,
+			formatter:function(value, row){
+				return formatter(value, window.parent.isTrue); 
+			},
+			styler:function(value){
+				if(value == 1){
+					return 'color:green;font-weight:bold';
+				}else{
+					return 'color:red;font-weight:bold';
+				}
+			}	
+		},
 		{field:"created_time",title:"创建时间",width:130, align:'center'},
 		{field:"updated_time",title:"更新时间",width:130, align:'center'},
 		{field:'memo',title:'备注',width:150,align:'center',sortable:true}		

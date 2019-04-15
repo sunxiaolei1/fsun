@@ -121,6 +121,7 @@ public class CustomerController extends BaseController {
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}
+	
 
 	@RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody

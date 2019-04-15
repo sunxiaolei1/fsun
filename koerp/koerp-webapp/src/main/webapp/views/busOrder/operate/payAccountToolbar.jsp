@@ -7,7 +7,7 @@
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('4')">微信</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('6')">挂账</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('7')">会员卡</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('100')">任意折扣</a>
+<a href="#" id="discountBtn" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('100')">任意折扣</a>
 <span style="float:right;margin-right:5px;">
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cog_add" plain="true" onclick="saveData()">保存</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="$('#payAccountWin').window('close');">取消</a>  			  	 	

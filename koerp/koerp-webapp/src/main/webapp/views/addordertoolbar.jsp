@@ -46,12 +46,33 @@ function toPayAccount(){
 	
 	var saveData = getSaveData();
 	if(saveData!=null){
-		var isTrue = toPayAccountWin(saveData.params);
+		var paramsData = saveData.params;
+		var isTrue = toPayAccountWin(paramsData);
 		if(isTrue){
+			initPayModes(paramsData);
 			$("#payAccountWin").window("open");
 		}		
+	}	
+}
+
+/**
+ * 初始化支付方式
+ */
+function initPayModes(paramsData){
+	var details = paramsData.details;
+	var isAllSmoke = true;
+	if(details!=null && details.length>0){
+		$.each(details, function(){
+			if(this.categoryCode!='110'){
+				isAllSmoke = false;
+			}
+		});
 	}
-	
+	if(!isAllSmoke){
+		$("#discountBtn").hide();
+	}else{
+		$("#discountBtn").show();
+	}
 }
 
 /**

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.BusReserveMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusReserve" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
+    <result column="customer_type" property="customerType" jdbcType="VARCHAR" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="salesman" property="salesman" jdbcType="VARCHAR" />
+    <result column="credit_price" property="creditPrice" jdbcType="DECIMAL" />
+    <result column="enabled" property="enabled" jdbcType="BIT" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="created_id" property="createdId" jdbcType="VARCHAR" />
+    <result column="updated_id" property="updatedId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, customer_code, customer_type, customer_name, contacts, address, tel, memo, salesman, 
+    credit_price, enabled, created_time, updated_time, created_id, updated_id
+  </sql>
+  
+  <sql id="conditions">
+  	<where>  	
+  		<if test="q != null and q != ''">
+  			and (a.customer_code like '%${q}%' 
+  				or a.customer_name like '%${q}%' 
+  				or a.tel like '%${q}%'
+  				)
+  		</if>
+  		
+  		<if test="id != null and id != ''">
+  			and a.id = #{id}
+  		</if>
+  		
+  		<if test="customerCode != null and customerCode != ''">
+  			and a.customer_code = #{customerCode}
+  		</if>	
+  		
+  		<if test="customerType != null and customerType != ''">
+  			and a.customer_type = #{customerType}
+  		</if>		
+  		
+  		<if test="enabled != null and enabled != ''">
+  			and a.enabled = #{enabled}
+  		</if>
+  		
+	</where>
+  </sql>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusReserveCondition" >    
+	SELECT 
+		a.id, 
+		a.customer_code, 
+		a.customer_name, 
+		a.contacts, 
+		a.address, 
+		a.tel, 
+		a.memo, 
+		a.salesman, 
+    	a.credit_price,
+    	IFNULL(getEnableReserveByCustomerCode(a.customer_code), 0) as enable_reserve,
+    	a.enabled, 
+    	b.customer_name as salesman_name
+    FROM bus_customer a
+    LEFT JOIN bus_customer b ON a.salesman = b.customer_code 
+    	<include refid="conditions" />
+  </select>
+  
+  <resultMap id="HeaderMap" type="java.util.Map" extends="BaseResultMap" >   
+    <result column="c_customer_code" property="customerCode"/>
+    <result column="c_customer_name" property="customerName"/>      
+    <result column="c_customer_type" property="customerType" />        
+    <result column="c_salesman" property="salesman"/> 
+  </resultMap>
+  
+  <resultMap id="DefinedResultMap" type="java.util.Map"> 	
+  	<id column="c_customer_code" property="customerCode"/>  
+  	<association property="header" resultMap="HeaderMap" />   	   
+    <collection property="details" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="p_unpaid_id" property="unpaidId"/>
+      <result column="p_customer_code" property="customerCode"/> 
+      <result column="p_shop_id" property="shopId"/> 
+      <result column="p_pay_mode" property="payMode"/>
+      <result column="p_trade_type" property="tradeType"/>
+      <result column="p_trade_status" property="tradeStatus"/>
+      <result column="p_trade_time" property="tradeTime"/>
+      <result column="p_trade_price" property="tradePrice"/>
+      <result column="p_memo" property="memo"/>
+      <result column="p_order_id" property="orderId"/>
+      <result column="p_card_no" property="cardNo"/>
+      <result column="p_unusual" property="unusual"/>
+      <result column="p_pay_id" property="payId"/>
+      <result column="p_relation_id" property="relationId"/>
+      <result column="p_shop_name" property="shopName"/>
+    </collection>   
+  </resultMap>
+  
+  <select id="getInitData" resultMap="DefinedResultMap" parameterType="java.lang.String" >
+    select 
+        customer.customer_name as c_customer_name,    
+        customer.customer_code as c_customer_code, 
+        customer.customer_type as c_customer_type,       
+        (select customer1.customer_name from bus_customer customer1 
+        	where customer1.customer_code = customer.salesman
+        ) as c_salesman, 
+		bus_vip_unpaid.unpaid_id as p_unpaid_id, 
+	    bus_vip_unpaid.customer_code as p_customer_code, 
+	    bus_vip_unpaid.shop_id as p_shop_id, 
+        bus_vip_unpaid.pay_mode as p_pay_mode, 
+        bus_vip_unpaid.trade_type as p_trade_type, 
+        bus_vip_unpaid.trade_status as p_trade_status, 
+        bus_vip_unpaid.trade_time as p_trade_time, 
+        bus_vip_unpaid.trade_price as p_trade_price, 
+        bus_vip_unpaid.gift_price as p_gift_price, 
+        bus_vip_unpaid.memo as p_memo, 
+        bus_vip_unpaid.order_id as p_order_id, 
+        bus_vip_unpaid.card_no as p_card_no, 
+        bus_vip_unpaid.unusual as p_unusual,
+        bus_vip_unpaid.pay_id as p_pay_id,
+        bus_vip_unpaid.relation_id as p_relation_id,
+	  	bus_shop.shop_name as p_shop_name
+    from bus_customer customer
+    LEFT JOIN bus_vip_unpaid bus_vip_unpaid
+    	ON bus_vip_unpaid.customer_code = customer.customer_code 
+    		and bus_vip_unpaid.trade_type in (6,7)
+    LEFT JOIN bus_shop bus_shop on bus_shop.shop_id = bus_vip_unpaid.shop_id
+    where customer.customer_code = #{customerCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.entity.BusReserveCondition" >    
+	SELECT 
+		sum(IFNULL(getEnableReserveByCustomerCode(a.customer_code), 0)) as enable_reserve, 
+		sum(a.credit_price) as credit_price
+    FROM bus_customer a 
+    	<include refid="conditions" />
+  </select>
+  
+</mapper>

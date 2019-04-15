@@ -30,15 +30,40 @@ var columns =
 			return formatter(value, window.parent.busCustomerType); 
 		}},
 		{field:'customer_name',title:'客户名称',width:150,align:'center',sortable:true},
-		{field:"arrears_price",title:"挂账欠款(元)",width:80, align:'center',formatter:numBaseFormat},
+		{field:"arrears_price",title:"挂账欠款(元)",width:80, align:'center',formatter:numBaseFormat,
+			styler:function(value){
+				if(value == 0){
+					return 'color:green;font-weight:bold';
+				}else{
+					return 'color:red;font-weight:bold';
+				}
+			}
+		},
 		{field:'tel',title:'手机号',width:120,align:'center',sortable:true},
 		{field:'salesman',title:'所属销售代表',width:100,align:'center',sortable:true, formatter:function(value, row){
 			return row.salesman_name; 
 		}},						
-		{field:"credit_price",title:"信用额度(元)",width:80, align:'center',formatter:numBaseFormat},
-		{field:"enabled",title:"状态", width:80,align:'center', formatter:function(value, row){
-			return formatter(value, window.parent.isEnable); 
-		}},
+		{field:"credit_price",title:"信用额度(元)",width:80, align:'center',formatter:numBaseFormat,
+			styler:function(value){
+				if(value > 0){
+					return 'color:green;font-weight:bold';
+				}else{
+					return 'color:red;font-weight:bold';
+				}
+			}
+		},
+		{field:"enabled",title:"状态", width:80,align:'center', 
+			formatter:function(value, row){
+				return formatter(value, window.parent.isEnable); 
+			},
+			styler:function(value){
+				if(value == 1){
+					return 'color:green;font-weight:bold';
+				}else{
+					return 'color:red;font-weight:bold';
+				}
+			}
+		},
 		{field:'memo',title:'备注',width:200,align:'center',sortable:true}		
 	]];
 

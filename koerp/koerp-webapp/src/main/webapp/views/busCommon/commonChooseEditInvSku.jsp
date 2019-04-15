@@ -160,6 +160,15 @@ $(function() {
 	    		if(rowData.sku == this.sku){
 	    			this.qty = rowData.qty;	    			
 	    			this.salePrice = rowData.salePrice;
+	    			debugger
+	    			if(typeof this.giftCount!="undefined" && typeof this.giftPrice!="undefined"){
+	    				var receptQty = Number(this.qty)-Number(this.giftCount);
+		    			this.totalPrice = Number(this.salePrice) * receptQty;
+		    			this.couponPrice = Number(this.giftPrice) + receptQty*(Number(this.originSalePrice)-Number(this.salePrice));
+	    			}else{
+		    			this.totalPrice = Number(this.salePrice) * Number(this.qty);
+		    			this.couponPrice =  Number(this.qty)*(Number(this.originSalePrice)-Number(this.salePrice));
+	    			}	    			
 	    			//currDatagrid.datagrid("refreshRow", rowIndex);
 	    			//刷新父页面商品列表
 	    			skuListReLoad(true);
