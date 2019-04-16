@@ -45,7 +45,7 @@
 		<div class="fsun-operate-wrap">
 			<span class="title" style="top: 5px;">备注信息</span>		
 			<form id="remarkfm">			 
-			    <input id="asnNo" name="asnNo" value="${asnNo}" hidden=true />
+			    <input id="poNo" name="poNo" value="${poNo}" hidden=true />
 				<table class="nb-formTable" style="width:100%;">
 			        <tr>
 			        	<th width="3%">原备注</th>
@@ -81,10 +81,10 @@ var $remarkfm;
 $(function(){	
 	
 	$remarkfm = $("#remarkfm");	
-	var asnNo = '${asnNo}';
+	var poNo = '${poNo}';
 	$.ajax({
 		type : "GET",
-		url : "${api}/doc/asn/getRemark/"+ asnNo,
+		url : "${api}/doc/po/getRemark/"+ poNo,
 		contentType:"application/json;charset=utf-8",	   
 		dataType : "json",
 		success : function(result) {	
@@ -115,7 +115,7 @@ function getSaveData(){
 	}	
 	var saveData = {
 	     "params": formJson($remarkfm),
-	     "saveUrl": "${api}/doc/asn/appendRemark"
+	     "saveUrl": "${api}/doc/po/appendRemark"
 	}
 	return saveData;
 }

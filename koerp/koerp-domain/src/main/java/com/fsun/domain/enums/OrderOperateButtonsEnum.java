@@ -30,15 +30,16 @@ public enum OrderOperateButtonsEnum {
 	CANCEL_DOC_ASN("docAsn_cancel","取消入库单"),
 	SIGN_DOC_ASN("docAsn_sign","签收入库"),
 	CREATE_ASN_REFUND("create_asn_refund","创建退货单"),
-	
+	ADD_SI_REMARK("add_si_remark","添加备注"),
 	
 	//出库单
 	CANCEL_DOC_ORDER("docOrder_cancel","取消出库单"),
+	ADD_SO_REMARK("add_so_remark","添加备注"),
 		
 	//申请单
 	CANCEL_DOC_PO("docPo_cancel","取消申请单"),
 	UPDATE_DOC_PO("docPo_update","更新申请单"),
-	
+	ADD_PO_REMARK("add_po_remark","添加备注"),
 	
 	//退货单、换货单
 	REPAIR_REFUND("repair_refund","补退款"),

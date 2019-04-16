@@ -354,7 +354,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 			throw new DocOrderException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
 		}
 		String shopId = currUser.getShopId(); 
-		if(shopId==null || !shopId.equals(header.getToShopId())){
+		if(shopId==null || !shopId.equals(header.getFromShopId())){
 			throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
 		}		
 		//追击备注

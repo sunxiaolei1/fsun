@@ -201,11 +201,11 @@ public class DocOrderController extends BaseController {
 	 * @param takeId
 	 * @return
 	 */	
-	@RequestMapping(value="/toRemarkView/{takeId}", method=RequestMethod.GET)	
-	public ModelAndView toRemarkView(@PathVariable("takeId") String takeId) {
-		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toRemarkView"); 
-		modelAndView.addObject("takeId", takeId);
-		modelAndView.addObject("memo", docOrderApi.getRemark(takeId));
+	@RequestMapping(value="/toRemarkView/{orderNo}", method=RequestMethod.GET)	
+	public ModelAndView toRemarkView(@PathVariable("orderNo") String orderNo) {
+		ModelAndView modelAndView = new ModelAndView("/docOrder/operate/toRemarkView"); 
+		modelAndView.addObject("orderNo", orderNo);
+		modelAndView.addObject("memo", docOrderApi.getRemark(orderNo));
 		return modelAndView;
 	}
 	

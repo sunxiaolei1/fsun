@@ -216,7 +216,7 @@ public class DocAsnController extends BaseController {
 	 */	
 	@RequestMapping(value="/toRemarkView/{asnNo}", method=RequestMethod.GET)	
 	public ModelAndView toRemarkView(@PathVariable("asnNo") String asnNo) {
-		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toRemarkView"); 
+		ModelAndView modelAndView = new ModelAndView("/docAsn/operate/toRemarkView"); 
 		modelAndView.addObject("asnNo", asnNo);
 		modelAndView.addObject("memo", docAsnApi.getRemark(asnNo));
 		return modelAndView;

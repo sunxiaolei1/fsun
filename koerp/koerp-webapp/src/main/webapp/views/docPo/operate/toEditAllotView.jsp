@@ -57,7 +57,7 @@
 				</td>
 	        	<th width="12%">备注</th>
 				<td colspan="3">
-					<input id="memo" name="memo"  data-options="multiline:true" 
+					<input id="memo" name="memo"  data-options="multiline:true" readOnly
 						class="easyui-textbox" style="width:400px;height:60px;"/>
 				</td>
 	        </tr>

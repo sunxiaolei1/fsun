@@ -159,8 +159,8 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = true; break;
 	        case RETURN_ORDER: 	
 	        	isEnable = true; break;	        	
-	        case ADD_ORDER_REMARK:
-	        	isEnable = false;break;	                
+	        case ADD_PO_REMARK:
+	        	isEnable = true;break;	                
 	        case CANCEL_DOC_PO: 	        	
 	        	if(DocPoStatusEnum.CREATE.getCode().equals(poStatus) ||
 	        			DocPoStatusEnum.AUDIT_REJECT.getCode().equals(poStatus)){
@@ -194,8 +194,8 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = true; break;
 	        case RETURN_ORDER: 	
 	        	isEnable = true; break;	        	
-	        case ADD_ORDER_REMARK:
-	        	isEnable = false;break;	                
+	        case ADD_SO_REMARK:
+	        	isEnable = true;break;	                
 	        case CANCEL_DOC_ORDER: 	        	
 	        	if(DocOrderStatusEnum.SO_DDCK.getCode().equals(orderStatus)){
 	        		isEnable = true;
@@ -225,8 +225,8 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = true; break;
 	        case RETURN_ORDER: 	
 	        	isEnable = true; break;	        	
-	        case ADD_ORDER_REMARK:
-	        	break;	                       
+	        case ADD_SI_REMARK:
+	        	isEnable = true; break;	                       
 	        case CANCEL_DOC_ASN: 
 	        	if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
 	        		|| DocAsnStatusEnum.SI_WQSH.getCode().equals(asnStatus))){

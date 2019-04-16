@@ -47,6 +47,7 @@
 	<a href="#" id="docAsn_cancel" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">撤销</a>
 	<a href="#" id="create_asn_refund" class="easyui-linkbutton" iconCls="icon-book_add" plain="true" onclick="toCreateAsnRefundView()">创建退货单</a>	
 	<a href="#" id="docAsn_sign" class="easyui-linkbutton" iconCls="icon-user_edit" plain="true" onclick="showSignView()">审核</a>
+	<a href="#" id="add_si_remark" class="easyui-linkbutton" iconCls="icon-book_open" plain="true" onclick="toSiRemarkView('${asnNo}')">添加备注</a>
 	
 	<!-- 寄提单 -->
 	<a href="#" id="take_out" class="easyui-linkbutton" iconCls="icon-user_go" plain="true" onclick="showTakeOutView()">寄提出库</a>
@@ -55,10 +56,12 @@
 	
 	<!-- 出库单 -->
 	<a href="#" id="docOrder_cancel" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">撤销</a>
+	<a href="#" id="add_so_remark" class="easyui-linkbutton" iconCls="icon-book_open" plain="true" onclick="toSoRemarkView('${orderNo}')">添加备注</a>
 	
 	<!-- 申请单 -->
 	<a href="#" id="docPo_cancel" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">撤销</a>
 	<a href="#" id="docPo_update" class="easyui-linkbutton" iconCls="icon-cog_edit" plain="true" onclick="orderUpdate()">更新</a>
+	<a href="#" id="add_po_remark" class="easyui-linkbutton" iconCls="icon-book_open" plain="true" onclick="toPoRemarkView('${poNo}')">添加备注</a>
 	
 	<!-- 退换货单 -->
 	<a href="#" id="refund_cancel" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">撤销</a>
@@ -78,9 +81,9 @@
 var buttonsMap = {
 	"aftersaleRefund": ["refund_cancel","repair_refund","complete_refund","add_refund_remark","order_refresh","order_return"],	           
 	"aftersaleBarter": ["refund_cancel","repair_refund","add_refund_remark","order_refresh","order_return"],
-	"docOrder": ["docOrder_cancel","order_refresh","order_return"],
-	"docAsn": ["docAsn_sign","docAsn_cancel","create_asn_refund","order_refresh","order_return"],
-	"docPo": ["docPo_cancel","docPo_update","order_return","order_refresh"],
+	"docOrder": ["docOrder_cancel","add_so_remark","order_refresh","order_return"],
+	"docAsn": ["docAsn_sign","docAsn_cancel","create_asn_refund","add_si_remark","order_refresh","order_return"],
+	"docPo": ["docPo_cancel","docPo_update","order_return","add_po_remark","order_refresh"],
 	"busTake": ["take_cancel", "add_take_remark","take_out","order_refresh", "order_return"],
 	"busOrder": ["order_cancel","add_order_remark","order_take","create_refund","onekey_refund","take_goods_history","order_refresh","order_return"]
 	//"busOrder": ["order_cancel","add_order_remark","create_refund","create_barter","onekey_refund","order_refresh", "order_return"]

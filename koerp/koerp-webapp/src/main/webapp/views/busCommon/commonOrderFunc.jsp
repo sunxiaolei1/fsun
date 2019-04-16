@@ -108,10 +108,35 @@ function orderReturn(){
 /**
  * 跳转到修改备注信息页面
  */
+function toSiRemarkView(asnNo){
+	var url = "${api}/doc/asn/toRemarkView/"+ asnNo;	
+	commonDialog("ordersDialog", "修改备注", "60%", "66%", url, "icon-book_red");
+}
+
+/**
+ * 跳转到修改备注信息页面
+ */
+function toSoRemarkView(orderNo){
+	var url = "${api}/doc/order/toRemarkView/"+ orderNo;	
+	commonDialog("ordersDialog", "修改备注", "60%", "66%", url, "icon-book_red");
+}
+
+/**
+ * 跳转到修改备注信息页面
+ */
+function toPoRemarkView(poNo){
+	var url = "${api}/doc/po/toRemarkView/"+ poNo;	
+	commonDialog("ordersDialog", "修改备注", "60%", "66%", url, "icon-book_red");
+}
+
+/**
+ * 跳转到修改备注信息页面
+ */
 function toOrderRemarkView(orderId){
 	var url = "${api}/bus/order/toRemarkView/"+ orderId;	
 	commonDialog("ordersDialog", "修改备注", "60%", "66%", url, "icon-book_red");
 }
+
 
 /**
  * 跳转到一键退货页面

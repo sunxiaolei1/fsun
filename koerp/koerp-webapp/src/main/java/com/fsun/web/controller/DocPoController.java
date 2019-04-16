@@ -247,11 +247,11 @@ public class DocPoController extends BaseController {
 	 * @param takeId
 	 * @return
 	 */	
-	@RequestMapping(value="/toRemarkView/{takeId}", method=RequestMethod.GET)	
-	public ModelAndView toRemarkView(@PathVariable("takeId") String takeId) {
-		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toRemarkView"); 
-		modelAndView.addObject("takeId", takeId);
-		modelAndView.addObject("memo", docPoApi.getRemark(takeId));
+	@RequestMapping(value="/toRemarkView/{poNo}", method=RequestMethod.GET)	
+	public ModelAndView toRemarkView(@PathVariable("poNo") String poNo) {
+		ModelAndView modelAndView = new ModelAndView("/docPo/operate/toRemarkView"); 
+		modelAndView.addObject("poNo", poNo);
+		modelAndView.addObject("memo", docPoApi.getRemark(poNo));
 		return modelAndView;
 	}
 	
