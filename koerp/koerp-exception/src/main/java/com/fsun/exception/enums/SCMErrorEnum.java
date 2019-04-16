@@ -45,6 +45,7 @@ public enum SCMErrorEnum {
 	BUS_REFUND_SKU_QTY_ILLEGAL(3006, "退货商品数量非法"),
 	BUS_REFUND_STATUS_ILLEGAL(3007, "订单处理中，不能重审，请稍后再试!"),
 	BUS_REFUND_STATUS_INVALID(3008, "单据状态不可用"),
+	BUS_REFUND_NOT_REFUND_MONEY(3009, "经销商退货不退钱"),
 	
 	BUS_SKU_NOT_EXIST(8011, "商品不存在"),
 	BUS_SKU_EXISTED(8012, "商品已存在"),
@@ -61,6 +62,7 @@ public enum SCMErrorEnum {
 	BUS_CUSTOMER_EXISTED(8032, "客户已存在"),
 	BUS_CUSTOMER_UNPAY_DISABLED(8033, "当前客户没有挂账权限"),
 	BUS_CUSTOMER_NO_VIP(8034, "当前客户不是会员"),
+	BUS_CUSTOMER_NO_AGENT(8035, "当前客户不是经销商"),
 	BUS_CODES_NOT_EXIST(8041, "要更新的数据不存在"),
 	BUS_CODES_EXISTED(8042, "对不起，该数据类别和编码已存在"),
 	BUS_SHOP_NOT_EXIST(8051, "店仓不存在"),	

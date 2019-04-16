@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusReserveCondition;
 import com.fsun.domain.enums.CustomerTypeEnum;
+import com.fsun.domain.model.BusReserve;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
 
@@ -42,6 +44,19 @@ public class BusReserveController extends BaseController {
 		modelAndView.addObject("customerCode", customerCode);
 		return modelAndView;
 	}
+	
+	@RequestMapping(value="/{customerCode}", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult loadByCustomerCode(@PathVariable("customerCode") String customerCode){
+		try {
+			BusReserve busReserve = busReserveApi.load(customerCode);
+			return success(busReserve);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+
 	
 	@RequestMapping(value="/getInitData", method = {RequestMethod.GET})
 	@ResponseBody

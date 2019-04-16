@@ -228,8 +228,8 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 				List<BusPayAccount> payAccounts = busPayAccountManage.listByHeaderId(orderId);
 				for (BusPayAccount busPayAccount : payAccounts) {
 					Short payMode = busPayAccount.getPayMode();
-					if(PayModeEnum.UNPAY.getValue().equals(payMode) 
-							|| PayModeEnum.VIP_PAY.getValue().equals(payMode)){						
+					if(PayModeEnum.UNPAY.getValue().equals(payMode) || PayModeEnum.VIP_PAY.getValue().equals(payMode) 
+							|| PayModeEnum.RESERVE_PAY.getValue().equals(payMode)){						
 						List<BusVipUnpaid> list = busVipUnpaidManage.listByHeaderId(busPayAccount.getPayId());
 						if(list!=null && list.size()==1){
 							busVipUnpaidManage.cancel(list.get(0), currUser);
@@ -351,6 +351,13 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 				payAccount.setVipId(busCustomer.getCustomerCode());
 				BusVipUnpaid busVipUnpaid = this.initOrderUnPay(header, payAccount, TradeTypeEnum.VIP_CONSUME.getValue());
 				busVipUnpaidManage.create(busVipUnpaid, false);
+			}else if(PayModeEnum.RESERVE_PAY.getValue().equals(payMode)){
+				if(!CustomerTypeEnum.JXS.getCode().equals(busCustomer.getCustomerType())){
+					throw new OrderException(SCMErrorEnum.BUS_CUSTOMER_NO_AGENT);
+				}
+				payAccount.setVipId(busCustomer.getCustomerCode());
+				BusVipUnpaid busVipUnpaid = this.initOrderUnPay(header, payAccount, TradeTypeEnum.RESERVE_CONSUME.getValue());
+				busVipUnpaidManage.create(busVipUnpaid, false);
 			}
 			busPayAccountManage.create(payAccount);
 		}		
@@ -375,7 +382,8 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		Set<BusGoods> apportionDetails = new HashSet<>();
 		busOrderManage.initApportionDetails(busOrderDto, apportionDetails);
 		for (BusGoods busGoods : apportionDetails) {
-			BigDecimal calcTotalPrice = busGoods.getQty().multiply(busGoods.getSalePrice()).setScale(2, BigDecimal.ROUND_HALF_UP);;
+			BigDecimal calcTotalPrice = busGoods.getQty().subtract(busGoods.getGiftCount()).
+				multiply(busGoods.getSalePrice()).setScale(2, BigDecimal.ROUND_HALF_UP);;
 			if(busGoods.getTotalPrice().compareTo(calcTotalPrice)!=0){
 				throw new OrderException(SCMErrorEnum.BUS_SKU_AMOUNT_ILLEGAL);
 			}
@@ -477,6 +485,9 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 					throw new OrderException(SCMErrorEnum.BUS_VIP_ILLEGAL);
 				}			
 			}			
+		}else if(TradeTypeEnum.RESERVE_CONSUME.getValue().equals(tradeType)){									
+			busVipUnpaid.setGiftPrice(BigDecimal.ZERO);
+			busVipUnpaid.setTradePrice(busVipUnpaid.getTradePrice().negate());										
 		}else if(TradeTypeEnum.UNPAY_CONSUME.getValue().equals(tradeType)){
 			busVipUnpaid.setGiftPrice(BigDecimal.ZERO);
 			busVipUnpaid.setTradePrice(payAccount.getReceptPrice().negate());

@@ -34,11 +34,10 @@ public class BusReserveService implements BusReserveApi {
 		footer.put(condition.getFirstColumn(), "合计:");	
 		return footer;
 	}
-
+	
 	@Override
-	public BusReserve load(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public BusReserve load(String customerCode) {
+		return busReserveManage.load(customerCode);
 	}
 
 	@Override

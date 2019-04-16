@@ -28,21 +28,15 @@
         	<th width="12%">实付金额</th>
 			<td>
 				<input id="payPrice" name="payPrice" class="easyui-numberbox" required
-					data-options="min: 0.1,precision:2,formatter: numBaseFormat"/>									
+					data-options="min: 0,precision:2,formatter: numBaseFormat"/>									
 			</td>	        						        		        	
         </tr>
         <tr>	        	
-        	<th width="12%">支付流水号</th>
+        	<th width="12%">可用备用金</th>
 			<td>
-				<input id="tradeNo" name="tradeNo" class="easyui-textbox" />									
+				<input id="enableReserve" class="easyui-textbox" style="width:360px;"readOnly />										
 			</td>	        						        		        	
-        </tr>  
-        <tr>	        	
-        	<th width="12%">支付卡号</th>
-			<td>
-				<input id="cardNo" name="cardNo" class="easyui-textbox" />									
-			</td>	        						        		        	
-        </tr>        
+        </tr>          
 	</table>
 </form>			
 	
@@ -62,14 +56,6 @@ $(function () {
    	  	data: window.parent.payModeData
    	});		
 	
-	if(currPayMode==1 || currPayMode==3 || currPayMode==4|| currPayMode==8){
-		$("#tradeNo", $paymodefm).textbox({disabled:false});
-		$("#cardNo", $paymodefm).textbox({disabled:false});
-	}else{
-		$("#tradeNo", $paymodefm).textbox({disabled:true});
-		$("#cardNo", $paymodefm).textbox({disabled:true});
-	}
-	
 	//去除默认的请选择项
 	editInitComboxParams($paymodefm, "");
      
@@ -77,5 +63,3 @@ $(function () {
 
 
 </script>
-
-

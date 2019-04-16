@@ -10,7 +10,8 @@
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="tel" property="tel" jdbcType="VARCHAR" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
-    <result column="salesman" property="salesman" jdbcType="VARCHAR" />
+    <result column="salesman" property="salesman" jdbcType="VARCHAR" />  
+    <result column="enable_reserve" property="enableReserve" jdbcType="DECIMAL" />
     <result column="credit_price" property="creditPrice" jdbcType="DECIMAL" />
     <result column="enabled" property="enabled" jdbcType="BIT" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
@@ -140,6 +141,14 @@
 		sum(a.credit_price) as credit_price
     FROM bus_customer a 
     	<include refid="conditions" />
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    	IFNULL(getEnableReserveByCustomerCode(customer_code), 0) as enable_reserve,
+    	<include refid="Base_Column_List" />    	
+    from bus_customer
+    where customer_code = #{customerCode,jdbcType=VARCHAR}
   </select>
   
 </mapper>

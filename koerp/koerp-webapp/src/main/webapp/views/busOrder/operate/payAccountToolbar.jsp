@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
 
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('1')">银行卡</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('2')">现金</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('3')">支付宝</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('4')">微信</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('6')">挂账</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('7')">会员卡</a>
+<a href="#" id="unoinPayBtn" class="easyui-linkbutton" iconCls="icon-zoom" plain="true" onclick="addPayRow('1')">扫码</a>
+<a href="#" id="cashBtn" class="easyui-linkbutton" iconCls="icon-money_yen" plain="true" onclick="addPayRow('2')">现金</a>
+<a href="#" id="aliBtn" class="easyui-linkbutton" iconCls="icon-tag_red" plain="true" onclick="addPayRow('3')">支付宝</a>
+<a href="#" id="wechatBtn" class="easyui-linkbutton" iconCls="icon-tag_green" plain="true" onclick="addPayRow('4')">微信</a>
+<a href="#" id="unPayBtn" class="easyui-linkbutton" iconCls="icon-people" plain="true" onclick="addPayRow('6')">挂账</a>
+<a href="#" id="vipPayBtn" class="easyui-linkbutton" iconCls="icon-memu_visa" plain="true" onclick="addPayRow('7')">会员卡</a>
+<a href="#" id="transferPayBtn" class="easyui-linkbutton" iconCls="icon-ipod" plain="true" onclick="addPayRow('8')">转账</a>
+<a href="#" id="reservePayBtn" class="easyui-linkbutton" iconCls="icon-money" plain="true" onclick="addPayRow('9')">备用金</a>
 <a href="#" id="discountBtn" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addPayRow('100')">任意折扣</a>
 <span style="float:right;margin-right:5px;">
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cog_add" plain="true" onclick="saveData()">保存</a>
@@ -97,6 +99,8 @@ function addPayRow(payMode) {
             	//当支付方式是会员卡时初始化信息
             	if(payMode==7){ 
             		initVipInfo(balancePrice0);               	                    
+            	}else if(payMode==9){
+            		initReserveInfo(balancePrice0);
             	}else{
             		$("#payPrice", $paymodefm).numberbox({           	   
                   	   max: balancePrice
@@ -169,5 +173,38 @@ function initVipInfo(balancePrice){
 	});  	
 }
 
+//初始化信息
+function initReserveInfo(balancePrice){
+	
+	$("#payPrice", $paymodefm).numberbox({           	   
+ 	   	max: 0
+   	}).numberbox("setValue", 0);
+	
+	var buyerId = $("#buyerId", $payAccountfm).val();
+	$.ajax({
+		type : "GET",
+		url : "${api}/bus/reserve/"+ buyerId,
+		dataType : "json",
+		success : function(result) {		
+			var busReserve = result.entry;
+			if(busReserve){			
+				var enableReserve = busReserve.enableReserve;
+				$("#enableReserve").textbox("setValue", busReserve.customerName +"[余额:"+ enableReserve +"元]");
+				if(enableReserve>=balancePrice){               	  		
+       	  			$("#payPrice", $paymodefm).numberbox({           	   
+               	   		max: balancePrice
+                 	}).numberbox("setValue", balancePrice);
+   	  			}else{
+           	  		$("#payPrice", $paymodefm).numberbox({           	   
+               	   		max: enableReserve
+                 	}).numberbox("setValue", enableReserve);
+       	  		}
+			}          				 	           		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			$.messager.alert("错误", errorThrown, "error");
+		}
+	});  	
+}
 
 </script>		

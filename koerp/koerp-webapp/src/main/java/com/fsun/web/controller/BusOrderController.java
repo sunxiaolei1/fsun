@@ -491,7 +491,13 @@ public class BusOrderController extends BaseController {
 				break;		
 			case VIP_PAY:	
 				url = "/busOrder/operate/toVipPayView";
-				break;	
+				break;
+			case TRANSFER_PAY:
+				url = "/busOrder/operate/toPayModeView";
+				break;
+			case RESERVE_PAY:
+				url = "/busOrder/operate/toReservePayView";
+				break;
 			case DISCOUNT:	
 				url = "/busOrder/operate/toPayModeView";
 				break;				

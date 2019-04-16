@@ -28,6 +28,7 @@ import com.fsun.domain.dto.BusRefundDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusRefundCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
+import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.PayModeEnum;
@@ -113,10 +114,13 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		HashMap<String, Object> map = busOrderApi.loadEntity(orderId);
 		HashMap<String, Object> orderHeaderMap = (HashMap<String, Object>) map.get("header");
 		orderHeaderMap.put("refundReason", RefundReasonEnum.GOODS_QUALITY.getValue());
-		orderHeaderMap.put("payMode", VipUnpaidPayModeEnum.CASH_PAY.getValue());
-		//通过订单号初始化整单退的退货商品明细
-		List<HashMap<String, Object>> invSkuList = busGoodsManage.initAllReturnGoodsByOrderId(orderId);
-		map.put("details", invSkuList);
+		orderHeaderMap.put("payMode", VipUnpaidPayModeEnum.CASH_PAY.getValue());		
+		//如果是寄存单,通过订单号初始化整单退的退货商品明细
+		Short orderType = Short.valueOf(orderHeaderMap.get("orderType").toString());
+		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){			
+			List<HashMap<String, Object>> invSkuList = busGoodsManage.initAllReturnGoodsByOrderId(orderId);
+			map.put("details", invSkuList);
+		}		
 		return map;
 	}
 

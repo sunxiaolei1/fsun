@@ -67,11 +67,29 @@ function initPayModes(paramsData){
 				isAllSmoke = false;
 			}
 		});
-	}
-	if(!isAllSmoke){
-		$("#discountBtn").hide();
-	}else{
+	}	
+	var header = paramsData.header;
+	if(header.buyerId.startWith("JXS")){
+		$("#unoinPayBtn").hide();
+		$("#cashBtn").hide();
+		$("#aliBtn").hide();
+		$("#wechatBtn").hide();
+		$("#vipPayBtn").hide();
+		$("#transferPayBtn").hide();
 		$("#discountBtn").show();
+	}else{
+		$("#unoinPayBtn").show();
+		$("#cashBtn").show();
+		$("#aliBtn").show();
+		$("#wechatBtn").show();
+		$("#vipPayBtn").show();
+		$("#transferPayBtn").show();
+		$("#reservePayBtn").hide();
+		if(!isAllSmoke){
+			$("#discountBtn").hide();
+		}else{
+			$("#discountBtn").show();
+		}
 	}
 }
 

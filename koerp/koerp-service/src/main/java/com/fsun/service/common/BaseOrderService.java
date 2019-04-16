@@ -11,6 +11,7 @@ import com.fsun.biz.bus.manage.BusInvSkuManage;
 import com.fsun.common.utils.DateUtil;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.domain.dto.BusUserDto;
+import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.DocTradeStatusEnum;
@@ -589,7 +590,14 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 				|| FlowStatusEnum.STOCKOUT.getCode().equals(flowStatus))
 				&& TradeStatusEnum.COMPLETED.getCode().equals(tradeStatus))){
 			throw new AfterSaleException(SCMErrorEnum.BUS_REFUND_STATUS_INVALID);
+		}		
+		//校验经销商退货不退钱
+		if(busRefund.getBuyerId().startsWith(CustomerTypeEnum.JXS.getCode())){
+			if(busRefund.getRefundPrice().compareTo(BigDecimal.ZERO)>0){
+				throw new AfterSaleException(SCMErrorEnum.BUS_REFUND_NOT_REFUND_MONEY);
+			}
 		}
+		
 		//判别如果是寄存单已经寄提过则不可以创建默认的退货单， 但可以一键整单退
 		/*Short orderType = busOrder.getOrderType() ;
 		String takeStatus = busOrder.getTakeStatus();

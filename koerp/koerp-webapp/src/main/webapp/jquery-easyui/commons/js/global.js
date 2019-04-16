@@ -401,6 +401,26 @@ Array.prototype.contains = function(needle) {
 	return false;
 };
 
+String.prototype.endWith=function(s){
+	if(s==null||s==""||this.length==0||s.length>this.length)
+		return false;
+	if(this.substring(this.length-s.length)==s)
+		return true;
+	else
+		return false;
+	return true;
+}
+
+String.prototype.startWith=function(s){
+	if(s==null||s==""||this.length==0||s.length>this.length)
+		return false;
+	if(this.substr(0,s.length)==s)
+		return true;
+	else
+		return false;
+	return true;
+}
+
 //格式化年月日时分秒
 formatterDateTime = function(date) {
 	var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
