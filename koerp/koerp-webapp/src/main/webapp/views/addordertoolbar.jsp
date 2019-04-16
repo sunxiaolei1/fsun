@@ -74,9 +74,11 @@ function initPayModes(paramsData){
 		$("#cashBtn").hide();
 		$("#aliBtn").hide();
 		$("#wechatBtn").hide();
-		$("#vipPayBtn").hide();
+		$("#vipPayBtn").hide();		
 		$("#transferPayBtn").hide();
+		
 		$("#discountBtn").show();
+		$("#reservePayBtn").show();
 	}else{
 		$("#unoinPayBtn").show();
 		$("#cashBtn").show();
@@ -84,6 +86,7 @@ function initPayModes(paramsData){
 		$("#wechatBtn").show();
 		$("#vipPayBtn").show();
 		$("#transferPayBtn").show();
+		
 		$("#reservePayBtn").hide();
 		if(!isAllSmoke){
 			$("#discountBtn").hide();

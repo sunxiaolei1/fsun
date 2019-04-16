@@ -193,6 +193,11 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 	public List<HashMap<String, Object>> exportUnpaid(BusVipUnpaidCondition condition) {
 		return busVipUnpaidManage.export(condition);
 	}
+	
+	@Override
+	public List<HashMap<String, Object>> exportReserve(BusVipUnpaidCondition condition) {
+		return busVipUnpaidManage.export(condition);
+	}
 
 	@Transactional
 	@Override

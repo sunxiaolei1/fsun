@@ -77,7 +77,7 @@ public class BusVipUnpaidController extends BaseController {
 	 */
 	@RequestMapping(value="/summary/reserve/index")
 	public String reserveIndex() {
-		return "/summary/unpaid/index";
+		return "/summary/reserve/index";
 	}
 	
 	@RequestMapping(value="/toVipUnpaidView")
@@ -147,6 +147,24 @@ public class BusVipUnpaidController extends BaseController {
 		}
 	}
 	
+	@RequestMapping(value="/reserve/findPage", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findReservePage(BusVipUnpaidCondition condition) {
+		try {
+			String[] tradeTypes = {"6", "7"};
+			condition.setInTradeTypes(tradeTypes);
+			PageModel pageModel = busVipUnpaidApi.findPage(condition);
+			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
+					&& pageModel.getTotal()>0){
+				HashMap<String, Object> footer = busVipUnpaidApi.findFooter(condition);
+				return success(pageModel, new Object[]{footer});
+			}
+			return success(pageModel, new Object[]{});
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 	
 	@RequestMapping("/vip/exportExcel")
 	public void exportVip(BusVipUnpaidCondition condition,
@@ -191,6 +209,29 @@ public class BusVipUnpaidController extends BaseController {
 			fieldMap.put("trade_price", "交易金额");
 			fieldMap.put("memo", "备注");
 			ExcelUtil.listToExcel(list, fieldMap, "挂账结款消费明细", response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/reserve/exportExcel")
+	public void exportReserve(BusVipUnpaidCondition condition,
+			HttpServletRequest request, HttpServletResponse response) {
+		try {
+			String[] tradeTypes = {"6", "7"};
+			condition.setInTradeTypes(tradeTypes);
+			List<HashMap<String, Object>> list = busVipUnpaidApi.exportReserve(condition);
+			LinkedHashMap<String, String> fieldMap = new LinkedHashMap<String, String>();
+			fieldMap.put("customer_name", "客户名称");
+			fieldMap.put("shop_name", "交易门店");
+			fieldMap.put("pay_mode_name", "支付方式");
+			fieldMap.put("trade_type_name", "交易类型");
+			fieldMap.put("order_id", "销售单号");
+			fieldMap.put("trade_status_name", "交易状态");
+			fieldMap.put("trade_time", "交易时间");
+			fieldMap.put("trade_price", "交易金额");
+			fieldMap.put("memo", "备注");
+			ExcelUtil.listToExcel(list, fieldMap, "备用金充值消费明细", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

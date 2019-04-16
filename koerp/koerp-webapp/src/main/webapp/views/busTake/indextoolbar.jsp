@@ -7,7 +7,7 @@
 	request.setAttribute("api", basePath);
 %>
 
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView()">创建寄提单</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-user_go" plain="true" onclick="toAddView()">创建寄提单</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toPrintOrderView()">打印</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	

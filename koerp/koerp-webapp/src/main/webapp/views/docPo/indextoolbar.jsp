@@ -6,7 +6,7 @@
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
 	request.setAttribute("api", basePath);
 %>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('20')">调拨申请</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-comments" plain="true" onclick="toAddView('20')">调拨申请</a>
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('10')">采购申请</a> -->
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	

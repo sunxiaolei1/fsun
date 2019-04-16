@@ -6,9 +6,9 @@
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
 	request.setAttribute("api", basePath);
 %>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('12')">盘亏出库</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('16')">领用出库</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('15')">报损出库</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-lorry_delete" plain="true" onclick="toAddView('12')">盘亏出库</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-vcard_edit" plain="true" onclick="toAddView('16')">领用出库</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-lorry_error" plain="true" onclick="toAddView('15')">报损出库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-user_comment" plain="true" onclick="toAllotApplyDialog()">调拨审核</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toPrintOrderView()">打印</a>
