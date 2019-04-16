@@ -19,7 +19,6 @@ import com.fsun.domain.dto.BusBarterDto;
 import com.fsun.domain.dto.BusRefundDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusRefundCondition;
-import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.AfterSaleException;
 import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -88,12 +87,11 @@ public class BusAfterSaleOpController extends BaseController {
 	 */
 	@RequestMapping(value="/status/{status}", method = {RequestMethod.POST})
 	@ResponseBody
-	public HttpResult changeStatus(@PathVariable("status") Short status, 
+	public HttpResult changeStatus(@PathVariable("status") String status, 
 		@RequestParam("refundIds") String refundIds, @RequestBody BusRefundCondition condition) {
 		try {
 			if (!StringUtils.isEmpty(refundIds)) {
-				SysUser user = getCurrentUser();	
-				busAfterSaleApi.changeStatus(refundIds.split(","), status, user, condition);
+				busAfterSaleApi.changeStatus(refundIds.split(","), status, super.getCurrentUser(), condition);
 				return success(SCMErrorEnum.SUCCESS.getErrorCode());
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
@@ -111,12 +109,12 @@ public class BusAfterSaleOpController extends BaseController {
 	 * @param condition
 	 * @return
 	 */
-	@RequestMapping(value="/refund/updateRemark", method=RequestMethod.POST)
+	@RequestMapping(value="/refund/appendRemark", method=RequestMethod.POST)
 	@ResponseBody
-	public HttpResult updateRemark(@RequestBody BusRefundCondition condition) {
+	public HttpResult appendRemark(@RequestBody BusRefundCondition condition) {
 		try {
-			SysUser sysuser = super.getCurrentUser();
-			String refundId = busAfterSaleApi.updateRemark(condition, sysuser);			
+			BusUserDto sysuser = super.getCurrentUser();
+			String refundId = busAfterSaleApi.appendRemark(condition, sysuser);			
 			return success(refundId);
 		}catch (AfterSaleException e) {
 			e.printStackTrace();
@@ -136,7 +134,7 @@ public class BusAfterSaleOpController extends BaseController {
 	@ResponseBody
 	public HttpResult handleSign(@RequestBody BusRefundCondition condition) {	
 		
-		SysUser sysuser = super.getCurrentUser();
+		BusUserDto sysuser = super.getCurrentUser();
 		List<String> returnRefundIds = new ArrayList<>();
 		String[] refundIds = condition.getRefundIds();
 		if(refundIds!=null && refundIds.length>0){	

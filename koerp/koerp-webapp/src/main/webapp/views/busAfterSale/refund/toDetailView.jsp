@@ -36,7 +36,7 @@
 			<div class="fsun-wrap">
 				<span class="title" style="top: 66px;">退货信息(退货单号:<span id='refundId'></span>)</span>	
 				<span class="title" style="top: 66px;left:50%">原订单信息(订单号:<span id='orderId'></span>)</span>	
-				<div style="width:100%;height:206px;">
+				<div style="width:100%;height:38%;">
 					<table class="nb-formTable" style="width:49%;float:left;">
 						<tr>
 				        	<th width="12%">退货类型</th>
@@ -71,7 +71,7 @@
 				        </tr>
 				        <tr>				            
 							<th width="12%">单据日期</th>
-							<td>
+							<td colspan="3">
 								<input name="refundTime" id="refundTime" class="easyui-datebox" editable="false" />
 							</td>																										
 				        </tr>
@@ -120,7 +120,7 @@
 				        </tr>
 				        <tr>				            
 							<th width="12%">抹零金额</th>
-							<td>
+							<td colspan="3">
 								<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" 
 									data-options="min:0,precision:2" editable="false"/>
 							</td>							
@@ -135,7 +135,7 @@
 			        </table>
 				</div>										
 			</div>					
-			<div style="height: 206px;width: 100%;">
+			<div style="height: 40%;width: 100%;">
 				<table id="orderDetailDataGrid"></table>
 			</div>
 		</div>	

@@ -23,7 +23,7 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusTakeCondition;
 import com.fsun.domain.enums.BusTakeStatusEnum;
 import com.fsun.domain.model.BusTake;
-import com.fsun.domain.model.SysUser;
+import com.fsun.exception.bus.AfterSaleException;
 import com.fsun.exception.bus.BusTakeException;
 import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -195,8 +195,7 @@ public class BusTakeController extends BaseController {
 		@RequestParam("takeIds") String takeIds, @RequestBody BusTakeCondition condition) {
 		try {
 			if (!StringUtils.isEmpty(takeIds)) {
-				SysUser user = getCurrentUser();	
-				busTakeApi.changeStatus(takeIds.split(","), status, user, condition);
+				busTakeApi.changeStatus(takeIds.split(","), status, super.getCurrentUser(), condition);
 				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
@@ -254,6 +253,54 @@ public class BusTakeController extends BaseController {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}		
+	}
+	
+	/***************************************    修改备注功能        **************************************/
+	
+	/**
+	 * 跳转到修改备注页面
+	 * @param takeId
+	 * @return
+	 */	
+	@RequestMapping(value="/toRemarkView/{takeId}", method=RequestMethod.GET)	
+	public ModelAndView toRemarkView(@PathVariable("takeId") String takeId) {
+		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toRemarkView"); 
+		modelAndView.addObject("takeId", takeId);
+		modelAndView.addObject("memo", busTakeApi.getRemark(takeId));
+		return modelAndView;
+	}
+	
+	/**
+	 * 获取备注
+	 * @param takeId
+	 * @return
+	 */
+	@RequestMapping(value="/getRemark/{takeId}", method=RequestMethod.GET)
+	@ResponseBody
+	public HttpResult getRemark(@PathVariable("takeId") String takeId) {
+		String memo = busTakeApi.getRemark(takeId);
+		return success(memo);
+	}
+	
+	/**
+	 * 追加备注
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/appendRemark", method=RequestMethod.POST)
+	@ResponseBody
+	public HttpResult appendRemark(@RequestBody BusTakeCondition condition) {
+		try {
+			BusUserDto sysuser = super.getCurrentUser();
+			String takeId = busTakeApi.appendRemark(condition, sysuser);			
+			return success(takeId);
+		}catch (AfterSaleException e) {
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
 	}
 	
 }

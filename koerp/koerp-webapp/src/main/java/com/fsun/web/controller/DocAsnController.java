@@ -25,7 +25,7 @@ import com.fsun.domain.enums.DocAsnStatusEnum;
 import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.model.DocAsnHeader;
-import com.fsun.domain.model.SysUser;
+import com.fsun.exception.bus.AfterSaleException;
 import com.fsun.exception.bus.DocAsnException;
 import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -141,8 +141,7 @@ public class DocAsnController extends BaseController {
 		@RequestParam("asnNos") String asnNos, @RequestBody DocAsnHeaderCondition condition) {
 		try {
 			if (!StringUtils.isEmpty(asnNos)) {
-				SysUser user = getCurrentUser();	
-				docAsnApi.changeStatus(asnNos.split(","), status, user, condition);
+				docAsnApi.changeStatus(asnNos.split(","), status, super.getCurrentUser(), condition);
 				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
@@ -205,6 +204,52 @@ public class DocAsnController extends BaseController {
 		//控制编辑单价权限		
 		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
 		return modelAndView;
+	}
+	
+	
+	/***************************************    修改备注功能        **************************************/
+	
+	/**
+	 * 跳转到修改备注页面
+	 * @param takeId
+	 * @return
+	 */	
+	@RequestMapping(value="/toRemarkView/{asnNo}", method=RequestMethod.GET)	
+	public ModelAndView toRemarkView(@PathVariable("asnNo") String asnNo) {
+		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toRemarkView"); 
+		modelAndView.addObject("asnNo", asnNo);
+		modelAndView.addObject("memo", docAsnApi.getRemark(asnNo));
+		return modelAndView;
+	}
+	
+	/**
+	 * 获取备注
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/getRemark/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public HttpResult getRemark(@PathVariable("id") String id) {
+		return success(docAsnApi.getRemark(id));
+	}
+	
+	/**
+	 * 追加备注
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/appendRemark", method=RequestMethod.POST)
+	@ResponseBody
+	public HttpResult appendRemark(@RequestBody DocAsnHeaderCondition condition) {
+		try {
+			return success(docAsnApi.appendRemark(condition, super.getCurrentUser()));
+		}catch (AfterSaleException e) {
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
 	}
 	
 	

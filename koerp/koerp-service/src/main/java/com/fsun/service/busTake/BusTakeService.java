@@ -21,17 +21,12 @@ import com.fsun.domain.dto.BusTakeDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusTakeCondition;
 import com.fsun.domain.enums.BusTakeStatusEnum;
-import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.model.BusGoods;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.BusTake;
 import com.fsun.domain.model.BusTakeGoods;
-import com.fsun.domain.model.DocOrderHeader;
-import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.BusTakeException;
-import com.fsun.exception.bus.DocOrderException;
-import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
 
@@ -198,7 +193,7 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] takeIds, String status, SysUser user, BusTakeCondition condition){		
+	public void changeStatus(String[] takeIds, String status, BusUserDto user, BusTakeCondition condition){		
 		Date now = new Date();
 		for (String takeId : takeIds) {
 			BusTake header = busTakeManage.load(takeId);
@@ -257,7 +252,6 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 		}
 	}
 	
-	@Transactional
 	@Override
 	public void signPrint(String takeId) {
 		BusTake header = busTakeManage.load(takeId);	
@@ -273,6 +267,41 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 		int printCount = (header.getPrintCount()!=null?header.getPrintCount():0);
 		header.setPrintCount(++printCount);
 		busTakeManage.update(header);
+	}
+	
+	@Override
+	public String getRemark(String takeId) {
+		BusTake busTake = busTakeManage.load(takeId);
+		if(busTake!=null && busTake.getMemo()!=null){
+			return busTake.getMemo();
+		}
+		return "";
+	}
+	
+	@Override
+	public String appendRemark(BusTakeCondition condition, BusUserDto currUser) {
+		String takeId = condition.getTakeId();
+		BusTake busTake = busTakeManage.load(takeId);
+		//基础验证
+		if(busTake==null){
+			throw new BusTakeException(SCMErrorEnum.BUS_REFUND_NOT_EXIST);
+		}
+		String shopId = currUser.getShopId(); 
+		if(shopId==null || !shopId.equals(busTake.getShopId())){
+			throw new BusTakeException(SCMErrorEnum.USER_ILLEGAL);
+		}		
+		BusOrder busOrder = busOrderManage.load(busTake.getOrderId());
+		//订单状态验证
+		this.orderStatusValidator(busTake, busOrder, OrderOperateButtonsEnum.ADD_TAKE_REMARK);
+		//追击备注
+		busTake.setUpdatedTime(new Date());
+		busTake.setUpdatedName(currUser.getRealname());	
+		if(condition.getMemo()==null || condition.getMemo().equals("")){
+			throw new BusTakeException(SCMErrorEnum.INVALID_PARAMS);
+		}
+		busTake.setMemo(super.formatRemark(condition.getMemo(), busTake.getMemo(), currUser));
+		busTakeManage.update(busTake);
+		return takeId;
 	}
 	
 	

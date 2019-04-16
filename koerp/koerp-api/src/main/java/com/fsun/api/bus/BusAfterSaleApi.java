@@ -3,6 +3,7 @@ package com.fsun.api.bus;
 import java.util.HashMap;
 
 import com.fsun.api.base.BaseFooterApi;
+import com.fsun.api.base.BaseOrderCommonApi;
 import com.fsun.domain.dto.BusBarterDto;
 import com.fsun.domain.dto.BusRefundDto;
 import com.fsun.domain.dto.BusUserDto;
@@ -15,7 +16,8 @@ import com.fsun.domain.model.SysUser;
  * @author fsun
  * @date 2019年2月12日
  */
-public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondition> {
+public interface BusAfterSaleApi extends BaseOrderCommonApi<BusRefund, BusRefundCondition>,
+		BaseFooterApi<BusRefund, BusRefundCondition> {
 	
 	/**
 	 * 初始化单据实体
@@ -27,14 +29,6 @@ public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondi
 	 */
 	public HashMap<String, Object> getInitData(String refundId, String orderId, 
 		Short refundType, BusUserDto currUser);
-
-	
-	/**
-	 * 获取退货单备注页面
-	 * @param refundId
-	 * @return
-	 */
-	public String getRefundRemark(String refundId);
 	
 	
 	
@@ -51,23 +45,6 @@ public interface BusAfterSaleApi extends BaseFooterApi<BusRefund, BusRefundCondi
 	 * @param busBarterDto
 	 */
 	public String createForBarter(BusBarterDto busBarterDto);
-
-	/**
-	 * 改变单据状态
-	 * @param refundIds
-	 * @param status
-	 * @param user
-	 * @param condition
-	 */
-	public void changeStatus(String[] refundIds, Short status, SysUser user, BusRefundCondition condition);
-
-	/**
-	 * 追加备注
-	 * @param condition
-	 * @param sysuser
-	 * @return
-	 */
-	public String updateRemark(BusRefundCondition condition, SysUser sysuser);
 
 	/**
 	 * 处理标记

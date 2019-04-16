@@ -18,8 +18,6 @@ import com.fsun.domain.enums.DocTradeStatusEnum;
 import com.fsun.domain.enums.DocTradeTypeEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
-import com.fsun.domain.enums.OrderTakeStatusEnum;
-import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.RefundStatusEnum;
 import com.fsun.domain.enums.TradeStatusEnum;
 import com.fsun.domain.model.BusGoods;

@@ -197,7 +197,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] orderNos, String status, SysUser user, 
+	public void changeStatus(String[] orderNos, String status, BusUserDto user, 
 		DocOrderHeaderCondition condition) {
 		Date now = new Date();
 		for (String orderNo : orderNos) {
@@ -319,7 +319,6 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		return docOrderHeaderManage.loadEntity(orderNo);
 	}
 	
-	@Transactional
 	@Override
 	public void signPrint(String orderNo) {
 		DocOrderHeader header = docOrderHeaderManage.load(orderNo);	
@@ -335,6 +334,38 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		int printCount = (header.getPrintCount()!=null?header.getPrintCount():0);
 		header.setPrintCount(++printCount);
 		docOrderHeaderManage.update(header);		
+	}
+	
+	@Override
+	public String getRemark(String id) {
+		DocOrderHeader header = docOrderHeaderManage.load(id);
+		if(header!=null && header.getMemo()!=null){
+			return header.getMemo();
+		}
+		return "";
+	}
+
+	@Override
+	public String appendRemark(DocOrderHeaderCondition condition, BusUserDto currUser) {
+		String orderNo = condition.getOrderNo();
+		DocOrderHeader header = docOrderHeaderManage.load(orderNo);
+		//基础验证
+		if(header==null){
+			throw new DocOrderException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}
+		String shopId = currUser.getShopId(); 
+		if(shopId==null || !shopId.equals(header.getToShopId())){
+			throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
+		}		
+		//追击备注
+		header.setUpdatedTime(new Date());
+		header.setUpdatedName(currUser.getRealname());	
+		if(condition.getMemo()==null || condition.getMemo().equals("")){
+			throw new DocOrderException(SCMErrorEnum.INVALID_PARAMS);
+		}
+		header.setMemo(super.formatRemark(condition.getMemo(), header.getMemo(), currUser));
+		docOrderHeaderManage.update(header);
+		return orderNo;
 	}
 	
 
@@ -537,5 +568,5 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		docOrderHeaderManage.create(header);
 		return orderNo;
 	}
-	
+
 }

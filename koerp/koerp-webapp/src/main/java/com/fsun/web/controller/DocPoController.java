@@ -26,7 +26,7 @@ import com.fsun.domain.enums.DocPoTypeEnum;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.DocPoHeader;
-import com.fsun.domain.model.SysUser;
+import com.fsun.exception.bus.AfterSaleException;
 import com.fsun.exception.bus.DocPoException;
 import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -181,8 +181,7 @@ public class DocPoController extends BaseController {
 		@RequestParam("poNos") String poNos, @RequestBody DocPoHeaderCondition condition) {
 		try {
 			if (!StringUtils.isEmpty(poNos)) {
-				SysUser user = getCurrentUser();	
-				docPoApi.changeStatus(poNos.split(","), status, user, condition);
+				docPoApi.changeStatus(poNos.split(","), status, super.getCurrentUser(), condition);
 				return success(SCMErrorEnum.SUCCESS.getErrorCode());
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
@@ -240,6 +239,51 @@ public class DocPoController extends BaseController {
 		}		
 	}
 	
+	
+/***************************************    修改备注功能        **************************************/
+	
+	/**
+	 * 跳转到修改备注页面
+	 * @param takeId
+	 * @return
+	 */	
+	@RequestMapping(value="/toRemarkView/{takeId}", method=RequestMethod.GET)	
+	public ModelAndView toRemarkView(@PathVariable("takeId") String takeId) {
+		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toRemarkView"); 
+		modelAndView.addObject("takeId", takeId);
+		modelAndView.addObject("memo", docPoApi.getRemark(takeId));
+		return modelAndView;
+	}
+	
+	/**
+	 * 获取备注
+	 * @param poNo
+	 * @return
+	 */
+	@RequestMapping(value="/getRemark/{poNo}", method=RequestMethod.GET)
+	@ResponseBody
+	public HttpResult getRemark(@PathVariable("poNo") String poNo) {
+		return success(docPoApi.getRemark(poNo));
+	}
+	
+	/**
+	 * 追加备注
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/appendRemark", method=RequestMethod.POST)
+	@ResponseBody
+	public HttpResult appendRemark(@RequestBody DocPoHeaderCondition condition) {
+		try {
+			return success(docPoApi.appendRemark(condition, super.getCurrentUser()));
+		}catch (AfterSaleException e) {
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 	
 	/****************************       私有方法            *************************************/
 	

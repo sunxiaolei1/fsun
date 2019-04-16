@@ -87,11 +87,11 @@ public class BusAfterSaleController extends BaseController {
 	 * @param refundorderid
 	 * @return
 	 */	
-	@RequestMapping(value="/refund/toRefundRemarkView/{refundId}", method=RequestMethod.GET)	
-	public ModelAndView toRefundRemarkView(@PathVariable("refundId") String refundId) {
-		ModelAndView modelAndView = new ModelAndView("/busAfterSale/operate/toRefundRemarkView"); 
+	@RequestMapping(value="/refund/toRemarkView/{refundId}", method=RequestMethod.GET)	
+	public ModelAndView toRemarkView(@PathVariable("refundId") String refundId) {
+		ModelAndView modelAndView = new ModelAndView("/busAfterSale/operate/toRemarkView"); 
 		modelAndView.addObject("refundId", refundId);
-		modelAndView.addObject("memo", busAfterSaleApi.getRefundRemark(refundId));
+		modelAndView.addObject("memo", busAfterSaleApi.getRemark(refundId));
 		return modelAndView;
 	}
 	
@@ -100,10 +100,10 @@ public class BusAfterSaleController extends BaseController {
 	 * @param refundorderid
 	 * @return
 	 */
-	@RequestMapping(value="/refund/getRefundRemark/{refundId}", method=RequestMethod.GET)
+	@RequestMapping(value="/refund/getRemark/{refundId}", method=RequestMethod.GET)
 	@ResponseBody
-	public HttpResult getRefundRemark(@PathVariable("refundId") String refundId) {
-		String memo = busAfterSaleApi.getRefundRemark(refundId);
+	public HttpResult getRemark(@PathVariable("refundId") String refundId) {
+		String memo = busAfterSaleApi.getRemark(refundId);
 		return success(memo);
 	}
 	

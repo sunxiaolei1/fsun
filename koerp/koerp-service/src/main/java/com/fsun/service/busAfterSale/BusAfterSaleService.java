@@ -18,7 +18,6 @@ import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusPayAccountManage;
 import com.fsun.biz.bus.manage.BusRefundGoodsManage;
 import com.fsun.biz.bus.manage.BusRefundManage;
-import com.fsun.biz.bus.manage.BusTakeDetailManage;
 import com.fsun.biz.bus.manage.BusVipUnpaidManage;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.common.utils.StringUtils;
@@ -28,7 +27,6 @@ import com.fsun.domain.dto.BusRefundDto;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusRefundCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
-import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.PayModeEnum;
@@ -71,9 +69,6 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 	
 	@Autowired
 	private BusGoodsManage busGoodsManage;
-	
-	@Autowired
-	private BusTakeDetailManage busTakeDetailManage;
 	
 	@Autowired
 	private BusPayAccountManage busPayAccountManage;
@@ -147,7 +142,7 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 	}
 
 	@Override
-	public String getRefundRemark(String refundId) {
+	public String getRemark(String refundId) {
 		BusRefund busRefund = this.load(refundId);
 		if(busRefund!=null && busRefund.getMemo()!=null){
 			return busRefund.getMemo();
@@ -261,8 +256,9 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		return null;
 	}
 
+	@Transactional
 	@Override
-	public void changeStatus(String[] refundIds, Short status, SysUser currUser, BusRefundCondition condition) {
+	public void changeStatus(String[] refundIds, String status, BusUserDto currUser, BusRefundCondition condition) {
 		Date now = new Date();
 		for (String refundId : refundIds) {
 			BusRefund header = this.load(refundId);
@@ -280,14 +276,15 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 			header.setUpdatedTime(now);
 			header.setUpdatedName(currUser.getRealname());
 			header.setUpdatedTime(now);
-			header.setMemo(condition.getMemo());			
-			if(RefundStatusEnum.getByValue(status)==RefundStatusEnum.CANCEL){	
+			header.setMemo(condition.getMemo());	
+			Short newStatus = Short.valueOf(status);
+			if(RefundStatusEnum.getByValue(newStatus)==RefundStatusEnum.CANCEL){	
 				//校验单据是否可取消退货单
 				if(!orderStatusValidator(header, OrderOperateButtonsEnum.CANCEL_REFUND)){
 					throw new AfterSaleException(SCMErrorEnum.BUS_REFUND_STATUS_INVALID);
 				}
 				//还原商品库存
-				header.setRefundStatus(status);
+				header.setRefundStatus(newStatus);
 				header.setRefundOrderStatus(RefundOrderStatusEnum.SOLVED.getValue());
 				List<BusRefundGoods> details = busRefundGoodsManage.listByHeaderId(refundId);
 				List<BusGoods> busGoodsList = busGoodsManage.listByHeaderId(header.getOrderId());
@@ -326,9 +323,28 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 	}
 
 	@Override
-	public String updateRemark(BusRefundCondition condition, SysUser sysuser) {
-		// TODO Auto-generated method stub
-		return null;
+	public String appendRemark(BusRefundCondition condition, BusUserDto currUser) {
+		String refundId = condition.getRefundId();
+		BusRefund busRefund = busRefundManage.load(refundId);
+		//基础验证
+		if(busRefund==null){
+			throw new AfterSaleException(SCMErrorEnum.BUS_REFUND_NOT_EXIST);
+		}
+		String shopId = currUser.getShopId(); 
+		if(shopId==null || !shopId.equals(busRefund.getShopId())){
+			throw new AfterSaleException(SCMErrorEnum.USER_ILLEGAL);
+		}
+		//订单状态验证
+		this.orderStatusIsValid(busRefund, OrderOperateButtonsEnum.ADD_REFUND_REMARK);
+		//追击备注
+		busRefund.setUpdatedTime(new Date());
+		busRefund.setUpdatedName(currUser.getRealname());	
+		if(condition.getMemo()==null || condition.getMemo().equals("")){
+			throw new AfterSaleException(SCMErrorEnum.INVALID_PARAMS);
+		}
+		busRefund.setMemo(super.formatRemark(condition.getMemo(), busRefund.getMemo(), currUser));
+		busRefundManage.update(busRefund);
+		return refundId;
 	}
 
 	@Override
@@ -336,27 +352,17 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		// TODO Auto-generated method stub
 		
 	}
-
-	/**********************************     内部方法         ***************************************/
 	
-	/**
-	 * 初始化实体对象
-	 * @param orderId
-	 * @param refundType
-	 * @param currUser
-	 * @return
-	 */
-	private HashMap<String, Object> getInitEntity(String orderId, Short refundType, BusUserDto currUser) {
-		HashMap<String, Object> map = new HashMap<>(); 
-		if(RefundTypeEnum.RETURN_ORDER.getValue().equals(refundType)){
-			map = busOrderApi.loadEntity(orderId);
-			HashMap<String, Object> orderHeaderMap = (HashMap<String, Object>) map.get("header");
-			orderHeaderMap.put("refundReason", RefundReasonEnum.GOODS_QUALITY.getValue());
-			orderHeaderMap.put("payMode", VipUnpaidPayModeEnum.CASH_PAY.getValue());
-		}else if(RefundTypeEnum.EXCHANGE_ORDER.getValue().equals(refundType)){
-			
-		}
-		return map;
+	@Override
+	public PageModel findListForPage(BusRefundCondition condition) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void signPrint(String id) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**
@@ -364,7 +370,7 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 	 * @param refundId
 	 * @return
 	 */
-	private HashMap<String, Object> loadEntity(String refundId) {		
+	public HashMap<String, Object> loadEntity(String refundId) {		
 		//获取退货单头和明细
 		HashMap<String, Object> refundMap = busRefundManage.loadEntity(refundId);
 		HashMap<String, Object> refundHeaderMap = (HashMap<String, Object>) refundMap.get("refundHeader");	
@@ -403,6 +409,28 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 		return refundMap;
 	}
 
+
+	/**********************************     内部方法         ***************************************/
+	
+	/**
+	 * 初始化实体对象
+	 * @param orderId
+	 * @param refundType
+	 * @param currUser
+	 * @return
+	 */
+	private HashMap<String, Object> getInitEntity(String orderId, Short refundType, BusUserDto currUser) {
+		HashMap<String, Object> map = new HashMap<>(); 
+		if(RefundTypeEnum.RETURN_ORDER.getValue().equals(refundType)){
+			map = busOrderApi.loadEntity(orderId);
+			HashMap<String, Object> orderHeaderMap = (HashMap<String, Object>) map.get("header");
+			orderHeaderMap.put("refundReason", RefundReasonEnum.GOODS_QUALITY.getValue());
+			orderHeaderMap.put("payMode", VipUnpaidPayModeEnum.CASH_PAY.getValue());
+		}else if(RefundTypeEnum.EXCHANGE_ORDER.getValue().equals(refundType)){
+			
+		}
+		return map;
+	}
 	
 	/**
 	 * 初始化挂账信息

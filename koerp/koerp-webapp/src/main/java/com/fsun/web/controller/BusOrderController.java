@@ -32,7 +32,6 @@ import com.fsun.domain.enums.OrderStatusEnum;
 import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.model.BusOrder;
-import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -229,8 +228,7 @@ public class BusOrderController extends BaseController {
 		@RequestParam("orderIds") String orderIds, @RequestBody BusOrderCondition condition) {
 		try {
 			if (!StringUtils.isEmpty(orderIds)) {
-				SysUser user = getCurrentUser();	
-				busOrderApi.changeStatus(orderIds.split(","), status, user, condition);
+				busOrderApi.changeStatus(orderIds.split(","), status, super.getCurrentUser(), condition);
 				return success(SCMErrorEnum.SUCCESS.getErrorCode());
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);

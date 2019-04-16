@@ -100,7 +100,8 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] poNos, String status, SysUser user, DocPoHeaderCondition condition) {
+	public void changeStatus(String[] poNos, String status, BusUserDto user, 
+			DocPoHeaderCondition condition) {
 		Date now = new Date();
 		for (String poNo : poNos) {
 			DocPoHeader header = this.load(poNo);
@@ -240,6 +241,47 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		docPoHeaderManage.update(header);		
 		return poNo;
 	}
+	
+	
+	@Override
+	public String getRemark(String id) {
+		DocPoHeader header = docPoHeaderManage.load(id);
+		if(header!=null && header.getMemo()!=null){
+			return header.getMemo();
+		}
+		return "";
+	}
+
+	@Override
+	public String appendRemark(DocPoHeaderCondition condition, BusUserDto currUser) {
+		String poNo = condition.getPoNo();
+		DocPoHeader header = docPoHeaderManage.load(poNo);
+		//基础验证
+		if(header==null){
+			throw new DocPoException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}
+		String shopId = currUser.getShopId(); 
+		if(shopId==null || !shopId.equals(header.getToShopId())){
+			throw new DocPoException(SCMErrorEnum.USER_ILLEGAL);
+		}		
+		//追击备注
+		header.setUpdatedTime(new Date());
+		header.setUpdatedName(currUser.getRealname());	
+		if(condition.getMemo()==null || condition.getMemo().equals("")){
+			throw new DocPoException(SCMErrorEnum.INVALID_PARAMS);
+		}
+		header.setMemo(super.formatRemark(condition.getMemo(), header.getMemo(), currUser));
+		docPoHeaderManage.update(header);
+		return poNo;
+	}
+	
+	@Override
+	public void signPrint(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 	
 	/****************************    私有方法          ******************************/
 	

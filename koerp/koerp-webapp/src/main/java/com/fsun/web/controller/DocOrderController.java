@@ -26,7 +26,7 @@ import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.model.DocOrderHeader;
-import com.fsun.domain.model.SysUser;
+import com.fsun.exception.bus.AfterSaleException;
 import com.fsun.exception.bus.DocOrderException;
 import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -134,8 +134,7 @@ public class DocOrderController extends BaseController {
 		@RequestParam("orderNos") String orderNos, @RequestBody DocOrderHeaderCondition condition) {
 		try {
 			if (!StringUtils.isEmpty(orderNos)) {
-				SysUser user = getCurrentUser();	
-				docOrderApi.changeStatus(orderNos.split(","), status, user, condition);
+				docOrderApi.changeStatus(orderNos.split(","), status, super.getCurrentUser(), condition);
 				return success(SCMErrorEnum.SUCCESS.getErrorCode());
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
@@ -195,6 +194,50 @@ public class DocOrderController extends BaseController {
 		}		
 	}
 	
+/***************************************    修改备注功能        **************************************/
+	
+	/**
+	 * 跳转到修改备注页面
+	 * @param takeId
+	 * @return
+	 */	
+	@RequestMapping(value="/toRemarkView/{takeId}", method=RequestMethod.GET)	
+	public ModelAndView toRemarkView(@PathVariable("takeId") String takeId) {
+		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toRemarkView"); 
+		modelAndView.addObject("takeId", takeId);
+		modelAndView.addObject("memo", docOrderApi.getRemark(takeId));
+		return modelAndView;
+	}
+	
+	/**
+	 * 获取备注
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/getRemark/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public HttpResult getRemark(@PathVariable("id") String id) {
+		return success(docOrderApi.getRemark(id));
+	}
+	
+	/**
+	 * 追加备注
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/appendRemark", method=RequestMethod.POST)
+	@ResponseBody
+	public HttpResult appendRemark(@RequestBody DocOrderHeaderCondition condition) {
+		try {
+			return success(docOrderApi.appendRemark(condition, super.getCurrentUser()));
+		}catch (AfterSaleException e) {
+			e.printStackTrace();
+			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 	
 	/******************************          采购退货                          *************************************/
 	

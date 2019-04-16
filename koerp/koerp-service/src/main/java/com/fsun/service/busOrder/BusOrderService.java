@@ -18,7 +18,6 @@ import com.fsun.biz.bus.manage.BusOrderManage;
 import com.fsun.biz.bus.manage.BusPayAccountManage;
 import com.fsun.biz.bus.manage.BusVipManage;
 import com.fsun.biz.bus.manage.BusVipUnpaidManage;
-import com.fsun.biz.bus.manage.DocOrderHeaderManage;
 import com.fsun.common.utils.DateUtil;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.common.utils.StringUtils;
@@ -65,9 +64,6 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 	
 	@Autowired
 	private BusPayAccountManage busPayAccountManage;
-	
-	@Autowired
-	private DocOrderHeaderManage docOrderHeaderManage;
 	
 	@Autowired
 	private BusCustomerManage busCustomerManage;
@@ -193,7 +189,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] orderIds, String status, SysUser currUser, 
+	public void changeStatus(String[] orderIds, String status, BusUserDto currUser, 
 			BusOrderCondition condition) {		
 		Date now = new Date();
 		for (String orderId : orderIds) {
@@ -404,7 +400,6 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		return orderId;
 	}
 	
-	@Transactional
 	@Override
 	public void signPrint(String orderId) {
 		BusOrder header = busOrderManage.load(orderId);	
@@ -423,9 +418,14 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		
 	}
 	
-	@Transactional
 	@Override
-	public void appendRemark(BusOrderCondition condition, BusUserDto currUser) {
+	public String getRemark(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String appendRemark(BusOrderCondition condition, BusUserDto currUser) {
 		
 		String orderId = condition.getOrderId();	
 		BusOrder busOrder = busOrderManage.load(orderId);	
@@ -436,9 +436,12 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		//追击备注
 		busOrder.setUpdatedTime(new Date());
 		busOrder.setUpdatedName(currUser.getRealname());	
-		String newRemark = condition.getMemo();		
-		busOrder.setMemo(super.formatRemark(newRemark, busOrder.getMemo(), currUser));
-		busOrderManage.updateEach(busOrder);
+		if(condition.getMemo()==null || condition.getMemo().equals("")){
+			throw new OrderException(SCMErrorEnum.INVALID_PARAMS);
+		}
+		busOrder.setMemo(super.formatRemark(condition.getMemo(), busOrder.getMemo(), currUser));
+		busOrderManage.update(busOrder);
+		return orderId;
 	}
 	
 	/****************************    私有方法          ******************************/

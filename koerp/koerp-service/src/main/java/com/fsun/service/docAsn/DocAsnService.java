@@ -193,7 +193,7 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 	@Transactional
 	@Override
 	public void changeStatus(String[] asnNos, String status, 
-		SysUser user, DocAsnHeaderCondition condition) {		
+			BusUserDto user, DocAsnHeaderCondition condition) {		
 		Date now = new Date();
 		for (String asnNo : asnNos) {
 			DocAsnHeader header = this.load(asnNo);
@@ -225,6 +225,43 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		}
 	}
 	
+	@Override
+	public String getRemark(String id) {
+		DocAsnHeader header = docAsnHeaderManage.load(id);
+		if(header!=null && header.getMemo()!=null){
+			return header.getMemo();
+		}
+		return "";
+	}
+
+	@Override
+	public String appendRemark(DocAsnHeaderCondition condition, BusUserDto currUser) {
+		String asnNo = condition.getAsnNo();
+		DocAsnHeader header = docAsnHeaderManage.load(asnNo);
+		//基础验证
+		if(header==null){
+			throw new DocAsnException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
+		}
+		String shopId = currUser.getShopId(); 
+		if(shopId==null || !shopId.equals(header.getToShopId())){
+			throw new DocAsnException(SCMErrorEnum.USER_ILLEGAL);
+		}		
+		//追击备注
+		header.setUpdatedTime(new Date());
+		header.setUpdatedName(currUser.getRealname());	
+		if(condition.getMemo()==null || condition.getMemo().equals("")){
+			throw new DocAsnException(SCMErrorEnum.INVALID_PARAMS);
+		}
+		header.setMemo(super.formatRemark(condition.getMemo(), header.getMemo(), currUser));
+		docAsnHeaderManage.update(header);
+		return asnNo;
+	}
+	
+	@Override
+	public void signPrint(String id) {
+		// TODO Auto-generated method stub		
+	}
+
 	
 	/************************************        私有方法              ************************************/
 	
@@ -551,4 +588,5 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		}		
 		throw new DocAsnException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
 	}
+
 }

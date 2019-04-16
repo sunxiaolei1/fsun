@@ -45,7 +45,7 @@
 		<div class="fsun-operate-wrap">
 			<span class="title" style="top: 5px;">备注信息</span>		
 			<form id="remarkfm">			 
-			    <input id="refundorderid" name="refundorderid" value="${refundorderid}" hidden=true />
+			    <input id="refundId" name="refundId" value="${refundId}" hidden=true />
 				<table class="nb-formTable" style="width:100%;">
 			        <tr>
 			        	<th width="3%">原备注</th>
@@ -57,7 +57,7 @@
 			        <tr>
 			        	<th width="3%">追加备注<span style="color:red;">*</span></th>
 						<td>														
-							<input name="remark" id="remark" class="easyui-textbox" 
+							<input name="memo" id="memo" class="easyui-textbox" 
 								data-options="multiline:true,required:true"  style="width:540px;height:69px;"  />		
 						</td>	        	
 			        </tr>			       				        		       
@@ -67,7 +67,7 @@
 	</div>	
 	<div data-options="region:'south'" class="operate-toolbar" >
 	    <div style="float:right;margin-right:10px;">
-	    	<a href="#" class="easyui-linkbutton" iconCls="icon-disk" plain="false" onclick="updateRemark()">保存</a>
+	    	<a href="#" class="easyui-linkbutton" iconCls="icon-disk" plain="false" onclick="updateCommonRemark()">保存</a>
 			<a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="false" onclick="closeDialog('ordersDialog')">取消</a>
 	    </div>
 	</div>							
@@ -81,10 +81,10 @@ var $remarkfm;
 $(function(){	
 	
 	$remarkfm = $("#remarkfm");	
-	var refundorderid = '${refundorderid}';
+	var refundId = '${refundId}';
 	$.ajax({
 		type : "GET",
-		url : "${api}/ecaftersale/refund/getRefundRemark/"+ refundorderid,
+		url : "${api}/bus/aftersale/refund/getRemark/"+ refundId,
 		contentType:"application/json;charset=utf-8",	   
 		dataType : "json",
 		success : function(result) {	
@@ -115,7 +115,7 @@ function getSaveData(){
 	}	
 	var saveData = {
 	     "params": formJson($remarkfm),
-	     "saveUrl": "${api}/ecaftersale/refund/updateRemark"
+	     "saveUrl": "${api}/bus/aftersale/refund/appendRemark"
 	}
 	return saveData;
 }

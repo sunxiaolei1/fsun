@@ -82,6 +82,14 @@ function orderTakeOut(){
 	}
 }
 
+/**
+ * 跳转到修改寄提单备注信息页面
+ */
+function toTakeRemarkView(takeId){
+	var url = "${api}/bus/take/toRemarkView/"+ takeId;	
+	commonDialog("ordersDialog", "修改备注", "60%", "66%", url, "icon-book_red");
+}
+
 
 //打开商品提货明细
 function toTakeGoodsHistoryView(orderId){
@@ -174,7 +182,7 @@ function toRefundRemarkView(refundId){
 /**
  * 修改退货备注信息
  */
-function updateRefundRemark(){
+function updateCommonRemark(){
 	aftersaleOrderCommonSubmit();	
 }
 
