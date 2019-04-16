@@ -23,7 +23,7 @@
 				</td>	            
 				<th width="12%">客户名称<span style="color:red;">*</span></th>
 				<td>
-					<input name="customerName" class="easyui-textbox" disabled />								
+					<input name="customerName" class="easyui-textbox" readOnly />								
 				</td>						
 				<th width="12%">所属销售代表</th>
 				<td>
@@ -231,16 +231,73 @@ function getSaveData(){
 	var busVipUnpaid = {
 		shopId: baseInfo.shopId,
 		customerCode: baseInfo.customerCode,
+		customerName: baseInfo.customerName,
 		tradePrice:	baseInfo.tradePrice,
 		giftPrice: 0.00,
 		payMode: baseInfo.payMode,
 		tradeType: baseInfo.tradeType,
 		memo: baseInfo.memo
 	};
-	
-	var saveData = {
-	     "params": busVipUnpaid,
-	     "saveUrl": "${api}/bus/vipUnpaid/save"
+	var saveData = null;
+	var unpaidAmount = getUnpaidAmount(busVipUnpaid);	
+	if(unpaidAmount!=null){		
+		$("<div></div>").dialog({
+			id:"vipUnpaidDialog",
+		    title:"&nbsp;备用金充值明细",
+		    width:"960px",
+			height:"350px",
+		    iconCls:"icon-money",
+		    closed:false,
+		    cache:false,
+		    href:"${api}/bus/vipUnpaid/toReserveUnpaidView",
+		    modal:true,
+		    minimizable:false,//定义是否显示最小化按钮。
+	     	maximizable:false,//定义是否显示最大化按钮
+	     	closable:true,
+	     	resizable:true,//定义对话框是否可调整尺寸
+	     	collapsible: false,//是否可折叠的
+	      	buttons:[
+		      	{
+		      		text:"保存",iconCls:"icon-disk",
+		              handler:function(data){	              	
+	              		 saveData = {
+              				"params": unpaidAmount,
+              				"saveUrl": "${api}/bus/vipUnpaid/saveEntity"
+              			 }
+	              		 if(typeof afterSaveFunc === 'function'){	
+	            			commonPost(saveData.saveUrl, JSON.stringify(saveData.params), null, afterSaveFunc);
+	            		 }else{
+	            			commonPost(saveData.saveUrl, JSON.stringify(saveData.params), cancel);
+	            		 }
+		              }
+		          },
+		          {
+		              text:"取消",
+		              iconCls:"icon-cancel",
+		              handler:function(){
+		              	$('#vipUnpaidDialog').dialog("destroy");
+		              }
+		          }
+	      	],
+			onLoad:function(){
+	     		$('#vipUnpaidDialog').window('center');
+	     		var header = unpaidAmount.header;
+	     		var details = unpaidAmount.details;
+	     		$vipUnpaidfm.form("load", header);					
+	     		currVipUnpaidDetailData = details;
+				currVipUnpaidDetailDataGrid.datagrid("loadData", currVipUnpaidDetailData);    		
+			},
+	    	onClose:function(){
+	      		$(this).dialog("destroy");
+	      	}
+		});	
+		return null;
+	}else{	
+		delete busVipUnpaid.customerName;
+		saveData = {
+		     "params": busVipUnpaid,
+		     "saveUrl": "${api}/bus/vipUnpaid/save"
+		}
 	}
 	return saveData;
 }
@@ -289,13 +346,13 @@ function cancelOrderOne(unpaidId, relationId){
 		if(unpaidAmount!=null){		
 			$("<div></div>").dialog({
 				id:"vipUnpaidDialog",
-			    title:"&nbsp;取消挂账结款",
+			    title:"&nbsp;取消备用金充值",
 			    width:"960px",
 				height:"350px",
 			    iconCls:"icon-script_delete",
 			    closed:false,
 			    cache:false,
-			    href:"${api}/bus/vipUnpaid/toVipUnpaidView",
+			    href:"${api}/bus/vipUnpaid/toReserveUnpaidView",
 			    modal:true,
 			    minimizable:false,//定义是否显示最小化按钮。
 		     	maximizable:false,//定义是否显示最大化按钮

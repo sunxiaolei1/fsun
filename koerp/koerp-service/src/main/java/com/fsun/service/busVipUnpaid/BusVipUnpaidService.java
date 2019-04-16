@@ -69,7 +69,7 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 		}
 		//获取客户对应的挂账欠款
 		BusVipUnpaidCondition condition0 = new BusVipUnpaidCondition();
-		String[] tradeTypes = {"1", "2"};			
+		String[] tradeTypes = {"1", "2", "5"};			
 		condition0.setInTradeTypes(tradeTypes);
 		condition0.setUnusual(false);
 		condition0.setCustomerCode(condition.getCustomerCode());
@@ -132,7 +132,7 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 				detailVipMap.put("tradePrice", vipTradePrice);	
 				detailVipMap.put("giftPrice", vipGiftPrice);	
 				detailVipMap.put("payMode", condition.getPayMode());	
-				detailVipMap.put("tradeType", TradeTypeEnum.VIP_RACHARGE.getValue());	
+				detailVipMap.put("tradeType", condition.getTradeType());	
 				detailVipMap.put("memo", condition.getMemo());	
 				detailsMap.add(detailVipMap);
 			}else{
@@ -156,7 +156,7 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 				detailVipMap.put("tradePrice", BigDecimal.ZERO);	
 				detailVipMap.put("giftPrice", BigDecimal.ZERO);
 				detailVipMap.put("payMode", condition.getPayMode());	
-				detailVipMap.put("tradeType", TradeTypeEnum.VIP_RACHARGE.getValue());	
+				detailVipMap.put("tradeType", condition.getTradeType());
 				detailVipMap.put("memo", condition.getMemo());	
 				detailsMap.add(detailVipMap);
 			}
@@ -393,6 +393,9 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 					cardNo = busVipUnpaid.getCardNo();				
 					customerCode = busVipUnpaid.getCustomerCode();
 					detailMap.put("cardNo", cardNo);
+				}else if(TradeTypeEnum.RESERVE_RACHARGE.getValue().equals(busVipUnpaid.getTradeType())){
+					payMode = busVipUnpaid.getPayMode();	
+					customerCode = busVipUnpaid.getCustomerCode();
 				}	
 				tradePrice = tradePrice.add(busVipUnpaid.getTradePrice());
 				giftPrice = giftPrice.add(busVipUnpaid.getGiftPrice());
@@ -416,6 +419,8 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 					throw new VipUnpaidException(SCMErrorEnum.BUS_CUSTOMER_NOT_EXIST);
 				}
 				customerName = busCustomer.getCustomerName();
+			}else{
+				throw new VipUnpaidException(SCMErrorEnum.BUS_CUSTOMER_NOT_EXIST);
 			}			
 			//组装头信息
 			HashMap<String, Object> headerMap = new HashMap<>();

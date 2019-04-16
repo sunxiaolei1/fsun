@@ -85,6 +85,11 @@ public class BusVipUnpaidController extends BaseController {
 		return "/busVip/operate/toVipUnpaidView";
 	}
 	
+	@RequestMapping(value="/toReserveUnpaidView")
+	public String toReserveUnpaidView() {
+		return "/busVip/operate/toReserveUnpaidView";
+	}
+	
 	@RequestMapping("/toVipActiveView")
 	public String toVipActiveView() {
 		return "/busVip/operate/toVipActiveView";
