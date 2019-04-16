@@ -30,19 +30,17 @@
 
 <form id="fm"> 
  	<div class="fsun-wrap" style="margin-top: 14px">
-	    <span class="title" style="top: 69px;">关联商品价格</span>		    	
-		<div style="height: 240px;width: 100%;">
+	    <span class="title" style="top: 70px;">关联商品价格</span>		    	
+		<div style="width: 100%;height:49%;">
 			<div id="skutoolbar" style="display:none;">
 				<%@include file="./detailskutoolbar.jsp"%>
 			</div>
-			<table id="rulSkuDataGrid"></table>
+			<table id="rulSkuDataGrid"></table>			
 		</div>
-	</div>
-	<div class="fsun-wrap">
-	    <span class="title" style="top: 340px;">关联店仓</span>		
-		<div style="height: 141px;width: 100%;">
+		<div style="width: 100%;height:34%;">
 			<table id="rulShopDataGrid"></table>
 		</div>
+				
 	</div>
 </form>
 
@@ -143,7 +141,7 @@ $(function () {
 	currRulId = '${rulId}';
 	currOrderDetailDataGrid = $("#rulSkuDataGrid");
 	
-	currOrderDetailDataGrid.datagrid({		
+	currOrderDetailDataGrid.datagrid({	
 		width:"auto",
 	    height:"auto",
 	    nowrap:false,
@@ -177,7 +175,8 @@ $(function () {
         }    
 	});
 	
-	$("#rulShopDataGrid").datagrid({		
+	$("#rulShopDataGrid").datagrid({
+		title:"<b style='color: #416AA3;left:2%;padding:0 1em;'>关联相关店仓</b>",
 	    nowrap:false,
 	    border:true,
 	    collapsible:false,//是否可折叠的
