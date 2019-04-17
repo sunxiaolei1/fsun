@@ -256,11 +256,20 @@ $(function () {
 			var refundPrice = 0;
 			$.each(orderDto.details, function(){
 				delete this.untakeQty;
-				if(this.qty>0){				
-					refundPrice = (refundPrice + Number(this.totalPrice)); 
+				if(this.qty>0){	
+					if(typeof this.originQty == "undefined"){
+						this.originQty = this.qty;
+						this.originTotalPrice = this.totalPrice; 
+						this.totalPartPrice = 0;						
+					}									
+					refundPrice = (refundPrice + Number(this.totalPrice));				
 					currRefundDetails.push(this);	
 				}			
 			});
+			if(header.buyerId!=null && header.buyerId.startWith("JXS")){
+				refundPrice = 0;
+				$("#refundPrice", $orderfm).numberbox({editable:false});
+			}
 			$("#refundPrice", $orderfm).numberbox("setValue", refundPrice);
 			currRefundDetailDataGrid.datagrid("loadData", currRefundDetails);
 		},

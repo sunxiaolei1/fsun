@@ -106,7 +106,7 @@ function saveData(){
  * 取消
  */
 function cancel(){
-	parent.closeCurrTab();
+	parent.closeCurrTab("parent.refreshCurrTab");
 }
 
 </script>

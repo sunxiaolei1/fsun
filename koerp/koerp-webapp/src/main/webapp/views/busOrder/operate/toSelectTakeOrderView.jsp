@@ -232,7 +232,7 @@ function transferToCreateTakeView(func){
 		var takeStatus = row.take_status;
 		if(tradeStatus==30 //&& (refundStatus!=null && refundStatus!='')
 			&& (takeStatus!=null && takeStatus!='20')){
-			var url = "${api}/bus/take/toTakeOutView/" + row.order_id +"?buttontype=busTake";
+			var url = "${api}/bus/take/toTakeOutView/" + row.order_id +"?buttontype=busTake&requestFrom=take";
 			var icon = "icon-user_edit";
 			var subtitle = "创建寄提单";
 			parent.addTab(subtitle, url, icon);	

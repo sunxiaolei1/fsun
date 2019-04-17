@@ -188,7 +188,13 @@ function getOrderCancelData(){
  * 保存成功后触发
  */
 function afterSaveFunc(){
-	parent.closeCurrTab("reflushDataGrid");
+	
+	var requestFrom = "${requestFrom}";
+	if(requestFrom=='take'){
+		parent.closeCurrTab("reflushDataGrid");
+	}else{
+		parent.closeCurrTab("parent.refreshCurrTab");	
+	}		
 }
 
 

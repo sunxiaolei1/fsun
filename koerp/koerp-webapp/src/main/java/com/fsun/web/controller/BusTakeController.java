@@ -64,11 +64,14 @@ public class BusTakeController extends BaseController {
 	 */
 	@RequestMapping("/toTakeOutView/{orderId}")
 	public ModelAndView toTakeOutView(@PathVariable("orderId") String orderId,
-		@RequestParam("buttontype") String buttontype) {				
+		@RequestParam("buttontype") String buttontype, 
+			@RequestParam("requestFrom") String requestFrom) {				
 		ModelAndView modelAndView = new ModelAndView("/busTake/operate/toTakeOutView");	
 		modelAndView.addObject("orderId", orderId);	
 		//单据状态权限控制按钮显示
 		modelAndView.addObject("buttontype", buttontype);
+		//判别请求来自哪里(订单详情页面order还是寄提单新增页面take)
+		modelAndView.addObject("requestFrom", requestFrom);		
 		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, orderId, null);
 		modelAndView.addObject("hiddenbuttons", StringUtils.join(hiddenbuttons, ","));
 		return modelAndView;

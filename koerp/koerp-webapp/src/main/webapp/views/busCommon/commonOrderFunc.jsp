@@ -152,7 +152,7 @@ function toAllRefundView(orderId){
  * 跳转至寄提出库页面
  */
 function toCreateTakeView(orderId){
-	var url = "${api}/bus/take/toTakeOutView/" + orderId +"?buttontype=busTake";
+	var url = "${api}/bus/take/toTakeOutView/" + orderId +"?buttontype=busTake&requestFrom=order";
 	var icon = "icon-user_edit";
 	var subtitle = "创建寄提单";
 	parent.addTab(subtitle, url, icon);	

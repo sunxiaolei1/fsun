@@ -389,6 +389,9 @@ $(function () {
 			$("#extOrderId",$orderfm).val(header.extOrderId);
 			$("#shopId",$orderfm).val(header.shopId);
 			$("#buyerId",$orderfm).val(header.buyerId);
+			if(header.buyerId!=null && header.buyerId.startWith("JXS")){
+				$("#refundPrice", $orderfm).numberbox({editable:false});
+			}
 				
 			if(orderDto.details!=null){	
 				var orderType = header.orderType;
@@ -492,6 +495,10 @@ function updateRefundPrice(refundDetails, $div){
 	$.each(refundDetails, function(){
 		refundPrice += this.totalPrice;
     });
+	var buyerId = $("#buyerId",$orderfm).val();
+	if(buyerId!=null && buyerId.startWith("JXS")){
+		refundPrice = 0;
+	}
 	$div.numberbox("setValue", refundPrice);
 } 
 

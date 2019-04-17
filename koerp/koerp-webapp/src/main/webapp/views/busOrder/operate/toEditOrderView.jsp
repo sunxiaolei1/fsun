@@ -116,7 +116,7 @@
 					<input id="sellerNotes" name="sellerNotes"  data-options="multiline:true" readOnly
 						class="easyui-textbox" style="width:300px;height:50px;"/>	
 					<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach" 
-						plain="false" onclick="openRefundView()">退换货明细</a>	
+						plain="false" disabled onclick="openRefundView()">退换货明细</a>	
 				</td>
 				<th width="12%">备注</th>
 				<td colspan="3">
@@ -319,7 +319,11 @@ $(function () {
 			//获取当前单据的基本信息
 			var header = docOrderDto.header;
 			if(header!=null){
-				$orderfm.form("load", header);	
+				$orderfm.form("load", header);					
+				var refundId = header.refundId;
+				if(refundId!=null && refundId!=''){
+					$("#refundLink").linkbutton("enable");
+				}
 			}
 			//获取当前单据的账单明细
 			currPayAccountData =  docOrderDto.payAccounts;
