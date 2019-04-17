@@ -35,13 +35,18 @@
 <!-- BasSku dialog -->
 
 <div id="skuToolbar" style="dispaly:none;" >	
-	<span style="float:right;">	
+	<span style="float:right;">
+		<!-- <label for="allSelected" >			
+			<input type="checkbox" id="allSelected" style="position:relative;top:1px;zoom:130%;vertical-align:middle;" />
+			<b style="color:red;position:relative;top:2px;left:-5px;">全部添加</b>					
+		</label>							
+		&nbsp;&nbsp;	 -->
 		<input id="vaguefieldText" class="easyui-searchbox" style="width:300px"
 		data-options="searcher:querySku,prompt:'输入商品名称、SKU筛选...'"  />
 	</span>		
 	<div style="height:24px;">
 		<span class="skutitle" >
-			商品列表[<span id="skutitle"></span>](<span style="color:red;">修改数量、金额之后并选中</span>)
+			商品列表[<span id="skutitle"></span>]
 		</span>
 	</div>		
 </div>
@@ -53,6 +58,13 @@ var currDatagrid;
 var currTradeType;
 
 $(function() {
+	
+	/* $("#allSelected").change(function() { 
+		var checked = $(this).is(':checked');
+		if(checked){
+			
+		}
+	}); */
 	
 	//回显使用数据
 	var obj = $('#chooseSkuDialog').dialog('options');		
@@ -168,6 +180,31 @@ $(function() {
 	    			return;
 	    		}
 	    	});	    	    	
+	    },
+	    onSelectAll:function(rows){
+	    	if (!$(this).datagrid("isValid")){
+				$.messager.alert("错误", "编辑行的数据不正确!", "error");  
+			}else{
+				var toRender = false;				
+				$.each(rows, function(){
+					var rowData = this;
+					if(rowData.qty>=0){
+						var oldRow = getSeletedSku(rowData.sku, currCheckedSkus);
+						if(oldRow == null){
+							var newSku = initAddSku(rowData);
+							currCheckedSkus.push(newSku);
+							rowData.selected = true;
+							toRender = true;
+						}
+					}	
+				});
+				//判别是否需要重新渲染
+				if(toRender){										
+					$(this).datagrid("reload");
+					//刷新父页面商品列表
+					skuListReLoad(true);															
+				}			
+			}	    	    	
 	    },
 		showFooter: true,
 		loadFilter: function(data){	

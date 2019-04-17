@@ -37,7 +37,7 @@
 			</div>
 			<table id="rulSkuDataGrid"></table>			
 		</div>
-		<div style="width: 100%;height:34%;">
+		<div style="width: 100%;height:34%;margin-top:3px;">
 			<table id="rulShopDataGrid"></table>
 		</div>
 				

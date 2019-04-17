@@ -87,7 +87,7 @@ $(function() {
 		selectOnCheck: true,
 	    checkOnSelect: true,
 		columns: [[
-			{field: 'skuId', hidden: true},						
+			{field: 'skuId', checkbox: true},						
 			{field: "sku", title: "SKU", width: 80, align: "center"},
 			{field: "goodsName", title: "名称", width: 160, align: "center"},
 			{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
@@ -175,6 +175,35 @@ $(function() {
 	    			return;
 	    		}
 	    	});	    	    	
+	    },
+	    onSelectAll:function(rows){
+	    	if (!$(this).datagrid("isValid")){
+				$.messager.alert("错误", "编辑行的数据不正确!", "error");  
+			}else{
+				var toRender = false;
+				$.each(rows, function(){
+					var rowData = this;
+					if(rowData.qty>=0){
+						if('${hasEditPricePower}'=='0' && rowData.salePrice==0){
+							
+						}else{
+							var oldRow = getSeletedSku(rowData.sku, currCheckedSkus);
+							if(oldRow == null){
+								var newSku = initAddSku(rowData);
+								currCheckedSkus.push(newSku);
+								rowData.selected = true;			
+								toRender = true;
+							}
+						}						
+					}	
+				});
+				//判别是否需要重新渲染
+				if(toRender){										
+					$(this).datagrid("reload");
+					//刷新父页面商品列表
+					skuListReLoad(true);															
+				}			
+			}	    	    	
 	    },
 		showFooter: true,
 		loadFilter: function(data){	
