@@ -25,6 +25,13 @@
 var columns = 
     [[
 		{field:'id',checkbox:true},
+		{field:'operate',title:'操作',width:100,align:'center',sortable:true, 
+			formatter: function(value, row, index){	
+				if(row.id!=null){
+					return commonAssemBottonHtml('toRachargeView', index, '充值', 'icon-money');	
+				}													
+			}
+		},	
 		{field:'customer_code',title:'所属客户',width:130,align:'center',sortable:true, formatter:function(value, row){
 			return row.customer_name; 
 		}},						

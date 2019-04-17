@@ -12,16 +12,26 @@
 <script type="text/javascript">
 
 //跳转至挂账信息界面
-function toDetailView(){
-	var rows = currDataGrid.datagrid('getSelections');
-	if (rows.length != 1) {
-		$.messager.alert("提示","只能选择一行数据！");
-		return;
-	}
-	var row = rows[0];
-	var url = "${api}/bus/reserve/toDetailView?customerCode="+ row.customer_code;
+function toDetailView(rowIndex){
+	var rowData = null;
+	if(typeof rowIndex!= 'undefined'){
+		var rowIndex = Number(rowIndex);
+		rowData = currDataGrid.datagrid("getRows")[rowIndex];
+		currDataGrid.datagrid("unselectAll");
+		window.setTimeout(function() {
+			currDataGrid.datagrid("selectRow", rowIndex);
+	    }, 1000);		
+	}else{
+		var rows = currDataGrid.datagrid('getSelections');
+		if (rows.length != 1) {
+			$.messager.alert("提示","只能选择一行数据！");
+			return;
+		}
+		rowData = rows[0];
+	}	
+	var url = "${api}/bus/reserve/toDetailView?customerCode="+ rowData.customer_code;
 	var icon = "icon-money";
-	var subtitle = "客户("+ row.customer_name +")备用金交易明细";
+	var subtitle = "客户("+ rowData.customer_name +")备用金交易明细";
 	parent.addTab(subtitle, url, icon);	
 }
 

@@ -36,16 +36,26 @@ function toDetailView(){
 }
 
 //跳转至挂账信息界面
-function toUnpaidView(){
-	var rows = currDataGrid.datagrid('getSelections');
-	if (rows.length != 1) {
-		$.messager.alert("提示","只能选择一行数据！");
-		return;
-	}
-	var row = rows[0];
-	var url = "${api}/bus/customer/toUnpaidView?customerCode="+ row.customer_code;
+function toUnpaidView(rowIndex){
+	var rowData = null;
+	if(typeof rowIndex!= 'undefined'){
+		var rowIndex = Number(rowIndex);
+		rowData = currDataGrid.datagrid("getRows")[rowIndex];
+		currDataGrid.datagrid("unselectAll");
+		window.setTimeout(function() {
+			currDataGrid.datagrid("selectRow", rowIndex);
+	    }, 1000);
+	}else{
+		var rows = currDataGrid.datagrid('getSelections');
+		if (rows.length != 1) {
+			$.messager.alert("提示","只能选择一行数据！");
+			return;
+		}
+		rowData = rows[0];
+	}	
+	var url = "${api}/bus/customer/toUnpaidView?customerCode="+ rowData.customer_code;
 	var icon = "icon-money";
-	var subtitle = "客户("+ row.customer_name +")挂账结款";
+	var subtitle = "客户("+ rowData.customer_name +")挂账结款";
 	parent.addTab(subtitle, url, icon);	
 }
 

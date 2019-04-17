@@ -24,16 +24,26 @@ function toAddView(){
 }
 
 //跳转至充值界面
-function toRachargeView(){
-	var rows = currDataGrid.datagrid('getSelections');
-	if (rows.length != 1) {
-		$.messager.alert("提示","只能选择一行数据！");
-		return;
-	}
-	var row = rows[0];
-	var url = "${api}/bus/vip/toRachargeView?cardNo="+ row.card_no;
+function toRachargeView(rowIndex){
+	var rowData = null;
+	if(typeof rowIndex!= 'undefined'){
+		var rowIndex = Number(rowIndex);
+		rowData = currDataGrid.datagrid("getRows")[rowIndex];
+		currDataGrid.datagrid("unselectAll");
+		window.setTimeout(function() {
+			currDataGrid.datagrid("selectRow", rowIndex);
+	    }, 1000);
+	}else{
+		var rows = currDataGrid.datagrid('getSelections');
+		if (rows.length != 1) {
+			$.messager.alert("提示","只能选择一行数据！");
+			return;
+		}
+		rowData = rows[0];
+	}	
+	var url = "${api}/bus/vip/toRachargeView?cardNo="+ rowData.card_no;
 	var icon = "icon-money";
-	var subtitle = "会员卡(卡号:"+ row.card_no +")充值";
+	var subtitle = "会员卡(卡号:"+ rowData.card_no +")充值";
 	parent.addTab(subtitle, url, icon);	
 }
 

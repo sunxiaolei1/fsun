@@ -21,6 +21,13 @@
 var columns = 
     [[
 		{field:'id',checkbox:true},
+		{field:'operate',title:'操作',width:80,align:'center',sortable:true, 
+			formatter: function(value, row, index){	
+				if(row.id!=null){
+					return commonAssemBottonHtml('toDetailView', index, '充值', 'icon-money');	
+				}													
+			}
+		},
 		{field:'customer_code',title:'客户编号',width:130,align:'center',sortable:true},
 		{field:'customer_name',title:'客户名称',width:150,align:'center',sortable:true},		
 		{field:'tel',title:'手机号',width:120,align:'center',sortable:true},	

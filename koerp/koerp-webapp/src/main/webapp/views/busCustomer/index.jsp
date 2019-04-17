@@ -25,6 +25,13 @@
 var columns = 
     [[
 		{field:'id',checkbox:true},
+		{field:'operate',title:'操作',width:100,align:'center',sortable:true, 
+			formatter: function(value, row, index){	
+				if(row.id!=null){
+					return commonAssemBottonHtml('toUnpaidView', index, '挂账结款', 'icon-money');	
+				}													
+			}
+		},		
 		{field:'customer_code',title:'客户编号',width:130,align:'center',sortable:true},
 		{field:'customer_type',title:'客户类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 			return formatter(value, window.parent.busCustomerType); 
