@@ -15,7 +15,7 @@
 		<span class="title" style="top: 35px;">备用金充值信息</span>				
 		<input id="customerCode" name="customerCode" hidden="true" />	
 		<input id="shopId" name="shopId" hidden="true" />		
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">
+		<table class="nb-formTable" style="width:100%;height:28%;margin-top:2px;">
 	        <tr>
 	        	<th width="12%">交易门店</th>
 				<td>
@@ -71,7 +71,7 @@
 		</table>
 	</form>			
 </div>	
-<div style="height: 300px; width: 100%;">
+<div style="height: 57%; width: 100%;">
 	<div id="detailskutoolbar" style="display:none;">
 		<%@include file="./detailskutoolbar.jsp"%>
 	</div>
