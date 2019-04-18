@@ -4,7 +4,7 @@
 
 <%-- <shiro:hasPermission name="orders:query">   --%>
 	<div id="queryDiv" style="height:15%;overflow:hidden;border: 1px solid #D3D3D3;" data-options="region:'center'">
-		<%@include file="../../busCommon/commonSearchHeader.jsp"%>		
+		<%@include file="../../../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>
 					<td width="6%">关键字:</td>
@@ -43,13 +43,13 @@
 					</td>
 				</tr>									
 			</table>
-		<%@include file="../../busCommon/commonSearchFooter.jsp"%>		
+		<%@include file="../../../busCommon/commonSearchFooter.jsp"%>		
 	</div>
 <%-- </shiro:hasPermission> --%>
 
-<%@include file="../../busCommon/allCustomerSearch.jsp"%>
+<%@include file="../../../busCommon/allCustomerSearch.jsp"%>
 
-<%@include file="../../busCommon/shopSearch.jsp"%>	
+<%@include file="../../../busCommon/shopSearch.jsp"%>	
 
 <script type="text/javascript">
 
@@ -86,7 +86,7 @@ $(function() {
 
 //查询
 function query(){
-	var url = "${api}/bus/vipUnpaid/unpaid/findPage";
+	var url = "${api}/summary/contrast/reserve/findPage";
 	commonQuery(url);
 }
 

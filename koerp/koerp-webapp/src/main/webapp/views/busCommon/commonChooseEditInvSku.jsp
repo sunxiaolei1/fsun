@@ -41,7 +41,7 @@
 	</span>		
 	<div style="height:24px;">
 		<span class="skutitle" >
-			商品列表[<span id="skutitle"></span>](<span style="color:red;">修改数量、金额之后并选中</span>)
+			商品列表[<span id="skutitle"></span>]
 		</span>
 	</div>		
 </div>

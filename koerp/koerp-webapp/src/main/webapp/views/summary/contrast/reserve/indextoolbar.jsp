@@ -14,7 +14,7 @@
 //excel导出
 function exportExcel(){	
 	var queryParams = initQueryParams();
-	var url = "${api}/bus/vipUnpaid/unpaid/exportExcel?q="+ queryParams.q 
+	var url = "${api}/summary/contrast/reserve/exportExcel?q="+ queryParams.q 
 			+ "&tradeType="+ queryParams.tradeType 
 			+ "&tradeStatus="+ queryParams.tradeStatus
 			+ "&payMode="+ queryParams.payMode 
