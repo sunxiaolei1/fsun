@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.report.mapper.HeaderFieldMapper">
+    <resultMap id="BaseResultMap" type="com.fsun.domain.report.HeaderFieldModel">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+        <result column="report_type" property="reportType" jdbcType="VARCHAR"/>
+        <result column="ename" property="ename" jdbcType="VARCHAR"/>
+        <result column="cname" property="ename" jdbcType="VARCHAR"/>
+        <result column="field_type" property="fieldType" jdbcType="SMALLINT"/>              
+        <result column="field_level" property="fieldLevel" jdbcType="INTEGER"/>
+        <result column="is_leaf" property="isLeaf" jdbcType="BIT"/> 
+        <result column="column_no" property="columnNo" jdbcType="VARCHAR"/>
+        <result column="sort_code" property="sortCode" jdbcType="VARCHAR"/>             
+        <result column="enabled" property="enabled" jdbcType="BIT"/>                
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+		id, parent_id, report_type, ename, cname, field_type, field_level, is_leaf, 
+		column_no, sort_code, enabled
+	</sql>
+    
+    <select id="queryHeaderFields" resultMap="BaseResultMap"
+            parameterType="com.fsun.domain.report.HeaderFieldCondition" >
+		select 
+			<include refid="Base_Column_List" />
+        from bus_header_field
+		where 
+			report_type like concat('%',#{reportType}) and enabled = 1
+		order by sort_code asc 
+	</select>
+</mapper>
