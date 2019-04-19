@@ -5,15 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.fsun.biz.bus.report.manage.HeaderFieldManage;
 import com.fsun.biz.common.BaseReportManage;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.enums.ReportConditionFieldEnum;
 import com.fsun.domain.enums.ReportFieldTypeEnum;
 import com.fsun.domain.enums.ReportQueryTypeEnum;
-import com.fsun.domain.report.HeaderFieldCondition;
 import com.fsun.domain.report.HeaderFieldModel;
 import com.fsun.domain.report.ReportCondition;
 import com.fsun.domain.report.ReportHeaderTree;
@@ -29,102 +25,13 @@ import com.fsun.exception.enums.SCMErrorEnum;
  * @date 2018年4月13日 下午12:52:14 
  *
  */
-public abstract class BaseReportService<T extends ReportCondition>{
-	
-	@Autowired
-	private HeaderFieldManage headerFieldManage;
+public abstract class BaseReportService<T extends ReportCondition> extends BaseSummaryService{
 	
 	/**
-	 * 
+	 * 获取当前默认的管理器对象
 	 * @return
 	 */
 	protected abstract BaseReportManage getDefaultManage();
-	
-	/**
-	 * 
-	 * @Title: getHeaderFields 
-	 * @Description: 获取对应类型的表头信息
-	 * @param @param queryType
-	 * @param @return 
-	 * @return List<HeaderFieldModel>
-	 */
-	public List<HeaderFieldModel> getHeaderFields(String queryType){
-		
-		HeaderFieldCondition headerFieldCondition = new HeaderFieldCondition();
-		headerFieldCondition.setReportType(ReportQueryTypeEnum.getByCode(queryType).getName());
-		List<HeaderFieldModel> models = headerFieldManage.queryHeaderFields(headerFieldCondition);
-		if(models==null || models.size()==0){
-	    	throw new ReportServiceException(SCMErrorEnum.INVALID_PARAMS);
-	    }
-		return models;
-	}
-
-	/**
-	 * 
-	 * @Title: getHeaderMap 
-	 * @Description: 将数组转化成map(表头嵌套) 
-	 * @param @param headerArr
-	 * @param @return 
-	 * @return Map
-	 */
-	protected List<ReportHeaderTree> getReportHeaderTree(List<HeaderFieldModel> headerFieldModels){
-		List<ReportHeaderTree> headerTree = new ArrayList<>();
-		if(headerFieldModels==null || headerFieldModels.size()==0){
-			return headerTree;
-		}
-		for (HeaderFieldModel headerFieldModel : headerFieldModels) {
-			if(headerFieldModel.getParentId()==null){			
-				ReportHeaderTree currTree = new ReportHeaderTree();
-				currTree.setAttributes(headerFieldModel);
-				currTree.setId(headerFieldModel.getId());
-				currTree.setParentId(headerFieldModel.getParentId());
-				currTree.setCname(headerFieldModel.getCname());
-				currTree.setEname(headerFieldModel.getEname());
-				currTree.setFieldLevel(headerFieldModel.getFieldLevel());
-				currTree.setSortCode(headerFieldModel.getSortCode());
-				currTree.setIsLeaf(headerFieldModel.getIsLeaf());	
-				currTree.setColumnNo(headerFieldModel.getColumnNo());
-				
-				currTree.setChildren(this.getCurrNodeChildren(headerFieldModel.getId(), headerFieldModels));
-				headerTree.add(currTree);
-			}	
-		}
-		return headerTree;
-	}
-	
-	/**
-	 * 
-	 * @Title: getCurrNodeChildren 
-	 * @Description: TODO(这里用一句话描述这个方法的作用) 
-	 * @param @param ename
-	 * @param @param headerFieldModels 
-	 * @return void
-	 */
-	private List<ReportHeaderTree> getCurrNodeChildren(String nodeId,  List<HeaderFieldModel> models){
-		List<ReportHeaderTree> children = new ArrayList<>();
-		for (HeaderFieldModel model : models) {
-			String parentId = model.getParentId();
-			if(nodeId.equals(parentId)){
-				ReportHeaderTree child = new ReportHeaderTree();
-				child.setAttributes(model);
-				child.setId(model.getId());
-				child.setParentId(model.getParentId());
-				child.setCname(model.getCname());
-				child.setEname(model.getEname());
-				child.setFieldLevel(model.getFieldLevel());
-				child.setSortCode(model.getSortCode());
-				child.setIsLeaf(model.getIsLeaf());	
-				child.setColumnNo(model.getColumnNo());
-				if(!model.getIsLeaf()){
-					child.setChildren(this.getCurrNodeChildren(model.getId(), models));
-				}else{
-					child.setChildren(new ArrayList<ReportHeaderTree>());
-				}
-				children.add(child);
-			}
-		}
-		return children;
-	}
 	
 	/**
 	 * 

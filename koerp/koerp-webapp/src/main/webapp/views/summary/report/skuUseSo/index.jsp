@@ -28,46 +28,57 @@ var columns = [[
 	{field:'goodsName',title:'商品名称',width:140,align:'center'}		
 ]];
 
-var currDataGrid;
+var currDataGrid = $("#ordersDataGrid");
 
 $(function() {
+		
+	$.ajax({
+		type : "GET",
+		url : "${api}/base/header/field/sus",   
+		dataType : "json",
+		success : function(result) {
+			if(result.status){
+				var columns = result.entry.columns;	
+				debugger
+				currDataGrid.datagrid({
+					width:500,
+					height:250,
+				    nowrap:false,
+				    striped:true,
+				    border:true,
+				    fit:true,//自动大小
+				    queryParams:{},
+				    remoteSort:true,
+				    //sortName:"sku",
+			        //sortOrder:"asc",
+				    singleSelect:true,//是否单选
+				    pagination:false,//分页控件
+				    rownumbers:true,//行号
+				    remoteFilter:true,
+				    showFooter:true,
+				    fitColumns:false,
+				    columns:columns,
+				    loadMsg:"数据加载中请稍后……",
+				    emptyMsg:"没有符合条件的记录",
+				    toolbar:'#tools',
+				    loadFilter:function(data) {   
+				    	if(data!=null && data.entry!=null && data.entry.details!=null){
+				    		return data.entry.details;  
+				    	}
+				    	return [];
+			        },
+				    onDblClickRow:function(rowIndex, rowData){
+						toDetailView(rowData);
+				    }    
+				});
+			}			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			$.messager.alert("错误", errorThrown, "error");
+		}
+	});  	
+
 	
-	currDataGrid = $("#ordersDataGrid");
-	currDataGrid.datagrid({
-		width:500,
-		height:250,
-	    nowrap:false,
-	    striped:true,
-	    border:true,
-	    collapsible:false,//是否可折叠的
-	    fit:true,//自动大小
-	    queryParams:{},
-	    remoteSort:true,
-	    sortName:"sku",
-        sortOrder:"asc",
-	    singleSelect:true,//是否单选
-	    pagination:false,//分页控件
-	    rownumbers:true,//行号
-	    remoteFilter:true,
-	    showFooter:true,
-	    fitColumns:false,
-	    columns:columns,
-	    loadMsg:"数据加载中请稍后……",
-	    emptyMsg:"没有符合条件的记录",
-	    toolbar:'#tools',
-	    singleSelect: false,
-	    selectOnCheck: true,
-	    checkOnSelect: true,
-	    loadFilter:function(data) {   
-	    	if(data!=null && data.entry!=null && data.entry.details!=null){
-	    		return data.entry.details;  
-	    	}
-	    	return [];
-        },
-	    onDblClickRow:function(rowIndex, rowData){
-			toDetailView(rowData);
-	    }    
-	});
 });
 
 

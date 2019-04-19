@@ -99,6 +99,11 @@ public class HeaderFieldModel {
 	 * 格式化
 	 */
 	private String formatter;
+	
+	/**
+	 * 是否是冻结列
+	 */
+	private Boolean frozenColumns;
 
 	public String getId() {
 		return id;
@@ -242,6 +247,20 @@ public class HeaderFieldModel {
 
 	public void setFormatter(String formatter) {
 		this.formatter = formatter;
+	}
+
+	/**
+	 * @return the frozenColumns
+	 */
+	public Boolean getFrozenColumns() {
+		return frozenColumns;
+	}
+
+	/**
+	 * @param frozenColumns the frozenColumns to set
+	 */
+	public void setFrozenColumns(Boolean frozenColumns) {
+		this.frozenColumns = frozenColumns;
 	}
 
 }

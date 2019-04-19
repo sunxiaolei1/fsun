@@ -6,7 +6,7 @@
         <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
         <result column="report_type" property="reportType" jdbcType="VARCHAR"/>
         <result column="ename" property="ename" jdbcType="VARCHAR"/>
-        <result column="cname" property="ename" jdbcType="VARCHAR"/>
+        <result column="cname" property="cname" jdbcType="VARCHAR"/>
         <result column="field_type" property="fieldType" jdbcType="SMALLINT"/>              
         <result column="field_level" property="fieldLevel" jdbcType="INTEGER"/>
         <result column="is_leaf" property="isLeaf" jdbcType="BIT"/> 
@@ -20,12 +20,13 @@
         <result column="sorter" property="sorter" jdbcType="VARCHAR"/>
         <result column="formatter" property="formatter" jdbcType="VARCHAR"/>
         <result column="checkbox" property="checkbox" jdbcType="BIT"/>
-        <result column="sortable" property="sortable" jdbcType="BIT"/>                
+        <result column="sortable" property="sortable" jdbcType="BIT"/>   
+        <result column="frozen_columns" property="frozenColumns" jdbcType="BIT"/>                
     </resultMap>
     
     <sql id="Base_Column_List">
 		id, parent_id, report_type, ename, cname, field_type, field_level, is_leaf, column_no, 
-		sort_code, enabled, width, align, styler, sorter, formatter, checkbox, sortable
+		sort_code, enabled, width, align, styler, sorter, formatter, checkbox, sortable, frozen_columns
 	</sql>
     
     <select id="queryHeaderFields" resultMap="BaseResultMap"

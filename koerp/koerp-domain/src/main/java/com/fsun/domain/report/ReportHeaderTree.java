@@ -1,6 +1,8 @@
 package com.fsun.domain.report;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -110,6 +112,41 @@ public class ReportHeaderTree {
 
 	public void setColumnNo(String columnNo) {
 		this.columnNo = columnNo;
+	}
+
+	public Map<String, Object> toColumnMap() {
+		Boolean checkbox = attributes.getCheckbox();	
+		String ename = attributes.getEname();
+		String cname = attributes.getCname();
+		String width = attributes.getWidth();
+		String align = attributes.getAlign();
+		Boolean sortable = attributes.getSortable();
+		
+		Map<String, Object> columnMap = new HashMap<>();
+		if(checkbox!=null){
+			columnMap.put("checkbox", checkbox);
+		}
+		if(ename!=null && !ename.equals("")){
+			columnMap.put("field", ename);
+		}
+		if(cname!=null && !cname.equals("")){
+			columnMap.put("title", cname);
+		}
+		columnMap.put("width", width!=null&&!width.equals("")?width:"100px");
+		columnMap.put("align", align!=null&&!align.equals("")?align:"center");
+		columnMap.put("sortable", sortable!=null?sortable:false);
+		columnMap.put("currNode", this);
+		/*String column = 
+			"{ "
+			+ (checkbox!=null?("checkbox:'"+ checkbox +"',"):"")
+			+ (ename!=null&&!ename.equals("")?("field:'"+ ename +"',"):"")
+		    + (cname!=null&&!cname.equals("")?("title:'"+ cname +"',"):"")
+		    + "width:'"+ (width!=null&&!width.equals("")?width:"100px") +"',"
+		    + "align:'"+ (align!=null&&!align.equals("")?align:"center") +"',"
+		    + "sortable:'"+ (sortable!=null?sortable:"false") +"'"		    
+		    + " }";*/
+		System.out.println(columnMap);
+		return columnMap;
 	}
 
 }
