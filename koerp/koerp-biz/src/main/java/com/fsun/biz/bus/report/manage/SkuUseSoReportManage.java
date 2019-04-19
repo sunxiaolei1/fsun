@@ -1,5 +1,6 @@
 package com.fsun.biz.bus.report.manage;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +27,8 @@ public class SkuUseSoReportManage extends BaseReportManage{
 	}
 
 	@Override
-	public List<Map<String, Object>> queryCall(ReportCondition condition) {
-		return skuUseSoReportMapper.queryCall(condition);
+	public List<Map<String, Object>> queryCall(HashMap<String, Object> paramsMap) {
+		return skuUseSoReportMapper.queryCall(paramsMap);
 	}
 
 }

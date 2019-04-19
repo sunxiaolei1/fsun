@@ -1,12 +1,12 @@
 package com.fsun.dao.report.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.fsun.dao.config.Mapper;
 import com.fsun.dao.mapper.BaseMySqlMapper;
 import com.fsun.domain.report.ReportBaseModel;
-import com.fsun.domain.report.ReportCondition;
 
 /**
  * 
@@ -28,5 +28,5 @@ public interface BaseReportMapper extends BaseMySqlMapper<ReportBaseModel>{
 	 * @param condition
 	 * @return
 	 */
-	public List<Map<String, Object>> queryCall(ReportCondition condition);
+	public List<Map<String, Object>> queryCall(HashMap<String, Object> paramsMap);
 }

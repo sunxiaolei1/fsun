@@ -29,7 +29,7 @@ import com.fsun.exception.enums.SCMErrorEnum;
  * @date 2018年4月13日 下午12:52:14 
  *
  */
-public abstract class BaseReportService{
+public abstract class BaseReportService<T extends ReportCondition>{
 	
 	@Autowired
 	private HeaderFieldManage headerFieldManage;
@@ -75,7 +75,7 @@ public abstract class BaseReportService{
 		for (HeaderFieldModel headerFieldModel : headerFieldModels) {
 			if(headerFieldModel.getParentId()==null){			
 				ReportHeaderTree currTree = new ReportHeaderTree();
-				//currTree.setAttributes(headerFieldModel);
+				currTree.setAttributes(headerFieldModel);
 				currTree.setId(headerFieldModel.getId());
 				currTree.setParentId(headerFieldModel.getParentId());
 				currTree.setCname(headerFieldModel.getCname());
@@ -106,7 +106,7 @@ public abstract class BaseReportService{
 			String parentId = model.getParentId();
 			if(nodeId.equals(parentId)){
 				ReportHeaderTree child = new ReportHeaderTree();
-				//child.setAttributes(model);
+				child.setAttributes(model);
 				child.setId(model.getId());
 				child.setParentId(model.getParentId());
 				child.setCname(model.getCname());
@@ -136,7 +136,7 @@ public abstract class BaseReportService{
 	 * @param @param unionTotal 
 	 * @return void
 	 */
-	protected void queryInit(StringBuffer where, ReportCondition condition, 
+	protected void queryInit(StringBuffer where, T condition, 
 			List<HeaderFieldModel> headerFieldModels, StringBuffer unionTotal){
 		this.queryInit(where, null, condition, headerFieldModels, unionTotal);
 	}
@@ -152,7 +152,7 @@ public abstract class BaseReportService{
 	 * @param @param unionTotal 
 	 * @return void
 	 */
-	protected void queryInit(StringBuffer where, StringBuffer orderBy, ReportCondition condition, 
+	protected void queryInit(StringBuffer where, StringBuffer orderBy, T condition, 
 			List<HeaderFieldModel> headerFieldModels, StringBuffer unionTotal){
 		
 		if(where==null){
@@ -239,8 +239,7 @@ public abstract class BaseReportService{
 	 * @param @return 
 	 * @return Map<String,Object>
 	 */
-	protected Map<String, Object> getMapReport(ReportCondition condition, 
-			StringBuffer where, StringBuffer unionTotal){
+	protected Map<String, Object> getMapReport(T condition, StringBuffer where, StringBuffer unionTotal){
 		return this.getMapReport(condition, where, null, unionTotal);
 	}
 
@@ -256,7 +255,7 @@ public abstract class BaseReportService{
 	 * @param @return 
 	 * @return Map<String,Object>
 	 */
-	protected Map<String, Object> getMapReport(ReportCondition condition, StringBuffer where,  
+	protected Map<String, Object> getMapReport(T condition, StringBuffer where,  
 			StringBuffer orderBy, StringBuffer unionTotal){
 		Map<String, Object> reportMap = new HashMap<String, Object>();
 		String queryType = condition.getQueryType();
@@ -290,8 +289,8 @@ public abstract class BaseReportService{
 				details = defaultManage.query(condition);
 				break;
 			case 2:	
-				this.queryCallInit(where, orderBy, condition, headerFieldModels);
-				details = defaultManage.queryCall(condition);
+				HashMap<String, Object> paramsMap = this.queryCallInit(where, orderBy, condition, headerFieldModels);
+				details = defaultManage.queryCall(paramsMap);
 				break;
 			case 3:	
 				break;
@@ -312,7 +311,7 @@ public abstract class BaseReportService{
 	 * @param condition
 	 * @param headerFieldModels
 	 */
-	protected abstract void queryCallInit(StringBuffer where, StringBuffer orderBy, ReportCondition condition,
+	protected abstract HashMap<String, Object> queryCallInit(StringBuffer where, StringBuffer orderBy, ReportCondition condition,
 			List<HeaderFieldModel> headerFieldModels);
 	
 }

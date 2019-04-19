@@ -58,6 +58,12 @@ $(function() {
 	    singleSelect: false,
 	    selectOnCheck: true,
 	    checkOnSelect: true,
+	    loadFilter:function(data) {   
+	    	if(data!=null && data.entry!=null && data.entry.details!=null){
+	    		return data.entry.details;  
+	    	}
+	    	return [];
+        },
 	    onDblClickRow:function(rowIndex, rowData){
 			toDetailView(rowData);
 	    }    

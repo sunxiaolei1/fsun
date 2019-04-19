@@ -27,4 +27,5 @@ public interface BaseReportApi<T> {
 	 * @return
 	 */
 	public Map<String, Object> exportMap(T condition);
+
 }

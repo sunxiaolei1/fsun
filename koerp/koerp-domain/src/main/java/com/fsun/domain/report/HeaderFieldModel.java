@@ -64,6 +64,41 @@ public class HeaderFieldModel {
 	 * 列号
 	 */
 	private String columnNo;
+	
+	/**
+	 * 字段宽度
+	 */
+	private String width;
+	
+	/**
+	 * 字段对齐方式
+	 */
+	private String align;
+	
+	/**
+	 * 是否显示选择框
+	 */
+	private Boolean checkbox;
+
+	/**
+	 * 是否允许该列排序
+	 */
+	private Boolean sortable;
+
+	/**
+	 * 单元样式函数
+	 */
+	private String styler;
+
+	/**
+	 * 自定义字段排序函数
+	 */
+	private String sorter;
+
+	/**
+	 * 格式化
+	 */
+	private String formatter;
 
 	public String getId() {
 		return id;
@@ -151,6 +186,62 @@ public class HeaderFieldModel {
 
 	public void setColumnNo(String columnNo) {
 		this.columnNo = columnNo;
+	}
+
+	public String getWidth() {
+		return width;
+	}
+
+	public void setWidth(String width) {
+		this.width = width;
+	}
+
+	public String getAlign() {
+		return align;
+	}
+
+	public void setAlign(String align) {
+		this.align = align;
+	}
+
+	public Boolean getCheckbox() {
+		return checkbox;
+	}
+
+	public void setCheckbox(Boolean checkbox) {
+		this.checkbox = checkbox;
+	}
+
+	public Boolean getSortable() {
+		return sortable;
+	}
+
+	public void setSortable(Boolean sortable) {
+		this.sortable = sortable;
+	}
+
+	public String getStyler() {
+		return styler;
+	}
+
+	public void setStyler(String styler) {
+		this.styler = styler;
+	}
+
+	public String getSorter() {
+		return sorter;
+	}
+
+	public void setSorter(String sorter) {
+		this.sorter = sorter;
+	}
+
+	public String getFormatter() {
+		return formatter;
+	}
+
+	public void setFormatter(String formatter) {
+		this.formatter = formatter;
 	}
 
 }

@@ -3,18 +3,18 @@
 <mapper namespace="com.fsun.dao.report.mapper.SkuUseSoReportMapper">
 
 	<parameterMap id="queryParamsMap" type="java.util.HashMap" >
-	    <parameter property="shopId" mode="IN" jdbcType="VARCHAR"/>
-	    <parameter property="startTime" mode="IN" jdbcType="VARCHAR"/>
-	    <parameter property="endTime" mode="IN" jdbcType="VARCHAR"/>      
+	    <parameter property="shop_id" mode="IN" jdbcType="VARCHAR"/>
+	    <parameter property="start_time" mode="IN" jdbcType="VARCHAR"/>
+	    <parameter property="end_time" mode="IN" jdbcType="VARCHAR"/>      
 	</parameterMap>
 
-	<select id="query" resultType="map" parameterType="com.fsun.domain.report.ReportBaseModel" >
+	<select id="query" resultType="java.util.Map" parameterType="com.fsun.domain.report.ReportBaseModel" >
 		${select}
-	</select>	
+	</select>
 	
 	<!-- 查询商品库存列表调用存储过程 -->	
 	<select id="queryCall" statementType="CALLABLE" resultType="java.util.Map" parameterMap="queryParamsMap" > 
-		exec sp_skuUseSoReport ?,?,?
+		call sp_skuUseSoReport(?,?,?)
 	</select>
 	
 </mapper>

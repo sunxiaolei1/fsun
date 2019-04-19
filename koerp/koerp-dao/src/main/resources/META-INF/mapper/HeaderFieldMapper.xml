@@ -12,12 +12,20 @@
         <result column="is_leaf" property="isLeaf" jdbcType="BIT"/> 
         <result column="column_no" property="columnNo" jdbcType="VARCHAR"/>
         <result column="sort_code" property="sortCode" jdbcType="VARCHAR"/>             
-        <result column="enabled" property="enabled" jdbcType="BIT"/>                
+        <result column="enabled" property="enabled" jdbcType="BIT"/>
+        <result column="sort_code" property="sortCode" jdbcType="VARCHAR"/>
+        <result column="width" property="width" jdbcType="VARCHAR"/>
+        <result column="align" property="align" jdbcType="VARCHAR"/>
+        <result column="styler" property="styler" jdbcType="VARCHAR"/>
+        <result column="sorter" property="sorter" jdbcType="VARCHAR"/>
+        <result column="formatter" property="formatter" jdbcType="VARCHAR"/>
+        <result column="checkbox" property="checkbox" jdbcType="BIT"/>
+        <result column="sortable" property="sortable" jdbcType="BIT"/>                
     </resultMap>
     
     <sql id="Base_Column_List">
-		id, parent_id, report_type, ename, cname, field_type, field_level, is_leaf, 
-		column_no, sort_code, enabled
+		id, parent_id, report_type, ename, cname, field_type, field_level, is_leaf, column_no, 
+		sort_code, enabled, width, align, styler, sorter, formatter, checkbox, sortable
 	</sql>
     
     <select id="queryHeaderFields" resultMap="BaseResultMap"

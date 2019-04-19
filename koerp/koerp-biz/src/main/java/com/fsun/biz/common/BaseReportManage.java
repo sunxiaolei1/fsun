@@ -1,5 +1,6 @@
 package com.fsun.biz.common;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,6 @@ public abstract class BaseReportManage {
 	 * @param condition
 	 * @return
 	 */
-	public abstract List<Map<String, Object>> queryCall(ReportCondition condition);
+	public abstract List<Map<String, Object>> queryCall(HashMap<String, Object> paramsMap);
 
 }

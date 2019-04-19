@@ -35,11 +35,16 @@ public class ReportCondition extends ReportBaseModel{
 	
 	/**
 	 * 查询类型{
-	 *     领用出库报表:sus
+	 *     领用出库报表:sus(别名)
 	 * }
 	 *  
 	 */
 	private String queryType;
+	
+	/**
+	 * 主表别名
+	 */
+	private String alias = "o";
 
 	public String getStartTime() {
 		return startTime;
@@ -85,7 +90,28 @@ public class ReportCondition extends ReportBaseModel{
 
 	public void setQueryType(String queryType) {
 		this.queryType = queryType;
+		if(queryType!=null && !queryType.equals("")){
+			this.alias = queryType;
+		}
 	}
+
+	/**
+	 * @return the alias
+	 */
+	public String getAlias() {
+		return alias;
+	}
+
+	/**
+	 * @param alias the alias to set
+	 */
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+	
+	
+	
+	/***************************************   私有方法      *****************************************/
 	
 	/**
      * 功能：判断字符串是否为日期格式(2018-04-09)
