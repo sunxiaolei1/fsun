@@ -120,6 +120,8 @@ public class ReportHeaderTree {
 		String cname = attributes.getCname();
 		String width = attributes.getWidth();
 		String align = attributes.getAlign();
+		String styler = attributes.getStyler();
+		String formatter = attributes.getFormatter();
 		Boolean sortable = attributes.getSortable();
 		
 		Map<String, Object> columnMap = new HashMap<>();
@@ -131,6 +133,12 @@ public class ReportHeaderTree {
 		}
 		if(cname!=null && !cname.equals("")){
 			columnMap.put("title", cname);
+		}
+		if(styler!=null && !styler.equals("")){			
+			columnMap.put("styler", styler);
+		}
+		if(formatter!=null && !formatter.equals("")){			
+			columnMap.put("formatter", formatter);
 		}
 		columnMap.put("width", width!=null&&!width.equals("")?width:"100px");
 		columnMap.put("align", align!=null&&!align.equals("")?align:"center");

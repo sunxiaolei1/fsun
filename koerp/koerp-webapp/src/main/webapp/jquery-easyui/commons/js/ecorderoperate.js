@@ -325,6 +325,26 @@ var intNumBaseFormat = function(value, row){
 	}   				
 }
 
+/**
+ * 报表模块数量及金额样式格式化
+ */
+var reportNumberStyler = function(value, row){
+	if(value>0){
+		return "font-weight:bold;color:green;"
+	}
+	return "color:#FF9933;";
+};
+
+/**
+ * 报表模块文本样式格式化
+ */
+var reportContentStyler = function(value, row){
+	if(value!=null && value!=''){
+		return "font-weight:bold;"
+	}
+	return "";
+}
+
 
 /**
  * 初始化下拉框的默认参数(用于编辑、新增)

@@ -8,7 +8,7 @@
 		<%@include file="./searchbar.jsp"%>
 		
 		<!-- table -->
-		<div id="gridDiv" data-options="region:'center'" style="height: 84%;">
+		<div id="gridDiv" data-options="region:'center'" style="height: 89%;">
 			<table id="ordersDataGrid"> 
 			</table>
 		</div>
@@ -22,12 +22,6 @@
 
 <script type="text/javascript">
 
-var columns = [[
-	{field:'ck',checkbox:true},	
-	{field:'sku',title:'商品编码',width:100,align:'center'}, 
-	{field:'goodsName',title:'商品名称',width:140,align:'center'}		
-]];
-
 var currDataGrid = $("#ordersDataGrid");
 
 $(function() {
@@ -39,7 +33,7 @@ $(function() {
 		success : function(result) {
 			if(result.status){
 				var columns = result.entry.columns;	
-				debugger
+				initColumns(columns);
 				currDataGrid.datagrid({
 					width:500,
 					height:250,
@@ -49,12 +43,12 @@ $(function() {
 				    fit:true,//自动大小
 				    queryParams:{},
 				    remoteSort:true,
-				    //sortName:"sku",
-			        //sortOrder:"asc",
+				    sortName:"sku",
+			        sortOrder:"asc",
 				    singleSelect:true,//是否单选
 				    pagination:false,//分页控件
 				    rownumbers:true,//行号
-				    remoteFilter:true,
+				    //remoteFilter:true,
 				    showFooter:true,
 				    fitColumns:false,
 				    columns:columns,
@@ -68,7 +62,7 @@ $(function() {
 				    	return [];
 			        },
 				    onDblClickRow:function(rowIndex, rowData){
-						toDetailView(rowData);
+				    	toDetailView(rowData);
 				    }    
 				});
 			}			
@@ -81,6 +75,30 @@ $(function() {
 	
 });
 
+function initColumns(columnsArr){
+	if(columnsArr){
+		$.each(columnsArr, function(){
+			var columns = this;
+			if(columns && columns.length>0){
+				$.each(columns, function(){
+					var column = this;
+					if(column.styler){
+						var styler = eval(column.styler);
+						if (typeof styler === 'function'){
+							column.styler = styler;
+					    } 						
+					}
+					if(column.formatter){
+						var formatter = eval(column.formatter);
+						if (typeof formatter === 'function'){
+							column.formatter = formatter;
+					    } 						
+					}
+				});
+			}
+		})
+	}
+}
 
 </script>
 </html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.report.mapper.SummarySoSkuDetailsMapper" >
+  
+  <sql id="conditions">	
+	<if test="tradeType != null and tradeType != ''">
+		and o.order_type = #{tradeType}
+	</if>
+	<if test="sku != null and sku != ''">
+		and d.sku = #{sku}
+	</if>	
+	<if test="shopId != null and shopId != ''">
+		and o.shop_id = #{shopId}
+	</if>
+	<if test="startTime != null">
+		and o.delivery_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+	</if>
+	<if test="endTime != null">
+		and o.delivery_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+	</if>			
+  </sql>
+  
+  <select id="selectListMap" resultType="java.util.Map" 
+  		parameterType="com.fsun.domain.report.SummarySkuDetailsCondition" >    
+	SELECT 
+		o.order_no as order_no,
+		o.from_shop_id as shop_id,
+		o.from_shop_name as shop_name,
+		o.onsignee_id as onsignee_id,
+		o.onsign_name as onsign_name,
+		o.order_mode as order_mode,
+		d.sku as sku,
+		d.goods_name as goods_name,
+		d.unit as unit,
+		d.ordered_qty as ordered_qty,
+		d.price as price,
+		d.total_price as total_price,
+		d.cost_price as cost_price,
+		(cost_price*d.ordered_qty) as cost_total_price,
+		o.delivery_time as delivery_time
+    FROM doc_order_header o
+    LEFT JOIN doc_order_details d on o.order_no = d.order_no
+    WHERE o.order_status in ("B20", "B30")
+    <include refid="conditions" />
+  </select>
+  
+  <select id="findFooter" resultType="java.util.Map" 
+  		parameterType="com.fsun.domain.report.SummarySkuDetailsCondition" >    
+	SELECT 		
+    	SUM(d.ordered_qty) AS ordered_qty, 
+    	SUM(d.ordered_qty*d.cost_price) AS cost_total_price, 
+    	SUM(d.total_price) AS total_price
+    FROM doc_order_header o
+    LEFT JOIN doc_order_details d on o.order_no = d.order_no
+    WHERE o.order_status IN ("B20", "B30")
+    <include refid="conditions" />
+  </select>
+  
+</mapper>

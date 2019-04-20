@@ -20,7 +20,7 @@
 var frozenColumns = [[
 	{field:'sku',title:'SKU',width:80,align:'center'},	
 	{field:'goods_name',title:'商品名称',width:140,align:'center'},
-	{field:'ship_id',title:'所属店仓',width:140,align:'center', formatter:function(value, row){
+	{field:'shop_id',title:'所属店仓',width:140,align:'center', formatter:function(value, row){
 		return row.shop_name; 
 	}},   
 	{field:'qty',title:'可用数量',width:60,align:'center',formatter:intNumBaseFormat},	

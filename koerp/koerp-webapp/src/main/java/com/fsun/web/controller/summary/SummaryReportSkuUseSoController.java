@@ -13,10 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fsun.api.report.SkuUseSoReportApi;
 import com.fsun.common.utils.ExcelUtil;
 import com.fsun.domain.common.HttpResult;
+import com.fsun.domain.enums.DocTradeTypeEnum;
 import com.fsun.domain.enums.ReportQueryTypeEnum;
 import com.fsun.domain.report.SkuUseSoReportCondition;
 import com.fsun.exception.enums.SCMErrorEnum;
@@ -43,6 +45,17 @@ public class SummaryReportSkuUseSoController extends BaseController {
 		return "/summary/report/skuUseSo/index";
 	}
 	
+	/**
+	 * 跳转至领用出库明细汇总页面
+	 * @param sku
+	 * @return
+	 */
+	@RequestMapping(value="/toDetailView")
+	public ModelAndView toDetailView() {
+		ModelAndView modelAndView = new ModelAndView("/summary/report/skuUseSo/detail");
+		modelAndView.addObject("tradeType", DocTradeTypeEnum.USE_SO.getCode());
+		return modelAndView;
+	}
 	
 	@RequestMapping(value="/list", method = RequestMethod.POST)
 	@ResponseBody
