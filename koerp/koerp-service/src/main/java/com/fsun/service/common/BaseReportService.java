@@ -135,6 +135,19 @@ public abstract class BaseReportService<T extends ReportCondition> extends BaseS
 	    condition.setSelect(select.toString());
 	}
 	
+	/**
+	 * 
+	 * @Title: getMapReport 
+	 * @Description: 公用的获取报表对象Map 
+	 * @param @param condition
+	 * @param @param where
+	 * @param @param unionTotal
+	 * @param @return 
+	 * @return Map<String,Object>
+	 */
+	protected Map<String, Object> getMapReport(T condition){
+		return this.getMapReport(condition, null, null, null);
+	}
 	
 	/**
 	 * 
@@ -175,19 +188,10 @@ public abstract class BaseReportService<T extends ReportCondition> extends BaseS
         }
         //获取表头字段
 		List<HeaderFieldModel> headerFieldModels = this.getHeaderFields(queryType);	
-		//获取表头目录级数
-		for (HeaderFieldModel headerFieldModel : headerFieldModels) {
-			Integer fieldLevel = headerFieldModel.getFieldLevel();
-			if(fieldLevel!=null && fieldLevel>reportLevel){
-				reportLevel = fieldLevel;
-			}
-		}
-		reportMap.put("reportLevel", reportLevel);
 		//组装多表头字段目录结构
 		List<ReportHeaderTree> headers = this.getReportHeaderTree(headerFieldModels);		
 		//获取报表明细
-		List<Map<String,Object>> details = new ArrayList<>();
-		
+		List<Map<String,Object>> details = new ArrayList<>();		
 		int sqlType = ReportQueryTypeEnum.getByCode(queryType).getSqlType();
 		BaseReportManage defaultManage = getDefaultManage();
 		switch (sqlType) {
@@ -196,7 +200,7 @@ public abstract class BaseReportService<T extends ReportCondition> extends BaseS
 				details = defaultManage.query(condition);
 				break;
 			case 2:	
-				HashMap<String, Object> paramsMap = this.queryCallInit(where, orderBy, condition, headerFieldModels);
+				HashMap<String, Object> paramsMap = this.queryCallInit(condition);
 				details = defaultManage.queryCall(paramsMap);
 				break;
 			case 3:	
@@ -218,7 +222,6 @@ public abstract class BaseReportService<T extends ReportCondition> extends BaseS
 	 * @param condition
 	 * @param headerFieldModels
 	 */
-	protected abstract HashMap<String, Object> queryCallInit(StringBuffer where, StringBuffer orderBy, ReportCondition condition,
-			List<HeaderFieldModel> headerFieldModels);
+	protected abstract HashMap<String, Object> queryCallInit(ReportCondition condition);
 	
 }

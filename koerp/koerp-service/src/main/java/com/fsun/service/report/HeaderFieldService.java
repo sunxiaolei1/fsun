@@ -2,7 +2,6 @@ package com.fsun.service.report;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,28 +28,15 @@ public class HeaderFieldService extends BaseSummaryService implements HeaderFiel
 		HashMap<String, Object> headerFieldMap = new HashMap<>();
 		//获取对应的报表的字段集合
 		List<HeaderFieldModel> models = super.getHeaderFields(queryType);
-		//获取所有子节点队列
-		LinkedHashMap<String, String> fieldsMap = new LinkedHashMap<String, String>();
-		int reportLevel = 0;
-		for (HeaderFieldModel model : models) {
-			if(model.getIsLeaf()){
-				fieldsMap.put(model.getEname(), model.getEname());
-			}
-			Integer fieldLevel = model.getFieldLevel();
-			if(fieldLevel!=null && fieldLevel>reportLevel){
-				reportLevel = fieldLevel;
-			}
-		}
-		//获取表头目录级数
-		headerFieldMap.put("reportLevel", reportLevel);
-		headerFieldMap.put("fields", fieldsMap);
+		//获取所有叶子节点队列
+		int reportLevel = this.initLeafsMap(models, headerFieldMap);
 		//组装表头字段集合
 		List<List<Map<String, Object>>> columnsList = new ArrayList<>();
-		List<ReportHeaderTree> headerTree = super.getReportHeaderTree(models);
+		List<ReportHeaderTree> headersTree = super.getReportHeaderTree(models);
 		//目录级数逐层遍历拼装表头列字段
 		for (int i = 0; i < reportLevel; i++) {
 			List<Map<String, Object>> columns = new ArrayList<>();
-			for (ReportHeaderTree reportHeaderTree : headerTree) {
+			for (ReportHeaderTree reportHeaderTree : headersTree) {
 				List<List<Map<String, Object>>> list = this.levelOrder(reportHeaderTree);
 				if(list!=null && list.size()>i){
 					for (Map<String, Object> column : list.get(i)) {
@@ -58,9 +44,7 @@ public class HeaderFieldService extends BaseSummaryService implements HeaderFiel
 						if(attr.getIsLeaf()){
 							column.put("rowspan", reportLevel-i);
 						}else{
-							List<ReportHeaderTree> leafs = new ArrayList<>();
-							this.getAllLeafs(attr, leafs);
-							column.put("colspan", leafs.size());
+							column.put("colspan", this.getLeafsCount(attr));
 						}
 						column.remove("currNode");
 						columns.add(column);
@@ -75,6 +59,16 @@ public class HeaderFieldService extends BaseSummaryService implements HeaderFiel
 	}
 	
 	/**
+	 * 获取当前节点的所有叶子节点数量
+	 * @param currNode
+	 */
+	private int getLeafsCount(ReportHeaderTree currNode) {
+		List<ReportHeaderTree> leafs = new ArrayList<>();
+		this.getAllLeafs(currNode, leafs);	
+		return leafs.size();
+	}
+	
+	/**
 	 * 递归获取当前节点的所有叶子节点
 	 * @param currNode
 	 * @param leafs
@@ -82,20 +76,22 @@ public class HeaderFieldService extends BaseSummaryService implements HeaderFiel
 	public void getAllLeafs(ReportHeaderTree currNode, List<ReportHeaderTree> leafs){		
 		List<ReportHeaderTree> list = currNode.getChildren();
 		if(list!=null){
-			for (ReportHeaderTree childNode : list) {
-				if(childNode.getIsLeaf()){
-					leafs.add(childNode);
+			for (ReportHeaderTree childNode : list) {				
+				if(childNode.getChildren()!=null && childNode.getChildren().size()>0){
+					getAllLeafs(childNode, leafs);
 				}else{
-					if(childNode.getChildren()!=null && childNode.getChildren().size()>0){
-						getAllLeafs(childNode, leafs);
-					}				
-				}			
+					leafs.add(childNode);
+				}										
 			}
 		}		
 	}
 
 	
-	// N叉树的层序遍历
+	/**
+	 * N叉树的层序遍历
+	 * @param root
+	 * @return
+	 */
     private List<List<Map<String, Object>>> levelOrder(ReportHeaderTree root) {
         List<List<Map<String, Object>>> lists = new ArrayList<>();
         if (root == null) {

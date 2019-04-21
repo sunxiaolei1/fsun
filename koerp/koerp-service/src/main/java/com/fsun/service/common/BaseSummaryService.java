@@ -1,11 +1,14 @@
 package com.fsun.service.common;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fsun.biz.bus.report.manage.HeaderFieldManage;
+import com.fsun.common.dto.ColumnDto;
 import com.fsun.domain.enums.ReportQueryTypeEnum;
 import com.fsun.domain.report.HeaderFieldCondition;
 import com.fsun.domain.report.HeaderFieldModel;
@@ -41,6 +44,77 @@ public abstract class BaseSummaryService {
 	    }
 		return models;
 	}
+	
+	/**
+	 * 初始化集合中所有的叶子节点map
+	 * @param models
+	 * @param headerFieldMap
+	 * @return
+	 */
+	protected int initLeafsMap(List<HeaderFieldModel> models, Map<String, Object> headerFieldMap){
+		//获取所有子节点队列
+		LinkedHashMap<String, String> fieldsMap = new LinkedHashMap<String, String>();
+		int reportLevel = 0;
+		for (HeaderFieldModel model : models) {
+			if(model.getIsLeaf()){
+				fieldsMap.put(model.getEname(), model.getEname());
+			}
+			Integer fieldLevel = model.getFieldLevel();
+			if(fieldLevel!=null && fieldLevel>reportLevel){
+				reportLevel = fieldLevel;
+			}
+		}
+		//获取表头目录级数
+		headerFieldMap.put("reportLevel", reportLevel);
+		headerFieldMap.put("fields", fieldsMap);
+		return reportLevel;
+	}
+	
+	/**
+	 * 递归获取列表树下的所有子节点
+	 * @param headersTree
+	 * @param fieldsMap
+	 */
+	protected void getLeafsMap(List<ReportHeaderTree> headersTree, LinkedHashMap<String, String> fieldsMap) {
+		if(headersTree!=null){
+			for (ReportHeaderTree reportHeaderTree : headersTree) {
+				List<ReportHeaderTree> children = reportHeaderTree.getChildren();
+				if(children!=null && children.size()>0){
+					this.getLeafsMap(children, fieldsMap);
+				}else{
+					fieldsMap.put(reportHeaderTree.getEname(), reportHeaderTree.getCname());
+				}
+			}
+		}	
+	}
+	
+	/**
+	 * 初始化excel表头单元格
+	 * @param headersTree
+	 * @param columnDtos
+	 */
+	protected void getExcelColumns(List<ReportHeaderTree> parentsTree, List<ColumnDto> columnDtos) {
+		if(parentsTree!=null){
+			for (ReportHeaderTree parentTree : parentsTree) {
+				ColumnDto columnDto = new ColumnDto();
+				columnDto.setParent(parentTree.getParentId());
+				columnDto.setContent(parentTree.getCname());
+				columnDto.setFieldName(parentTree.getEname());
+				columnDto.setCellLevel(parentTree.getFieldLevel());
+				List<ReportHeaderTree> children = parentTree.getChildren();
+				if(children!=null && children.size()>0){
+					List<ColumnDto> childrenColumns = new ArrayList<>();
+					this.getExcelColumns(children, childrenColumns);
+					columnDto.setChildren(childrenColumns);
+				}else{
+					//columnDto.setChildren(null);
+				}
+				columnDtos.add(columnDto);
+			}
+		}	
+	}
+	
+	
 
 	/**
 	 * 

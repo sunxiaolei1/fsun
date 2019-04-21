@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fsun.api.report.SkuUseSoReportApi;
+import com.fsun.common.dto.ColumnDto;
 import com.fsun.common.utils.ExcelUtil;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.enums.DocTradeTypeEnum;
@@ -73,20 +74,12 @@ public class SummaryReportSkuUseSoController extends BaseController {
 	public void exportExcel(SkuUseSoReportCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
+			condition.setQueryType(ReportQueryTypeEnum.SKU_USE_SO.getCode());
 			Map<String, Object> map = skuUseSoReportApi.exportMap(condition);
 			List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");			
-			/*LinkedHashMap<String, String> fieldMap = new LinkedHashMap<String, String>();
-			fieldMap.put("customer_name", "客户名称");
-			fieldMap.put("shop_name", "交易门店");
-			fieldMap.put("pay_mode_name", "支付方式");
-			fieldMap.put("trade_type_name", "交易类型");
-			fieldMap.put("order_id", "销售单号");
-			fieldMap.put("trade_status_name", "交易状态");
-			fieldMap.put("trade_time", "交易时间");
-			fieldMap.put("trade_price", "交易金额");
-			fieldMap.put("memo", "备注");*/
 			LinkedHashMap<String, String> fieldsMap = (LinkedHashMap<String, String>) map.get("fields");
-			ExcelUtil.listToExcel(details, fieldsMap, "领用出库报表", response);
+			List<ColumnDto> columnDtos = (List<ColumnDto>) map.get("columns");
+			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "领用出库报表", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

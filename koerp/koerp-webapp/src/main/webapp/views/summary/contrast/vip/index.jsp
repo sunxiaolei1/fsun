@@ -38,14 +38,14 @@ var columns = [[
 	{field:"trade_type",title:"交易类型", width:80,align:"center",sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeType); 
 	}},
-	{field:"order_id",title:"销售单号", width:130,align:"center"},
+	{field:"order_id",title:"销售单号", width:140,align:"center"},
 	{field:'trade_status',title:'交易状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeStatus); 
 	}},
 	{field:"trade_time",title:"交易时间", width:130,align:"center",sortable:true},
-	{field:'trade_price',title:'交易金额',width:60,align:'center',formatter:numBaseFormat},
-	{field:"gift_price",title:"赠送金额", width:60,align:"center",formatter:numBaseFormat},
-	{field:"memo",title:"备注", width:150,align:"center"}	
+	{field:'trade_price',title:'交易金额',width:65,align:'center',formatter:numBaseFormat},
+	{field:"gift_price",title:"赠送金额", width:65,align:"center",formatter:numBaseFormat},
+	{field:"memo",title:"备注", width:130,align:"center"}	
 ]];
 
 var currDataGrid;

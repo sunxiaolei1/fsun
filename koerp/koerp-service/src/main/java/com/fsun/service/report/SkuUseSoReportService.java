@@ -1,6 +1,8 @@
 package com.fsun.service.report;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,10 +12,10 @@ import org.springframework.stereotype.Service;
 import com.fsun.api.report.SkuUseSoReportApi;
 import com.fsun.biz.bus.report.manage.SkuUseSoReportManage;
 import com.fsun.biz.common.BaseReportManage;
-import com.fsun.common.utils.StringUtils;
-import com.fsun.domain.enums.ReportConditionFieldEnum;
+import com.fsun.common.dto.ColumnDto;
 import com.fsun.domain.report.HeaderFieldModel;
 import com.fsun.domain.report.ReportCondition;
+import com.fsun.domain.report.ReportHeaderTree;
 import com.fsun.domain.report.SkuUseSoReportCondition;
 import com.fsun.service.common.BaseReportService;
 
@@ -35,7 +37,7 @@ public class SkuUseSoReportService extends BaseReportService<SkuUseSoReportCondi
 
 	@Override
 	public Map<String, Object> queryMap(SkuUseSoReportCondition condition) {
-		StringBuffer definedWhere = null;
+		/*StringBuffer definedWhere = null;
 		StringBuffer unionTotal = null;	
 		StringBuffer orderBy = new StringBuffer(" ORDER BY " + 
 				condition.getAlias() + "." + ReportConditionFieldEnum.QUERY_DATE_TIME.getName() +" ASC ");
@@ -44,18 +46,29 @@ public class SkuUseSoReportService extends BaseReportService<SkuUseSoReportCondi
 		if(!StringUtils.isEmpty(sortColumn) && !StringUtils.isEmpty(sortType)){
 			orderBy = new StringBuffer(" ORDER BY "+ condition.getAlias() +"."+ sortColumn +" "+ sortType +" ");
 		}
- 		return this.getMapReport(condition, definedWhere, orderBy, unionTotal);
+ 		return this.getMapReport(condition, definedWhere, orderBy, unionTotal);*/
+		return this.getMapReport(condition);
 	}
 
 	@Override
 	public Map<String, Object> exportMap(SkuUseSoReportCondition condition) {
-		// TODO Auto-generated method stub
-		return null;
+		//获取报表集合(headers和details集合)
+		Map<String, Object> reportMap = this.getMapReport(condition);
+		//获取web表头字段树
+		List<ReportHeaderTree> headersTree = (List<ReportHeaderTree>) reportMap.get("headers");
+		//获取所有叶子节点队列
+		LinkedHashMap<String, String> fieldsMap = new LinkedHashMap<>();
+		this.getLeafsMap(headersTree, fieldsMap);
+		reportMap.put("fields", fieldsMap);
+		//组装excel表头字段树
+		List<ColumnDto> columnDtos = new ArrayList<>();
+		this.getExcelColumns(headersTree, columnDtos);
+		reportMap.put("columns", columnDtos);
+		return reportMap;
 	}
 
 	@Override
-	public HashMap<String, Object> queryCallInit(StringBuffer where, StringBuffer orderBy, ReportCondition condition,
-			List<HeaderFieldModel> headerFieldModels) {
+	public HashMap<String, Object> queryCallInit(ReportCondition condition) {
 		
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		if(condition instanceof SkuUseSoReportCondition){
