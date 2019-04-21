@@ -24,6 +24,7 @@ function exportExcel(){
 
 //查看明细
 function toDetailView(rowData){
+	debugger
 	var currRow = null;
 	if(typeof rowData =='undefined'){
 		var rows = currDataGrid.datagrid('getSelections');
@@ -32,8 +33,9 @@ function toDetailView(rowData){
 			return;
 		}
 		currRow = rows[0];
-	}	
-	currRow = rowData;
+	}else{
+		currRow = rowData;
+	}		
 	var queryParams = initQueryParams();
 	var url = "${api}/summary/report/skuUseSo/toDetailView?sku="+ currRow.sku
 			+ "&goodsName="+ currRow.goods_name
