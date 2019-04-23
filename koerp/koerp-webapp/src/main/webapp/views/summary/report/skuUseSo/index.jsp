@@ -28,7 +28,7 @@ $(function() {
 		
 	$.ajax({
 		type : "GET",
-		url : "${api}/base/header/field/sus",   
+		url : "${api}/base/header/field/${queryType}",   
 		dataType : "json",
 		success : function(result) {
 			if(result.status){

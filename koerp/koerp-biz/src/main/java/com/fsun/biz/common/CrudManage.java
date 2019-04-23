@@ -3,6 +3,7 @@ package com.fsun.biz.common;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,7 +81,7 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	 * @return
 	 */
 	public <C>PageModel findMapPage(C condition) {
-		List<HashMap<String, Object>> list = mapper.selectListMap(condition);
+		List<Map<String, Object>> list = mapper.selectListMap(condition);
 		return new PageModel(list);
 	}
 	

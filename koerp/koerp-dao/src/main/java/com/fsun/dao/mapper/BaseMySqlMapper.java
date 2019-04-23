@@ -2,6 +2,7 @@ package com.fsun.dao.mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * dao层基类
@@ -37,7 +38,7 @@ public interface BaseMySqlMapper<T> {
     
     public <C>List<T> selectList(C condition);
     
-    public <C>List<HashMap<String, Object>> selectListMap(C condition);
+    public <C>List<Map<String, Object>> selectListMap(C condition);
     
     /**
 	 * 获取表单合计行

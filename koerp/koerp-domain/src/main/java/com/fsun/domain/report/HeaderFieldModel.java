@@ -104,6 +104,16 @@ public class HeaderFieldModel {
 	 * 是否是冻结列
 	 */
 	private Boolean frozenColumns;
+	
+	/**
+	 * 是否支持相同行单元格合并
+	 */
+	private Boolean mergeCell;
+	
+	/**
+	 * 相同行合并唯一性字段
+	 */
+	private Boolean mergeUnique;
 
 	public String getId() {
 		return id;
@@ -261,6 +271,34 @@ public class HeaderFieldModel {
 	 */
 	public void setFrozenColumns(Boolean frozenColumns) {
 		this.frozenColumns = frozenColumns;
+	}
+
+	/**
+	 * @return the mergeCell
+	 */
+	public Boolean getMergeCell() {
+		return mergeCell;
+	}
+
+	/**
+	 * @param mergeCell the mergeCell to set
+	 */
+	public void setMergeCell(Boolean mergeCell) {
+		this.mergeCell = mergeCell;
+	}
+
+	/**
+	 * @return the mergeUnique
+	 */
+	public Boolean getMergeUnique() {
+		return mergeUnique;
+	}
+
+	/**
+	 * @param mergeUnique the mergeUnique to set
+	 */
+	public void setMergeUnique(Boolean mergeUnique) {
+		this.mergeUnique = mergeUnique;
 	}
 
 }

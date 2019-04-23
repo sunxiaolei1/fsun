@@ -15,57 +15,50 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fsun.api.report.SkuUseSoReportApi;
+import com.fsun.api.report.CustomerContrastApi;
 import com.fsun.common.dto.ColumnDto;
 import com.fsun.common.utils.ExcelUtil;
 import com.fsun.domain.common.HttpResult;
-import com.fsun.domain.enums.DocTradeTypeEnum;
+import com.fsun.domain.common.PageModel;
 import com.fsun.domain.enums.ReportQueryTypeEnum;
-import com.fsun.domain.report.SkuUseSoReportCondition;
+import com.fsun.domain.report.CustomerContrastCondition;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
 
 /**
- * 商品领用出库报表
+ * 客户对账单
  * @author fsun
  * @date 2019年4月18日
  */
 @Controller
-@RequestMapping("/summary/report/skuUseSo")
-public class SummaryReportSkuUseSoController extends BaseController {
+@RequestMapping("/summary/contrast/customer")
+public class SummaryContrastCustomerController extends BaseController {
 	
 	@Autowired
-	private SkuUseSoReportApi skuUseSoReportApi;
+	private CustomerContrastApi customerContrastApi;
 	
 	/**
-	 * 跳转至领用出库汇总页面
 	 * @return
 	 */
 	@RequestMapping(value="/index")
 	public ModelAndView index() {
-		ModelAndView modelAndView = new ModelAndView("/summary/report/skuUseSo/index");
-		modelAndView.addObject("queryType", ReportQueryTypeEnum.SKU_USE_SO.getCode());
+		ModelAndView modelAndView = new ModelAndView("/summary/contrast/customer/index");
+		modelAndView.addObject("queryType", ReportQueryTypeEnum.CUSTOMER.getCode());
 		return modelAndView;
 	}
 	
-	/**
-	 * 跳转至领用出库明细汇总页面
-	 * @param sku
-	 * @return
-	 */
-	@RequestMapping(value="/toDetailView")
-	public ModelAndView toDetailView() {
-		ModelAndView modelAndView = new ModelAndView("/summary/report/skuUseSo/detail");
-		modelAndView.addObject("tradeType", DocTradeTypeEnum.USE_SO.getCode());
-		return modelAndView;
-	}
-	
-	@RequestMapping(value="/list", method = RequestMethod.POST)
+	@RequestMapping(value="/findPage", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public HttpResult list(SkuUseSoReportCondition condition) {
+	public HttpResult findVipPage(CustomerContrastCondition condition) {
 		try {
-			condition.setQueryType(ReportQueryTypeEnum.SKU_USE_SO.getCode());
-			return success(skuUseSoReportApi.queryMap(condition));
+			condition.setQueryType(ReportQueryTypeEnum.CUSTOMER.getCode());
+			PageModel pageModel = customerContrastApi.findPage(condition);
+			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
+					&& pageModel.getTotal()>0){
+				HashMap<String, Object> footer = customerContrastApi.findFooter(condition);
+				return success(pageModel, new Object[]{footer});
+			}
+			return success(pageModel, new Object[]{});
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -73,15 +66,15 @@ public class SummaryReportSkuUseSoController extends BaseController {
 	}
 	
 	@RequestMapping("/exportExcel")
-	public void exportExcel(SkuUseSoReportCondition condition,
+	public void exportExcel(CustomerContrastCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
-			condition.setQueryType(ReportQueryTypeEnum.SKU_USE_SO.getCode());
-			Map<String, Object> map = skuUseSoReportApi.exportMap(condition);
+			condition.setQueryType(ReportQueryTypeEnum.CUSTOMER.getCode());
+			Map<String, Object> map = customerContrastApi.exportMap(condition);
 			List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");			
 			LinkedHashMap<String, String> fieldsMap = (LinkedHashMap<String, String>) map.get("fields");
 			List<ColumnDto> columnDtos = (List<ColumnDto>) map.get("columns");
-			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "领用出库报表", response);
+			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "客户对账单", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -16,7 +16,12 @@ public enum ReportQueryTypeEnum {
 	/**
 	 * 领用出库报表
 	 */
-	SKU_USE_SO("sus", "doc_order_header", 2),
+	SKU_USE_SO("p_sus", "doc_order_header", 2),
+	
+	/**
+	 * 客户对账单
+	 */
+	CUSTOMER("v_cc", "V_CUSTOMER_CONTRAST", 1),
 	
 	UNKNOW(null, "未知", 0);
 	

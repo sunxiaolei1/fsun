@@ -21,12 +21,15 @@
         <result column="formatter" property="formatter" jdbcType="VARCHAR"/>
         <result column="checkbox" property="checkbox" jdbcType="BIT"/>
         <result column="sortable" property="sortable" jdbcType="BIT"/>   
-        <result column="frozen_columns" property="frozenColumns" jdbcType="BIT"/>                
+        <result column="frozen_columns" property="frozenColumns" jdbcType="BIT"/>               
+    	<result column="merge_cell" property="mergeCell" jdbcType="BIT"/> 
+    	<result column="merge_unique" property="mergeUnique" jdbcType="BIT"/>   	
     </resultMap>
     
     <sql id="Base_Column_List">
 		id, parent_id, report_type, ename, cname, field_type, field_level, is_leaf, column_no, 
-		sort_code, enabled, width, align, styler, sorter, formatter, checkbox, sortable, frozen_columns
+		sort_code, enabled, width, align, styler, sorter, formatter, checkbox, sortable, 
+		frozen_columns, merge_cell, merge_unique
 	</sql>
     
     <select id="queryHeaderFields" resultMap="BaseResultMap"

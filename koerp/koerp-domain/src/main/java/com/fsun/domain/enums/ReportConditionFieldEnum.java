@@ -13,7 +13,7 @@ import java.util.List;
  */
 public enum ReportConditionFieldEnum {
 
-	QUERY_DATE_TIME("date", "created_time"),
+	QUERY_DATE_TIME("date", "order_time"),
 	
 	UNKNOW(null,"未知");
 	

@@ -123,6 +123,8 @@ public class ReportHeaderTree {
 		String styler = attributes.getStyler();
 		String formatter = attributes.getFormatter();
 		Boolean sortable = attributes.getSortable();
+		Boolean mergeCell = attributes.getMergeCell();		
+		Boolean mergeUnique = attributes.getMergeUnique();
 		
 		Map<String, Object> columnMap = new HashMap<>();
 		if(checkbox!=null){
@@ -139,6 +141,12 @@ public class ReportHeaderTree {
 		}
 		if(formatter!=null && !formatter.equals("")){			
 			columnMap.put("formatter", formatter);
+		}
+		if(mergeCell!=null && !mergeCell.equals("")){			
+			columnMap.put("mergeCell", mergeCell);
+		}
+		if(mergeUnique!=null && !mergeUnique.equals("")){			
+			columnMap.put("mergeUnique", mergeUnique);
 		}
 		columnMap.put("width", width!=null&&!width.equals("")?width:"100px");
 		columnMap.put("align", align!=null&&!align.equals("")?align:"center");

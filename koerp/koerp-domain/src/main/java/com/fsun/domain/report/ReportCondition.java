@@ -35,7 +35,7 @@ public class ReportCondition extends ReportBaseModel{
 	
 	/**
 	 * 查询类型{
-	 *     领用出库报表:sus(别名)
+	 *     领用出库报表:p_sus(别名)
 	 * }
 	 *  
 	 */

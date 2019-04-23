@@ -13,7 +13,6 @@ import com.fsun.api.report.SkuUseSoReportApi;
 import com.fsun.biz.bus.report.manage.SkuUseSoReportManage;
 import com.fsun.biz.common.BaseReportManage;
 import com.fsun.common.dto.ColumnDto;
-import com.fsun.domain.report.HeaderFieldModel;
 import com.fsun.domain.report.ReportCondition;
 import com.fsun.domain.report.ReportHeaderTree;
 import com.fsun.domain.report.SkuUseSoReportCondition;

@@ -8,6 +8,7 @@ import com.fsun.domain.report.SummarySkuDetailsModel;
  * @author fsun
  * @date 2019年4月20日
  */
-public interface SummarySkuDetailsApi extends BaseFooterApi<SummarySkuDetailsModel, SummarySkuDetailsCondition>{
+public interface SummarySkuDetailsApi extends BaseFooterApi<SummarySkuDetailsModel, 
+	SummarySkuDetailsCondition>{
 
 }

@@ -63,24 +63,24 @@ public abstract class BaseReportService<T extends ReportCondition> extends BaseS
 			List<HeaderFieldModel> headerFieldModels, StringBuffer unionTotal){
 		
 		if(where==null){
-			where = new StringBuffer(" WHERE　1 = 1 ");		
+			where = new StringBuffer(" WHERE 1 = 1 ");		
 		}
 		String startTime = condition.getStartTime();
 		String endTime = condition.getEndTime();
 		String query_date_time = ReportConditionFieldEnum.QUERY_DATE_TIME.getName();
 		
 		if(!StringUtils.isEmpty(startTime)){
-			where.append(" AND "+ query_date_time + ">='"+ startTime +"' ");
+			where.append(" AND "+ condition.getAlias()+ "."+ query_date_time + ">='"+ startTime +"' ");
 		}
 		if(!StringUtils.isEmpty(endTime)){
-			where.append(" AND "+ query_date_time + "<='"+ endTime +"' ");
+			where.append(" AND "+ condition.getAlias()+ "."+ query_date_time + "<='"+ endTime +"' ");
 		}	
 		
 		String tableName = ReportQueryTypeEnum.getByCode(condition.getQueryType()).getName();
-		if(!StringUtils.isEmpty(tableName)){
+		if(StringUtils.isEmpty(tableName)){
 			throw new ReportServiceException(SCMErrorEnum.INVALID_PARAMS);
 		}	
-		String from = " FROM "+ tableName;
+		String from = " FROM "+ tableName +" AS " + condition.getAlias();
 		
 		//叶子节点顺序排序,排序在sql中做
 		List<String> leafs = new ArrayList<>();
@@ -113,7 +113,7 @@ public abstract class BaseReportService<T extends ReportCondition> extends BaseS
 	    if(leafs.size()==0){
 	    	throw new ReportServiceException(SCMErrorEnum.INVALID_PARAMS);
 	    }	    
-	    StringBuffer select = new StringBuffer(" SELECT ");    
+	    StringBuffer select = new StringBuffer(" SELECT ");
 	    if(unionTotal==null){ 
 	    	select.append(StringUtils.join(leafs, ",")).append(from).append(where);
 	    	if(orderBy!=null){
