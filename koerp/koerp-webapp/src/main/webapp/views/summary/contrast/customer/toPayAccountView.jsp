@@ -51,7 +51,7 @@ $(function() {
         	{field:"discount_amount",title:"优惠金额", width:80, align:"center",formatter:numBaseFormat},  
         	{field:"trade_no",title:"支付流水号", width:150, align:"center"},  
         	{field:"card_no",title:"支付卡号", width:150, align:"center"},
-        	{field:'trade_time',title:'支付时间',width:130,align:'center'}
+        	{field:'trade_time',title:'交易时间',width:130,align:'center'}
         ]],
 	    loadFilter:function(data) {    
 			var fields = ["recept_price","pay_price","dib_price","discount_amount"];     		

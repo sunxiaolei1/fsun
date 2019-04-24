@@ -17,8 +17,6 @@
 
 //excel导出
 function exportOrders(isAll){	
-	debugger
-	console.log(12321);
 	var queryParams = initQueryParams();
 	var url = "${api}/summary/contrast/customer/exportOrders?notInCustomerTypes="+ queryParams.notInCustomerTypes;
 	if(isAll=='0'){		
@@ -26,6 +24,15 @@ function exportOrders(isAll){
 		+ "&customerCode="+ queryParams.customerCode + "&carrierId="+ queryParams.carrierId
 		+ "&startDate="+ queryParams.startDate + "&endDate="+ queryParams.endDate);
 	}
+	window.open(url); 
+}
+
+function exportPayAccounts(){
+	var queryParams = initQueryParams();
+	var url = "${api}/summary/contrast/customer/exportPayAccounts?notInCustomerTypes="+ queryParams.notInCustomerTypes;	
+		+ "&keywords="+ encodeURI(encodeURI(queryParams.keywords)) + "&shopId="+ queryParams.shopId
+		+ "&customerCode="+ queryParams.customerCode + "&carrierId="+ queryParams.carrierId
+		+ "&startDate="+ queryParams.startDate + "&endDate="+ queryParams.endDate;
 	window.open(url); 
 }
 

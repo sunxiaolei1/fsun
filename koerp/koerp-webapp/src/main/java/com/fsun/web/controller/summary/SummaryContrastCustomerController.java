@@ -87,7 +87,12 @@ public class SummaryContrastCustomerController extends BaseController {
 		}
 	}
 	
-	
+	/**
+	 * 导出对账单-商品及订单
+	 * @param condition
+	 * @param request
+	 * @param response
+	 */
 	@RequestMapping("/exportOrders")
 	public void exportOrders(ContrastCustomerCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
@@ -98,10 +103,42 @@ public class SummaryContrastCustomerController extends BaseController {
 			List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");			
 			LinkedHashMap<String, String> fieldsMap = (LinkedHashMap<String, String>) map.get("fields");
 			List<ColumnDto> columnDtos = (List<ColumnDto>) map.get("columns");
-			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "客户对账单", response);
+			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "客户对账单-商品及订单", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 导出对账单-账单
+	 * @param condition
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/exportPayAccounts")
+	public void exportPayAccounts(ContrastCustomerCondition condition,
+			HttpServletRequest request, HttpServletResponse response) {
+		try {
+			condition.setTradeStatus(TradeStatusEnum.COMPLETED.getCode());
+			List<HashMap<String, Object>> details = contrastCustomerApi.findPayAccount(condition);			
+			LinkedHashMap<String, String> fieldsMap = new LinkedHashMap<String, String>();
+			fieldsMap.put("order_id", "销售单号");
+			fieldsMap.put("buyer_name", "客户名称");
+			fieldsMap.put("shop_name", "交易门店");			
+			fieldsMap.put("line_no", "行号");
+			fieldsMap.put("pay_mode", "支付方式");
+			fieldsMap.put("recept_price", "应收金额");			
+			fieldsMap.put("pay_price", "应付金额");
+			fieldsMap.put("dib_price", "找零金额");
+			fieldsMap.put("discount_amount", "优惠金额");
+			fieldsMap.put("trade_no", "支付流水号");
+			fieldsMap.put("card_no", "支付卡号");
+			fieldsMap.put("trade_time", "交易时间");
+			ExcelUtil.listToExcel(details, fieldsMap, "客户对账单-账单", response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

@@ -730,6 +730,10 @@ public class ExcelUtil {
 	 * @return 返回判别相同行合并唯一性字段
 	 */
 	private static String getMergeFields(List<ColumnDto> columnDtos, List<ColumnDto> mergeFields){
+		//普通导出的过滤
+		if(columnDtos==null || columnDtos.size()==0){
+			return null;
+		}		
 		String uniqueField = null;
 		for (ColumnDto columnDto : columnDtos) {
 			if(columnDto.getMergeCell()!=null && columnDto.getMergeCell()){
