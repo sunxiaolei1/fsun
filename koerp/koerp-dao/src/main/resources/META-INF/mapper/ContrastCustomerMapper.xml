@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.report.mapper.ContrastCustomerMapper" >
+
+  <sql id="conditions">
+  	<where>  	 		
+  		<if test="keywords != null and keywords != ''">
+  			and (o.order_id like concat(concat('%',#{keywords}),'%')
+  				or o.buyer_name like concat(concat('%',#{keywords}),'%')
+  				or o.mobile like concat(concat('%',#{keywords}),'%')
+  			)
+  		</if>
+  		
+  		<if test="carrierId != null and carrierId != ''">
+  			and o.carrier_id = #{carrierId}
+  		</if>
+  	  	  		 	 		 		
+  		<if test="orderId != null and orderId != ''">
+  			and o.order_id = #{orderId}
+  		</if>
+  		
+  		<if test="shopId != null and shopId != ''">
+  			and o.shop_id = #{shopId}
+  		</if>
+  		
+  		<if test="tradeStatus != null and tradeStatus != ''">
+  			and o.trade_status = #{tradeStatus}
+  		</if>
+  		
+  		<if test="customerCode != null and customerCode != ''">
+  			and o.buyer_id = #{customerCode}
+  		</if> 
+  		
+  		<if test="notInCustomerTypeArr != null and notInCustomerTypeArr.length>0">	
+		    AND c.customer_type not in
+			<foreach collection="notInCustomerTypeArr" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>
+		</if> 		
+  		
+  		<if test="startTime != null">
+			and o.order_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			and o.order_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+		</if>
+  		
+	</where>
+  </sql>
+
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.report.ContrastCustomerCondition" >    
+	SELECT
+		g.goods_name AS goods_name,
+		g.sku AS sku,
+		g.sale_price AS sale_price,
+		g.qty AS qty,
+		g.gift_count AS gift_count,
+		g.total_price AS total_price,
+		o.buyer_id AS customer_code,
+		o.buyer_name AS buyer_name,
+		o.carrier_name as carrier_name,
+		o.order_id AS order_id,
+		o.shop_name AS shop_name,
+		o.order_price AS order_price,
+		o.recept_price AS recept_price,
+		(o.discount_price + o.to_zero_price) AS discount_price,
+		o.coupon_price AS coupon_price,
+		o.order_time AS order_time
+	FROM bus_order o LEFT JOIN bus_goods g ON g.order_id = o.order_id
+	LEFT JOIN bus_customer c ON  c.customer_code = o.buyer_id
+	<include refid="conditions" />
+  </select>
+  
+  <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.report.ContrastCustomerCondition" >    
+	SELECT 
+		sum(o.order_price) as order_price, 
+    	sum(o.coupon_price) as coupon_price, 
+    	sum(o.discount_price + o.to_zero_price) as discount_price, 
+    	sum(o.pay_price) as pay_price, 
+    	sum(o.dib_price) as dib_price, 
+    	sum(o.recept_price) as recept_price
+    FROM bus_order o 
+    LEFT JOIN bus_customer c ON c.customer_code = o.buyer_id
+    	<include refid="conditions" />
+  </select>
+  
+  
+  <select id="export" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.report.ContrastCustomerCondition" >    
+	SELECT
+		g.goods_name AS goods_name,
+		g.sku AS sku,
+		g.sale_price AS sale_price,
+		g.qty AS qty,
+		g.gift_count AS gift_count,
+		g.total_price AS total_price,
+		o.buyer_id AS customer_code,
+		o.buyer_name AS buyer_name,
+		o.carrier_name as carrier_name,
+		o.order_id AS order_id,
+		o.shop_name AS shop_name,
+		o.order_price AS order_price,
+		o.recept_price AS recept_price,
+		(o.discount_price + o.to_zero_price) AS discount_price,
+		o.coupon_price AS coupon_price,
+		o.order_time AS order_time
+	FROM bus_order o LEFT JOIN bus_goods g ON g.order_id = o.order_id
+	LEFT JOIN bus_customer c ON  c.customer_code = o.buyer_id
+	<include refid="conditions" />
+  </select>
+  
+  <!-- 用于对账单及报表查看账单明细使用 -->
+  <select id="findPayAccount" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.report.ContrastCustomerCondition" >    
+	SELECT
+		o.order_id as order_id,
+		o.shop_name as shop_name,
+	  	o.buyer_name as buyer_name,
+	 	p.line_no as line_no,
+	  	bc.code_name as pay_mode,
+	  	p.recept_price as recept_price, 
+	  	p.pay_price as pay_price, 
+	  	p.dib_price as dib_price,
+	  	p.discount_amount as discount_amount,
+	  	p.trade_no as trade_no,
+	  	p.card_no as card_no,
+	  	p.trade_time as trade_time
+	FROM bus_order o
+	LEFT JOIN bus_pay_account p ON o.order_id = p.order_id
+	LEFT JOIN bus_bas_codes bc ON bc.code_type = 'PayMode' AND bc.code_code = p.pay_mode
+	LEFT JOIN bus_customer c ON o.buyer_id = c.customer_code 
+		<include refid="conditions" />	
+  </select>
+  
+</mapper>

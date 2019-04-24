@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fsun.api.report.CustomerContrastApi;
+import com.fsun.api.report.ContrastCustomerApi;
 import com.fsun.common.dto.ColumnDto;
 import com.fsun.common.utils.ExcelUtil;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.enums.ReportQueryTypeEnum;
-import com.fsun.domain.report.CustomerContrastCondition;
+import com.fsun.domain.enums.TradeStatusEnum;
+import com.fsun.domain.report.ContrastCustomerCondition;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
 
@@ -35,7 +36,7 @@ import com.fsun.web.controller.base.BaseController;
 public class SummaryContrastCustomerController extends BaseController {
 	
 	@Autowired
-	private CustomerContrastApi customerContrastApi;
+	private ContrastCustomerApi contrastCustomerApi;
 	
 	/**
 	 * @return
@@ -47,15 +48,24 @@ public class SummaryContrastCustomerController extends BaseController {
 		return modelAndView;
 	}
 	
+	/**
+	 * 跳转至账单查看界面
+	 */
+	@RequestMapping(value="/toPayAccountView")
+	public ModelAndView toPayAccountView() {
+		ModelAndView modelAndView = new ModelAndView("/summary/contrast/customer/toPayAccountView");
+		return modelAndView;
+	}
+	
 	@RequestMapping(value="/findPage", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public HttpResult findVipPage(CustomerContrastCondition condition) {
+	public HttpResult findPage(ContrastCustomerCondition condition) {
 		try {
-			condition.setQueryType(ReportQueryTypeEnum.CUSTOMER.getCode());
-			PageModel pageModel = customerContrastApi.findPage(condition);
+			condition.setTradeStatus(TradeStatusEnum.COMPLETED.getCode());
+			PageModel pageModel = contrastCustomerApi.findPage(condition);
 			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
 					&& pageModel.getTotal()>0){
-				HashMap<String, Object> footer = customerContrastApi.findFooter(condition);
+				HashMap<String, Object> footer = contrastCustomerApi.findFooter(condition);
 				return success(pageModel, new Object[]{footer});
 			}
 			return success(pageModel, new Object[]{});
@@ -65,12 +75,26 @@ public class SummaryContrastCustomerController extends BaseController {
 		}
 	}
 	
-	@RequestMapping("/exportExcel")
-	public void exportExcel(CustomerContrastCondition condition,
+	@RequestMapping(value="/payAccount/list", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findPayAccount(ContrastCustomerCondition condition) {
+		try {
+			condition.setTradeStatus(TradeStatusEnum.COMPLETED.getCode());
+			return success(contrastCustomerApi.findPayAccount(condition));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	
+	@RequestMapping("/exportOrders")
+	public void exportOrders(ContrastCustomerCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
 			condition.setQueryType(ReportQueryTypeEnum.CUSTOMER.getCode());
-			Map<String, Object> map = customerContrastApi.exportMap(condition);
+			condition.setTradeStatus(TradeStatusEnum.COMPLETED.getCode());
+			Map<String, Object> map = contrastCustomerApi.exportMap(condition);
 			List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");			
 			LinkedHashMap<String, String> fieldsMap = (LinkedHashMap<String, String>) map.get("fields");
 			List<ColumnDto> columnDtos = (List<ColumnDto>) map.get("columns");

@@ -101,6 +101,8 @@ public abstract class BaseSummaryService {
 				columnDto.setContent(parentTree.getCname());
 				columnDto.setFieldName(parentTree.getEname());
 				columnDto.setCellLevel(parentTree.getFieldLevel());
+				columnDto.setMergeCell(parentTree.getAttributes().getMergeCell());
+				columnDto.setMergeUnique(parentTree.getAttributes().getMergeUnique());
 				List<ReportHeaderTree> children = parentTree.getChildren();
 				if(children!=null && children.size()>0){
 					List<ColumnDto> childrenColumns = new ArrayList<>();

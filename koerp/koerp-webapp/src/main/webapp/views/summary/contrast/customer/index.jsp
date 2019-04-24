@@ -8,7 +8,7 @@
 		<%@include file="./searchbar.jsp"%>
 		
 		<!-- table -->
-		<div id="gridDiv" data-options="region:'center'" style="height: 89%;">
+		<div id="gridDiv" data-options="region:'center'" style="height: 84%;">
 			<table id="ordersDataGrid"> 
 			</table>
 		</div>
@@ -23,7 +23,9 @@
 <script type="text/javascript">
 
 var currDataGrid = $("#ordersDataGrid");
+var currPayAccountDataGrid = $("#payAccountDataGrid");
 var mergeUnique = null;
+var footerFirstColumn = "order_id";
 
 $(function() {
 		
@@ -36,6 +38,7 @@ $(function() {
 				var columns = result.entry.columns;
 				var mergeCells = initColumns(columns);
 				currDataGrid.datagrid({
+					view:footerStyleView,
 					width:500,
 					height:250,
 				    nowrap:false,
@@ -43,13 +46,15 @@ $(function() {
 				    border:true,
 				    fit:true,//自动大小
 				    queryParams:{
+				    	"firstColumn": footerFirstColumn,
 				    	"notInCustomerTypes": "SK"
 				    },
 				    remoteSort:true,
-				    sortName:"buyer_name, order_time",
-			        sortOrder:"asc",
+				    sortName:"order_time",
+			        sortOrder:"desc",
 				    singleSelect:true,//是否单选
-				    pageSize: GLOBAL_PAGE_SIZE,
+				    pagination:true,//分页控件
+				    pageSize: GLOBAL_PAGE_SIZE + GLOBAL_PAGE_SIZE,
 				    pageList: GLOBAL_PAGE_SIZE_LIST,
 				    showFooter:true,
 				    rownumbers:true,//行号
@@ -60,13 +65,13 @@ $(function() {
 				    loadMsg:"数据加载中请稍后……",
 				    emptyMsg:"没有符合条件的记录",
 				    toolbar:'#tools',
-				    loadFilter:function(data) {   
-				    	if(data!=null && data.rows!=null){
-				    		var rows = data.rows;
-				    		return rows; 
-				    	}
-				    	return [];
-			        },
+				    rowStyler:function(index,row){
+			        	var rowStyle = "";        	
+			        	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
+			        		rowStyle = 'font-weight:bold;';  
+			            }
+			        	return rowStyle;
+					},
 			        onLoadSuccess: function(data){						
 			        	autoMergeCells(data.rows, mergeCells);
 			        },

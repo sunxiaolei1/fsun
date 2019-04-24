@@ -81,7 +81,7 @@ public abstract class CrudManage <M extends BaseMySqlMapper<T>, T extends Object
 	 * @return
 	 */
 	public <C>PageModel findMapPage(C condition) {
-		List<Map<String, Object>> list = mapper.selectListMap(condition);
+		List<HashMap<String, Object>> list = mapper.selectListMap(condition);
 		return new PageModel(list);
 	}
 	

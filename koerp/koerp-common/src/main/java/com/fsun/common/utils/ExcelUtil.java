@@ -573,7 +573,45 @@ public class ExcelUtil {
 				headCell.setCellValue(cnFields[i]);
 				headCell.setCellStyle(titleStyle);
 			}
+		}		
+		
+		//自动合并行
+		int headerRowNo = rowNo + 1;
+		List<ColumnDto> mergeFields = new ArrayList<>();
+		String uniqueField = getMergeFields(columnDtos, mergeFields);
+		if(uniqueField!=null && mergeFields.size()>0){ 
+			//data是默认的表格加载数据，包括rows和Total
+	   		int mark=1;                                                 
+	    	//这里涉及到简单的运算，mark是计算每次需要合并的格子数
+	    	for (int i = headerRowNo; i <list.size(); i++) {     
+	    		//这里循环表格当前的数据
+	    		HashMap<String, Object> after = (HashMap<String, Object>)list.get(i);
+	    		HashMap<String, Object> before = (HashMap<String, Object>)list.get(i-1);
+	    		if (after.get(uniqueField).toString().equals(before.get(uniqueField).toString())) {   
+	    			//后一行的值与前一行的值做比较，相同就需要合并
+	   				mark += 1; 
+	   				for (ColumnDto columnDto : mergeFields) {	   					
+						//合并单元格	
+	   					int firstCol = columnDto.getCellRegionDto().getFirstCol();
+						CellRangeAddress region = new CellRangeAddress(
+							i + 1 - mark, 
+							i + 1,
+							firstCol,
+							firstCol
+						);						
+						sheet.addMergedRegion(region);
+						//HSSFCell hssfCell = sheet.getRow(i + 1 - mark).getCell(firstCol);
+						//HSSFCellStyle columnNewStyle = getColumnStyle(wb);						
+						//columnNewStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+                        //hssfCell.setCellStyle(columnNewStyle);
+					}   			 
+	    		}else{
+	    			//一旦前后两行的值不一样了，那么需要合并的格子数mark就需要重新计算
+	   				mark=1;                                         
+	    		}
+	    	}
 		}
+				
 		// 填充内容		
 		for (int index = firstIndex; index <= lastIndex; index++) {
 			// 获取单个对象
@@ -590,6 +628,7 @@ public class ExcelUtil {
 			}
 			rowNo++;
 		}
+
 		// 设置自动列宽
 		setColumnAutoSize(sheet, 5);
 	}
@@ -682,6 +721,56 @@ public class ExcelUtil {
 				}											
 			}
 		}		
+	}
+	
+	/**
+	 * 
+	 * @param columnDtos 表头所有字段
+	 * @param mergeFields 要合并的列名集合
+	 * @return 返回判别相同行合并唯一性字段
+	 */
+	private static String getMergeFields(List<ColumnDto> columnDtos, List<ColumnDto> mergeFields){
+		String uniqueField = null;
+		for (ColumnDto columnDto : columnDtos) {
+			if(columnDto.getMergeCell()!=null && columnDto.getMergeCell()){
+				mergeFields.add(columnDto);
+				if(uniqueField==null && columnDto.getMergeUnique()!=null && columnDto.getMergeUnique()){
+					uniqueField = columnDto.getFieldName();
+				}			
+			}
+			String resultValue = getChildrenMergeFields(columnDto, mergeFields);
+			if(uniqueField==null && resultValue!=null){
+				uniqueField = resultValue;
+			}
+		}
+		return uniqueField;
+	}
+	
+	/**
+	 * 递归获取合并列节点
+	 * @param parentNode
+	 * @param mergeFields
+	 * @return
+	 */
+	private static String getChildrenMergeFields(ColumnDto parentNode, List<ColumnDto> mergeFields){
+		String uniqueField = null;
+		if(parentNode!=null){
+			if(parentNode.getMergeCell()!=null && parentNode.getMergeCell()){
+				mergeFields.add(parentNode);
+				if(uniqueField==null && parentNode.getMergeUnique()!=null && parentNode.getMergeUnique()){
+					uniqueField = parentNode.getFieldName();
+				}				
+			}
+			if(parentNode.getChildren()!=null){			
+				for(ColumnDto childNode : parentNode.getChildren()) {
+					String resultValue = getChildrenMergeFields(childNode, mergeFields);
+					if(uniqueField==null && resultValue!=null){
+						uniqueField = resultValue;
+					}
+				}
+			}
+		}
+		return uniqueField;
 	}
 
 	/**
@@ -854,7 +943,7 @@ public class ExcelUtil {
 		// 设置水平对齐的样式为居中对齐;
 		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 		// 设置垂直对齐的样式为居中对齐;
-		// style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		//style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 
 		return style;
 	}

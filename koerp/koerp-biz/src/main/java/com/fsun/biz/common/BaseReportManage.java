@@ -10,7 +10,7 @@ import com.fsun.domain.report.ReportCondition;
  * @author fsun
  * @date 2019年4月19日
  */
-public abstract class BaseReportManage {
+public abstract class BaseReportManage extends BaseManage {
 
 	/**
 	 * 

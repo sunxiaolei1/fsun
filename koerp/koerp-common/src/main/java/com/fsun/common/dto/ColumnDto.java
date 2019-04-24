@@ -29,6 +29,16 @@ public class ColumnDto {
 	 */
 	private String parent;
 	
+	/**
+	 * 是否支持相同行单元格合并
+	 */
+	private Boolean mergeCell;
+	
+	/**
+	 * 相同行合并唯一性字段
+	 */
+	private Boolean mergeUnique;
+	
 	
 	/**
 	 * 表头字段单元格位置
@@ -105,5 +115,21 @@ public class ColumnDto {
 	public void setParent(String parent) {
 		this.parent = parent;
 	}
-	
+
+	public Boolean getMergeCell() {
+		return mergeCell;
+	}
+
+	public void setMergeCell(Boolean mergeCell) {
+		this.mergeCell = mergeCell;
+	}
+
+	public Boolean getMergeUnique() {
+		return mergeUnique;
+	}
+
+	public void setMergeUnique(Boolean mergeUnique) {
+		this.mergeUnique = mergeUnique;
+	}
+
 }

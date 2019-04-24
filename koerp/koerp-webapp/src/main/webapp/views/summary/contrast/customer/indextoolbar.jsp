@@ -7,24 +7,30 @@
 	request.setAttribute("api", basePath);
 %>
 
-<a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-page_white_excel" plain="true" onclick="exportExcel()">导出excel</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">账单查看</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-page_white_excel" plain="true" onclick="exportPayAccounts()">账单导出</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-page_white_excel" plain="true" onclick="exportOrders('0')">导出(按条件-订单及商品)</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-page_white_excel" plain="true" onclick="exportOrders('1')">导出(全部-订单及商品)</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>
 
 <script type="text/javascript">
 
 //excel导出
-function exportExcel(){	
+function exportOrders(isAll){	
+	debugger
+	console.log(12321);
 	var queryParams = initQueryParams();
-	var url = "${api}/summary/report/skuUseSo/exportExcel?shopId="+ queryParams.shopId 
-			+ "&startDate="+ queryParams.startDate 
-			+ "&endDate="+ queryParams.endDate;
+	var url = "${api}/summary/contrast/customer/exportOrders?notInCustomerTypes="+ queryParams.notInCustomerTypes;
+	if(isAll=='0'){		
+		url += ("&keywords="+ encodeURI(encodeURI(queryParams.keywords)) + "&shopId="+ queryParams.shopId
+		+ "&customerCode="+ queryParams.customerCode + "&carrierId="+ queryParams.carrierId
+		+ "&startDate="+ queryParams.startDate + "&endDate="+ queryParams.endDate);
+	}
 	window.open(url); 
 }
 
 //查看明细
 function toDetailView(rowData){
-	debugger
 	var currRow = null;
 	if(typeof rowData =='undefined'){
 		var rows = currDataGrid.datagrid('getSelections');
@@ -37,12 +43,10 @@ function toDetailView(rowData){
 		currRow = rowData;
 	}		
 	var queryParams = initQueryParams();
-	var url = "${api}/summary/report/skuUseSo/toDetailView?sku="+ currRow.sku
-			+ "&goodsName="+ currRow.goods_name
-			+ "&shopId="+ queryParams.shopId 
-			+ "&startDate="+ queryParams.startDate 
-			+ "&endDate="+ queryParams.endDate;
-	commonDialog("ordersDialog", "商品交易明细", "95%", "80%", url, "icon-book_open");
+	var url = "${api}/summary/contrast/customer/toPayAccountView?orderId="+ currRow.order_id
+			+ "&buyerName="+ currRow.buyer_name
+			+ "&shopName="+ currRow.shop_name;
+	commonDialog("ordersDialog", "账单明细", "90%", "80%", url, "icon-book_open");
 
 }
 
