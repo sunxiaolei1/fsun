@@ -25,6 +25,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -573,64 +575,103 @@ public class ExcelUtil {
 				headCell.setCellValue(cnFields[i]);
 				headCell.setCellStyle(titleStyle);
 			}
-		}		
+		}	
 		
-		//自动合并行
-		int headerRowNo = rowNo + 1;
-		List<ColumnDto> mergeFields = new ArrayList<>();
-		String uniqueField = getMergeFields(columnDtos, mergeFields);
-		if(uniqueField!=null && mergeFields.size()>0){ 
-			//data是默认的表格加载数据，包括rows和Total
-	   		int mark=1;                                                 
-	    	//这里涉及到简单的运算，mark是计算每次需要合并的格子数
-	    	for (int i = headerRowNo; i <list.size(); i++) {     
-	    		//这里循环表格当前的数据
-	    		HashMap<String, Object> after = (HashMap<String, Object>)list.get(i);
-	    		HashMap<String, Object> before = (HashMap<String, Object>)list.get(i-1);
-	    		if (after.get(uniqueField).toString().equals(before.get(uniqueField).toString())) {   
-	    			//后一行的值与前一行的值做比较，相同就需要合并
-	   				mark += 1; 
-	   				for (ColumnDto columnDto : mergeFields) {	   					
-						//合并单元格	
-	   					int firstCol = columnDto.getCellRegionDto().getFirstCol();
-						CellRangeAddress region = new CellRangeAddress(
-							i + 1 - mark, 
-							i + 1,
-							firstCol,
-							firstCol
-						);						
-						sheet.addMergedRegion(region);
-						//HSSFCell hssfCell = sheet.getRow(i + 1 - mark).getCell(firstCol);
-						//HSSFCellStyle columnNewStyle = getColumnStyle(wb);						
-						//columnNewStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-                        //hssfCell.setCellStyle(columnNewStyle);
-					}   			 
-	    		}else{
-	    			//一旦前后两行的值不一样了，那么需要合并的格子数mark就需要重新计算
-	   				mark=1;                                         
-	    		}
-	    	}
-		}
-				
+		int headerRowNo = rowNo;	
 		// 填充内容		
 		for (int index = firstIndex; index <= lastIndex; index++) {
 			// 获取单个对象
 			HSSFRow contentRow = sheet.createRow(rowNo);
 			T item = list.get(index);
 			if (item != null) {
+				Boolean isGray = false;
+				Object unusual = getFieldValueByNameSequence("unusual", item);
+				if(unusual!=null){
+					if(unusual instanceof Boolean){
+						if((Boolean)unusual){
+							isGray = true;
+						}
+					}
+				}
 				for (int i = 0; i < enFields.length; i++) {
 					Object objValue = getFieldValueByNameSequence(enFields[i], item);
 					String fieldValue = objValue == null ? "" : objValue.toString();
 					HSSFCell contentCell = contentRow.createCell(i);
 					contentCell.setCellValue(fieldValue);
-					contentCell.setCellStyle(columnstyle);
+					if(isGray){
+						HSSFCellStyle columnNewStyle = getColumnStyle(wb);
+						columnNewStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+						columnNewStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+						contentCell.setCellStyle(columnNewStyle);
+					}else{
+						contentCell.setCellStyle(columnstyle);
+					}				
+					
 				}
 			}
 			rowNo++;
 		}
 
+		//自动合并行
+		List<ColumnDto> mergeFields = new ArrayList<>();
+		String uniqueField = getMergeFields(columnDtos, mergeFields);
+		if(uniqueField!=null && mergeFields.size()>0){ 
+			//data是默认的表格加载数据，包括rows和Total
+	   		int mark = 1;                                                 
+	    	//这里涉及到简单的运算，mark是计算每次需要合并的格子数
+	   		int i = 0;
+	    	for (i = 1; i <list.size(); i++) {     
+	    		//这里循环表格当前的数据
+	    		HashMap<String, Object> after = (HashMap<String, Object>)list.get(i);
+	    		HashMap<String, Object> before = (HashMap<String, Object>)list.get(i-1);
+	    		//后一行的值与前一行的值做比较，相同就累加合并数，否则进行数据合并行且重新计算mark=1	
+	    		if (after.get(uniqueField).toString().equals(before.get(uniqueField).toString())) {   	    			
+	   				mark += 1;    				  			 
+	    		}else{
+	    			mergeCells(mergeFields, i, headerRowNo, mark, sheet, wb);	    				    				    			
+	   				mark = 1;                                         
+	    		}	    		   			
+	    	}
+	    	//判别最后一行数据是否要进行行合并 			
+    		mergeCells(mergeFields, i, headerRowNo, mark, sheet, wb); 
+		}				
 		// 设置自动列宽
 		setColumnAutoSize(sheet, 5);
+	}
+	
+	/**
+	 * 行合并
+	 * @param mergeFields 要合并的列
+	 * @param currIndex 当前单元格索引
+	 * @param headerRowNo 表头目录行数
+	 * @param mark 要合并行数
+	 * @param sheet 
+	 */
+	private static void mergeCells(List<ColumnDto> mergeFields, int currIndex, 
+			int headerRowNo, int mark, HSSFSheet sheet, HSSFWorkbook wb){
+		
+		if(mark>1){
+			System.out.println("headerRowNo + i + 1 - mark =="+ (headerRowNo + currIndex + 1 - mark)
+    				+ ", headerRowNo + i =="+ (headerRowNo + currIndex));
+			for (ColumnDto columnDto : mergeFields) {	   					
+				//合并单元格	
+				int firstCol = columnDto.getCellRegionDto().getFirstCol();
+				CellRangeAddress region = new CellRangeAddress(
+					headerRowNo + currIndex - mark, 
+					headerRowNo + currIndex - 1,
+					firstCol,
+					firstCol
+				);						
+				sheet.addMergedRegion(region);
+				HSSFCell hssfCell = sheet.getRow(headerRowNo + currIndex - mark).getCell(firstCol);
+				HSSFCellStyle columnNewStyle = getColumnStyle(wb);						
+				//垂直居中
+				columnNewStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+				// 设置自动换行;
+				columnNewStyle.setWrapText(true);
+	            hssfCell.setCellStyle(columnNewStyle);
+			} 
+		}		
 	}
 	
 	/**

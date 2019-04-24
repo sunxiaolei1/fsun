@@ -27,6 +27,40 @@ var currPayAccountDataGrid = $("#payAccountDataGrid");
 var mergeUnique = null;
 var footerFirstColumn = "order_id";
 
+var orderTypeFormatter = function(value, row){
+	return formatter(value, window.parent.orderType); 
+};
+
+var tradeStatusFormatter = function(value, row){
+	if(value){
+		var spanHeader = "<b style='color:green;'>";
+		if(value=='40'){
+			spanHeader = "<b style='color:red;'>";
+		}
+		var spanFooter = "</b>";
+		return spanHeader + formatter(value, window.parent.tradeStatus) + spanFooter;
+	}
+};
+
+var takeStatusFormatter = function(value, row){
+	if(value){
+		var spanHeader = "<b style='color:green;'>";
+		if(value=='00'){
+			spanHeader = "<b style='color:red;'>";
+		}else if(value=='10'){
+			spanHeader = "<b style='color:#FF9933;'>";
+		}
+		var spanFooter = "</b>";
+		return spanHeader + formatter(value, window.parent.orderTakeStatus) + spanFooter;
+	}
+	return "--";
+};
+
+var refundStatusFormatter = function(value, row){
+	var refundStatus = formatter(value, window.parent.refundStatus);
+	return refundStatus!=null?"<b style='color:red;'>"+ refundStatus +"</b>":"--";
+};
+
 $(function() {
 		
 	$.ajax({

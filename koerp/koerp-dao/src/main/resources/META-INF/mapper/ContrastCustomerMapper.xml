@@ -55,18 +55,26 @@
 		g.sku AS sku,
 		g.sale_price AS sale_price,
 		g.qty AS qty,
-		g.gift_count AS gift_count,
+		IFNULL(g.gift_count, 0) AS gift_count,
 		g.total_price AS total_price,
+		IFNULL(g.untake_qty, 0) AS untake_qty,
 		o.buyer_id AS customer_code,
 		o.buyer_name AS buyer_name,
 		o.carrier_name as carrier_name,
 		o.order_id AS order_id,
+		o.order_type AS order_type,
+		o.trade_status AS trade_status,
+		o.take_status AS take_status,
+		o.refund_status AS refund_status,
+		o.refund_id AS refund_id,
 		o.shop_name AS shop_name,
 		o.order_price AS order_price,
 		o.recept_price AS recept_price,
 		(o.discount_price + o.to_zero_price) AS discount_price,
 		o.coupon_price AS coupon_price,
-		o.order_time AS order_time
+		o.cash_name AS cash_name,
+		o.order_time AS order_time,
+		o.seller_notes AS seller_notes
 	FROM bus_order o LEFT JOIN bus_goods g ON g.order_id = o.order_id
 	LEFT JOIN bus_customer c ON  c.customer_code = o.buyer_id
 	<include refid="conditions" />
@@ -94,21 +102,30 @@
 		g.sku AS sku,
 		g.sale_price AS sale_price,
 		g.qty AS qty,
-		g.gift_count AS gift_count,
+		IFNULL(g.gift_count, 0) AS gift_count,
 		g.total_price AS total_price,
+		IFNULL(g.untake_qty, 0) AS untake_qty,
 		o.buyer_id AS customer_code,
 		o.buyer_name AS buyer_name,
 		o.carrier_name as carrier_name,
-		o.order_id AS order_id,
+		o.order_id AS order_id,	 
+       	getValueForBasCodes(o.order_type,'OrderType') AS order_type,
+       	getValueForBasCodes(o.trade_status,'TradeStatus') AS trade_status,
+       	getValueForBasCodes(o.take_status,'OrderTakeStatus') AS take_status,
+       	getValueForBasCodes(o.refund_status,'RefundStatus') AS refund_status,
+		o.refund_id AS refund_id,
 		o.shop_name AS shop_name,
 		o.order_price AS order_price,
 		o.recept_price AS recept_price,
 		(o.discount_price + o.to_zero_price) AS discount_price,
 		o.coupon_price AS coupon_price,
-		o.order_time AS order_time
+		o.cash_name AS cash_name,
+		o.order_time AS order_time,
+		o.seller_notes AS seller_notes
 	FROM bus_order o LEFT JOIN bus_goods g ON g.order_id = o.order_id
 	LEFT JOIN bus_customer c ON  c.customer_code = o.buyer_id
 	<include refid="conditions" />
+	ORDER BY o.order_time desc
   </select>
   
   <!-- 用于对账单及报表查看账单明细使用 -->
