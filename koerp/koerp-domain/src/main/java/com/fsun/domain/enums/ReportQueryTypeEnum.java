@@ -19,9 +19,15 @@ public enum ReportQueryTypeEnum {
 	SKU_USE_SO("p_sus", "P_USE_SO_REPORT", 2),
 	
 	/**
-	 * 客户对账单
+	 * 销售对账单
 	 */
-	CUSTOMER("v_cc", "V_CUSTOMER_CONTRAST", 1),
+	CUSTOMER("b_bus_order", "T_BUS_ORDER", 1),
+	
+	/**
+	 * 售后单汇总
+	 */
+	REFUND("b_bus_refund", "T_BUS_REFUND", 1),
+	
 	
 	UNKNOW(null, "未知", 0);
 	

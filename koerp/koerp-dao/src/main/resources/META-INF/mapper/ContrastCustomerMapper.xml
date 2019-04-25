@@ -14,7 +14,7 @@
   		<if test="carrierId != null and carrierId != ''">
   			and o.carrier_id = #{carrierId}
   		</if>
-  	  	  		 	 		 		
+  		  	  	  		 	 		 		
   		<if test="orderId != null and orderId != ''">
   			and o.order_id = #{orderId}
   		</if>
@@ -22,6 +22,10 @@
   		<if test="shopId != null and shopId != ''">
   			and o.shop_id = #{shopId}
   		</if>
+  		
+  		<if test="orderType != null">
+			and o.order_type = #{orderType}
+		</if>
   		
   		<if test="tradeStatus != null and tradeStatus != ''">
   			and o.trade_status = #{tradeStatus}

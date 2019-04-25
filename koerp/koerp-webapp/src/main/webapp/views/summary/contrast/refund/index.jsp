@@ -3,7 +3,7 @@
 <%@ include file="../../../headerJS.jsp" %>
 
 <div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="销售对账单" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
+	<div title="售后单汇总" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
 		<!-- 查询条件 -->
 		<%@include file="./searchbar.jsp"%>
 		
@@ -25,35 +25,24 @@
 var currDataGrid = $("#ordersDataGrid");
 var currPayAccountDataGrid = $("#payAccountDataGrid");
 var mergeUnique = null;
-var footerFirstColumn = "order_id";
+var footerFirstColumn = "refund_id";
 
-var orderTypeFormatter = function(value, row){
-	return formatter(value, window.parent.orderType); 
+var refundTypeFormatter = function(value, row){
+	return formatter(value, window.parent.refundType); 
 };
 
-var tradeStatusFormatter = function(value, row){
-	if(value){
-		var spanHeader = "<b style='color:green;'>";
-		if(value=='40'){
-			spanHeader = "<b style='color:red;'>";
-		}
-		var spanFooter = "</b>";
-		return spanHeader + formatter(value, window.parent.tradeStatus) + spanFooter;
-	}
+var refundReasonFormatter = function(value, row){
+	return formatter(value, window.parent.refundReason); 
 };
 
-var takeStatusFormatter = function(value, row){
-	if(value){
-		var spanHeader = "<b style='color:green;'>";
-		if(value=='00'){
-			spanHeader = "<b style='color:red;'>";
-		}else if(value=='10'){
-			spanHeader = "<b style='color:#FF9933;'>";
-		}
-		var spanFooter = "</b>";
-		return spanHeader + formatter(value, window.parent.orderTakeStatus) + spanFooter;
-	}
-	return "--";
+var allReturnFormatter = function(value, row){
+	if(typeof(value) != "undefined"){
+		var allReturn = "<b style='color:green;'>否</b>";
+   		if(value==true){
+   			allReturn = "<b style='color:red;'>是</b>";
+   		}
+   		return allReturn;
+	} 	
 };
 
 var refundStatusFormatter = function(value, row){
@@ -81,10 +70,10 @@ $(function() {
 				    fit:true,//自动大小
 				    queryParams:{
 				    	"notInCustomerTypes": "",  ///"SK",
-				    	"firstColumn": footerFirstColumn				    	
+				    	"firstColumn": footerFirstColumn
 				    },
 				    remoteSort:true,
-				    sortName:"order_time",
+				    sortName:"refund_time",
 			        sortOrder:"desc",
 				    singleSelect:true,//是否单选
 				    pagination:true,//分页控件

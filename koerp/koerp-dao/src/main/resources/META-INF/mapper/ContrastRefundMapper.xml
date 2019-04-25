@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.report.mapper.ContrastRefundMapper" >
+
+  <sql id="conditions">
+  	<where>  	 		
+  		<if test="q != null and q != ''">
+  			and (o.order_id like concat(concat('%',#{q}),'%')
+  				or o.refund_id like concat(concat('%',#{q}),'%')
+  				or o.barter_order_id like concat(concat('%',#{q}),'%')  
+  			)
+  		</if>
+  		
+  		<if test="refundId != null and refundId != ''">
+  			and o.refund_id = #{refundId}
+  		</if>
+  		  	  	  		 	 		 		
+  		<if test="barterOrderId != null and barterOrderId != ''">
+  			o.barter_order_id = #{barterOrderId}  
+  		</if>
+  		
+  		<if test="shopId != null and shopId != ''">
+  			and o.shop_id = #{shopId}
+  		</if>
+  		
+  		<if test="refundType != null">
+			and o.refund_type = #{refundType}
+		</if>
+  		
+  		<if test="refundStatus != null">
+  			and o.refund_status = #{refundStatus}
+  		</if>
+  		
+  		<if test="refundReason != null">
+  			and o.refund_reason = #{refundReason}
+  		</if> 		
+  		
+  		<if test="buyerId != null and buyerId != ''">
+  			and o.buyer_id = #{buyerId}
+  		</if> 
+  		
+  		<if test="notInCustomerTypeArr != null and notInCustomerTypeArr.length>0">	
+		    AND c.customer_type not in
+			<foreach collection="notInCustomerTypeArr" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>
+		</if> 		
+  		
+  		<if test="startTime != null">
+			and o.refund_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			and o.refund_time <![CDATA[ <= ]]>#{endTime,jdbcType=TIMESTAMP}
+		</if>
+  		
+	</where>
+  </sql>
+
+  <select id="selectListMap" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.report.ContrastRefundCondition" >   
+	SELECT
+		g.goods_name AS goods_name,
+		g.sku AS sku,
+		g.sale_price AS sale_price,
+		g.origin_qty AS origin_qty,
+		g.qty AS qty,
+		g.total_price AS total_price,
+		o.refund_id AS refund_id,
+		o.order_id AS order_id,
+		IFNULL(o.barter_order_id, '--') AS barter_order_id,
+		o.buyer_id AS buyer_id,
+		o.buyer_name AS buyer_name,		
+		o.refund_type AS refund_type,
+		o.refund_status AS refund_status,
+		o.shop_name AS shop_name,
+		o.refund_reason AS refund_reason,
+		o.memo AS memo,
+		IFNULL(o.refund_price, 0) AS refund_price,
+		IFNULL(o.diff_price, 0) AS diff_price,
+		o.all_return AS all_return,
+		o.refund_time AS refund_time,
+		o.created_name AS created_name
+	FROM bus_refund o LEFT JOIN bus_refund_goods g ON g.refund_id = o.refund_id
+	LEFT JOIN bus_customer c ON  c.customer_code = o.buyer_id
+	<include refid="conditions" />
+  </select>
+  
+  <select id="findFooter" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.report.ContrastRefundCondition" >    
+	SELECT 
+		sum(o.refund_price) as refund_price
+    FROM bus_refund o 
+    LEFT JOIN bus_customer c ON c.customer_code = o.buyer_id
+    	<include refid="conditions" />
+  </select>
+  
+  
+  <select id="export" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.report.ContrastRefundCondition" >    
+	SELECT
+		g.goods_name AS goods_name,
+		g.sku AS sku,
+		g.sale_price AS sale_price,
+		g.origin_qty AS origin_qty,
+		g.qty AS qty,
+		g.total_price AS total_price,
+		o.refund_id AS refund_id,
+		o.order_id AS order_id,
+		IFNULL(o.barter_order_id, '--') AS barter_order_id,
+		o.buyer_id AS buyer_id,
+		o.buyer_name AS buyer_name,		
+		getValueForBasCodes(o.refund_type,'RefundType') AS refund_type,
+		getValueForBasCodes(o.refund_status,'RefundStatus') AS refund_status,
+		o.shop_name AS shop_name,
+		getValueForBasCodes(o.refund_reason,'RefundReason') AS refund_reason,
+		o.memo AS memo,
+		IFNULL(o.refund_price, 0) AS refund_price,
+		IFNULL(o.diff_price, 0) AS diff_price,
+		if(o.all_return=1,'是','否') AS all_return,
+		o.refund_time AS refund_time,
+		o.created_name AS created_name
+	FROM bus_refund o LEFT JOIN bus_refund_goods g ON g.refund_id = o.refund_id
+	LEFT JOIN bus_customer c ON  c.customer_code = o.buyer_id
+	<include refid="conditions" />
+	ORDER BY o.refund_time desc
+  </select>
+  
+  <!-- 用于对账单及报表查看账单明细使用 -->
+  <select id="findPayAccount" resultType="java.util.Map" 
+  	parameterType="com.fsun.domain.report.ContrastRefundCondition" >    
+	SELECT
+	    o.refund_id as refund_id,
+		o.order_id as order_id,
+		o.shop_name as shop_name,
+	  	o.buyer_name as buyer_name,
+	 	p.line_no as line_no,
+	  	bc.code_name as pay_mode,
+	  	p.recept_price as recept_price, 
+	  	p.pay_price as pay_price, 
+	  	p.dib_price as dib_price,
+	  	p.discount_amount as discount_amount,
+	  	p.trade_no as trade_no,
+	  	p.card_no as card_no,
+	  	p.trade_time as trade_time
+	FROM bus_refund o
+	LEFT JOIN bus_pay_account p ON o.refund_id = p.order_id
+	LEFT JOIN bus_bas_codes bc ON bc.code_type = 'PayMode' AND bc.code_code = p.pay_mode
+	LEFT JOIN bus_customer c ON o.buyer_id = c.customer_code 
+		<include refid="conditions" />	
+  </select>
+  
+</mapper>

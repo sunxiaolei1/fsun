@@ -16,6 +16,12 @@ public class ContrastCustomerCondition extends ReportCondition{
 	 */
 	private String orderId;
 	
+	 /**
+     * 订单类型 1 pos销售订单，2 销售寄存单
+     * 表字段 : bus_order.order_type
+     */
+    private Short orderType;
+	
 	/**
 	 * 交易门店
 	 */
@@ -148,6 +154,20 @@ public class ContrastCustomerCondition extends ReportCondition{
 	 */
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
+	}
+
+	/**
+	 * @return the orderType
+	 */
+	public Short getOrderType() {
+		return orderType;
+	}
+
+	/**
+	 * @param orderType the orderType to set
+	 */
+	public void setOrderType(Short orderType) {
+		this.orderType = orderType;
 	}
 
 }

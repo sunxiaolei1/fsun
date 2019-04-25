@@ -131,8 +131,8 @@
   			and a.trade_status = #{tradeStatus}
   		</if>
   		
-  		<if test="orderType != null and orderType != ''">
-			and a.order_type = #{orderType,jdbcType=VARCHAR}
+  		<if test="orderType != null">
+			and a.order_type = #{orderType}
 		</if>
   		
   		<if test="startTime != null">

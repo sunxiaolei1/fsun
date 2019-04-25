@@ -18,11 +18,11 @@
 //excel导出
 function exportOrders(isAll){	
 	var queryParams = initQueryParams();
-	var url = "${api}/summary/contrast/customer/exportOrders?notInCustomerTypes="+ queryParams.notInCustomerTypes;
+	var url = "${api}/summary/contrast/refund/exportOrders?notInCustomerTypes="+ queryParams.notInCustomerTypes;
 	if(isAll=='0'){		
-		url += ("&keywords="+ encodeURI(encodeURI(queryParams.keywords)) + "&shopId="+ queryParams.shopId
-		+ "&customerCode="+ queryParams.customerCode + "&carrierId="+ queryParams.carrierId
-		+ "&tradeStatus="+ queryParams.tradeStatus + "&orderType="+ queryParams.orderType
+		url += ("&q="+ encodeURI(encodeURI(queryParams.q)) + "&shopId="+ queryParams.shopId
+		+ "&buyerId="+ queryParams.buyerId
+		+ "&refundStatus="+ queryParams.refundStatus + "&refundType="+ queryParams.refundType
 		+ "&startDate="+ queryParams.startDate + "&endDate="+ queryParams.endDate);
 	}
 	window.open(url); 
@@ -30,19 +30,19 @@ function exportOrders(isAll){
 
 function exportPayAccounts(){
 	var queryParams = initQueryParams();
-	var url = "${api}/summary/contrast/customer/exportPayAccounts?notInCustomerTypes="+ queryParams.notInCustomerTypes;	
-		+ "&keywords="+ encodeURI(encodeURI(queryParams.keywords)) + "&shopId="+ queryParams.shopId
-		+ "&customerCode="+ queryParams.customerCode + "&carrierId="+ queryParams.carrierId
-		+ "&tradeStatus="+ queryParams.tradeStatus + "&orderType="+ queryParams.orderType
-		+ "&startDate="+ queryParams.startDate + "&endDate="+ queryParams.endDate;
+	var url = "${api}/summary/contrast/refund/exportPayAccounts?notInCustomerTypes="+ queryParams.notInCustomerTypes	
+	        + "&q="+ encodeURI(encodeURI(queryParams.q)) + "&shopId="+ queryParams.shopId
+			+ "&buyerId="+ queryParams.buyerId
+			+ "&refundStatus="+ queryParams.refundStatus + "&refundType="+ queryParams.refundType
+			+ "&startDate="+ queryParams.startDate + "&endDate="+ queryParams.endDate;
 	window.open(url); 
 }
 
 //跳转至编辑界面
 function toDetailView(rowData){
-	var url = "${api}/summary/contrast/customer/toDetailView?orderId="+ rowData.order_id +"&orderType="+ rowData.order_type +"&buttontype=busOrder";
+	var url = "${api}/summary/contrast/refund/toDetailView?refundId="+ rowData.refund_id;
 	var icon = "icon-application_view_detail";
-	var subtitle = "销售单("+ rowData.order_id +")详情";
+	var subtitle = "退货单("+ rowData.refund_id +")详情";
 	parent.addTab(subtitle, url, icon);	
 }
 
@@ -55,7 +55,7 @@ function toPayAccountView(){
 	}
 	var currRow = rows[0];	
 	var queryParams = initQueryParams();
-	var url = "${api}/summary/contrast/customer/toPayAccountView?orderId="+ currRow.order_id
+	var url = "${api}/summary/contrast/refund/toPayAccountView?refundId="+ currRow.refund_id
 			+ "&buyerName="+ currRow.buyer_name
 			+ "&shopName="+ currRow.shop_name;
 	commonDialog("ordersDialog", "账单明细", "90%", "80%", url, "icon-book_open");

@@ -261,7 +261,14 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		}				
 		if(this.load(orderId)!=null){
 			throw new OrderException(SCMErrorEnum.BUS_ORDER_EXISTED);
-		}			
+		}	
+		BigDecimal orderPrice = header.getOrderPrice();
+		BigDecimal receptPrice = header.getReceptPrice();
+		BigDecimal discountPrice = header.getDiscountPrice();
+		BigDecimal toZeroPrice = header.getToZeroPrice();
+		if(orderPrice.compareTo(receptPrice.add(discountPrice.add(toZeroPrice)))!=0){
+			throw new OrderException(SCMErrorEnum.BUS_ORDER_PAY_ILLEGAL);
+		}
 		String buyerId = header.getBuyerId();
 		BusCustomer busCustomer = busCustomerManage.loadByCode(buyerId);
 		if(busCustomer==null){

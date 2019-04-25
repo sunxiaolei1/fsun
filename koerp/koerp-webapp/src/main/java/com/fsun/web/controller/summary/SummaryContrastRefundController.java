@@ -17,35 +17,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fsun.api.report.ContrastCustomerApi;
+import com.fsun.api.report.ContrastRefundApi;
 import com.fsun.common.dto.ColumnDto;
 import com.fsun.common.utils.ExcelUtil;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.enums.ReportQueryTypeEnum;
-import com.fsun.domain.report.ContrastCustomerCondition;
+import com.fsun.domain.report.ContrastRefundCondition;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
 
 /**
- * 客户对账单
+ * 售后单汇总
  * @author fsun
  * @date 2019年4月18日
  */
 @Controller
-@RequestMapping("/summary/contrast/customer")
-public class SummaryContrastCustomerController extends BaseController {
+@RequestMapping("/summary/contrast/refund")
+public class SummaryContrastRefundController extends BaseController {
 	
 	@Autowired
-	private ContrastCustomerApi contrastCustomerApi;
+	private ContrastRefundApi contrastRefundApi;
 	
 	/**
 	 * @return
 	 */
 	@RequestMapping(value="/index")
 	public ModelAndView index() {
-		ModelAndView modelAndView = new ModelAndView("/summary/contrast/customer/index");
-		modelAndView.addObject("queryType", ReportQueryTypeEnum.CUSTOMER.getCode());
+		ModelAndView modelAndView = new ModelAndView("/summary/contrast/refund/index");
+		modelAndView.addObject("queryType", ReportQueryTypeEnum.REFUND.getCode());
 		return modelAndView;
 	}
 
@@ -53,9 +53,9 @@ public class SummaryContrastCustomerController extends BaseController {
 	 * 跳转至订单查看界面
 	 */
 	@RequestMapping("/toDetailView")
-	public ModelAndView toDetailView(@RequestParam("orderId") String orderId) {				
-		ModelAndView modelAndView = new ModelAndView("/summary/contrast/customer/toDetailView");
-		modelAndView.addObject("orderId", orderId);		
+	public ModelAndView toDetailView(@RequestParam("refundId") String refundId) {				
+		ModelAndView modelAndView = new ModelAndView("/summary/contrast/refund/toDetailView");
+		modelAndView.addObject("refundId", refundId);		
 		return modelAndView;
 	}
 	
@@ -64,18 +64,18 @@ public class SummaryContrastCustomerController extends BaseController {
 	 */
 	@RequestMapping(value="/toPayAccountView")
 	public ModelAndView toPayAccountView() {
-		ModelAndView modelAndView = new ModelAndView("/summary/contrast/customer/toPayAccountView");
+		ModelAndView modelAndView = new ModelAndView("/summary/contrast/refund/toPayAccountView");
 		return modelAndView;
 	}
 	
 	@RequestMapping(value="/findPage", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public HttpResult findPage(ContrastCustomerCondition condition) {
+	public HttpResult findPage(ContrastRefundCondition condition) {
 		try {			
-			PageModel pageModel = contrastCustomerApi.findPage(condition);
+			PageModel pageModel = contrastRefundApi.findPage(condition);
 			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
 					&& pageModel.getTotal()>0){
-				HashMap<String, Object> footer = contrastCustomerApi.findFooter(condition);
+				HashMap<String, Object> footer = contrastRefundApi.findFooter(condition);
 				return success(pageModel, new Object[]{footer});
 			}
 			return success(pageModel, new Object[]{});
@@ -87,9 +87,9 @@ public class SummaryContrastCustomerController extends BaseController {
 	
 	@RequestMapping(value="/payAccount/list", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public HttpResult findPayAccount(ContrastCustomerCondition condition) {
+	public HttpResult findPayAccount(ContrastRefundCondition condition) {
 		try {
-			return success(contrastCustomerApi.findPayAccount(condition));
+			return success(contrastRefundApi.findPayAccount(condition));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -97,47 +97,48 @@ public class SummaryContrastCustomerController extends BaseController {
 	}
 	
 	/**
-	 * 导出对账单-商品及订单
+	 * 导出售后对账单-商品及订单
 	 * @param condition
 	 * @param request
 	 * @param response
 	 */
 	@RequestMapping("/exportOrders")
-	public void exportOrders(ContrastCustomerCondition condition,
+	public void exportOrders(ContrastRefundCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
 			//对得到的参数进行解码 				
-			if(condition.getKeywords()!=null &&!"".equals(condition.getKeywords())){
-				condition.setKeywords(URLDecoder.decode(condition.getKeywords(),"utf-8"));
+			if(condition.getQ()!=null &&!"".equals(condition.getQ())){
+				condition.setQ(URLDecoder.decode(condition.getQ(),"utf-8"));
 			}
-			condition.setQueryType(ReportQueryTypeEnum.CUSTOMER.getCode());
-			Map<String, Object> map = contrastCustomerApi.exportMap(condition);
+			condition.setQueryType(ReportQueryTypeEnum.REFUND.getCode());
+			Map<String, Object> map = contrastRefundApi.exportMap(condition);
 			List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");			
 			LinkedHashMap<String, String> fieldsMap = (LinkedHashMap<String, String>) map.get("fields");
 			List<ColumnDto> columnDtos = (List<ColumnDto>) map.get("columns");
-			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "客户对账单-商品及订单", response);
+			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "售后汇总-商品及订单", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * 导出对账单-账单
+	 * 导出售后对账单-账单
 	 * @param condition
 	 * @param request
 	 * @param response
 	 */
 	@RequestMapping("/exportPayAccounts")
-	public void exportPayAccounts(ContrastCustomerCondition condition,
+	public void exportPayAccounts(ContrastRefundCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
 			//对得到的参数进行解码 				
-			if(condition.getKeywords()!=null &&!"".equals(condition.getKeywords())){
-				condition.setKeywords(URLDecoder.decode(condition.getKeywords(),"utf-8"));
+			if(condition.getQ()!=null &&!"".equals(condition.getQ())){
+				condition.setQ(URLDecoder.decode(condition.getQ(),"utf-8"));
 			}
-			List<HashMap<String, Object>> details = contrastCustomerApi.findPayAccount(condition);			
+			List<HashMap<String, Object>> details = contrastRefundApi.findPayAccount(condition);			
 			LinkedHashMap<String, String> fieldsMap = new LinkedHashMap<String, String>();
-			fieldsMap.put("order_id", "销售单号");
+			fieldsMap.put("refund_id", "退货单号");
+			fieldsMap.put("order_id", "原订单号");
 			fieldsMap.put("buyer_name", "客户名称");
 			fieldsMap.put("shop_name", "交易门店");			
 			fieldsMap.put("line_no", "行号");
@@ -149,7 +150,7 @@ public class SummaryContrastCustomerController extends BaseController {
 			fieldsMap.put("trade_no", "支付流水号");
 			fieldsMap.put("card_no", "支付卡号");
 			fieldsMap.put("trade_time", "交易时间");
-			ExcelUtil.listToExcel(details, fieldsMap, "客户对账单-账单", response);
+			ExcelUtil.listToExcel(details, fieldsMap, "售后汇总-账单", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
