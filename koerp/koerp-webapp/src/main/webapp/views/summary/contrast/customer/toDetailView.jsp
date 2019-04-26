@@ -374,12 +374,7 @@ $(function () {
     		sortFilter($(this), data);		
     	    //分页拦截器
     	    var data = pagerFilter($(this), data, fields, "sku"); 
-
-    	    //同步订单头金额信息   	    
-   	    	var orderPrice = Number(data.footer[0].totalPrice);    	    	
-   	    	$("#orderPrice", $orderfm).numberbox("setValue", orderPrice);
-       	    $("#couponPrice", $orderfm).numberbox("setValue", data.footer[0].couponPrice);
-       	    $("#toZeroPrice", $orderfm).numberbox("setValue", (Math.round(orderPrice*100)%10)/100);
+    	    
 			return data; 
         },
         rowStyler:function(index,row){	    		    	

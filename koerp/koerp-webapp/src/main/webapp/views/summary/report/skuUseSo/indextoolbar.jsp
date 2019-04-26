@@ -24,7 +24,6 @@ function exportExcel(){
 
 //查看明细
 function toDetailView(rowData){
-	debugger
 	var currRow = null;
 	if(typeof rowData =='undefined'){
 		var rows = currDataGrid.datagrid('getSelections');

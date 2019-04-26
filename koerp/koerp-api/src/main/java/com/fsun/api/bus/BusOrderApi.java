@@ -64,6 +64,13 @@ public interface BusOrderApi extends BaseOrderCommonApi<BusOrder, BusOrderCondit
 	 * @return
 	 */
 	public PageModel findTakePage(BusOrderCondition condition);
+
+	/**
+	 * 修复错误单据
+	 * @param orderIds
+	 * @param currUser
+	 */
+	public void synErrorOrder(String orderIds, BusUserDto currUser);
 	
 
 }

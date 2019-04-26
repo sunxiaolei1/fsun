@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -449,6 +450,50 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		busOrder.setMemo(super.formatRemark(condition.getMemo(), busOrder.getMemo(), currUser));
 		busOrderManage.update(busOrder);
 		return orderId;
+	}
+	
+	@Transactional
+	@Override
+	public void synErrorOrder(String orderIds, BusUserDto currUser) {
+		String username = currUser.getUsername();
+		if(!"super".equals(username)){
+			throw new OrderException(SCMErrorEnum.USER_ILLEGAL);
+		}
+		if(orderIds!=null && orderIds!=""){
+			Date now = new Date();
+			for (String orderId : orderIds.split(",")) {
+				BusOrder busOrder = busOrderManage.load(orderId);
+				List<BusPayAccount> busPayAccounts = busPayAccountManage.listByHeaderId(orderId);
+				BigDecimal totalPrice = BigDecimal.ZERO;
+				for (BusPayAccount busPayAccount : busPayAccounts) {
+					totalPrice = totalPrice.add(busPayAccount.getReceptPrice());
+				}
+				BigDecimal diffPrice = busOrder.getOrderPrice().subtract(totalPrice);
+				BigDecimal newDiffPrice = busOrder.getOrderPrice().subtract(busOrder.getReceptPrice().
+					add(busOrder.getToZeroPrice().add(busOrder.getDiscountPrice())));
+				if(diffPrice.compareTo(BigDecimal.ZERO)>0 && diffPrice.compareTo(newDiffPrice)==0){
+					//更新账单
+					BusPayAccount newPayAccount = new BusPayAccount();
+					BeanUtils.copyProperties(busPayAccounts.get(0), newPayAccount);
+					newPayAccount.setPayId(PKMapping.GUUID(PKMapping.bus_pay_account));
+					newPayAccount.setPayMode(PayModeEnum.DISCOUNT.getValue());
+					newPayAccount.setDiscountAmount(diffPrice);
+					newPayAccount.setReceptPrice(diffPrice);
+					newPayAccount.setPayPrice(diffPrice);
+					newPayAccount.setVipId(null);
+					newPayAccount.setCardNo(null);
+					newPayAccount.setCreatedTime(now);
+					newPayAccount.setUpdatedTime(now);
+					newPayAccount.setLineNo(busPayAccounts.size()+1);
+					newPayAccount.setDibPrice(BigDecimal.ZERO);
+					busPayAccountManage.create(newPayAccount);
+					//更新订单
+					busOrder.setDiscountPrice(busOrder.getDiscountPrice().add(diffPrice));
+					busOrderManage.updateEach(busOrder);
+				}
+			}
+		}
+		
 	}
 	
 	/****************************    私有方法          ******************************/
