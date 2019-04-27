@@ -75,7 +75,7 @@ $(function() {
 
 //查询
 function query(){
-	var url = "${api}/summary/contrast/customer/findPage";
+	var url = "${api}/summary/contrast/order/findPage";
 	commonQuery(url);
 }
 

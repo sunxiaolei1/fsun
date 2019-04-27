@@ -21,7 +21,7 @@ public enum ReportQueryTypeEnum {
 	/**
 	 * 销售对账单
 	 */
-	CUSTOMER("b_bus_order", "T_BUS_ORDER", 1),
+	ORDER("b_bus_order", "T_BUS_ORDER", 1),
 	
 	/**
 	 * 售后单汇总
