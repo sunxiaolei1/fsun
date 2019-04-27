@@ -80,7 +80,7 @@ $(function() {
 				    border:true,
 				    fit:true,//自动大小
 				    queryParams:{
-				    	"notInCustomerTypes": "",  ///"SK",
+				    	"notInCustomerTypes": "",  ///"SK", 
 				    	"firstColumn": footerFirstColumn				    	
 				    },
 				    remoteSort:true,
