@@ -9,13 +9,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fsun.api.report.SkuUseSoReportApi;
-import com.fsun.biz.bus.report.manage.SkuUseSoReportManage;
+import com.fsun.api.report.ReportSkuUseSoApi;
+import com.fsun.biz.bus.report.manage.ReportSkuUseSoManage;
 import com.fsun.biz.common.BaseReportManage;
 import com.fsun.common.dto.ColumnDto;
 import com.fsun.domain.report.ReportCondition;
 import com.fsun.domain.report.ReportHeaderTree;
-import com.fsun.domain.report.SkuUseSoReportCondition;
+import com.fsun.domain.report.ReportSkuUseSoCondition;
 import com.fsun.service.common.BaseReportService;
 
 /**
@@ -24,18 +24,19 @@ import com.fsun.service.common.BaseReportService;
  * @date 2019年4月18日
  */
 @Service
-public class SkuUseSoReportService extends BaseReportService<SkuUseSoReportCondition> implements SkuUseSoReportApi {
+public class ReportSkuUseSoService extends BaseReportService<ReportSkuUseSoCondition> 
+		implements ReportSkuUseSoApi {
 	
 	@Autowired
-	private SkuUseSoReportManage skuUseSoReportManage;
+	private ReportSkuUseSoManage reportSkuUseSoManage;
 	
 	@Override
 	public BaseReportManage getDefaultManage() {
-		return this.skuUseSoReportManage;
+		return this.reportSkuUseSoManage;
 	}
 
 	@Override
-	public Map<String, Object> queryMap(SkuUseSoReportCondition condition) {
+	public Map<String, Object> queryMap(ReportSkuUseSoCondition condition) {
 		/*StringBuffer definedWhere = null;
 		StringBuffer unionTotal = null;	
 		StringBuffer orderBy = new StringBuffer(" ORDER BY " + 
@@ -50,7 +51,7 @@ public class SkuUseSoReportService extends BaseReportService<SkuUseSoReportCondi
 	}
 
 	@Override
-	public Map<String, Object> exportMap(SkuUseSoReportCondition condition) {
+	public Map<String, Object> exportMap(ReportSkuUseSoCondition condition) {
 		//获取报表集合(headers和details集合)
 		Map<String, Object> reportMap = this.getMapReport(condition);
 		//获取web表头字段树
@@ -70,8 +71,8 @@ public class SkuUseSoReportService extends BaseReportService<SkuUseSoReportCondi
 	public HashMap<String, Object> queryCallInit(ReportCondition condition) {
 		
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
-		if(condition instanceof SkuUseSoReportCondition){
-			SkuUseSoReportCondition currCondition = (SkuUseSoReportCondition)condition;			
+		if(condition instanceof ReportSkuUseSoCondition){
+			ReportSkuUseSoCondition currCondition = (ReportSkuUseSoCondition)condition;			
 			queryParams.put("shop_id", currCondition.getShopId());
 			queryParams.put("start_time", currCondition.getStartTime());		
 			queryParams.put("end_time", currCondition.getEndTime());						

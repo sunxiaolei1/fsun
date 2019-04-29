@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fsun.biz.common.BaseReportManage;
-import com.fsun.dao.report.mapper.SkuUseSoReportMapper;
+import com.fsun.dao.report.mapper.ReportSkuUseSoMapper;
 import com.fsun.domain.report.ReportCondition;
 
 /**
@@ -16,19 +16,19 @@ import com.fsun.domain.report.ReportCondition;
  * @date 2019年4月19日
  */
 @Component
-public class SkuUseSoReportManage extends BaseReportManage{
+public class ReportSkuUseSoManage extends BaseReportManage{
 	
 	@Autowired
-	private SkuUseSoReportMapper skuUseSoReportMapper;
+	private ReportSkuUseSoMapper reportSkuUseSoMapper;
 
 	@Override
 	public List<Map<String, Object>> query(ReportCondition condition) {
-		return skuUseSoReportMapper.query(condition);
+		return reportSkuUseSoMapper.query(condition);
 	}
 
 	@Override
 	public List<Map<String, Object>> queryCall(HashMap<String, Object> paramsMap) {
-		return skuUseSoReportMapper.queryCall(paramsMap);
+		return reportSkuUseSoMapper.queryCall(paramsMap);
 	}
 
 }

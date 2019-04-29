@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fsun.api.report.SkuUseSoReportApi;
+import com.fsun.api.report.ReportSkuUseSoApi;
 import com.fsun.common.dto.ColumnDto;
 import com.fsun.common.utils.ExcelUtil;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.enums.DocTradeTypeEnum;
 import com.fsun.domain.enums.ReportQueryTypeEnum;
-import com.fsun.domain.report.SkuUseSoReportCondition;
+import com.fsun.domain.report.ReportSkuUseSoCondition;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
 
@@ -35,7 +35,7 @@ import com.fsun.web.controller.base.BaseController;
 public class SummaryReportSkuUseSoController extends BaseController {
 	
 	@Autowired
-	private SkuUseSoReportApi skuUseSoReportApi;
+	private ReportSkuUseSoApi reportSkuUseSoApi;
 	
 	/**
 	 * 跳转至领用出库汇总页面
@@ -45,6 +45,7 @@ public class SummaryReportSkuUseSoController extends BaseController {
 	public ModelAndView index() {
 		ModelAndView modelAndView = new ModelAndView("/summary/report/skuUseSo/index");
 		modelAndView.addObject("queryType", ReportQueryTypeEnum.SKU_USE_SO.getCode());
+		modelAndView.addObject("tradeType", DocTradeTypeEnum.USE_SO.getCode());
 		return modelAndView;
 	}
 	
@@ -62,10 +63,10 @@ public class SummaryReportSkuUseSoController extends BaseController {
 	
 	@RequestMapping(value="/list", method = RequestMethod.POST)
 	@ResponseBody
-	public HttpResult list(SkuUseSoReportCondition condition) {
+	public HttpResult list(ReportSkuUseSoCondition condition) {
 		try {
 			condition.setQueryType(ReportQueryTypeEnum.SKU_USE_SO.getCode());
-			return success(skuUseSoReportApi.queryMap(condition));
+			return success(reportSkuUseSoApi.queryMap(condition));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
@@ -73,15 +74,15 @@ public class SummaryReportSkuUseSoController extends BaseController {
 	}
 	
 	@RequestMapping("/exportExcel")
-	public void exportExcel(SkuUseSoReportCondition condition,
+	public void exportExcel(ReportSkuUseSoCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
 			condition.setQueryType(ReportQueryTypeEnum.SKU_USE_SO.getCode());
-			Map<String, Object> map = skuUseSoReportApi.exportMap(condition);
+			Map<String, Object> map = reportSkuUseSoApi.exportMap(condition);
 			List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");			
 			LinkedHashMap<String, String> fieldsMap = (LinkedHashMap<String, String>) map.get("fields");
 			List<ColumnDto> columnDtos = (List<ColumnDto>) map.get("columns");
-			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "领用出库报表", response);
+			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "领用出库-商品汇总", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fsun.dao.report.mapper.SummarySoSkuDetailsMapper" >
+<mapper namespace="com.fsun.dao.report.mapper.ReportSoSkuDetailsMapper" >
   
   <sql id="conditions">	
 	<if test="tradeType != null and tradeType != ''">
@@ -21,7 +21,7 @@
   </sql>
   
   <select id="selectListMap" resultType="java.util.Map" 
-  		parameterType="com.fsun.domain.report.SummarySkuDetailsCondition" >    
+  		parameterType="com.fsun.domain.report.ReportSkuDetailsCondition" >    
 	SELECT 
 		o.order_no as order_no,
 		o.from_shop_id as shop_id,
@@ -45,7 +45,7 @@
   </select>
   
   <select id="findFooter" resultType="java.util.Map" 
-  		parameterType="com.fsun.domain.report.SummarySkuDetailsCondition" >    
+  		parameterType="com.fsun.domain.report.ReportSkuDetailsCondition" >    
 	SELECT 		
     	SUM(d.ordered_qty) AS ordered_qty, 
     	SUM(d.ordered_qty*d.cost_price) AS cost_total_price, 
@@ -53,6 +53,28 @@
     FROM doc_order_header o
     LEFT JOIN doc_order_details d on o.order_no = d.order_no
     WHERE o.order_status IN ("B20", "B30")
+    <include refid="conditions" />
+  </select>
+  
+  <select id="export" resultType="java.util.Map" 
+  		parameterType="com.fsun.domain.report.ReportSkuDetailsCondition" >    
+	SELECT 
+		o.order_no as order_no,
+		o.from_shop_name as shop_name,
+		o.onsign_name as onsign_name,
+		getValueForBasCodes(o.order_mode,'DocOrderMode') as order_mode,
+		d.sku as sku,
+		d.goods_name as goods_name,
+		getValueForBasCodes(d.unit,'UnitCode') as unit,
+		d.ordered_qty as ordered_qty,
+		d.price as price,
+		d.total_price as total_price,
+		d.cost_price as cost_price,
+		(cost_price*d.ordered_qty) as cost_total_price,
+		o.delivery_time as delivery_time
+    FROM doc_order_header o
+    LEFT JOIN doc_order_details d on o.order_no = d.order_no
+    WHERE o.order_status in ("B20", "B30")
     <include refid="conditions" />
   </select>
   

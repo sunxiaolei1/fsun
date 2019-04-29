@@ -7,6 +7,6 @@ import com.fsun.dao.config.Mapper;
  * @date 2019年4月19日
  */
 @Mapper
-public interface SkuUseSoReportMapper extends BaseReportMapper{
+public interface ReportSkuUseSoMapper extends BaseReportMapper{
 
 }

@@ -17,7 +17,7 @@
 
 var columns = [[
     {field:'order_no',title:'单据编号',width:140,align:'center',sortable:true},
-    {field:'shop_id',title:'所属店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
+    {field:'shop_id',title:'出库店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
 		return row.shop_name; 
 	}},
 	{field:'onsignee_id',title:'客户名称',width:140,align:'center',sortable:true, formatter:function(value, row){
@@ -63,7 +63,7 @@ $(function() {
 	    remoteSort:true,
 	    sortName:"delivery_time",
         sortOrder:"desc",
-        url: "${api}/summary/sku/details/so/findPage",
+        url: "${api}/summary/report/sku/details/so/findPage",
 	    //idField:"blackid",
 	    singleSelect:true,//是否单选
 	    pagination:true,//分页控件
