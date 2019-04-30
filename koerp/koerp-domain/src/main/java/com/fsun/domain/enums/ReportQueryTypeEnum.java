@@ -19,6 +19,11 @@ public enum ReportQueryTypeEnum {
 	SKU_USE_SO("p_sus", "P_USE_SO_REPORT", 2),
 	
 	/**
+	 * 商品出库报表
+	 */
+	SKU_SO("p_ss", "P_SKU_SO_REPORT", 2),
+	
+	/**
 	 * 销售对账单
 	 */
 	ORDER("b_bus_order", "T_BUS_ORDER", 1),

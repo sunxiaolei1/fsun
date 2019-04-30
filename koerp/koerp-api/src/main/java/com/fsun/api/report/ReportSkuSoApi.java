@@ -8,6 +8,6 @@ import com.fsun.domain.report.ReportSkuSoCondition;
  * @author fsun
  * @date 2019年4月18日
  */
-public interface ReportSkuUseSoApi extends BaseReportApi<ReportSkuSoCondition>{
+public interface ReportSkuSoApi extends BaseReportApi<ReportSkuSoCondition>{
 
 }

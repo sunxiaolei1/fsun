@@ -21,6 +21,11 @@ public class ReportSkuDetailsCondition extends ReportCondition {
 	 * 交易门店
 	 */
 	private String shopId;
+	
+	/**
+	 * 全部的出库商品
+	 */
+	private Boolean hasAll;
 
 	public String getSku() {
 		return sku;
@@ -50,6 +55,20 @@ public class ReportSkuDetailsCondition extends ReportCondition {
 	 */
 	public void setShopId(String shopId) {
 		this.shopId = shopId;
+	}
+
+	/**
+	 * @return the hasAll
+	 */
+	public Boolean getHasAll() {
+		return hasAll;
+	}
+
+	/**
+	 * @param hasAll the hasAll to set
+	 */
+	public void setHasAll(Boolean hasAll) {
+		this.hasAll = hasAll;
 	}
 	
 }

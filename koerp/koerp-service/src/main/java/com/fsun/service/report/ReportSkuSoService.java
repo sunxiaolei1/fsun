@@ -9,8 +9,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fsun.api.report.ReportSkuUseSoApi;
-import com.fsun.biz.bus.report.manage.ReportSkuUseSoManage;
+import com.fsun.api.report.ReportSkuSoApi;
+import com.fsun.biz.bus.report.manage.ReportSkuSoManage;
 import com.fsun.biz.common.BaseReportManage;
 import com.fsun.common.dto.ColumnDto;
 import com.fsun.domain.report.ReportCondition;
@@ -19,34 +19,24 @@ import com.fsun.domain.report.ReportSkuSoCondition;
 import com.fsun.service.common.BaseReportService;
 
 /**
- * 领用出库报表
+ * 商品出库报表
  * @author fsun
  * @date 2019年4月18日
  */
 @Service
-public class ReportSkuUseSoService extends BaseReportService<ReportSkuSoCondition> 
-		implements ReportSkuUseSoApi {
+public class ReportSkuSoService extends BaseReportService<ReportSkuSoCondition> 
+		implements ReportSkuSoApi {
 	
 	@Autowired
-	private ReportSkuUseSoManage reportSkuUseSoManage;
+	private ReportSkuSoManage reportSkuSoManage;
 	
 	@Override
 	public BaseReportManage getDefaultManage() {
-		return this.reportSkuUseSoManage;
+		return this.reportSkuSoManage;
 	}
 
 	@Override
 	public Map<String, Object> queryMap(ReportSkuSoCondition condition) {
-		/*StringBuffer definedWhere = null;
-		StringBuffer unionTotal = null;	
-		StringBuffer orderBy = new StringBuffer(" ORDER BY " + 
-				condition.getAlias() + "." + ReportConditionFieldEnum.QUERY_DATE_TIME.getName() +" ASC ");
-		String sortColumn = condition.getSort();
-		String sortType = condition.getOrder();
-		if(!StringUtils.isEmpty(sortColumn) && !StringUtils.isEmpty(sortType)){
-			orderBy = new StringBuffer(" ORDER BY "+ condition.getAlias() +"."+ sortColumn +" "+ sortType +" ");
-		}
- 		return this.getMapReport(condition, definedWhere, orderBy, unionTotal);*/
 		return this.getMapReport(condition);
 	}
 

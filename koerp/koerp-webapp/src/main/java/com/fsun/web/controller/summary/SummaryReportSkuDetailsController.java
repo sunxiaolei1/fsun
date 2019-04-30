@@ -1,10 +1,8 @@
 package com.fsun.web.controller.summary;
 
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fsun.api.report.ReportSkuDetailsApi;
-import com.fsun.common.dto.ColumnDto;
 import com.fsun.common.utils.ExcelUtil;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
-import com.fsun.domain.enums.ReportQueryTypeEnum;
 import com.fsun.domain.report.ReportSkuDetailsCondition;
-import com.fsun.domain.report.ReportSkuUseSoCondition;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
 
@@ -84,6 +79,51 @@ public class SummaryReportSkuDetailsController extends BaseController {
 			fieldsMap.put("cost_total_price", "成本金额");
 			fieldsMap.put("delivery_time", "交易时间");
 			ExcelUtil.listToExcel(details, fieldsMap, "领用出库-商品交易明细", response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * 通过sku获取领用出库的商品明细
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/so/all/findPage", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findAllPage(ReportSkuDetailsCondition condition) {
+		try {
+			condition.setHasAll(true);
+			PageModel pageModel = reportSkuDetailsApi.findPage(condition);
+			return success(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	@RequestMapping("/so/all/exportExcel")
+	public void exportAllExcel(ReportSkuDetailsCondition condition,
+			HttpServletRequest request, HttpServletResponse response) {
+		try {
+			condition.setHasAll(true);
+			List<HashMap<String, Object>> details = reportSkuDetailsApi.export(condition);			
+			LinkedHashMap<String, String> fieldsMap = new LinkedHashMap<String, String>();
+			fieldsMap.put("order_no", "单据编号");
+			fieldsMap.put("trade_type", "交易类型");	
+			fieldsMap.put("shop_name", "交易店仓");	
+			fieldsMap.put("customer_name", "客户名称");		
+			fieldsMap.put("sku", "SKU");
+			fieldsMap.put("goods_name", "商品名称");			
+			fieldsMap.put("unit", "单位");
+			fieldsMap.put("ordered_qty", "交易数量");
+			fieldsMap.put("price", "交易单价");
+			fieldsMap.put("cost_price", "成本价");
+			fieldsMap.put("total_price", "交易金额");
+			fieldsMap.put("cost_total_price", "成本金额");
+			fieldsMap.put("delivery_time", "交易时间");
+			ExcelUtil.listToExcel(details, fieldsMap, "出库商品交易明细", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

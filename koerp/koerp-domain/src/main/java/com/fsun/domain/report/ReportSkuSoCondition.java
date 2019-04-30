@@ -5,7 +5,7 @@ package com.fsun.domain.report;
  * @author fsun
  * @date 2019年4月18日
  */
-public class ReportSkuUseSoCondition extends ReportCondition{
+public class ReportSkuSoCondition extends ReportCondition{
 
 	/**
 	 * 出库门店id

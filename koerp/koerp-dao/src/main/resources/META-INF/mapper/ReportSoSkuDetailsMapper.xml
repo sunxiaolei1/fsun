@@ -5,9 +5,6 @@
   <sql id="conditions">	
 	<if test="tradeType != null and tradeType != ''">
 		and o.order_type = #{tradeType}
-	</if>
-	<if test="sku != null and sku != ''">
-		and d.sku = #{sku}
 	</if>	
 	<if test="shopId != null and shopId != ''">
 		and o.from_shop_id = #{shopId}
@@ -42,6 +39,9 @@
     LEFT JOIN doc_order_details d on o.order_no = d.order_no
     WHERE o.order_status in ("B20", "B30")
     <include refid="conditions" />
+    <if test="sku != null and sku != ''">
+		and d.sku = #{sku}
+	</if>
   </select>
   
   <select id="findFooter" resultType="java.util.Map" 
@@ -54,6 +54,9 @@
     LEFT JOIN doc_order_details d on o.order_no = d.order_no
     WHERE o.order_status IN ("B20", "B30")
     <include refid="conditions" />
+    <if test="sku != null and sku != ''">
+		and d.sku = #{sku}
+	</if>
   </select>
   
   <select id="export" resultType="java.util.Map" 
@@ -76,6 +79,60 @@
     LEFT JOIN doc_order_details d on o.order_no = d.order_no
     WHERE o.order_status in ("B20", "B30")
     <include refid="conditions" />
+    <if test="sku != null and sku != ''">
+		and d.sku = #{sku}
+	</if>
+	ORDER BY o.delivery_time DESC
+  </select>
+  
+  
+  <select id="selectAllMap" resultType="java.util.Map" 
+  		parameterType="com.fsun.domain.report.ReportSkuDetailsCondition" >    
+	SELECT 
+		o.order_no as order_no,
+		o.trade_type as trade_type,
+		o.shop_name as shop_name,
+		o.customer_name as customer_name,
+		o.sku as sku,
+		o.goods_name as goods_name,
+		o.unit as unit,
+		o.ordered_qty as ordered_qty,
+		o.price as price,
+		o.total_price as total_price,
+		o.cost_price as cost_price,
+		o.cost_total_price as cost_total_price,
+		o.delivery_time as delivery_time
+    FROM view_order_details o
+    WHERE 1=1 
+    <include refid="conditions" />
+    <if test="sku != null and sku != ''">
+		and o.sku = #{sku}
+	</if>
+  </select>
+  
+  <select id="exportAll" resultType="java.util.Map" 
+  		parameterType="com.fsun.domain.report.ReportSkuDetailsCondition" >    
+	SELECT 
+		o.order_no as order_no,
+		o.trade_type as trade_type,
+		o.shop_name as shop_name,
+		o.customer_name as customer_name,
+		o.sku as sku,
+		o.goods_name as goods_name,
+		getValueForBasCodes(o.unit,'UnitCode') as unit,
+		o.ordered_qty as ordered_qty,
+		o.price as price,
+		o.total_price as total_price,
+		o.cost_price as cost_price,
+		o.cost_total_price as cost_total_price,
+		o.delivery_time as delivery_time
+    FROM view_order_details o
+    WHERE 1=1 
+    <include refid="conditions" />
+    <if test="sku != null and sku != ''">
+		and o.sku = #{sku}
+	</if>
+	ORDER BY o.delivery_time DESC
   </select>
   
 </mapper>

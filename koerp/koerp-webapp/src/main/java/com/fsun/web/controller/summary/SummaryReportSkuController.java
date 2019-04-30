@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fsun.api.report.ReportSkuUseSoApi;
+import com.fsun.api.report.ReportSkuSoApi;
 import com.fsun.common.dto.ColumnDto;
 import com.fsun.common.utils.ExcelUtil;
 import com.fsun.domain.common.HttpResult;
@@ -31,58 +31,57 @@ import com.fsun.web.controller.base.BaseController;
  * @date 2019年4月18日
  */
 @Controller
-@RequestMapping("/summary/report/skuUseSo")
-public class SummaryReportSkuUseSoController extends BaseController {
+@RequestMapping("/summary/report/sku")
+public class SummaryReportSkuController extends BaseController {
 	
 	@Autowired
-	private ReportSkuUseSoApi reportSkuUseSoApi;
+	private ReportSkuSoApi reportSkuSoApi;
 	
 	/**
 	 * 跳转至领用出库汇总页面
 	 * @return
 	 */
-	@RequestMapping(value="/index")
+	@RequestMapping(value="/so/index")
 	public ModelAndView index() {
-		ModelAndView modelAndView = new ModelAndView("/summary/report/skuUseSo/index");
-		modelAndView.addObject("queryType", ReportQueryTypeEnum.SKU_USE_SO.getCode());
-		modelAndView.addObject("tradeType", DocTradeTypeEnum.USE_SO.getCode());
+		ModelAndView modelAndView = new ModelAndView("/summary/report/skuSo/index");
+		modelAndView.addObject("queryType", ReportQueryTypeEnum.SKU_SO.getCode());
 		return modelAndView;
 	}
 	
 	/**
-	 * 跳转至领用出库明细汇总页面
+	 * 跳转至出库明细汇总页面
 	 * @param sku
 	 * @return
 	 */
-	@RequestMapping(value="/toDetailView")
+	@RequestMapping(value="/so/toDetailView")
 	public ModelAndView toDetailView() {
-		ModelAndView modelAndView = new ModelAndView("/summary/report/skuUseSo/detail");
+		ModelAndView modelAndView = new ModelAndView("/summary/report/skuSo/detail");
 		modelAndView.addObject("tradeType", DocTradeTypeEnum.USE_SO.getCode());
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/list", method = RequestMethod.POST)
+	@RequestMapping(value="/so/list", method = RequestMethod.POST)
 	@ResponseBody
-	public HttpResult list(ReportSkuSoCondition condition) {
+	public HttpResult soList(ReportSkuSoCondition condition) {
 		try {
-			condition.setQueryType(ReportQueryTypeEnum.SKU_USE_SO.getCode());
-			return success(reportSkuUseSoApi.queryMap(condition));
+			condition.setQueryType(ReportQueryTypeEnum.SKU_SO.getCode());
+			return success(reportSkuSoApi.queryMap(condition));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}
 	
-	@RequestMapping("/exportExcel")
-	public void exportExcel(ReportSkuSoCondition condition,
+	@RequestMapping("/so/exportExcel")
+	public void soExportExcel(ReportSkuSoCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
-			condition.setQueryType(ReportQueryTypeEnum.SKU_USE_SO.getCode());
-			Map<String, Object> map = reportSkuUseSoApi.exportMap(condition);
+			condition.setQueryType(ReportQueryTypeEnum.SKU_SO.getCode());
+			Map<String, Object> map = reportSkuSoApi.exportMap(condition);
 			List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");			
 			LinkedHashMap<String, String> fieldsMap = (LinkedHashMap<String, String>) map.get("fields");
 			List<ColumnDto> columnDtos = (List<ColumnDto>) map.get("columns");
-			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "领用出库-商品汇总", response);
+			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "出库商品汇总", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

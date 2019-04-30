@@ -45,6 +45,10 @@ public class ReportSoSkuDetailsService implements ReportSkuDetailsApi {
 
 	@Override
 	public PageModel findPage(ReportSkuDetailsCondition condition) {
+		Boolean hasAll = condition.getHasAll();
+		if(hasAll!=null && hasAll){
+			return reportSoSkuDetailsManage.findAllMapPage(condition);
+		}		
 		return reportSoSkuDetailsManage.findMapPage(condition);
 	}
 
@@ -62,6 +66,10 @@ public class ReportSoSkuDetailsService implements ReportSkuDetailsApi {
 
 	@Override
 	public List<HashMap<String, Object>> export(ReportSkuDetailsCondition condition) {
+		Boolean hasAll = condition.getHasAll();
+		if(hasAll!=null && hasAll){
+			return reportSoSkuDetailsManage.exportAll(condition);
+		}		
 		return reportSoSkuDetailsManage.export(condition);
 	}
 	

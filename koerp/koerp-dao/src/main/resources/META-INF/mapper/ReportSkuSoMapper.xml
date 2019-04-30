@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.report.mapper.ReportSkuSoMapper">
+
+	<parameterMap id="queryParamsMap" type="java.util.HashMap" >
+	    <parameter property="shop_id" mode="IN" jdbcType="VARCHAR"/>
+	    <parameter property="start_time" mode="IN" jdbcType="VARCHAR"/>
+	    <parameter property="end_time" mode="IN" jdbcType="VARCHAR"/>      
+	</parameterMap>
+	
+	<!-- 查询商品库存列表调用存储过程 -->	
+	<select id="queryCall" statementType="CALLABLE" resultType="java.util.Map" parameterMap="queryParamsMap" > 
+		call sp_skuSoReport(?,?,?)
+	</select>
+	
+</mapper>
