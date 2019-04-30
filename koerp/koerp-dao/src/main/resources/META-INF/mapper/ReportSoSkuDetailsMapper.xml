@@ -10,7 +10,7 @@
 		and d.sku = #{sku}
 	</if>	
 	<if test="shopId != null and shopId != ''">
-		and o.shop_id = #{shopId}
+		and o.from_shop_id = #{shopId}
 	</if>
 	<if test="startTime != null">
 		and o.delivery_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
