@@ -16,15 +16,31 @@
 </div>
 
 <div id="tools" style="display: none;">
+	<span style="float:right;margin-top:2px;margin-bottom:2px;">	
+		<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
+	</span>
     <!-- 操作按钮及事件  -->
 	<%@include file="./indextoolbar.jsp"%>
 </div>
 
+<!-- datagrid可编辑单元格 -->
+<%@include file="../../../busCommon/soSkuEdatagridCellediting.jsp"%>
+
 <script type="text/javascript">
 
 var currDataGrid = $("#ordersDataGrid");
+var footerFirstColumn = "sku";
+var currDetailData = [];
 
 $(function() {
+	
+	//初始化搜索框
+	$('#skuSearcher').searchbox({
+	     prompt: '输入商品名称、SKU筛选...',
+	     searcher: function (value, name) {
+	    	 currDataGrid.datagrid({searchValue: value}).datagrid("loadData", currDetailData);
+	     }
+	 });
 		
 	$.ajax({
 		type : "GET",
@@ -35,6 +51,7 @@ $(function() {
 				var columns = result.entry.columns;	
 				initColumns(columns);
 				currDataGrid.datagrid({
+					view:footerStyleView,
 					width:500,
 					height:250,
 				    nowrap:false,
@@ -42,11 +59,14 @@ $(function() {
 				    border:true,
 				    fit:true,//自动大小
 				    queryParams:{},
-				    remoteSort:true,
+				    remoteSort:false,
 				    sortName:"sku",
 			        sortOrder:"asc",
 				    singleSelect:true,//是否单选
-				    pagination:false,//分页控件
+				    pagination:true,
+			        pageNumber:currPageNumber,
+			        pageSize: currPageSize,
+				    pageList: GLOBAL_PAGE_SIZE_LIST,
 				    rownumbers:true,//行号
 				    //remoteFilter:true,
 				    showFooter:true,
@@ -55,12 +75,20 @@ $(function() {
 				    loadMsg:"数据加载中请稍后……",
 				    emptyMsg:"没有符合条件的记录",
 				    toolbar:'#tools',
-				    loadFilter:function(data) {   
-				    	if(data!=null && data.entry!=null && data.entry.details!=null){
-				    		return data.entry.details;  
-				    	}
-				    	return [];
+				    loadFilter:function(data) {				    		    		
+			    		var fields = ["total_amount","cost_total_amount","gross_margins"]; 	       		
+			    		//排序拦截器
+			    		sortFilter($(this), data);		
+			    	    //分页拦截器
+			    	    var data = pagerFilter($(this), data, fields, footerFirstColumn); 
+						return data; 				    	
 			        },
+			        rowStyler:function(index,row){	    		    	
+			    		if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
+			                return 'font-weight:bold;';  
+			            }	
+			    		return "";
+					},
 				    onDblClickRow:function(rowIndex, rowData){
 				    	toDetailView(rowData);
 				    }    
@@ -71,34 +99,8 @@ $(function() {
 			$.messager.alert("错误", errorThrown, "error");
 		}
 	});  	
-
 	
 });
-
-function initColumns(columnsArr){
-	if(columnsArr){
-		$.each(columnsArr, function(){
-			var columns = this;
-			if(columns && columns.length>0){
-				$.each(columns, function(){
-					var column = this;
-					if(column.styler){
-						var styler = eval(column.styler);
-						if (typeof styler === 'function'){
-							column.styler = styler;
-					    } 						
-					}
-					if(column.formatter){
-						var formatter = eval(column.formatter);
-						if (typeof formatter === 'function'){
-							column.formatter = formatter;
-					    } 						
-					}
-				});
-			}
-		})
-	}
-}
 
 </script>
 </html>

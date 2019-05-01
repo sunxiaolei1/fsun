@@ -41,27 +41,11 @@ function initQueryParams(){
 	return queryParams;
 }
 
-//公用查询
-function commonQuery(url){
-
-	var queryParams = initQueryParams();
-	clearDataGridSelections();
-	currDataGrid.datagrid('options').url = url;  
-	currDataGrid.datagrid("load");
-}
-
-
-//公用重置
-function commonReset(childfuncname) {
+/**
+ * 获取查询参数
+ */
+function reSetQueryParams(){
 	
-	try{ 
-	 	if(typeof(eval(childfuncname))=="function") {	 		
-	 		eval(childfuncname)();	 		
-	 	}
-	}catch(e){
-	 	console.log("重置内部方法不存在"); 
-	} 
-
 	$("#queryForm").find(".easyui-textbox").each(function(){
 		$(this).textbox("setValue","");
 	}); 
@@ -85,11 +69,64 @@ function commonReset(childfuncname) {
 	}); 
 	
 	//$('#borderdatetime').datetimebox('setValue', initOrderDateTime);
+}
 
+//公用查询
+function commonQuery(url){
+
+	var queryParams = initQueryParams();
+	clearDataGridSelections();
+	currDataGrid.datagrid('options').url = url;  
+	currDataGrid.datagrid("load");
+}
+
+
+//公用重置
+function commonReset(childfuncname) {
+	
+	try{ 
+	 	if(typeof(eval(childfuncname))=="function") {	 		
+	 		eval(childfuncname)();	 		
+	 	}
+	}catch(e){
+	 	console.log("重置内部方法不存在"); 
+	} 
+
+	//清空参数
+	reSetQueryParams();
+	//重新加载
 	var queryParams = initQueryParams();
 	clearDataGridSelections();
 	currDataGrid.datagrid("reload");
 	
+}
+
+/**
+ * 表格列初始化(报表使用)
+ */
+function initColumns(columnsArr){
+	if(columnsArr){
+		$.each(columnsArr, function(){
+			var columns = this;
+			if(columns && columns.length>0){
+				$.each(columns, function(){
+					var column = this;
+					if(column.styler){
+						var styler = eval(column.styler);
+						if (typeof styler === 'function'){
+							column.styler = styler;
+					    } 						
+					}
+					if(column.formatter){
+						var formatter = eval(column.formatter);
+						if (typeof formatter === 'function'){
+							column.formatter = formatter;
+					    } 						
+					}
+				});
+			}
+		})
+	}
 }
 
 //清除DataGrid选中的行

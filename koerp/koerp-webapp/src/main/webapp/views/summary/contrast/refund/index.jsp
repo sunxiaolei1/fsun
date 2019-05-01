@@ -73,8 +73,8 @@ $(function() {
 				    	"firstColumn": footerFirstColumn
 				    },
 				    remoteSort:true,
-				    sortName:"refund_time",
-			        sortOrder:"desc",
+				    sortName:"refund_id desc, sku",
+			        sortOrder:"asc",
 				    singleSelect:true,//是否单选
 				    pagination:true,//分页控件
 				    pageSize: GLOBAL_PAGE_SIZE + GLOBAL_PAGE_SIZE,

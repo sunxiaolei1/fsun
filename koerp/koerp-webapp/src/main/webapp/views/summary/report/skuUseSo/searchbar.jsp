@@ -30,21 +30,61 @@
 <script type="text/javascript">
 
 $(function() {		
-	var now = formatterDate(new Date());
-	$("#startDate").datebox("setValue", now);
-	$("#endDate").datebox("setValue", now);
+	//加载初始条件	
+	loadQueryParams();
 });
 
-//查询
+/**
+ * 查询
+ */
 function query(){
-	var url = "${api}/summary/report/skuUseSo/list";
-	commonQuery(url);
+	
+	$.ajax({
+        type: "POST",
+        dataType: "json",
+        contentType:"application/json;charset=utf-8",
+        async:true,
+        url: "${api}/summary/report/skuUseSo/list",
+        data: JSON.stringify(initQueryParams()),
+        beforeSend: function (jqXHR) {  		        	
+        	$.messager.progress({title: '请等待',msg: '数据加载中……',text: '',interval: 700});       	
+        },
+        success: function(result, textStatus) {       	
+        	if(result.status){        		
+        		if(result.entry!=null && result.entry.details!=null){
+        			currDetailData = result.entry.details;
+        			$('#skuSearcher').searchbox("clear");       			
+        			clearDataGridSelections();
+        			currDataGrid.datagrid({searchValue: ""}).datagrid('gotoPage', 1)
+        				.datagrid("loadData", currDetailData);
+        		}       		
+        	}   			                				                															                	
+        },
+		complete: function (jqXHR, textStatus) {					
+			$.messager.progress('close');
+	    }
+    });
 }
 
-//重置
+/**
+ * 重置
+ */
 function reset(){
-	commonReset();
+	//清空查询条件
+	reSetQueryParams();
+	//加载初始条件	
+	loadQueryParams();
+	//加载数据
+	query();
 }
 
+/**
+ * 初始默认查询参数
+ */
+function loadQueryParams(){
+	var now = formatterDate(new Date());
+	$("#startDate", "#queryForm").datebox("setValue", now);
+	$("#endDate", "#queryForm").datebox("setValue", now);
+}
 
 </script>

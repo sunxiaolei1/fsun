@@ -124,7 +124,7 @@
 	FROM bus_refund o LEFT JOIN bus_refund_goods g ON g.refund_id = o.refund_id
 	LEFT JOIN bus_customer c ON  c.customer_code = o.buyer_id
 	<include refid="conditions" />
-	ORDER BY o.refund_time desc
+	ORDER BY o.refund_id DESC, g.sku ASC
   </select>
   
   <!-- 用于对账单及报表查看账单明细使用 -->

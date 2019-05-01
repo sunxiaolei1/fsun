@@ -375,7 +375,9 @@ public class ExcelUtil {
 					}
 				}
 			} else {
-				throw new Exception(o.getClass().getSimpleName() + "类不存在字段名 " + fieldName);
+				if(!"unusual".equals(fieldName)){
+					throw new Exception(o.getClass().getSimpleName() + "类不存在字段名 " + fieldName);
+				}
 			}
 		}
 		return value;
@@ -523,7 +525,10 @@ public class ExcelUtil {
 		LinkedHashMap<String, String> fieldMap, List<ColumnDto> columnDtos, int firstIndex, 
 			int lastIndex) throws Exception {
 		HSSFCellStyle titleStyle = getTitleStyle(wb);
-		HSSFCellStyle columnstyle = getColumnStyle(wb);
+		HSSFCellStyle columnStyle = getColumnStyle(wb);
+		HSSFCellStyle mergeColumnStyle = getMergeColumnStyle(wb);
+		HSSFCellStyle greyColumnStyle = getGreyColumnStyle(wb);
+		
 		// 定义存放英文字段名和中文字段名的数组
 		String[] enFields = new String[fieldMap.size()];
 		String[] cnFields = new String[fieldMap.size()];
@@ -599,14 +604,10 @@ public class ExcelUtil {
 					HSSFCell contentCell = contentRow.createCell(i);
 					contentCell.setCellValue(fieldValue);
 					if(isGray){
-						HSSFCellStyle columnNewStyle = getColumnStyle(wb);
-						columnNewStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-						columnNewStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-						contentCell.setCellStyle(columnNewStyle);
+						contentCell.setCellStyle(greyColumnStyle);
 					}else{
-						contentCell.setCellStyle(columnstyle);
-					}				
-					
+						contentCell.setCellStyle(columnStyle);
+					}					
 				}
 			}
 			rowNo++;
@@ -622,18 +623,19 @@ public class ExcelUtil {
 	   		int i = 0;
 	    	for (i = 1; i <list.size(); i++) {     
 	    		//这里循环表格当前的数据
-	    		HashMap<String, Object> after = (HashMap<String, Object>)list.get(i);
-	    		HashMap<String, Object> before = (HashMap<String, Object>)list.get(i-1);
+	    		Object afterObjValue = getFieldValueByNameSequence(uniqueField, list.get(i));
+	    		Object beforeObjValue = getFieldValueByNameSequence(uniqueField, list.get(i-1));
 	    		//后一行的值与前一行的值做比较，相同就累加合并数，否则进行数据合并行且重新计算mark=1	
-	    		if (after.get(uniqueField).toString().equals(before.get(uniqueField).toString())) {   	    			
+	    		if (afterObjValue!=null && beforeObjValue!=null && 
+	    				afterObjValue.toString().equals(beforeObjValue.toString())) {     	    			
 	   				mark += 1;    				  			 
 	    		}else{
-	    			mergeCells(mergeFields, i, headerRowNo, mark, sheet, wb);	    				    				    			
+	    			mergeCells(mergeFields, i, headerRowNo, mark, sheet, wb, mergeColumnStyle);	    				    				    			
 	   				mark = 1;                                         
 	    		}	    		   			
 	    	}
 	    	//判别最后一行数据是否要进行行合并 			
-    		mergeCells(mergeFields, i, headerRowNo, mark, sheet, wb); 
+    		mergeCells(mergeFields, i, headerRowNo, mark, sheet, wb, mergeColumnStyle); 
 		}				
 		// 设置自动列宽
 		setColumnAutoSize(sheet, 5);
@@ -647,12 +649,10 @@ public class ExcelUtil {
 	 * @param mark 要合并行数
 	 * @param sheet 
 	 */
-	private static void mergeCells(List<ColumnDto> mergeFields, int currIndex, 
-			int headerRowNo, int mark, HSSFSheet sheet, HSSFWorkbook wb){
+	private static void mergeCells(List<ColumnDto> mergeFields, int currIndex, int headerRowNo, 
+			int mark, HSSFSheet sheet, HSSFWorkbook wb, HSSFCellStyle mergeColumnStyle){
 		
 		if(mark>1){
-			System.out.println("headerRowNo + i + 1 - mark =="+ (headerRowNo + currIndex + 1 - mark)
-    				+ ", headerRowNo + i =="+ (headerRowNo + currIndex));
 			for (ColumnDto columnDto : mergeFields) {	   					
 				//合并单元格	
 				int firstCol = columnDto.getCellRegionDto().getFirstCol();
@@ -664,12 +664,7 @@ public class ExcelUtil {
 				);						
 				sheet.addMergedRegion(region);
 				HSSFCell hssfCell = sheet.getRow(headerRowNo + currIndex - mark).getCell(firstCol);
-				HSSFCellStyle columnNewStyle = getColumnStyle(wb);						
-				//垂直居中
-				columnNewStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-				// 设置自动换行;
-				columnNewStyle.setWrapText(true);
-	            hssfCell.setCellStyle(columnNewStyle);
+	            hssfCell.setCellStyle(mergeColumnStyle);
 			} 
 		}		
 	}
@@ -992,5 +987,96 @@ public class ExcelUtil {
 
 		return style;
 	}
+	
+	
+	/**
+	 * 行数据合并单元格样式
+	 * @param workbook
+	 * @return
+	 */
+	public static <T> HSSFCellStyle getMergeColumnStyle(HSSFWorkbook workbook) {
+		// 设置字体
+		HSSFFont font = workbook.createFont();
+		// 设置字体大小
+		// font.setFontHeightInPoints((short)10);
+		// 字体加粗
+		// font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		// 设置字体名字
+		font.setFontName("Courier New");
+		// 设置样式;
+		HSSFCellStyle style = workbook.createCellStyle();
+		// 设置底边框;
+		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		// 设置底边框颜色;
+		style.setBottomBorderColor(HSSFColor.BLACK.index);
+		// 设置左边框;
+		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		// 设置左边框颜色;
+		style.setLeftBorderColor(HSSFColor.BLACK.index);
+		// 设置右边框;
+		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		// 设置右边框颜色;
+		style.setRightBorderColor(HSSFColor.BLACK.index);
+		// 设置顶边框;
+		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		// 设置顶边框颜色;
+		style.setTopBorderColor(HSSFColor.BLACK.index);
+		// 在样式用应用设置的字体;
+		style.setFont(font);
+		// 设置水平对齐的样式为居中对齐;
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		// 设置垂直对齐的样式为居中对齐;
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		// 设置自动换行;
+		style.setWrapText(true);
+		
+		return style;
+	}
 
+	/**
+	 * 单元格置灰样式
+	 * @param workbook
+	 * @return
+	 */
+	public static <T> HSSFCellStyle getGreyColumnStyle(HSSFWorkbook workbook) {
+		// 设置字体
+		HSSFFont font = workbook.createFont();
+		// 设置字体大小
+		// font.setFontHeightInPoints((short)10);
+		// 字体加粗
+		// font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		// 设置字体名字
+		font.setFontName("Courier New");
+		// 设置样式;
+		HSSFCellStyle style = workbook.createCellStyle();
+		// 设置底边框;
+		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		// 设置底边框颜色;
+		style.setBottomBorderColor(HSSFColor.BLACK.index);
+		// 设置左边框;
+		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		// 设置左边框颜色;
+		style.setLeftBorderColor(HSSFColor.BLACK.index);
+		// 设置右边框;
+		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		// 设置右边框颜色;
+		style.setRightBorderColor(HSSFColor.BLACK.index);
+		// 设置顶边框;
+		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		// 设置顶边框颜色;
+		style.setTopBorderColor(HSSFColor.BLACK.index);
+		// 在样式用应用设置的字体;
+		style.setFont(font);
+		// 设置水平对齐的样式为居中对齐;
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		// 设置自动换行;
+		style.setWrapText(false);
+		//配置前置背景是灰色调
+		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		//设置图案样式
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		
+		return style;
+	}
+	
 }

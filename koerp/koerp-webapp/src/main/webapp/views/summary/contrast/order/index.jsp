@@ -84,8 +84,8 @@ $(function() {
 				    	"firstColumn": footerFirstColumn				    	
 				    },
 				    remoteSort:true,
-				    sortName:"order_time",
-			        sortOrder:"desc",
+				    sortName:"order_id desc, sku",
+			        sortOrder:"asc",
 				    singleSelect:true,//是否单选
 				    pagination:true,//分页控件
 				    pageSize: GLOBAL_PAGE_SIZE + GLOBAL_PAGE_SIZE,

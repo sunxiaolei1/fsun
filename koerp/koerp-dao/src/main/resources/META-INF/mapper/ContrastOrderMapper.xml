@@ -131,7 +131,7 @@
 	FROM bus_order o LEFT JOIN bus_goods g ON g.order_id = o.order_id
 	LEFT JOIN bus_customer c ON  c.customer_code = o.buyer_id
 	<include refid="conditions" />
-	ORDER BY o.order_time desc
+	ORDER BY o.order_id DESC, g.sku ASC
   </select>
   
   <!-- 用于对账单及报表查看账单明细使用 -->

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,7 +64,7 @@ public class SummaryReportSkuUseSoController extends BaseController {
 	
 	@RequestMapping(value="/list", method = RequestMethod.POST)
 	@ResponseBody
-	public HttpResult list(ReportSkuSoCondition condition) {
+	public HttpResult list(@RequestBody ReportSkuSoCondition condition) {
 		try {
 			condition.setQueryType(ReportQueryTypeEnum.SKU_USE_SO.getCode());
 			return success(reportSkuUseSoApi.queryMap(condition));
