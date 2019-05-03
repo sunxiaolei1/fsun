@@ -3,12 +3,12 @@
 <%@ include file="../../../headerJS.jsp" %>
 
 <div class="easyui-layout" style="width:100%;height:100%;">
-	<div data-options="region:'center',split:true,collapsible:false" style="padding:5px">
+	<div title="会员卡对账单" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
 		<!-- 查询条件 -->
 		<%@include file="./searchbar.jsp"%>
 		
 		<!-- table -->
-		<div id="gridDiv" data-options="region:'center'" style="height: 83%;">
+		<div id="gridDiv" data-options="region:'center'" style="height: 84%;">
 			<table id="ordersDataGrid"> 
 			</table>
 		</div>

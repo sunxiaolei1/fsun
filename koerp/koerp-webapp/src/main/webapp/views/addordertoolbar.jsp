@@ -1,36 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
-
-<style>
-.toolbar{
-	height:30px;
-	overflow:hidden;
-	border: 1px solid #D3D3D3;
-	background: #f3f3f3;
-	padding-top:2px;
-}
-
-.easyui-textbox, .easyui-combogrid, .easyui-datebox, .easyui-combobox, .easyui-numberbox, .easyui-datetimebox {
-	width: 162px;
-}
-
-.fsun-wrap {
-	border: 1px solid #ccc;
-	padding: 15px 5px 5px 5px;
-	margin-top: 10px;
-}
-
-.fsun-wrap .title {
-	position: absolute;
-	color: #416AA3;
-	font-weight: bold;
-	left: 2%;
-	line-height: 2em;
-	padding: 0 1em;
-	background-color: #fff;
-}
-
-</style>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 
 <div id="addtoolbar" class="toolbar" data-options="region:'center'">	
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cog_add" plain="true" onclick="toPayAccount()">结帐</a>

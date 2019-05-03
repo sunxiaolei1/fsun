@@ -10,16 +10,6 @@
 
 <style type="text/css">
 
-.easyui-textbox, .easyui-combogrid, .easyui-datebox, .easyui-combobox, .easyui-numberbox, .easyui-datetimebox {
-	width: 162px;
-}
-
-.fsun-wrap {
-	border: 1px solid #ccc;
-	padding: 15px 5px 5px 5px;
-	margin-top: 10px;
-}
-
 .fsun-wrap .title {
 	position: absolute;
 	color: #416AA3;

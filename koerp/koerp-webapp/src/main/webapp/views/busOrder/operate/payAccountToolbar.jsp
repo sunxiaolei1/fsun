@@ -39,11 +39,16 @@ function addPayRow(payMode) {
 		$("#balancePrice", $payAccountfm).val(0);
 		 return ;
 	 }	 
+	 
+	 var dialogHeight = '280px';
+	 if(payMode=='1' || payMode=='3' || payMode=='4' || payMode=='8' || payMode=='100'){
+		 dialogHeight = '320px'; 
+	 }
 	 $("<div></div>").dialog({
         id: "payModeDialog",
         title: "支付信息",
-        width: 600,
-        height: 260,
+        width: "600px",
+        height: dialogHeight,
         iconCls: "icon-edit",
         closed: false,
         cache: false,

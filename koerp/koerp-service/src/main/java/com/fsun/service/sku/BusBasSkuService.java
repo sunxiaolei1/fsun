@@ -113,6 +113,7 @@ public class BusBasSkuService implements BusBasSkuApi {
 			busBasSku.setCostPrice(domain.getCostPrice());
 			busBasSku.setMarketPrice(domain.getMarketPrice());
 			busBasSku.setOriginSalePrice(domain.getOriginSalePrice());
+			busBasSku.setWarningQty(domain.getWarningQty());
 			busBasSku.setEnName(domain.getEnName());
 			busBasSku.setProperty(domain.getProperty());
 			busBasSku.setMemo(domain.getMemo());

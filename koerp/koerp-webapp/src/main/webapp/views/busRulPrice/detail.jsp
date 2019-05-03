@@ -5,31 +5,11 @@
 	request.setAttribute("api", basePath);
 %>
 
-<style type="text/css">
-
-.fsun-wrap {
-	border: 1px solid #ccc;
-	padding: 12px 5px 5px 5px;
-	margin-top: 12px;
-}
-
-.fsun-wrap .title {
-	position: absolute;
-	color: #416AA3;
-	font-weight: bold;
-	left: 2%;
-	line-height: 2em;
-	padding: 0 1em;
-	background-color: #fff;
-}
-
-</style>
-
 <!-- 查询条件 -->
 <%@include file="./detailtoolbar.jsp"%>
 
 <form id="fm"> 
- 	<div class="fsun-wrap" style="margin-top: 14px">
+ 	<div class="fsun-wrap" style="padding: 12px 5px 5px 5px;margin-top: 14px">
 	    <span class="title" style="top: 70px;">关联商品价格</span>		    	
 		<div style="width: 100%;height:49%;">
 			<div id="skutoolbar" style="display:none;">
@@ -206,6 +186,9 @@ function definedLoadData(rulId, $fm){
 		url : "${api}/bus/rule/price/loadEntity/"+ rulId +"?timestamp=" + new Date().getTime(),
 		contentType:"application/json;charset=utf-8",	   
 		dataType : "json",
+		beforeSend: function (jqXHR) {  		        	
+        	$.messager.progress({title: '请等待',msg: '保存中...',text: '',interval: 700});       	
+        },
 		success : function(result) {								
 			var rulPriceDto = result.entry;
 			currSkusData = rulPriceDto.rulSkus;
@@ -215,7 +198,10 @@ function definedLoadData(rulId, $fm){
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			$.messager.alert("错误", errorThrown, "error");
-		}
+		},
+		complete: function (jqXHR, textStatus) {					
+			$.messager.progress('close');
+	    }
 	});  
 }
 

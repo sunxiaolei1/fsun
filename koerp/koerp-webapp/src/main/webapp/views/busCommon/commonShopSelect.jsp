@@ -6,21 +6,10 @@
 	request.setAttribute("api", basePath);
 %>
 
-<style>
-.toolbar{
-	height:28px;
-	overflow:hidden;
-	border: 0px solid #D3D3D3;
-	border-bottom:0px;
-	background: #f3f3f3;
-	padding-top:2px;
-}
-</style>
-
-<div id="shopToolbar" class="toolbar">
+<div id="shopToolbar" class="toolbar" style="height:26px;border-top:0px;border-left:0px;border-right:0px;">
 	<a href="#" id="saveBotton" class="easyui-linkbutton" iconCls="icon-application_osx_get" plain="true" >提交</a>
 </div>
-<div style="height:291px;" >
+<div style="height:100%;" >
 	<table id="shopDataGrid"></table>
 </div>
 

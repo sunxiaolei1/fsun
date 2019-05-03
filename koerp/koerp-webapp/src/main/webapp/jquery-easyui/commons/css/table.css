@@ -65,3 +65,58 @@ table.nb-formTable { width:99%; border: 1px solid #a8cfeb;border-collapse: colla
 	background:url('IconsExtension/client.png') no-repeat center center;	
 }
 .icon-customer-btn:hover {height:21px;}
+
+.easyui-textbox, .easyui-combogrid, .easyui-datebox, .easyui-combobox, 
+.easyui-numberspinner, .easyui-numberbox, .easyui-datetimebox {
+	width: 162px;
+}
+
+.toolbar{
+	height:28px;
+	overflow:hidden;
+	border: 1px solid #D3D3D3;
+	background: #f3f3f3;
+	padding-top:2px;
+}
+
+.fsun-wrap {
+	border: 1px solid #ccc;
+	padding: 15px 5px 5px 5px;
+	margin-top: 10px;
+}
+
+.fsun-wrap .title {
+	position: absolute;
+	color: #416AA3;
+	font-weight: bold;
+	left: 2%;
+	line-height: 2em;
+	padding: 0 1em;
+	background-color: #fff;
+}
+
+.operate-toolbar{
+    height:32px;
+    padding-top:3px;	
+	overflow:hidden;	
+	border: 0px solid #D3D3D3;	
+	border-top: 1px solid #D3D3D3;	
+	background: #f3f3f3;	
+}
+
+.fsun-operate-wrap {
+	border: 1px solid #ccc;
+	border-radius:3px;
+	padding: 15px 10px 5px 10px;
+	margin: 15px 10px 0px 10px;
+}
+
+.fsun-operate-wrap .title {
+	position: absolute;
+	color: #416AA3;
+	font-weight: bold;
+	left: 4%;
+	line-height: 2em;
+	padding: 0 1em;
+	background-color: #fff;
+}

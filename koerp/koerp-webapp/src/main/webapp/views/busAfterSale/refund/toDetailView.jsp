@@ -7,33 +7,13 @@
 	request.setAttribute("api", basePath);
 %> 
 
-<style type="text/css">
-
-.fsun-wrap {
-	border: 1px solid #ccc;
-	padding: 15px 10px 5px 10px;
-	margin-top: 8px;
-}
-
-.fsun-wrap .title {
-	position: absolute;
-	color: #416AA3;
-	font-weight: bold;
-	left: 2%;
-	line-height: 2em;
-	padding: 0 1em;
-	background-color: #fff;
-}
-</style> 
-
-
 <!-- 查询条件 -->
 <%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
 
 <form id="orderfm">
 	<div class="easyui-tabs" >
 		<div title="基本信息" style="padding:6px;">
-			<div class="fsun-wrap">
+			<div class="fsun-wrap" style="margin-top: 8px;">
 				<span class="title" style="top: 66px;">退货信息(退货单号:<span id='refundId'></span>)</span>	
 				<span class="title" style="top: 66px;left:50%">原订单信息(订单号:<span id='orderId'></span>)</span>	
 				<div style="width:100%;height:38%;">

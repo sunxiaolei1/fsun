@@ -1,38 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
 
-<style type="text/css"> 
-
-.toolbar{
-	height:30px;
-	overflow:hidden;
-	border: 1px solid #D3D3D3;
-	background: #f3f3f3;
-	padding-top:2px;
-}
-
-.easyui-textbox, .easyui-combogrid, .easyui-datebox, .easyui-combobox, .easyui-numberbox, .easyui-datetimebox {
-	width: 162px;
-}
-
-.fsun-wrap {
-	border: 1px solid #ccc;
-	padding: 15px 5px 5px 5px;
-	margin-top: 10px;
-}
-
-.fsun-wrap .title {
-	position: absolute;
-	color: #416AA3;
-	font-weight: bold;
-	left: 2%;
-	line-height: 2em;
-	padding: 0 1em;
-	background-color: #fff;
-}
-
-</style> 
-
 <div id="detailtoolbar" class="toolbar" data-options="region:'center'">	
     <!-- 销售订单 -->
 	<a href="#" id="order_cancel" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">撤销</a>
@@ -79,7 +47,8 @@
 <script type="text/javascript">
 
 var buttonsMap = {
-	"aftersaleRefund": ["refund_cancel","repair_refund","complete_refund","add_refund_remark","order_refresh","order_return"],	           
+	//"aftersaleRefund": ["refund_cancel","repair_refund","complete_refund","add_refund_remark","order_refresh","order_return"],	
+	"aftersaleRefund": ["refund_cancel","add_refund_remark","order_refresh","order_return"],	           
 	"aftersaleBarter": ["refund_cancel","repair_refund","add_refund_remark","order_refresh","order_return"],
 	"docOrder": ["docOrder_cancel","add_so_remark","order_refresh","order_return"],
 	"docAsn": ["docAsn_sign","docAsn_cancel","create_asn_refund","add_si_remark","order_refresh","order_return"],

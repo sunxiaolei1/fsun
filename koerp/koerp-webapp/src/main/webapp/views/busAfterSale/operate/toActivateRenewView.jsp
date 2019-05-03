@@ -5,19 +5,6 @@
 	request.setAttribute("api", basePath);
 %>
 
-<style type="text/css">
-
-.operate-toolbar{
-    height:32px;
-    padding-top:3px;	
-	overflow:hidden;	
-	border: 0px solid #D3D3D3;	
-	border-top: 1px solid #D3D3D3;	
-	background: #f3f3f3;	
-}
-
-</style>
-
 <!-- BasSku dialog -->
 <div class="easyui-layout" fit=true style="height:100%;">		
 	<div data-options="region:'center',split:true" style="border: 0px solid #ccc;" >		
@@ -28,7 +15,7 @@
 				data-options="prompt:'输入备注信息。。。',multiline:true" />					
 		</form>
 	</div>	
-	<div data-options="region:'south'" class="operate-toolbar">
+	<div data-options="region:'south'" class="operate-toolbar" style="padding-top:3px;">
 	    <div style="float:right;margin-right:10px;">
 	    	<a href="#" class="easyui-linkbutton" iconCls="icon-disk" plain="false" onclick="activateRenew()">确认</a>
 			<a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="false" onclick="closeDialog('ordersDialog')">取消</a>	    

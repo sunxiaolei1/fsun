@@ -20,7 +20,7 @@
 
 //跳转至新增界面
 function toAddView(){		
-	commonDialog("ordersDialog", "创建客户", "75%", "65%", 
+	commonDialog("ordersDialog", "创建客户", "75%", "68%", 
 		"${api}/bus/customer/toDetailView?id=", "icon-add");
 }
 
@@ -31,7 +31,7 @@ function toDetailView(){
 		$.messager.alert("提示","只能选择一行数据！");
 		return;
 	}
-	commonDialog("ordersDialog", "客户("+ rows[0].customer_name +")明细", "75%", "65%", 
+	commonDialog("ordersDialog", "客户("+ rows[0].customer_name +")明细", "75%", "68%", 
 		"${api}/bus/customer/toDetailView?id="+ rows[0].id, "icon-edit");
 }
 

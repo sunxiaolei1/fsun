@@ -8,7 +8,7 @@
 <div class="fsun-wrap">
 	<form id="setGiftsfm">
 	    <input name="isGift" value="true" hidden=true />
-		<span class="title" style="top: 28px;">配置商品(<span id="goodsName"></span>)信息</span>			
+		<span class="title" style="top: 30px;">配置商品(<span id="goodsName"></span>)信息</span>			
 		<table class="nb-formTable" style="width:100%;margin-top:2px;">
 	        <tr>
 	            <th width="12%">SKU</th>

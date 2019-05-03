@@ -142,9 +142,9 @@
 </div>
 
 <div id="payAccountWin" class="easyui-window" title="账单明细" iconCls="icon-money" closed="true" align="center" 
-	style="display:none;width:80%;height:65%;top:100px;" modal="true">  
+	style="display:none;width:80%;height:65%;top:100px;border: 0px solid #ccc;" modal="true">  
    	 <div class="easyui-layout" fit=true  id='base_layout'>	
-   	 	<div data-options="region:'center'" style="height:280px;">
+   	 	<div data-options="region:'center'" style="height:100%;border: 0px solid #ccc;">
    	 		<table id="payAccountDataGrid"></table>
    	 	</div> 		 	
    	 </div>	 

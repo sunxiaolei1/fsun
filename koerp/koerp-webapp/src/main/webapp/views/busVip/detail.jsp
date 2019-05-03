@@ -5,94 +5,79 @@
 	request.setAttribute("api", basePath);
 %>
 
-<style type="text/css">
-
-.easyui-textbox, .easyui-combogrid, .easyui-datebox, .easyui-combobox, .easyui-numberbox, .easyui-datetimebox {
-	width: 162px;
-}
-
-.toolbar{
-	height:28px;
-	overflow:hidden;
-	border: 1px solid #D3D3D3;
-	border-bottom:0px;
-	background: #f3f3f3;
-	padding-top:2px;
-}
-
-</style>
-
 <div class="toolbar">
 	<a href="#" id="orderSaveBtn" class="easyui-linkbutton" iconCls="icon-disk" plain="true">保存</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="closeDialog('ordersDialog')">取消</a>
 </div>
 	
-<form id="orderfm">
-	<input id="id" name="id" hidden="true"/>									      
-   	<table class="nb-formTable" style="width:100%;">
-   		 <tr>					
-			<th width="12%">所属客户<span style="color:red;">*</span></th>
-			<td>
-				<input name="customerCode" id="vipCustomer" class="easyui-combogrid" required />
-				<div title='创建客户' class="icon-customer-btn" onclick="javascript:toAddCustomerView();" 
-					style="margin-right:65px;" ></div>	
-			</td>
-			<th width="12%">本金比例<span style="color:red;">*</span></th>
-			<td>
-				<input name="originPrecent" id="originPrecent" class="easyui-numberspinner" 
-					data-options="min:1,max:2,precision:2,increment:0.01,value:1" required />
-			</td>							
-        </tr>			   		
-        <tr>
-        	<th width="12%">卡级别<span style="color:red;">*</span></th>
-			<td>
-				<input name="cardType" id="cardType" class="easyui-combobox" required />
-			</td>
-        	<th width="12%">卡号<span style="color:red;">*</span></th>
-			<td>	
-				<input id="cardNo" name="cardNo" class="easyui-textbox" data-options="required:true,validType:'uniqueValue'" /> 
-			</td>			          			
-		</tr>       
-        <tr>
-        	<th width="12%">持卡人<span style="color:red;">*</span></th>
-			<td>
-				<input name="cnName" id="cnName" class="easyui-textbox" required />
-			</td>	
-        	<th width="12%">手机号</th>
-			<td>
-				<input name="mobile" id="mobile" class="easyui-textbox" />
-			</td>			          																				
-		</tr>		
-		<tr>	
-        	<th width="12%">微信号</th>
-			<td>
-				<input name="wechat" id="wechat" class="easyui-textbox" />
-			</td>				          															
-			<th width="12%">邮箱</th>
-			<td>
-				<input name="email" id="email" class="easyui-textbox" />
-			</td>			
-		</tr>
-		<tr>	
-        	<th width="12%">性别</th>
-			<td>
-				<input name="sex" id="sex" class="easyui-textbox" />
-			</td>			          															
-			<th width="12%">生日</th>
-			<td>
-				<input name="brithday" id="brithday" class="easyui-datebox" />
-			</td>			
-		</tr>
-        <tr>
-        	<th width="12%">备注</th>
-			<td colspan="3">
-				<input id="memo" name="memo"  data-options="multiline:true" 
-					class="easyui-textbox" style="width:640px;height:75px;"/>
-			</td>		        	
-        </tr>		        			       
-	</table>			
-</form>			
-					
+<div class="fsun-wrap">
+	<form id="orderfm">
+		<span class="title" style="top: 63px;">基本信息</span>
+		<input id="id" name="id" hidden="true"/>									      
+	   	<table class="nb-formTable" style="width:100%;">
+	   		 <tr>					
+				<th width="12%">所属客户<span style="color:red;">*</span></th>
+				<td>
+					<input name="customerCode" id="vipCustomer" class="easyui-combogrid" required />
+					<div title='创建客户' class="icon-customer-btn" onclick="javascript:toAddCustomerView();" 
+						style="margin-right:65px;" ></div>	
+				</td>
+				<th width="12%">本金比例<span style="color:red;">*</span></th>
+				<td>
+					<input name="originPrecent" id="originPrecent" class="easyui-numberspinner" 
+						data-options="min:1,max:2,precision:2,increment:0.01,value:1" required />
+				</td>							
+	        </tr>			   		
+	        <tr>
+	        	<th width="12%">卡级别<span style="color:red;">*</span></th>
+				<td>
+					<input name="cardType" id="cardType" class="easyui-combobox" required />
+				</td>
+	        	<th width="12%">卡号<span style="color:red;">*</span></th>
+				<td>	
+					<input id="cardNo" name="cardNo" class="easyui-textbox" data-options="required:true,validType:'uniqueValue'" /> 
+				</td>			          			
+			</tr>       
+	        <tr>
+	        	<th width="12%">持卡人<span style="color:red;">*</span></th>
+				<td>
+					<input name="cnName" id="cnName" class="easyui-textbox" required />
+				</td>	
+	        	<th width="12%">手机号</th>
+				<td>
+					<input name="mobile" id="mobile" class="easyui-textbox" />
+				</td>			          																				
+			</tr>		
+			<tr>	
+	        	<th width="12%">微信号</th>
+				<td>
+					<input name="wechat" id="wechat" class="easyui-textbox" />
+				</td>				          															
+				<th width="12%">邮箱</th>
+				<td>
+					<input name="email" id="email" class="easyui-textbox" />
+				</td>			
+			</tr>
+			<tr>	
+	        	<th width="12%">性别</th>
+				<td>
+					<input name="sex" id="sex" class="easyui-textbox" />
+				</td>			          															
+				<th width="12%">生日</th>
+				<td>
+					<input name="brithday" id="brithday" class="easyui-datebox" />
+				</td>			
+			</tr>
+	        <tr>
+	        	<th width="12%">备注</th>
+				<td colspan="3">
+					<input id="memo" name="memo"  data-options="multiline:true" 
+						class="easyui-textbox" style="width:700px;height:59px;"/>
+				</td>		        	
+	        </tr>		        			       
+		</table>			
+	</form>			
+</div>				
 
 <!-- 查询条件 -->
 <%@include file="../busCommon/vipCustomerSelect.jsp"%> 

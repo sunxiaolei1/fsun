@@ -135,7 +135,7 @@ function reflushDataGrid(){
  * 创建客户
  */
 function toAddCustomerView(){
-	commonDialog("ordersDialog", "创建客户", "75%", "65%", 
+	commonDialog("ordersDialog", "创建客户", "75%", "68%", 
 		"${api}/bus/customer/toDetailView?id=", "icon-client");
 }
 
