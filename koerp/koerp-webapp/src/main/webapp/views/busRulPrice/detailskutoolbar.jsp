@@ -73,8 +73,8 @@ function addSkuRow() {
     $("<div></div>").dialog({
         id: "chooseSkuDialog",
         title: "选择商品",
-        width: 1150,
-        height: 500,
+        width: "90%",
+        height: "90%",
         iconCls: "icon-add",
         closed: false,
         cache: false,

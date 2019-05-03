@@ -4,31 +4,20 @@
 
 <div class="easyui-layout" style="width:100%;height:100%;">
 	<div title="数据字典" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
-		<div class="easyui-layout" data-options="fit:true">
-			
+		<div class="easyui-layout" data-options="fit:true">			
 			<!--条件查询-->		  
-				<div data-options="region:'north',split:true" style="height:50px">
-					<div data-options="region:'center',border:false" style="overflow:hidden;">
-						<div style="height:30px;line-height:30px;padding:5px;">
-							<label>数据类别：</label>
-							<input name="codeType" id="codeType" class="easyui-combobox" style="width:150px"/>&nbsp;
-							<label>关键字：</label>
-							<input name="keywordText" id="keywordText" data-options="prompt:'名称,备注'" 
-								class="easyui-textbox" style="width:250px"/>&nbsp;
-							<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
-							<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>
-						</div>
-					</div>
-				</div>
-			
-			<div id="tools">
-					<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">新增</a>  
-					<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
-					<a href="#" class="easyui-linkbutton" iconCls="icon-cross" plain="true" onclick="del()">删除</a>
-				<a href="#" class="easyui-linkbutton" iconCls="icon-20130406015709810_easyicon_net_16" plain="true" onclick="reflushDataGrid()">刷新</a>
+			<div data-options="region:'north',split:true" style="height:50px">					
+				<div style="height:30px;line-height:30px;padding:5px;">
+					<label>数据类别：</label>
+					<input name="codeType" id="codeType" class="easyui-combobox" style="width:150px"/>&nbsp;
+					<label>关键字：</label>
+					<input name="keywordText" id="keywordText" data-options="prompt:'名称,备注'" 
+						class="easyui-textbox" style="width:250px"/>&nbsp;
+					<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
+					<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>
+				</div>				
 			</div>
-			
-			<!-- table -->
+	
 			<div data-options="region:'center'">
 				<table id="codesDataGrid"> 
 				</table>
@@ -36,6 +25,13 @@
 
 		</div>
 	</div>
+</div>
+
+<div id="tools" style="display:none;">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">新增</a>  
+	<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cross" plain="true" onclick="del()">删除</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-20130406015709810_easyicon_net_16" plain="true" onclick="reflushDataGrid()">刷新</a>
 </div>
 	
 <script type="text/javascript">

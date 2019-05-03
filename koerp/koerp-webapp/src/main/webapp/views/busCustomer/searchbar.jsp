@@ -3,7 +3,7 @@
 
 
 <%-- <shiro:hasPermission name="orders:query">   --%>
-	<div id="queryDiv" style="height:10%;overflow:hidden;border: 1px solid #D3D3D3;" data-options="region:'center'">
+	<div id="queryDiv" style="height:50px;overflow:hidden;" data-options="region:'north',split:true">
 		<%@include file="../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>

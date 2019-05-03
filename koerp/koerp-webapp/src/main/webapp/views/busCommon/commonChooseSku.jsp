@@ -8,7 +8,7 @@
 <!-- BasSku dialog -->
 <div id="chooseSkuDialog" class="alert">
 	<div class="easyui-layout" style="height:100%;">
-		<div data-options="region:'west',split:true,title:'待选商品',collapsible:false" style="width:520px;">
+		<div data-options="region:'west',split:true,title:'待选商品',collapsible:false" style="width:48%;">
 			<div class="easyui-layout" data-options="fit:true" >	
 				<div data-options="region:'center',border:false" >
 					<table id="waitingSKUDatagrid"></table>
@@ -31,7 +31,7 @@
 		        </tr> 		   
 			 </table>     
 		</div>
-		<div data-options="region:'east',split:true,title:'已选商品',collapsible:false" style="width:540px;">
+		<div data-options="region:'east',split:true,title:'已选商品',collapsible:false" style="width:45%;">
 			<table id="checkedSKUDatagrid" ></table>
 		</div>
 	</div>
@@ -42,7 +42,7 @@
 		<label>分类：</label>
         <input id="categoryCombo" class="easyui-combobox" style="width:110px;">
 		<label>检索：</label>
-		<input id="vaguefieldText" class="easyui-textbox" data-options="prompt:'输入商品名称、SKU筛选...'" style="width:190px" />
+		<input id="vaguefieldText" class="easyui-textbox" data-options="prompt:'输入商品名称、SKU筛选...'" style="width:170px" />
 		<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="querySku()">查询</a>
 		<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="resetSku()">重置</a>		 
 </div>

@@ -5,24 +5,25 @@
 	request.setAttribute("api", basePath);
 %>
 
-<!-- 查询条件 -->
-<%@include file="./detailtoolbar.jsp"%>
-
-<form id="fm"> 
- 	<div class="fsun-wrap" style="padding: 12px 5px 5px 5px;margin-top: 14px">
-	    <span class="title" style="top: 70px;">关联商品价格</span>		    	
-		<div style="width: 100%;height:49%;">
-			<div id="skutoolbar" style="display:none;">
-				<%@include file="./detailskutoolbar.jsp"%>
+<div class="easyui-layout" style="width:100%;height:100%;">	
+	<!-- 查询条件 -->
+	<%@include file="./detailtoolbar.jsp"%>
+	<div data-options="region:'center',split:true,collapsible:false" style="padding:5px;">
+		<div class="easyui-layout" data-options="fit:true">	
+			<div data-options="region:'south'" style="height:35%;border: 0px solid #D3D3D3;">
+				<table id="rulShopDataGrid"></table>
 			</div>
-			<table id="rulSkuDataGrid"></table>			
-		</div>
-		<div style="width: 100%;height:34%;margin-top:3px;">
-			<table id="rulShopDataGrid"></table>
-		</div>
-				
+			<div style="border: 0px solid #D3D3D3;" data-options="region:'center'" >	
+				<table id="rulSkuDataGrid"></table>
+			</div>
+		</div>	
+		
 	</div>
-</form>
+</div>
+
+<div id="skutoolbar" style="display:none;">
+	<%@include file="./detailskutoolbar.jsp"%>
+</div>
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../busCommon/commonEdatagridCellediting.jsp"%>

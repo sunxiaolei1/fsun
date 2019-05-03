@@ -11,7 +11,7 @@
 }
 </style>
 
-<div id="detailtoolbar" class="toolbar" data-options="region:'center'">	
+<div id="detailtoolbar" class="toolbar" data-options="region:'north'">	
 	<a href="#" class="easyui-linkbutton" iconCls="icon-disk" plain="true" onclick="saveRulPrice()">保存</a>	
 	<a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="refreshRulPrice()">刷新</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="openAddView()">添加店仓</a>	

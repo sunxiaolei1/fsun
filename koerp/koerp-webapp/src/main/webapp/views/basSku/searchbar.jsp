@@ -3,13 +3,13 @@
 
 
 <%-- <shiro:hasPermission name="orders:query">   --%>
-	<div id="queryDiv" style="height:10%;overflow:hidden;border: 1px solid #D3D3D3;" data-options="region:'center'">
+	<div id="queryDiv" style="height:50px;overflow:hidden;" data-options="region:'north',split:true">
 		<%@include file="../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>
 					<td width="6%">关键字:</td>
 					<td>
-						<input name="q" id="q" data-options="prompt:'sku,商品名称,规格...'" class="easyui-textbox" style="width:250px" />
+						<input name="q" id="q" data-options="prompt:'sku,商品名称,规格...'" class="easyui-textbox" style="width:200px" />
 					</td>
 					<td width="6%">条形码:</td>
 					<td>
@@ -22,7 +22,6 @@
 					<td  width="6%">品牌名称:</td>
 					<td>
 						<input id="brandCodeCombo" name="brandCode"  class="easyui-combobox" editable="false"/>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
 						<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>						
 					</td>																			

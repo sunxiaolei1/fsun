@@ -4,13 +4,15 @@
 
 <div class="easyui-layout" style="width:100%;height:100%;">
 	<div title="销售单汇总" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
-		<!-- 查询条件 -->
-		<%@include file="./searchbar.jsp"%>
-		
-		<!-- table -->
-		<div id="gridDiv" data-options="region:'center'" style="height: 84%;">
-			<table id="ordersDataGrid"> 
-			</table>
+		<div class="easyui-layout" data-options="fit:true">	
+			<!-- 查询条件 -->
+			<%@include file="./searchbar.jsp"%>
+			
+			<!-- table -->
+			<div id="gridDiv" data-options="region:'center'" style="border: 0px solid #D3D3D3;">
+				<table id="ordersDataGrid"> 
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
