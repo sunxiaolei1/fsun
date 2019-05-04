@@ -7,21 +7,21 @@
 		<%@include file="../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>
-					<td width="6%">关键字:</td>
-					<td>
-						<input name="q" id="q" data-options="prompt:'sku,商品名称,规格...'" class="easyui-textbox" style="width:200px" />
+					<td width="7%">关键字:</td>
+					<td width="18%">
+						<input name="q" id="q" data-options="prompt:'sku,商品名称,规格...'" class="easyui-textbox" style="width:95%;" />
 					</td>
-					<td width="6%">条形码:</td>
-					<td>
-						<input id="barCodeText" name="barCode" class="easyui-textbox" editable="false" />
+					<td width="7%">条形码:</td>
+					<td width="12%">
+						<input id="barCodeText" name="barCode" class="easyui-textbox" style="width:90%;" />
 					</td>
-					<td width="6%">商品分类:</td>
-					<td>
-						<input id="categoryCodeCombo" name="categoryCode" class="easyui-combobox" editable="false" />
+					<td width="8%">商品分类:</td>
+					<td width="12%">
+						<input id="categoryCodeCombo" name="categoryCode" class="easyui-combobox" editable="false" style="width:90%;" />
 					</td>
-					<td  width="6%">品牌名称:</td>
-					<td>
-						<input id="brandCodeCombo" name="brandCode"  class="easyui-combobox" editable="false"/>
+					<td  width="8%">品牌名称:</td>
+					<td width="29%">
+						<input id="brandCodeCombo" name="brandCode"  class="easyui-combobox" editable="false" style="width:40%;" />
 						<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
 						<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>						
 					</td>																			
@@ -35,15 +35,13 @@
 
 $(function() {
 	
-	$('#categoryCodeCombo').combobox({	
-		width: 140,
+	$('#categoryCodeCombo').combobox({		
 		valueField: 'codeCode',
    	  	textField: 'codeName',
    	  	data: window.parent.categoryCodeData	  
    	});
 	
 	$('#brandCodeCombo').combobox({	
-		width: 140,
 		valueField: 'codeCode',
    	  	textField: 'codeName',
    	  	data: window.parent.brandCodeData	  

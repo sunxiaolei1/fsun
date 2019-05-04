@@ -9,13 +9,13 @@
 				<tr>									
 					<td  width="6%">出库店仓:</td>
 					<td>
-						<input id="shopText" name="shopId"  class="easyui-combogrid" style="width:200px"/>
+						<input id="shopText" name="shopId"  class="easyui-combogrid" />
 					</td>																																						
 					<td width="6%">单据日期:</td>
-					<td colspan="3">
-						<input id="startDate" name="startDate" editable=false class="easyui-datebox" />
+					<td colspan="5">
+						<input id="startDate" name="startDate" editable=false class="easyui-datebox" style="width:140px;" />
 						-
-						<input id="endDate" name="endDate" editable=false class="easyui-datebox" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input id="endDate" name="endDate" editable=false class="easyui-datebox" style="width:140px;" />&nbsp;&nbsp;
 						<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
 						<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>						
 					</td>

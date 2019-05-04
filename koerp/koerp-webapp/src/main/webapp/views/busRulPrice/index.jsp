@@ -4,7 +4,7 @@
 
 <div class="easyui-layout" style="width:100%;height:100%;">		
 	<%@include file="../busCommon/commonRulTreeSearch.jsp"%>
-	<div id="rulDetail" class="easyui-panel" title='价格策略明细' style="padding:5px;"
+	<div id="rulDetail" title="策略明细"  class="easyui-panel" border="false" style="padding:5px;"
 		data-options="region:'center',split:true,collapsible:false" ></div>
 </div>
 	

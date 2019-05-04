@@ -2,7 +2,7 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/jquery-easyui/tree_extend.js"></script>
 
-<div region="west" split="true" title='价格策略树' style="width:220px;">	
+<div region="west" title="价格策略树" split="true" border="false" style="width:220px;">	
     <div class="easyui-layout" data-options="fit:true">
 		<div data-options="region:'north',split:true" style="width:70%;height:45px;padding:5px" >
 			<label>策略查询：</label>

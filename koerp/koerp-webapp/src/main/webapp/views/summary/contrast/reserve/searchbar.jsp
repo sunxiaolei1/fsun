@@ -13,15 +13,15 @@
 					</td>
 					<td width="6%">交易类型:</td>
 					<td>
-						<input id="tradeTypeCombo" name="tradeType"  class="easyui-combobox" />
+						<input id="tradeTypeCombo" name="tradeType" editable="false" class="easyui-combobox" />
 					</td>				
 					<td  width="6%">交易状态:</td>
 					<td>
-						<input id="tradeStatusCombo" name="tradeStatus"  class="easyui-combobox" />
+						<input id="tradeStatusCombo" name="tradeStatus" editable="false" class="easyui-combobox" />
 					</td>
 					<td  width="6%">支付方式:</td>
 					<td>
-						<input id="payModeCombo" name="payMode"  class="easyui-combobox" />
+						<input id="payModeCombo" name="payMode" editable="false" class="easyui-combobox" />
 					</td>																													
 				</tr>
 				<tr>

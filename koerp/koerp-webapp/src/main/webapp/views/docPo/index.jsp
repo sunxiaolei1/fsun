@@ -3,7 +3,7 @@
 <%@ include file="../headerJS.jsp" %>
 
 <div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="申请单管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
+	<div title="申请单列表" border="false" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
 		<div class="easyui-layout" data-options="fit:true">	
 			<!-- 查询条件 -->
 			<%@include file="./searchbar.jsp"%>

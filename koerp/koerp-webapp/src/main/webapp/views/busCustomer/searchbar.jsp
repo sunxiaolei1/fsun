@@ -7,18 +7,18 @@
 		<%@include file="../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>
-					<td width="6%">关键字:</td>
-					<td>
-						<input name="q" id="q" data-options="prompt:'客户编号,客户名称,手机号...'" class="easyui-textbox" style="width:250px" />
-					</td>
-					<td width="6%">客户类型:</td>
-					<td>
-						<input id="customerTypeCombo" name="customerType" class="easyui-combobox" editable="false" />
+					<td width="7%">关键字:</td>
+					<td width="15%">
+						<input name="q" id="q" data-options="prompt:'客户编号,名称,手机号...'" class="easyui-textbox" style="width:95%" />
 					</td>
 					<td  width="10%">所属销售代表:</td>
-					<td>
-						<input id="salesmanText" name="salesman"  class="easyui-combogrid" style="width:250px"/>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<td width="12%">
+						<input id="salesmanText" name="salesman"  class="easyui-combogrid" style="width:90%" />			
+					</td>
+					<td width="8%">客户类型:</td>
+					<td width="29%">
+						<input id="customerTypeCombo" name="customerType" class="easyui-combobox" editable="false" style="width:35%" /> 
+						&nbsp;&nbsp;&nbsp;
 						<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
 						<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>						
 					</td>																			

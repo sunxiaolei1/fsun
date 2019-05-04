@@ -2,15 +2,16 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>   
 <%@ include file="../../headerJS.jsp" %>
 
-<div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="库存管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
-		<!-- 查询条件 -->
-		<%@include file="./searchbar.jsp"%>
-		
-		<!-- table -->
-		<div id="gridDiv" data-options="region:'center'" style="height: 89%;">
-			<table id="orderDetailDataGrid"> 
-			</table>
+<div class="easyui-layout" data-options="fit:true" >
+	<div title="商品进出库明细" data-options="region:'center',split:true,collapsible:false, border:false" style="padding:5px">
+		<div class="easyui-layout" data-options="fit:true" >
+			<!-- 查询条件 -->
+			<%@include file="./searchbar.jsp"%>
+			
+			<!-- table -->
+			<div id="gridDiv" data-options="region:'center', border:false"  >
+				<table id="orderDetailDataGrid"></table>
+			</div>
 		</div>
 	</div>
 </div>
@@ -22,14 +23,13 @@ var frozenColumns = [[
 	{field:'goods_name',title:'商品名称',width:140,align:'center'},
 	{field:'shop_id',title:'所属店仓',width:140,align:'center', formatter:function(value, row){
 		return row.shop_name; 
-	}},   
-	{field:'qty',title:'可用数量',width:60,align:'center',formatter:intNumBaseFormat},	
-	{field:'lock_qty',title:'冻结数量',width:60,align:'center',formatter:intNumBaseFormat},	
-	{field:'damaged_qty',title:'破损数量',width:60,align:'center',formatter:intNumBaseFormat}	
+	}}	
 ]];
 
 var columns = [[
-
+	{field:'qty',title:'可用数量',width:70,align:'center',formatter:intNumBaseFormat},	
+	{field:'lock_qty',title:'冻结数量',width:70,align:'center',formatter:intNumBaseFormat},	
+	{field:'damaged_qty',title:'破损数量',width:70,align:'center',formatter:intNumBaseFormat},
 	{field:'trade_order_no',title:'单据编号',width:220,align:'center',sortable:true},		
 	{field:'trade_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docTradeType); 

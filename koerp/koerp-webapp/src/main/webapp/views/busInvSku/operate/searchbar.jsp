@@ -3,22 +3,22 @@
 
 
 <%-- <shiro:hasPermission name="orders:query">   --%>
-	<div id="queryDiv" style="height:10%;overflow:hidden;border: 1px solid #D3D3D3;" data-options="region:'center'">
+	<div id="queryDiv" style="height:50px;overflow:hidden;" data-options="region:'north',split:true">
 		<%@include file="../../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>
-					<td width="6%">交易单号:</td>
-					<td>
-						<input id="tradeOrderNo" name="tradeOrderNo" class="easyui-textbox" style="width:180px" />
+					<td width="8%">交易单号:</td>
+					<td style="width:20%;" >
+						<input id="tradeOrderNo" name="tradeOrderNo" class="easyui-textbox" />
 					</td>	
-					<td  width="6%">交易类型:</td>
-					<td>
-						<input id="tradeTypeCombo" name="tradeType" class="easyui-combobox" style="width:160px"/>
+					<td  width="8%">交易类型:</td>
+					<td style="width:16%;" >
+						<input id="tradeTypeCombo" name="tradeType" editable="false" class="easyui-combobox" style="width:80%;" />
 					</td>				
-					<td  width="6%">交易状态:</td>
-					<td>
-						<input id="tradeStatusCombo" name="tradeStatus" class="easyui-combobox" style="width:160px"/>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<td  width="8%">交易状态:</td>
+					<td style="width:40%;" >
+						<input id="tradeStatusCombo" name="tradeStatus" editable="false" class="easyui-combobox" style="width:30%;" />
+						&nbsp;&nbsp;&nbsp;
 						<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
 						<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>						
 						<a id="exportBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-page_white_excel'" onclick="exportExcel()">导出</a>

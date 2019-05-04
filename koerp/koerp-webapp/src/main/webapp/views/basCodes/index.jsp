@@ -3,7 +3,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>   
 
 <div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="数据字典" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
+	<div title="数据字典列表" border="false" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
 		<div class="easyui-layout" data-options="fit:true">			
 			<!--条件查询-->		  
 			<div data-options="region:'north',split:true" style="height:50px">					

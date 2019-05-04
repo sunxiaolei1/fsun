@@ -9,11 +9,11 @@
 				<tr>
 					<td width="6%">关键字:</td>
 					<td>
-						<input name="q" id="q" data-options="prompt:'输入账号,姓名...'" class="easyui-textbox" style="width:250px" />
+						<input name="q" id="q" data-options="prompt:'输入账号,姓名...'" class="easyui-textbox" style="width:200px" />
 					</td>					
 					<td  width="6%">所属店仓:</td>
 					<td>
-						<input id="shopText" name="shopId"  class="easyui-combogrid" style="width:250px"/>
+						<input id="shopText" name="shopId"  class="easyui-combogrid" style="width:200px"/>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
 						<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>						

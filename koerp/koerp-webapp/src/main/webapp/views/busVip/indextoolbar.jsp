@@ -19,7 +19,7 @@
 
 //跳转至新增界面
 function toAddView(){		
-	commonDialog("ordersDialog", "创建会员卡", "75%", "68%", 
+	commonDialog("ordersDialog", "创建会员卡", "75%", "85%", 
 		"${api}/bus/vip/toDetailView?id=", "icon-add");
 }
 
@@ -54,7 +54,7 @@ function toDetailView(){
 		$.messager.alert("提示","只能选择一行数据！");
 		return;
 	}
-	commonDialog("ordersDialog", "会员卡("+ rows[0].card_no +")明细", "75%", "68%", 
+	commonDialog("ordersDialog", "会员卡("+ rows[0].card_no +")明细", "75%", "85%", 
 		"${api}/bus/vip/toDetailView?id="+ rows[0].id, "icon-edit");
 }
 

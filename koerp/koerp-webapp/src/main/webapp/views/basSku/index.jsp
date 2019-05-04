@@ -2,14 +2,14 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>   
 <%@ include file="../headerJS.jsp" %>
 
-<div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="商品管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
-		<div class="easyui-layout" data-options="fit:true">	
+<div class="easyui-layout" data-options="fit:true" >
+	<div title="基础商品列表" data-options="region:'center',split:true,collapsible:false,border:false" style="padding:5px;">
+		<div class="easyui-layout" data-options="fit:true" >	
 			<!-- 查询条件 -->
 			<%@include file="./searchbar.jsp"%>
 			
 			<!-- table -->
-			<div id="gridDiv" data-options="region:'center'" style="border: 0px solid #D3D3D3;">
+			<div id="gridDiv" data-options="region:'center',border:false" >
 				<table id="ordersDataGrid"> 
 				</table>
 			</div>

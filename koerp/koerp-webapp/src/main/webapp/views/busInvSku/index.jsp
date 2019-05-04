@@ -2,14 +2,14 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>   
 <%@ include file="../headerJS.jsp" %>
 
-<div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="库存管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
+<div class="easyui-layout" data-options="fit:true" >
+	<div title="商品库存列表" data-options="region:'center',split:true,collapsible:false, border:false" style="padding:5px">
 		<div class="easyui-layout" data-options="fit:true">	
 			<!-- 查询条件 -->
 			<%@include file="./searchbar.jsp"%>
 			
 			<!-- table -->
-			<div id="gridDiv" data-options="region:'center'" style="border: 0px solid #D3D3D3;">
+			<div id="gridDiv" data-options="region:'center', border:false" >
 				<table id="ordersDataGrid"> 
 				</table>
 			</div>
@@ -26,19 +26,19 @@
 
 var frozenColumns = [[
 	{field:'id',checkbox:true},
-	{field:'sku',title:'SKU',width:80,align:'center',sortable:true},	
+	{field:'sku',title:'SKU',width:70,align:'center',sortable:true},	
 	{field:'goods_name',title:'商品名称',width:140,align:'center',sortable:true},
-	{field:'shop_id',title:'所属店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
+	{field:'shop_id',title:'所属店仓',width:120,align:'center',sortable:true, formatter:function(value, row){
 		return row.shop_name; 
-	}},   
+	}}  
+]];
+
+var columns = [[
 	{field:'qty',title:'可用数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},	
 	{field:'lock_qty',title:'冻结数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},	
 	{field:'damaged_qty',title:'破损数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},
 	{field:'take_inv_qty',title:'寄提库存',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},
-	{field:'vir_inv_qty',title:'虚拟库存',width:80,align:'center',formatter:intNumBaseFormat, sortable:true}
-]];
-
-var columns = [[			
+	{field:'vir_inv_qty',title:'虚拟库存',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},
 	{field:'bar_code',title:'条形码',width:120,align:'center',sortable:true},	
 	{field:'brand_code',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.brandCode); 

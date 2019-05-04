@@ -7,63 +7,73 @@
 	request.setAttribute("api", basePath);
 %>
 
-<!-- 查询条件 -->
-<%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
+<div class="easyui-layout" data-options="fit:true" >
+	<!-- 查询条件 -->
+	<%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
 	
-<div class="fsun-wrap">
-	<form id="orderfm">
-		<span class="title" style="top: 35px;">单据基本信息</span>	
-		<input id="sellerId" name="sellerId" hidden="true" />
-		<input id="sellerName" name="sellerName" hidden="true" />
-		<input id="buyerId" name="buyerId" hidden="true" />	
-		<input id="shopId" name="shopId" hidden="true" />		
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">
-	        <tr>
-	            <th width="12%">单据编号</th>
-				<td>
-					<input id="takeId" name="takeId" class="easyui-textbox" style="width:180px;"  readOnly />
-				</td>
-				<th width="12%">寄存单号</th>
-				<td>
-					<input id="orderId" name="orderId" class="easyui-textbox" readOnly />
-				</td>
-				<th width="12%">所属店仓</th>
-				<td colspan="3" >
-					<input id="shopName" name="shopName" 
-						class="easyui-textbox" style="width:400px;" readOnly />								
-				</td>																				
-	        </tr>	
-	        <tr>		        		        		        		
-				<th width="12%">提货人</th>
-				<td>
-					<input id="takeName" name="takeName" class="easyui-textbox" style="width:180px;" />
-				</td>
-	        	<th width="12%">提货时间</th>
-				<td>
-					<input id="takeTime" name="takeTime" class="easyui-datetimebox" />
-				</td>
-				<th width="12%">客户名称</th>
-				<td colspan="3" >
-					<input id="buyerName" name="buyerName" 
-						class="easyui-textbox" style="width:400px;" readOnly />								
-				</td>				        		            													        						        									
-	        </tr>	        
-	        <tr>
-	        	<th width="12%">备注</th>
-				<td colspan="7">
-					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:800px;height:46px;"/>	
-				</td>	        	
-	        </tr>
-		</table>
-	</form>			
-</div>	
-
-<div style="height: 320px; width: 100%;">
-	<div id="detailskutoolbar" style="display:none;">
-		<%@include file="./detailskusigntoolbar.jsp"%>
+	<div data-options="region:'center',split:true, border:false" >
+		<div class="easyui-layout" data-options="fit:true" >
+			<div data-options="region:'north',split:true, border:false" style="height:180px;">	
+				<div class="fsun-wrap" style="padding:15px 5px 0px 5px;">
+					<form id="orderfm">
+						<span class="title" style="top: 1px;">单据基本信息</span>	
+						<input id="sellerId" name="sellerId" hidden="true" />
+						<input id="sellerName" name="sellerName" hidden="true" />
+						<input id="buyerId" name="buyerId" hidden="true" />	
+						<input id="shopId" name="shopId" hidden="true" />		
+						<table class="nb-formTable" style="width:100%;margin-top:2px;">
+					        <tr>
+					            <th width="7%">单据编号</th>
+								<td style="width:27%;">
+									<input id="takeId" name="takeId" class="easyui-textbox" style="width:95%;" readOnly />
+								</td>
+								<th width="8%">寄存单号</th>
+								<td style="width:22%;">
+									<input id="orderId" name="orderId" class="easyui-textbox" style="width:90%;" readOnly />
+								</td>
+								<th width="8%">所属店仓</th>
+								<td colspan="3" style="width:26%;">
+									<input id="shopName" name="shopName" 
+										class="easyui-textbox" readOnly style="width:90%;"/>								
+								</td>																				
+					        </tr>	
+					        <tr>		        		        		        		
+								<th width="7%">提货人</th>
+								<td>
+									<input id="takeName" name="takeName" class="easyui-textbox" style="width:95%;" />
+								</td>
+					        	<th width="8%">提货时间</th>
+								<td>
+									<input id="takeTime" name="takeTime" class="easyui-datetimebox" style="width:90%;"/>
+								</td>
+								<th width="8%">客户名称</th>
+								<td colspan="3" >
+									<input id="buyerName" name="buyerName" 
+										class="easyui-textbox" readOnly style="width:90%;"/>							
+								</td>				        		            													        						        									
+					        </tr>	        
+					        <tr>
+					        	<th width="7%">备注</th>
+								<td colspan="7" style="width:92%;">
+									<input id="memo" name="memo"  data-options="multiline:true" 
+										class="easyui-textbox" style="width:80%;height:46px;"/>	
+								</td>	        	
+					        </tr>
+						</table>
+					</form>			
+				</div>
+			</div>
+					
+			<div data-options="region:'center',split:true, border:false" >
+				<table id="orderDetailDataGrid"></table>
+			</div>
+		</div>	
 	</div>
-	<table id="orderDetailDataGrid"></table>
+</div>
+
+
+<div id="detailskutoolbar" style="display:none;">
+	<%@include file="./detailskusigntoolbar.jsp"%>
 </div>					
 
 <!-- datagrid可编辑单元格 -->
@@ -92,19 +102,19 @@ var columns = [[
 	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}},
-	{field:"oriQty",title:"原订单数量", width:80,align:"center",
+	{field:"oriQty",title:"原订单数量", width:95,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },
 	    formatter:intNumBaseFormat
 	},
-	{field:"maxQty",title:"可提货数量", width:80,align:"center",
+	{field:"maxQty",title:"可提货数量", width:95,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },
 	    formatter:intNumBaseFormat
 	},
-	{field:"qty",title:"提货数量", width:80,align:"center",
+	{field:"qty",title:"提货数量", width:85,align:"center",
 		styler: function(value, rowData, rowIndex){
 			var style = 'font-weight:bold;color:green;';
 			if(rowData.maxQty!=value){

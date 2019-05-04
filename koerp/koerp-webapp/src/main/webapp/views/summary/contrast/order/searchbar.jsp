@@ -13,11 +13,11 @@
 					</td>														
 					<td width="6%">单据类型:</td>
 					<td>
-						<input id="orderTypeCombo" name="orderType"  class="easyui-combobox" />
+						<input id="orderTypeCombo" name="orderType" editable="false" class="easyui-combobox" />
 					</td>				
 					<td  width="6%">交易状态:</td>
 					<td>
-						<input id="tradeStatusCombo" name="tradeStatus"  class="easyui-combobox" />
+						<input id="tradeStatusCombo" name="tradeStatus" editable="false" class="easyui-combobox" />
 					</td>					
 					<td  width="6%">交易门店:</td>
 					<td>

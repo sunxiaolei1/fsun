@@ -19,8 +19,8 @@ function toAssignShopView(){
 	$("<div></div>").dialog({
 		id:"codesDialog",
 	    title:"&nbsp;店仓选择列表",
-	    width:"900px;",
-	    height:"360px;",
+	    width:"80%",
+	    height:"60%",
 	    closed:false,
 	    cache:false,
 	    savefunc: function(row){	

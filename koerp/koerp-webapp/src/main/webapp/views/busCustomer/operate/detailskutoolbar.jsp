@@ -20,7 +20,7 @@
 <span style="float:right;margin-top:2px;">	
 	<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
 </span>
-<div style="height:24px;">
+<div style="height:26px;">
 	<span class="skutitle" >
 		挂账交易历史[客户名称 : <span id="skutitle"></span>]
 	</span>	

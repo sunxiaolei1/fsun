@@ -17,22 +17,6 @@
 	padding-top:2px;
 }
 
-.fsun-wrap {
-	border: 1px solid #ccc;
-	padding: 15px 10px 5px 10px;
-	margin-top: 8px;
-}
-
-.fsun-wrap .title {
-	position: absolute;
-	color: #416AA3;
-	font-weight: bold;
-	left: 2%;
-	line-height: 2em;
-	padding: 0 1em;
-	background-color: #fff;
-}
-
 </style> 
 
 
@@ -43,11 +27,11 @@
 
 <form id="orderfm">
 	<div class="easyui-tabs" >
-		<div title="基本信息" style="padding:6px;">
-			<div class="fsun-wrap">
+		<div title="基本信息" style="padding:5px;">
+			<div class="fsun-wrap" style="padding: 15px 10px 5px 10px;margin-top: 8px;">
 				<span class="title" style="top: 66px;">退货信息(退货单号:<span id='refundId'></span>)</span>	
 				<span class="title" style="top: 66px;left:50%">原订单信息(订单号:<span id='orderId'></span>)</span>	
-				<div style="width:100%;height:38%;">
+				<div style="width:100%;height:40%;">
 					<table class="nb-formTable" style="width:49%;float:left;">
 						<tr>
 				        	<th width="12%">退货类型</th>
@@ -145,18 +129,18 @@
 				        </tr>				        	       
 			        </table>
 				</div>										
-			</div>					
-			<div style="height: 40%;width: 100%;">
+			</div>	
+			<div style="width:100%;height:38%;">
 				<table id="orderDetailDataGrid"></table>
-			</div>
+			</div>						
 		</div>	
-		<div title="补退款信息" closable="false" style="padding:6px;">
-		    <div style="width:100%;height:440px;">
+		<div title="补退款信息" closable="false" style="padding:5px;">
+		    <div style="width:100%;height:83%;">
 		    	<table id="cashordersDataGrid"></table>
 		    </div>				
 		</div>					
-		<div title="操作日志" closable="false" style="padding:6px;">
-		    <div style="width:100%;height:440px;">
+		<div title="操作日志" closable="false" style="padding:5px;">
+		     <div style="width:100%;height:83%;">
 		    	<table id="orderLogDataGrid"></table>
 		    </div>				
 		</div>					

@@ -14,13 +14,15 @@
 	<form id="orderfm">
 		<span class="title" style="top: 63px;">基本信息</span>
 		<input id="id" name="id" hidden="true"/>									      
-	   	<table class="nb-formTable" style="width:100%;">
+	   	<table class="nb-formTable" style="width:100%;height:82%;">
 	   		 <tr>					
 				<th width="12%">所属客户<span style="color:red;">*</span></th>
-				<td>
-					<input name="customerCode" id="vipCustomer" class="easyui-combogrid" required />
-					<div title='创建客户' class="icon-customer-btn" onclick="javascript:toAddCustomerView();" 
-						style="margin-right:65px;" ></div>	
+				<td>				
+					<input name="customerCode" id="vipCustomer" class="easyui-combogrid" 
+						required style="width:85%;"/>										
+					<div title='创建客户' class="icon-customer-btn"
+						onclick="javascript:toAddCustomerView();">							
+					</div>					
 				</td>
 				<th width="12%">本金比例<span style="color:red;">*</span></th>
 				<td>
@@ -70,9 +72,9 @@
 			</tr>
 	        <tr>
 	        	<th width="12%">备注</th>
-				<td colspan="3">
+				<td colspan="3" style="width:80%;">
 					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:700px;height:59px;"/>
+						class="easyui-textbox" style="width:90%;height:90%;"/>
 				</td>		        	
 	        </tr>		        			       
 		</table>			

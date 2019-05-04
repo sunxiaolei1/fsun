@@ -3,7 +3,7 @@
 <%@ include file="../headerJS.jsp" %>
 
 <div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="客户管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
+	<div title="客户列表"  border="false" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
 		<div class="easyui-layout" data-options="fit:true">	
 			<!-- 查询条件 -->
 			<%@include file="./searchbar.jsp"%>
@@ -34,12 +34,12 @@ var columns =
 				}													
 			}
 		},		
-		{field:'customer_code',title:'客户编号',width:130,align:'center',sortable:true},
+		{field:'customer_code',title:'客户编号',width:110,align:'center',sortable:true},
 		{field:'customer_type',title:'客户类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 			return formatter(value, window.parent.busCustomerType); 
 		}},
 		{field:'customer_name',title:'客户名称',width:150,align:'center',sortable:true},
-		{field:"arrears_price",title:"挂账欠款(元)",width:80, align:'center',formatter:numBaseFormat,
+		{field:"arrears_price",title:"挂账欠款(元)",width:100, align:'center',formatter:numBaseFormat,
 			styler:function(value){
 				if(value == 0){
 					return 'color:green;font-weight:bold';
@@ -48,7 +48,7 @@ var columns =
 				}
 			}
 		},
-		{field:'tel',title:'手机号',width:120,align:'center',sortable:true},
+		{field:'tel',title:'手机号',width:110,align:'center',sortable:true},
 		{field:'salesman',title:'所属销售代表',width:100,align:'center',sortable:true, formatter:function(value, row){
 			return row.salesman_name; 
 		}},						
@@ -84,8 +84,6 @@ $(function() {
 	currDataGrid = $("#ordersDataGrid");
 	currDataGrid.datagrid({
 		view:footerStyleView,
-		width:500,
-		height:250,
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -103,7 +101,7 @@ $(function() {
 	    pageSize: GLOBAL_PAGE_SIZE,
 	    pageList: GLOBAL_PAGE_SIZE_LIST,
 	    showFooter:true,
-	    fitColumns:true,
+	    fitColumns:false,
 	    columns:columns,
 	    loadMsg:"数据加载中请稍后……",
 	    emptyMsg:"没有符合条件的记录",

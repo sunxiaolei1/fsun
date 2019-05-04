@@ -1,7 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
 
-<div id="detailtoolbar" class="toolbar" data-options="region:'center'">	
+<style type="text/css">
+
+.toolbar{
+	height:28px;
+	overflow:hidden;
+	border: 1px solid #D3D3D3;
+	border-top:0px;
+	border-left:0px;
+	border-right:0px;
+	background: #f3f3f3;
+	padding:2px 0px;
+}
+
+</style>
+
+<div id="detailtoolbar" class="toolbar" data-options="region:'north', border:false" >	
     <!-- 销售订单 -->
 	<a href="#" id="order_cancel" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="orderCancel()">撤销</a>
 	<a href="#" id="add_order_remark" class="easyui-linkbutton" iconCls="icon-book_open" plain="true" onclick="toOrderRemarkView('${orderId}')">添加备注</a>	

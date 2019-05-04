@@ -17,25 +17,23 @@
 		<input id="shopId" name="shopId" hidden="true" />		
 		<table class="nb-formTable" style="width:100%;height:28%;margin-top:2px;">
 	        <tr>	            
-				<th width="12%">客户名称<span style="color:red;">*</span></th>
-				<td colspan="3" >
-					<input name="customerName" class="easyui-textbox" 
-						style="width:400px;" disabled />								
+				<th width="15%">客户名称</th>
+				<td>
+					<input name="customerName" class="easyui-textbox" disabled />								
 				</td>
 				<th width="12%">客户类型</th>
 				<td>
 					<input name="customerTypeName" class="easyui-textbox" disabled />								
 				</td>
-				<th width="12%">所属销售代表</th>
+				<th width="12%">交易类型</th>
 				<td>
-					<input name="salesman" class="easyui-textbox" disabled />								
-				</td>																						                													        	
+					<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />
+				</td>																					                													        	
 	        </tr>
 	        <tr>	            								
-				<th width="12%">结款门店</th>
-				<td colspan="3">
-					<input id="shopName" name="shopName" class="easyui-textbox" 
-						style="width:400px;" disabled />								
+				<th width="15%">结款门店</th>
+				<td>
+					<input id="shopName" name="shopName" class="easyui-textbox" disabled />								
 				</td>
 				<th width="12%">挂账总额</th>
 				<td>
@@ -49,29 +47,25 @@
 				</td>																							                													        	
 	        </tr>
 	        <tr>
-	        	<th width="12%">支付方式<span style="color:red;">*</span></th>
+	        	<th width="12%">支付方式</th>
 				<td>
 					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
-				</td>
-	            <th width="12%">交易类型</th>
-				<td>
-					<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />
-				</td>
+				</td>	            
 				<th width="12%">欠款金额</th>
 				<td>
 					<input id="unpaidPrice" name="unpaidPrice" class="easyui-numberbox" disabled 
 						data-options="precision:2, formatter: priceFormat" />								
 				</td>				
-				<th width="12%">结款金额<span style="color:red;">*</span></th>
+				<th width="12%">结款金额</th>
 				<td>
 					<input id="tradePrice" name="tradePrice" class="easyui-numberbox" required
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
+						data-options="min:0,precision:2,value:0, formatter: priceFormat" />							
 				</td>														
 	        </tr>	
 	        <tr>	        	
 				<th width="12%">备注</th>
-				<td colspan="7">
-					<input id="memo" name="memo" class="easyui-textbox" style="width:800px;"/>
+				<td colspan="5" width="86%">
+					<input id="memo" name="memo" class="easyui-textbox" style="width:75%;"/>
 				</td>							
 	        </tr>
 		</table>
@@ -102,14 +96,14 @@ var rachargeColumns = [[
 	{field:"tradeType",title:"交易类型", width:80,align:"center",sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeType); 
 	}},
-	{field:"orderId",title:"销售单号", width:130,align:"center"},
+	{field:"orderId",title:"销售单号", width:150,align:"center"},
 	{field:'tradeStatus',title:'交易状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeStatus); 
 	}},
-	{field:"tradeTime",title:"交易时间", width:130,align:"center",sortable:true},
-	{field:'tradePrice',title:'交易金额',width:80,align:'center',formatter:numBaseFormat},
-	{field:"memo",title:"备注", width:150,align:"center"},
-	{field: "selected", title: "操作", width: 70, align: "center",
+	{field:"tradeTime",title:"交易时间", width:140,align:"center",sortable:true},
+	{field:'tradePrice',title:'交易金额',width:100,align:'center',formatter:numBaseFormat},
+	{field:"memo",title:"备注", width:240,align:"center"},
+	{field: "selected", title: "操作", width: 90, align: "center",
 		formatter: function(value, row, index){	
 			var tradeType = row.tradeType;
 			var unusual = row.unusual;
@@ -144,8 +138,6 @@ $(function () {
 	
 	currOrderDetailDataGrid.datagrid({
 		view:footerStyleView,
-		width:"auto",
-	    height:"auto",
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -161,7 +153,7 @@ $(function () {
 	    pageList: GLOBAL_PAGE_SIZE_LIST,
 	    singleSelect:false,//是否单选   
 	    rownumbers:true,//行号
-	    fitColumns:true,
+	    fitColumns:false,
 	    showFooter:true,
 	    toolbar: "#detailskutoolbar",
 	    columns: rachargeColumns,

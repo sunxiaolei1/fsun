@@ -14,7 +14,7 @@
 	<form id="orderfm">
 		<span class="title" style="top: 63px;">基本信息</span>	
 		<input id="id" name="id" hidden="true"/>									      
-	   	<table class="nb-formTable" style="width:100%;">			   		
+	   	<table class="nb-formTable" fit=true >			   		
 	        <tr>
 	        	<th width="12%">客户类型<span style="color:red;">*</span></th>
 				<td>	
@@ -59,14 +59,14 @@
 	        	<th width="12%">详细地址</th>
 				<td colspan="3">
 					<input id="address" name="address" 
-						class="easyui-textbox" style="width:600px;"/>
+						class="easyui-textbox" style="width:75%;"/>
 				</td>
 			</tr>
 	        <tr>
 	        	<th width="12%">备注</th>
-				<td colspan="3">
+				<td colspan="3" style="width:87%;">
 					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:600px;height:59px;"/>
+						class="easyui-textbox" style="width:75%;height:50px;"/>
 				</td>		        	
 	        </tr>		        			       
 		</table>			

@@ -3,7 +3,7 @@
 <%@ include file="../headerJS.jsp" %>
 
 <div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="备用金管理" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
+	<div title="经销商备用金列表" border="false" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
 		<table id="ordersDataGrid" ></table>		
 	</div>
 </div>

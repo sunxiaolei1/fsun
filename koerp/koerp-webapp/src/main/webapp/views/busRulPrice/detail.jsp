@@ -5,19 +5,18 @@
 	request.setAttribute("api", basePath);
 %>
 
-<div class="easyui-layout" style="width:100%;height:100%;">	
+<div class="easyui-layout" data-options="fit:true" >
 	<!-- 查询条件 -->
 	<%@include file="./detailtoolbar.jsp"%>
 	<div data-options="region:'center',split:true,collapsible:false" style="padding:5px;">
 		<div class="easyui-layout" data-options="fit:true">	
-			<div data-options="region:'south'" style="height:35%;border: 0px solid #D3D3D3;">
+			<div data-options="region:'south',border:false,split:true" style="height:40%;">
 				<table id="rulShopDataGrid"></table>
 			</div>
-			<div style="border: 0px solid #D3D3D3;" data-options="region:'center'" >	
+			<div data-options="region:'center',border:false" >	
 				<table id="rulSkuDataGrid"></table>
 			</div>
-		</div>	
-		
+		</div>			
 	</div>
 </div>
 
@@ -37,10 +36,10 @@ var rulSkuColumns = [[
 	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.categoryCode); 
 	}},			
-	{field:"productType",title:"商品类型", width:80,align:"center", formatter:function(value, row){
+	/* {field:"productType",title:"商品类型", width:80,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.productType); 
-	}},	
-	{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
+	}},	 */
+	//{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"marketPrice",title:"分销价", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
@@ -97,7 +96,7 @@ var rulSkuColumns = [[
 			}
 		}
 	},
-	{field:"unitName",title:"单位",width:70,align:"center"}                
+	{field:"unitName",title:"单位",width:50,align:"center"}                
 ]];
 
 var rulShopcolumns = [[
@@ -188,7 +187,7 @@ function definedLoadData(rulId, $fm){
 		contentType:"application/json;charset=utf-8",	   
 		dataType : "json",
 		beforeSend: function (jqXHR) {  		        	
-        	$.messager.progress({title: '请等待',msg: '保存中...',text: '',interval: 700});       	
+        	$.messager.progress({title: '请等待',msg: '数据加载中...',text: '',interval: 700});       	
         },
 		success : function(result) {								
 			var rulPriceDto = result.entry;
@@ -228,8 +227,8 @@ function openAddView(){
 	$("<div></div>").dialog({
 		id:"codesDialog",
 	    title:"&nbsp;店仓选择列表",
-	    width:"900px;",
-	    height:"360px;",
+	    width:"80%",
+	    height:"60%",
 	    closed:false,
 	    cache:false,
 	    params:{

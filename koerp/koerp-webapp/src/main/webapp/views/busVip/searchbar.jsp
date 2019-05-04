@@ -7,20 +7,20 @@
 		<%@include file="../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>
-					<td width="6%">关键字:</td>
-					<td>
-						<input name="q" id="q" data-options="prompt:'卡号,持卡人,手机号...'" class="easyui-textbox" style="width:250px" />
+					<td width="7%">关键字:</td>
+					<td width="15%">
+						<input name="q" id="q" data-options="prompt:'卡号,持卡人,手机号...'" class="easyui-textbox" style="width:90%" />
 					</td>
-					<td width="6%">卡级别:</td>
-					<td>
-						<input id="cardTypeCombo" name="cardType" class="easyui-combobox" editable="false" />
-					</td>
-					<td  width="10%">所属客户:</td>
-					<td>
-						<input id="vipCustomerCombo" name="customerCode"  class="easyui-combogrid" style="width:250px"/>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<td  width="8%">所属客户:</td>
+					<td width="12%">
+						<input id="vipCustomerCombo" name="customerCode"  class="easyui-combogrid" style="width:90%" />										</td>
+					<td width="7%">卡级别:</td>
+					<td width="29%">
+						<input id="cardTypeCombo" name="cardType" class="easyui-combobox" editable="false" style="width:35%" />
+						&nbsp;&nbsp;&nbsp;
 						<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
 						<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>						
+						
 					</td>																			
 				</tr>									
 			</table>
