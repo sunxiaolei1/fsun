@@ -65,15 +65,13 @@
 			</div>
 					
 			<div data-options="region:'center',split:true, border:false" >
+				<div id="detailskutoolbar" style="display:none;">
+					<%@include file="./detailskusigntoolbar.jsp"%>
+				</div>
 				<table id="orderDetailDataGrid"></table>
 			</div>
 		</div>	
 	</div>
-</div>
-
-
-<div id="detailskutoolbar" style="display:none;">
-	<%@include file="./detailskusigntoolbar.jsp"%>
 </div>					
 
 <!-- datagrid可编辑单元格 -->

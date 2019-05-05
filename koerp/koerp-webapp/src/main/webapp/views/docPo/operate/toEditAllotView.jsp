@@ -7,70 +7,77 @@
 	request.setAttribute("api", basePath);
 %>
 
-<!-- 查询条件 -->
-<%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
+<div class="easyui-layout" data-options="fit:true" >
+	<!-- 查询条件 -->
+	<%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
 	
-<div class="fsun-wrap">
-	<form id="orderfm">
-		<span class="title" style="top: 35px;">单据基本信息</span>		
-		<input id="toShopId" name="toShopId" hidden="true" />
-		<input id="iId" name="iId" hidden="true" />
-		<input id="iName" name="iName" hidden="true" />
-		<input id="iShopId" name="iShopId" hidden="true" />
-		<input id="orderPrice" name="orderPrice" hidden="true" />
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">
-	        <tr>
-	            <th width="12%">单据编号<span style="color:red;">*</span></th>
-				<td>
-					<input id="poNo" name="poNo" class="easyui-textbox" readOnly />
-				</td>
-				<th width="12%">单据类型<span style="color:red;">*</span></th>
-				<td>
-					<input id="poType" name="poType" class="easyui-combobox" readOnly required/>								
-				</td>						
-				<th width="12%">出库店仓<span style="color:red;">*</span></th>
-				<td colspan="3">
-					<input id="shopCombo" name="fromShopId" class="easyui-combobox" 
-						style="width:360px;" required />								
-				</td>											
-	        </tr>	       
-	        <tr>
-	        	<th width="12%">联系人</th>
-				<td>
-					<input id="iContact" name="iContact" class="easyui-textbox" />								
-				</td>
-	        	<th width="12%">联系方式</th>
-				<td>
-					<input id="iTel" name="iTel" class="easyui-textbox" />								
-				</td>
-				<th width="12%">入库店仓<span style="color:red;">*</span></th>
-				<td colspan="3">					
-					<input id="toShopName" name="toShopName" class="easyui-textbox" 
-						style="width:360px;" readOnly />								
-				</td>	        						        		        	
-	        </tr>
-	        <tr>
-	        	<th width="12%">收货地址</th>
-				<td colspan="3">
-					<input id="iAddress" name="iAddress"data-options="multiline:true" 
-						class="easyui-textbox" style="width:400px;height:60px;"/>
-				</td>
-	        	<th width="12%">备注</th>
-				<td colspan="3">
-					<input id="memo" name="memo"  data-options="multiline:true" readOnly
-						class="easyui-textbox" style="width:400px;height:60px;"/>
-				</td>
-	        </tr>
-	        
-		</table>
-	</form>			
-</div>	
-<div style="height: 295px; width: 100%;">
-	<div id="detailskutoolbar" style="display:none;">
-		<%@include file="./detailskutoolbar.jsp"%>
-	</div>
-	<table id="orderDetailDataGrid"></table>
-</div>					
+	<div data-options="region:'center',split:true, border:false" >
+		<div class="easyui-layout" data-options="fit:true" >
+			<div data-options="region:'north',split:true, border:false" style="height:181px;">
+				<div class="fsun-wrap">
+					<form id="orderfm">
+						<span class="title" style="top: 1px;">单据基本信息</span>		
+						<input id="toShopId" name="toShopId" hidden="true" />
+						<input id="iId" name="iId" hidden="true" />
+						<input id="iName" name="iName" hidden="true" />
+						<input id="iShopId" name="iShopId" hidden="true" />
+						<input id="orderPrice" name="orderPrice" hidden="true" />
+						<table class="nb-formTable" style="width:100%;">
+					        <tr>
+					            <th width="12%">单据编号</th>
+								<td>
+									<input id="poNo" name="poNo" class="easyui-textbox" readOnly style="width:95%;" />
+								</td>
+								<th width="12%">单据类型</th>
+								<td>
+									<input id="poType" name="poType" class="easyui-combobox" readOnly required style="width:95%;" />								
+								</td>
+								<th width="12%">出库店仓</th>
+								<td>
+									<input id="shopCombo" name="fromShopId" class="easyui-combobox" required style="width:95%;" />								
+								</td>
+							</tr>	       
+					        <tr>
+					        	<th width="12%">联系人</th>
+								<td>
+									<input id="iContact" name="iContact" class="easyui-textbox" style="width:95%;" />								
+								</td>
+					        	<th width="12%">联系方式</th>
+								<td>
+									<input id="iTel" name="iTel" class="easyui-textbox" style="width:95%;" />							
+								</td>
+								<th width="12%">入库店仓</th>
+								<td>					
+									<input id="toShopName" name="toShopName" class="easyui-textbox" 
+										readOnly style="width:95%;" />								
+								</td>	
+					        </tr>
+					        <tr>
+					        	<th width="12%">收货地址</th>
+								<td>
+									<input id="iAddress" name="iAddress"data-options="multiline:true" 
+										class="easyui-textbox" style="width:95%;height:50px;"/>
+								</td>
+					        	<th width="12%">备注</th>
+								<td colspan="3">
+									<input id="memo" name="memo"  data-options="multiline:true" readOnly
+										class="easyui-textbox" style="width:80%;height:50px;"/>
+								</td>
+					        </tr>					        
+						</table>
+					</form>			
+				</div>	
+			</div>
+			
+			<div data-options="region:'center',split:true, border:false" >
+				<div id="detailskutoolbar" style="display:none;">
+					<%@include file="./detailskutoolbar.jsp"%>
+				</div>
+				<table id="orderDetailDataGrid"></table>
+			</div>
+		</div>
+	</div>	
+</div>
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>
@@ -87,8 +94,8 @@ var $orderfm = $("#orderfm");
 var poColumns = [[
 	{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
-	{field:"goodsName",title:"商品名称", width:140,align:"center"},
-	{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:"goodsName",title:"商品名称", width:160,align:"center"},
+	{field:"barCode",title:"条形码", width:120,align:"center"},
 	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.brandCode); 
 	}},
@@ -127,7 +134,7 @@ var poColumns = [[
 	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}},
-	{field:"stockOut",title:"操作",width:80,align:"center", 
+	{field:"stockOut",title:"操作",width:90,align:"center", 
 		formatter: function(value, row, index){						
 			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
 		}
@@ -164,7 +171,12 @@ $(function () {
 			if(header!=null){				
 				initShopComboGrid(header.fromShopId, header.fromShopName, header.toShopId);
 				delete header.fromShopId;
-				$orderfm.form("load", header);	
+				$orderfm.form("load", header);				
+				if(header.poStatus!=null && header.poStatus!=''
+					&& (header.poStatus=='10' || header.poStatus=='90')){
+					$("#addSkuBtn").css("visibility", "hidden");
+					currOrderDetailDataGrid.datagrid("hideColumn", "stockOut");
+				}
 			}
 			
 			var details = docPoDto.details;	

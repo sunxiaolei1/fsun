@@ -148,23 +148,22 @@
 					</form>		
 				<!-- </div> -->	
 			</div>
-			<div data-options="region:'center', border:false" >			
+			<div data-options="region:'center', border:false" >
+				<div id="detailskutoolbar" style="display:none" >
+					<span style="float:right;margin-top:2px;margin-bottom:2px;">	
+						<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
+					</span>
+					<div style="height:26px;">
+						<b class="skutitle" >
+							商品明细
+						</b>
+					</div>	
+				</div>			
 				<table id="orderDetailDataGrid"></table>		
 			</div>
 		</div>
 	</div>
 
-</div>
-
-<div id="detailskutoolbar" style="display:none" >
-	<span style="float:right;margin-top:2px;margin-bottom:2px;">	
-		<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
-	</span>
-	<div style="height:26px;">
-		<b class="skutitle" >
-			商品明细
-		</b>
-	</div>	
 </div>
 
 <div id="payAccountWin" class="easyui-window" title="账单明细" iconCls="icon-money" closed="true" align="center" 

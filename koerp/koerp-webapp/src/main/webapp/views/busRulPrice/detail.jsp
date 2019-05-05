@@ -13,15 +13,14 @@
 			<div data-options="region:'south',border:false,split:true" style="height:40%;">
 				<table id="rulShopDataGrid"></table>
 			</div>
-			<div data-options="region:'center',border:false" >	
+			<div data-options="region:'center',border:false" >
+				<div id="skutoolbar" style="display:none;">
+					<%@include file="./detailskutoolbar.jsp"%>
+				</div>	
 				<table id="rulSkuDataGrid"></table>
 			</div>
 		</div>			
 	</div>
-</div>
-
-<div id="skutoolbar" style="display:none;">
-	<%@include file="./detailskutoolbar.jsp"%>
 </div>
 
 <!-- datagrid可编辑单元格 -->
