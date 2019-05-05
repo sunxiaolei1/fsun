@@ -28,10 +28,10 @@ var columns =
 				}													
 			}
 		},
-		{field:'customer_code',title:'客户编号',width:130,align:'center',sortable:true},
-		{field:'customer_name',title:'客户名称',width:150,align:'center',sortable:true},		
+		{field:'customer_code',title:'客户编号',width:100,align:'center',sortable:true},
+		{field:'customer_name',title:'客户名称',width:140,align:'center',sortable:true},		
 		{field:'tel',title:'手机号',width:120,align:'center',sortable:true},	
-		{field:"enable_reserve",title:"备用金余额",width:80, align:'center',formatter:numBaseFormat,
+		{field:"enable_reserve",title:"备用金余额",width:100, align:'center',formatter:numBaseFormat,
 			styler:function(value){
 				if(value > 0){
 					return 'color:green;font-weight:bold';
@@ -40,7 +40,7 @@ var columns =
 				}
 			}
 		},
-		{field:"credit_price",title:"信用额度(元)",width:80, align:'center',formatter:numBaseFormat,
+		{field:"credit_price",title:"信用额度(元)",width:100, align:'center',formatter:numBaseFormat,
 			styler:function(value){
 				if(value > 0){
 					return 'color:green;font-weight:bold';
@@ -49,7 +49,7 @@ var columns =
 				}
 			}
 		},
-		{field:"enabled",title:"状态", width:80,align:'center', 
+		{field:"enabled",title:"状态", width:70,align:'center', 
 			formatter:function(value, row){
 				return formatter(value, window.parent.isEnable); 
 			},
@@ -61,7 +61,7 @@ var columns =
 				}
 			}
 		},
-		{field:'memo',title:'备注',width:200,align:'center',sortable:true}		
+		{field:'memo',title:'备注',width:360,align:'center',sortable:true}		
 	]];
 
 var currDataGrid = $("#ordersDataGrid");
@@ -82,8 +82,6 @@ $(function() {
 		
 	currDataGrid.datagrid({
 		view:footerStyleView,
-		width:500,
-		height:250,
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -104,7 +102,7 @@ $(function() {
 	    pageSize: GLOBAL_PAGE_SIZE,
 	    pageList: GLOBAL_PAGE_SIZE_LIST,
 	    showFooter:true,
-	    fitColumns:true,
+	    fitColumns:false,
 	    columns:columns,
 	    loadMsg:"数据加载中请稍后……",
 	    emptyMsg:"没有符合条件的记录",

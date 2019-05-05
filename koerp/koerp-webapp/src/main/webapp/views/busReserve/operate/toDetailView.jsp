@@ -7,76 +7,87 @@
 	request.setAttribute("api", basePath);
 %>
 
-<!-- 查询条件 -->
-<%@include file="../../addtoolbar.jsp"%>
+<div class="easyui-layout" data-options="fit:true" >
+	<!-- 查询条件 -->
+	<%@include file="../../addtoolbar.jsp"%>
 	
-<div class="fsun-wrap">
-	<form id="orderfm">
-		<span class="title" style="top: 35px;">备用金充值信息</span>				
-		<input id="customerCode" name="customerCode" hidden="true" />	
-		<input id="shopId" name="shopId" hidden="true" />		
-		<table class="nb-formTable" style="width:100%;height:28%;margin-top:2px;">
-	        <tr>
-	        	<th width="12%">交易门店</th>
-				<td>
-					<input id="shopName" name="shopName" class="easyui-textbox" disabled />								
-				</td>	            
-				<th width="12%">客户名称<span style="color:red;">*</span></th>
-				<td>
-					<input name="customerName" class="easyui-textbox" readOnly />								
-				</td>						
-				<th width="12%">所属销售代表</th>
-				<td>
-					<input name="salesman" class="easyui-textbox" disabled />								
-				</td>																						                													        	
-	        </tr>
-	        <tr>	            											
-				<th width="12%">预付总额</th>
-				<td>
-					<input id="totalPrice" name="totalPrice" class="easyui-numberbox" disabled
-						data-options="min:0,precision:2, formatter: priceFormat" />								
-				</td>				
-				<th width="12%">消费总额</th>
-				<td>
-					<input id="consumePrice" name="consumePrice" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2, formatter: priceFormat" />								
-				</td>
-				<th width="12%">可用余额</th>
-				<td>
-					<input id="enablePrice" name="enablePrice" class="easyui-numberbox" disabled 
-						data-options="precision:2, formatter: priceFormat" />								
-				</td>																							                													        	
-	        </tr>
-	        <tr>
-	        	<th width="12%">支付方式<span style="color:red;">*</span></th>
-				<td>
-					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
-				</td>
-	            <th width="12%">交易类型</th>
-				<td>
-					<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />
-				</td>							
-				<th width="12%">充值金额<span style="color:red;">*</span></th>
-				<td>
-					<input id="tradePrice" name="tradePrice" class="easyui-numberbox" required
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
-				</td>														
-	        </tr>	
-	        <tr>	        	
-				<th width="12%">备注</th>
-				<td colspan="5">
-					<input id="memo" name="memo" class="easyui-textbox" style="width:800px;"/>
-				</td>							
-	        </tr>
-		</table>
-	</form>			
-</div>	
-<div style="height: 57%; width: 100%;">
-	<div id="detailskutoolbar" style="display:none;">
-		<%@include file="./detailskutoolbar.jsp"%>
+	<div data-options="region:'center',split:true, border:false" >
+		<div class="easyui-layout" data-options="fit:true" >
+			<div data-options="region:'north',split:true, border:false" style="height:200px;" >
+				<div class="fsun-wrap">
+					<form id="orderfm">
+						<span class="title" style="top: 1px;">备用金充值信息</span>				
+						<input id="customerCode" name="customerCode" hidden="true" />	
+						<input id="shopId" name="shopId" hidden="true" />		
+						<table class="nb-formTable" style="width:100%;">
+					        <tr>
+					        	<th width="12%">交易门店</th>
+								<td>
+									<input id="shopName" name="shopName" class="easyui-textbox" disabled />								
+								</td>	            
+								<th width="12%">客户名称</th>
+								<td>
+									<input name="customerName" class="easyui-textbox" readOnly />								
+								</td>						
+								<th width="12%">销售代表</th>
+								<td>
+									<input name="salesman" class="easyui-textbox" disabled />								
+								</td>																						                													        	
+					        </tr>
+					        <tr>	            											
+								<th width="12%">预付总额</th>
+								<td>
+									<input id="totalPrice" name="totalPrice" class="easyui-numberbox" disabled
+										data-options="min:0,precision:2, formatter: priceFormat" />								
+								</td>				
+								<th width="12%">消费总额</th>
+								<td>
+									<input id="consumePrice" name="consumePrice" class="easyui-numberbox" disabled 
+										data-options="min:0,precision:2, formatter: priceFormat" />								
+								</td>
+								<th width="12%">可用余额</th>
+								<td>
+									<input id="enablePrice" name="enablePrice" class="easyui-numberbox" disabled 
+										data-options="precision:2, formatter: priceFormat" />								
+								</td>																							                													        	
+					        </tr>
+					        <tr>
+					        	<th width="12%">支付方式</th>
+								<td>
+									<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
+								</td>
+					            <th width="12%">交易类型</th>
+								<td>
+									<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />
+								</td>							
+								<th width="12%">充值金额<span style="color:red;">*</span></th>
+								<td>
+									<input id="tradePrice" name="tradePrice" class="easyui-numberbox" required
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
+								</td>														
+					        </tr>	
+					        <tr>	        	
+								<th width="12%">备注</th>
+								<td colspan="5">
+									<input id="memo" name="memo" class="easyui-textbox" style="width:60%;"/>
+								</td>							
+					        </tr>
+						</table>
+					</form>			
+				</div>	
+			</div>			
+			<div data-options="region:'center',split:true, border:false" >
+				<table id="orderDetailDataGrid"></table>
+			</div>
+		</div>
 	</div>
-	<table id="orderDetailDataGrid"></table>
-</div>					
+</div>
+
+
+<div id="detailskutoolbar" style="display:none;">
+	<%@include file="./detailskutoolbar.jsp"%>
+</div>
+					
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/vipUnpaidEdatagridCellediting.jsp"%>

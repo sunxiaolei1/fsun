@@ -26,8 +26,11 @@
 
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
-	{field:'take_id',title:'单据编号',width:200,align:'center',sortable:true},	
-	{field:'order_id',title:'寄存单号',width:140,align:'center',sortable:true},	
+	{field:'take_id',title:'单据编号',width:220,align:'center',sortable:true},	
+	{field:'order_id',title:'寄存单号',width:160,align:'center',sortable:true}		
+]];
+
+var columns = [[	
 	{field:'take_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		var spanHeader = "";
 		if(value=='30'  || value=='60'){
@@ -38,13 +41,10 @@ var frozenColumns = [[
 		var spanFooter = "</span>";
 		return spanHeader + formatter(value, window.parent.busTakeStatus) + spanFooter; 
 	}},
-	{field:'shop_id',title:'所属店仓',width:200,align:'center',sortable:true, formatter:function(value, row){
+	{field:'shop_id',title:'所属店仓',width:160,align:'center',sortable:true, formatter:function(value, row){
 		return row.shop_name; 
-	}}
-]];
-
-var columns = [[			
-	{field:'buyer_name',title:'客户名称',width:180,align:'center',sortable:true},	
+	}},
+	{field:'buyer_name',title:'客户名称',width:160,align:'center',sortable:true},	
 	{field:'print_count',title:'已打印',width:60,align:'center', sortable:true, formatter:function(value, row){
 		return (value>0?"<b style='color:green;'>是</b>":(value==0?"<b style='color:red;'>否</b>":"")); 
 	}},

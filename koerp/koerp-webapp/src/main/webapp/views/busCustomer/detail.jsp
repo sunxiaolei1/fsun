@@ -64,7 +64,7 @@
 			</tr>
 	        <tr>
 	        	<th width="12%">备注</th>
-				<td colspan="3" style="width:87%;">
+				<td colspan="3" style="width:82%;">
 					<input id="memo" name="memo"  data-options="multiline:true" 
 						class="easyui-textbox" style="width:75%;height:50px;"/>
 				</td>		        	

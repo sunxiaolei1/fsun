@@ -7,76 +7,85 @@
 	request.setAttribute("api", basePath);
 %>
 
-<!-- 查询条件 -->
-<%@include file="../../addtoolbar.jsp"%>
+<div class="easyui-layout" data-options="fit:true" >
+	<!-- 查询条件 -->
+	<%@include file="../../addtoolbar.jsp"%>
 	
-<div class="fsun-wrap">
-	<form id="orderfm">
-		<span class="title" style="top: 35px;">挂账结款信息</span>				
-		<input id="customerCode" name="customerCode" hidden="true" />	
-		<input id="shopId" name="shopId" hidden="true" />		
-		<table class="nb-formTable" style="width:100%;height:28%;margin-top:2px;">
-	        <tr>	            
-				<th width="15%">客户名称</th>
-				<td>
-					<input name="customerName" class="easyui-textbox" disabled />								
-				</td>
-				<th width="12%">客户类型</th>
-				<td>
-					<input name="customerTypeName" class="easyui-textbox" disabled />								
-				</td>
-				<th width="12%">交易类型</th>
-				<td>
-					<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />
-				</td>																					                													        	
-	        </tr>
-	        <tr>	            								
-				<th width="15%">结款门店</th>
-				<td>
-					<input id="shopName" name="shopName" class="easyui-textbox" disabled />								
-				</td>
-				<th width="12%">挂账总额</th>
-				<td>
-					<input id="totalPrice" name="totalPrice" class="easyui-numberbox" disabled
-						data-options="min:0,precision:2, formatter: priceFormat" />								
-				</td>				
-				<th width="12%">已结金额</th>
-				<td>
-					<input id="paidPrice" name="paidPrice" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2, formatter: priceFormat" />								
-				</td>																							                													        	
-	        </tr>
-	        <tr>
-	        	<th width="12%">支付方式</th>
-				<td>
-					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
-				</td>	            
-				<th width="12%">欠款金额</th>
-				<td>
-					<input id="unpaidPrice" name="unpaidPrice" class="easyui-numberbox" disabled 
-						data-options="precision:2, formatter: priceFormat" />								
-				</td>				
-				<th width="12%">结款金额</th>
-				<td>
-					<input id="tradePrice" name="tradePrice" class="easyui-numberbox" required
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />							
-				</td>														
-	        </tr>	
-	        <tr>	        	
-				<th width="12%">备注</th>
-				<td colspan="5" width="86%">
-					<input id="memo" name="memo" class="easyui-textbox" style="width:75%;"/>
-				</td>							
-	        </tr>
-		</table>
-	</form>			
-</div>	
-<div style="height: 57%; width: 100%;">
-	<div id="detailskutoolbar" style="display:none;">
-		<%@include file="./detailskutoolbar.jsp"%>
-	</div>
-	<table id="orderDetailDataGrid"></table>
+	<div data-options="region:'center',split:true, border:false" >
+		<div class="easyui-layout" data-options="fit:true" >
+			<div data-options="region:'north',split:true, border:false" style="height:200px;" >
+				<div class="fsun-wrap">
+					<form id="orderfm">
+						<span class="title" style="top: 1px;">挂账结款信息</span>				
+						<input id="customerCode" name="customerCode" hidden="true" />	
+						<input id="shopId" name="shopId" hidden="true" />		
+						<table class="nb-formTable" style="width:100%;">
+					        <tr>	            
+								<th width="15%">客户名称</th>
+								<td>
+									<input name="customerName" class="easyui-textbox" disabled />								
+								</td>
+								<th width="12%">客户类型</th>
+								<td>
+									<input name="customerTypeName" class="easyui-textbox" disabled />								
+								</td>
+								<th width="12%">交易类型</th>
+								<td>
+									<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />
+								</td>																					                													        	
+					        </tr>
+					        <tr>	            								
+								<th width="15%">结款门店</th>
+								<td>
+									<input id="shopName" name="shopName" class="easyui-textbox" disabled />								
+								</td>
+								<th width="12%">挂账总额</th>
+								<td>
+									<input id="totalPrice" name="totalPrice" class="easyui-numberbox" disabled
+										data-options="min:0,precision:2, formatter: priceFormat" />								
+								</td>				
+								<th width="12%">已结金额</th>
+								<td>
+									<input id="paidPrice" name="paidPrice" class="easyui-numberbox" disabled 
+										data-options="min:0,precision:2, formatter: priceFormat" />								
+								</td>																							                													        	
+					        </tr>
+					        <tr>
+					        	<th width="12%">支付方式<span style="color:red;">*</span></th>
+								<td>
+									<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
+								</td>	            
+								<th width="12%">欠款金额</th>
+								<td>
+									<input id="unpaidPrice" name="unpaidPrice" class="easyui-numberbox" disabled 
+										data-options="precision:2, formatter: priceFormat" />								
+								</td>				
+								<th width="12%">结款金额<span style="color:red;">*</span></th>
+								<td>
+									<input id="tradePrice" name="tradePrice" class="easyui-numberbox" required
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" />							
+								</td>														
+					        </tr>	
+					        <tr>	        	
+								<th width="12%">备注</th>
+								<td colspan="5" width="86%">
+									<input id="memo" name="memo" class="easyui-textbox" style="width:75%;"/>
+								</td>							
+					        </tr>
+						</table>
+					</form>			
+				</div>	
+			</div>
+			<div data-options="region:'center',split:true, border:false" >
+				<table id="orderDetailDataGrid"></table>
+			</div>
+		</div>
+	</div>	
 </div>					
+
+<div id="detailskutoolbar" style="display:none;">
+	<%@include file="./detailskutoolbar.jsp"%>
+</div>
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/vipUnpaidEdatagridCellediting.jsp"%>
@@ -90,20 +99,20 @@ var rachargeColumns = [[
 	{field:'unpaidId',checkbox:true},
 	//{field:"customerName",title:"客户名称", width:120,align:"center"},
 	{field:"shopName",title:"交易门店", width:120,align:"center"},
-	{field:"payMode",title:"支付方式", width:80,align:"center", formatter:function(value, row){
+	{field:"payMode",title:"支付方式", width:75,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.payMode); 
 	}},
 	{field:"tradeType",title:"交易类型", width:80,align:"center",sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeType); 
 	}},
-	{field:"orderId",title:"销售单号", width:150,align:"center"},
+	{field:"orderId",title:"销售单号", width:160,align:"center"},
 	{field:'tradeStatus',title:'交易状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeStatus); 
 	}},
 	{field:"tradeTime",title:"交易时间", width:140,align:"center",sortable:true},
 	{field:'tradePrice',title:'交易金额',width:100,align:'center',formatter:numBaseFormat},
 	{field:"memo",title:"备注", width:240,align:"center"},
-	{field: "selected", title: "操作", width: 90, align: "center",
+	{field: "selected", title: "操作", width: 100, align: "center",
 		formatter: function(value, row, index){	
 			var tradeType = row.tradeType;
 			var unusual = row.unusual;

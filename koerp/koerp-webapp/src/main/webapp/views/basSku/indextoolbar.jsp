@@ -19,7 +19,7 @@
 
 //跳转至新增界面
 function toAddView(){		
-	commonDialog("ordersDialog", "创建商品", "75%", "85%", 
+	commonDialog("ordersDialog", "创建商品", "75%", "450px", 
 		"${api}/bus/basSku/toDetailView?skuId=", "icon-add");
 }
 
@@ -30,7 +30,7 @@ function toDetailView(){
 		$.messager.alert("提示","只能选择一行数据！");
 		return;
 	}
-	commonDialog("ordersDialog", "商品("+ rows[0].goods_name +")明细", "75%", "85%", 
+	commonDialog("ordersDialog", "商品("+ rows[0].goods_name +")明细", "75%", "450px", 
 		"${api}/bus/basSku/toDetailView?skuId="+ rows[0].sku_id, "icon-edit");
 }
 
