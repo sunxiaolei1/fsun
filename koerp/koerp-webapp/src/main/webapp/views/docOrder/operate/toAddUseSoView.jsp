@@ -56,7 +56,7 @@
 				<td>
 					<input id="contacts" name="contacts" class="easyui-textbox" />								
 				</td>
-	        	<th width="12%">客户手机号</th>
+	        	<th width="12%">联系方式</th>
 				<td>
 					<input id="mobile" name="mobile" class="easyui-textbox" />								
 				</td>	        	

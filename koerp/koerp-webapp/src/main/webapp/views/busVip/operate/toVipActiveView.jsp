@@ -49,59 +49,59 @@
 		<input id="id" name="id" hidden="true"/>									      
 	   	<table class="nb-formTable" style="width:100%;">
 	   		 <tr>					
-				<th width="6%">所属客户<span style="color:red;">*</span></th>
+				<th width="12%">所属客户</th>
 				<td>
-					<input name="customerCode" id="vipCustomer" class="easyui-combogrid" required />
+					<input name="customerCode" id="vipCustomer" class="easyui-combogrid" required style="width:80%;" />	
 					<div title='创建会员' class="icon-customer-btn" onclick="javascript:toAddCustomerView();" 
 						style="margin-right:6px;" ></div>	
-				</td>											
-	        	<th width="6%">卡级别<span style="color:red;">*</span></th>
-				<td>
-					<input name="cardType" id="cardType" class="easyui-combobox" required />
-				</td>	        		
-				<th width="6%">本金比例<span style="color:red;">*</span></th>
+				</td>
+				<th width="12%">本金比例</th>
 				<td>
 					<input name="originPrecent" id="originPrecent" class="easyui-numberspinner" 
-						data-options="min:1,max:2,precision:2,increment:0.01,value:1" required />
-				</td>		          			
+						data-options="min:1,max:2,precision:2,increment:0.01,value:1" required style="width:90%;" />	
+				</td>											
+	        	<th width="12%">卡级别</th>
+				<td>
+					<input name="cardType" id="cardType" class="easyui-combobox" required style="width:90%;" />	
+				</td>	        								          			
 			</tr>       
 	        <tr>
-	        	<th width="6%">卡号<span style="color:red;">*</span></th>
+	        	<th width="12%">卡号<span style="color:red;">*</span></th>
 				<td>	
-					<input id="cardNo" name="cardNo" class="easyui-textbox" data-options="required:true,validType:'uniqueValue'" /> 
+					<input id="cardNo" name="cardNo" class="easyui-textbox" 
+						data-options="required:true,validType:'uniqueValue'" style="width:85%;" />	 
 				</td>
-	        	<th width="6%">持卡人<span style="color:red;">*</span></th>
+	        	<th width="12%">持卡人<span style="color:red;">*</span></th>
 				<td>
-					<input name="cnName" id="cnName" class="easyui-textbox" required />
+					<input name="cnName" id="cnName" class="easyui-textbox" required style="width:85%;" />	
 				</td>	
-	        	<th width="6%">手机号</th>
+	        	<th width="12%">手机号</th>
 				<td>
-					<input name="mobile" id="mobile" class="easyui-textbox" />
+					<input name="mobile" id="mobile" class="easyui-textbox" style="width:85%;" />	
 				</td>			          																				
 			</tr>		
 			<tr>
-				<th width="6%">微信号</th>
+				<th width="12%">微信号</th>
 				<td>
-					<input name="wechat" id="wechat" class="easyui-textbox" />
+					<input name="wechat" id="wechat" class="easyui-textbox" style="width:90%;" />	
 				</td>	
-	        	<th width="6%">性别</th>
+	        	<th width="12%">性别</th>
 				<td>
-					<input name="sex" id="sex" class="easyui-textbox" />
+					<input name="sex" id="sex" class="easyui-textbox" style="width:90%;" />	
 				</td>			          															
-				<th width="6%">生日</th>
+				<th width="12%">生日</th>
 				<td>
-					<input name="brithday" id="brithday" class="easyui-datebox" />
+					<input name="brithday" id="brithday" class="easyui-datebox" style="width:90%;" />	
 				</td>			
 			</tr>
 	        <tr>
-	        	<th width="6%">邮箱</th>
+	        	<th width="12%">邮箱</th>
 				<td>
-					<input name="email" id="email" class="easyui-textbox" />
+					<input name="email" id="email" class="easyui-textbox" style="width:90%;" />	
 				</td>
-	        	<th width="6%">备注</th>
+	        	<th width="12%">备注</th>
 				<td colspan="3">
-					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:440px;height:50px;"/>
+					<input id="memo" name="memo" class="easyui-textbox" style="width:70%;"/>
 				</td>		        	
 	        </tr>		        			       
 		</table>			
@@ -110,47 +110,46 @@
 
 <div class="fsun-wrap">
 	<form id="rachargefm">
-		<span class="title" style="top: 276px;">充值信息</span>				
+		<span class="title" style="top: 248px;">充值信息</span>				
 		<input id="shopId" name="shopId" hidden="true" />		
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">	               		
+		<table class="nb-formTable" style="width:100%;">	               		
 	        <tr>
-	        	<th width="12%">交易门店<span style="color:red;">*</span></th>
+	        	<th width="12%">交易门店</th>
 				<td>
-					<input id="shopName" name="shopName" class="easyui-textbox" disabled />								
+					<input id="shopName" name="shopName" class="easyui-textbox" disabled  style="width:90%;" />								
 				</td>
 				<th width="12%">交易类型</th>
 				<td>
-					<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />
+					<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly style="width:90%;" />	
 				</td>	        		
-				<th width="12%">支付方式<span style="color:red;">*</span></th>
+				<th width="12%">支付方式</th>
 				<td>
-					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
+					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required style="width:90%;" />									
 				</td>            	        	
 	        </tr>
 	        <tr>
-	        	<th width="12%">充值金额<span style="color:red;">*</span></th>
+	        	<th width="12%">充值金额</th>
 				<td>
 					<input id="rachargePrice"  class="easyui-numberbox" required 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
+						data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />								
 				</td>
 				<th width="12%">交易金额</th>
 				<td>
 					<input id="tradePrice" name="tradePrice" class="easyui-numberbox" readOnly 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
+						data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />								
 				</td>		
 				<th width="12%">赠送金额</th>
 				<td>
-					<input id="newGiftPrice" name="newGiftPrice" class="easyui-numberbox" readOnly style="width:90px;"
+					<input id="newGiftPrice" name="newGiftPrice" class="easyui-numberbox" readOnly style="width:40%;"
 						data-options="min:0,precision:2,value:0, formatter: priceFormat" />	
-					<input id="trimPrice" class="easyui-numberspinner" style="width:70px;"
+					<input id="trimPrice" class="easyui-numberspinner" style="width:40%;"
 						data-options="min:0,precision:2,value:0.00" />								
 				</td>								
 	        </tr>	
 	        <tr>	        			
 				<th width="12%">备注</th>
 				<td colspan="5">
-					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:800px;height:50px;"/>
+					<input id="memo" name="memo" class="easyui-textbox" style="width:70%;"/>
 				</td>							
 	        </tr>	
 		</table>

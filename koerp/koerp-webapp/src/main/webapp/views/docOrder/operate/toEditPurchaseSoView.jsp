@@ -7,77 +7,87 @@
 	request.setAttribute("api", basePath);
 %>
 
-<!-- 查询条件 -->
-<%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
+<div class="easyui-layout" data-options="fit:true" >
+	<!-- 查询条件 -->
+	<%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
 	
-<div class="fsun-wrap">
-	<form id="orderfm">
-		<span class="title" style="top: 35px;">单据基本信息</span>		
-		<input id="iId" name="iId" hidden="true" />	
-		<input id="supplierId" name="supplierId" hidden="true" />
-		<input id="supplierAddress" name="supplierAddress" hidden="true" />
-		<input id="supplierContact" name="supplierContact" hidden="true" />
-		<input id="supplierTel" name="supplierTel" hidden="true" />
-		<input id="fromShopId" name="fromShopId" hidden="true" />	
-		<input id="orderPrice" name="orderPrice" hidden="true" />			
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">
-	        <tr>
-	            <th width="12%">单据编号<span style="color:red;">*</span></th>
-				<td>
-					<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly />
-				</td>
-				<th width="12%">单据类型<span style="color:red;">*</span></th>
-				<td>
-					<input id="orderType" name="orderType" class="easyui-combobox" required readOnly />								
-				</td>
-				<th width="12%">出库店仓<span style="color:red;">*</span></th>
-				<td>
-					<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly />								
-				</td>
-				<th width="12%">入库单号</th>
-				<td >
-					<input id="userDefine1" name="userDefine1" class="easyui-textbox" readOnly />								
-				</td>																
-	        </tr>	
-	        <tr>  
-	        	<th width="12%">出库时间</th>
-				<td>
-					<input id="deliveryTime" name="deliveryTime" class="easyui-datetimebox" editable=false />							
-				</td>          
-				<th width="12%">供应商</th>
-				<td>
-					<input id="supplierName" name="supplierName" class="easyui-textbox" readOnly />							
-				</td>					
-				<th width="12%">收货人</th>
-				<td>
-					<input id="contacts" name="contacts" class="easyui-textbox" />								
-				</td>
-	        	<th width="12%">联系方式</th>
-				<td>
-					<input id="mobile" name="mobile" class="easyui-textbox" />								
-				</td>	        									
-	        </tr>
-	        <tr>
-				<th width="12%">收货地址</th>
-				<td colspan="3">
-					<input id="address" name="address" class="easyui-textbox" 
-						data-options="multiline:true"  style="width:400px;height:46px;" />
-				</td>
-	        	<th width="12%">备注</th>
-				<td colspan="3">
-					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:400px;height:46px;" />
-				</td>	        	
-	        </tr>
-		</table>
-	</form>			
-</div>	
-<div style="height: 350px; width: 100%;">
-	<div id="detailskutoolbar" style="display:none;">
-		<%@include file="./detailskutoolbar.jsp"%>
+	<div data-options="region:'center',split:true, border:false" >
+		<div class="easyui-layout" data-options="fit:true" >
+			<div data-options="region:'north',split:true, border:false" style="height:180px;">
+				<div class="fsun-wrap">
+					<form id="orderfm">
+						<span class="title" style="top: 1px;">单据基本信息</span>		
+						<input id="iId" name="iId" hidden="true" />	
+						<input id="supplierId" name="supplierId" hidden="true" />
+						<input id="supplierAddress" name="supplierAddress" hidden="true" />
+						<input id="supplierContact" name="supplierContact" hidden="true" />
+						<input id="supplierTel" name="supplierTel" hidden="true" />
+						<input id="fromShopId" name="fromShopId" hidden="true" />	
+						<input id="orderPrice" name="orderPrice" hidden="true" />			
+						<table class="nb-formTable" style="width:100%;">
+					        <tr>
+					            <th width="12%">单据编号</th>
+								<td>
+									<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly style="width:90%;" />
+								</td>
+								<th width="12%">单据类型</th>
+								<td>
+									<input id="orderType" name="orderType" class="easyui-combobox" required readOnly style="width:90%;" />							
+								</td>
+								<th width="12%">出库店仓</th>
+								<td>
+									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly style="width:90%;" />							
+								</td>
+								<th width="12%">入库单号</th>
+								<td >
+									<input id="userDefine1" name="userDefine1" class="easyui-textbox" readOnly style="width:90%;" />								
+								</td>																
+					        </tr>	
+					        <tr>  
+					        	<th width="12%">出库时间</th>
+								<td>
+									<input id="deliveryTime" name="deliveryTime" class="easyui-datetimebox" editable=false style="width:90%;" />							
+								</td>          
+								<th width="12%">供应商</th>
+								<td>
+									<input id="supplierName" name="supplierName" class="easyui-textbox" readOnly style="width:90%;" />							
+								</td>					
+								<th width="12%">收货人</th>
+								<td>
+									<input id="contacts" name="contacts" class="easyui-textbox" style="width:90%;" />								
+								</td>
+					        	<th width="12%">联系方式</th>
+								<td>
+									<input id="mobile" name="mobile" class="easyui-textbox" style="width:90%;" />							
+								</td>	        									
+					        </tr>
+					        <tr>
+								<th width="12%">收货地址</th>
+								<td colspan="3">
+									<input id="address" name="address" class="easyui-textbox" 
+										data-options="multiline:true"  style="width:75%;height:46px;" />
+								</td>
+					        	<th width="12%">备注</th>
+								<td colspan="3">
+									<input id="memo" name="memo"  data-options="multiline:true" 
+										class="easyui-textbox" style="width:75%;height:46px;" />
+								</td>	        	
+					        </tr>
+						</table>
+					</form>			
+				</div>	
+			</div>
+			
+			<div data-options="region:'center',split:true, border:false" >
+				<div id="detailskutoolbar" style="display:none;">
+					<%@include file="./detailskutoolbar.jsp"%>
+				</div>
+				<table id="orderDetailDataGrid"></table>
+			</div>
+		</div>
 	</div>
-	<table id="orderDetailDataGrid"></table>
-</div>					
+	
+</div>							
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>

@@ -56,7 +56,7 @@
 					        	<th width="12%">收货地址</th>
 								<td>
 									<input id="iAddress" name="iAddress"data-options="multiline:true" 
-										class="easyui-textbox" style="width:95%;height:50px;"/>
+										class="easyui-textbox" style="width:95%;height:50px;" />
 								</td>
 					        	<th width="12%">备注</th>
 								<td colspan="3">

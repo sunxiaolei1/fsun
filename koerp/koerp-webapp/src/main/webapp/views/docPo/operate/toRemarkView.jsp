@@ -6,25 +6,25 @@
 %>
 
 <!-- BasSku dialog -->
-<div class="easyui-layout" fit=true style="height:100%;">		
-	<div data-options="region:'center',split:true" style="border: 0px solid #ccc;">
+<div class="easyui-layout" data-options="fit:true" >		
+	<div data-options="region:'center',split:true, border:false" >
 		<div class="fsun-operate-wrap">
 			<span class="title" style="top: 5px;">备注信息</span>		
 			<form id="remarkfm">			 
 			    <input id="poNo" name="poNo" value="${poNo}" hidden=true />
-				<table class="nb-formTable" style="width:100%;">
-			        <tr>
+				<table class="nb-formTable" style="width:100%;height:75%;">
+			        <tr style="height:40%;">
 			        	<th width="3%">原备注</th>
 						<td >
 							<input id="originRemark" class="easyui-textbox" disabled 
-								data-options="multiline:true" style="width:540px;height:92px;" />								
+								data-options="multiline:true" style="width:100%;height:80%;" />
 						</td>						
 			        </tr>
-			        <tr>
+			        <tr style="height:40%;">
 			        	<th width="3%">追加备注<span style="color:red;">*</span></th>
 						<td>														
 							<input name="memo" id="memo" class="easyui-textbox" 
-								data-options="multiline:true,required:true"  style="width:540px;height:69px;"  />		
+								data-options="multiline:true,required:true" style="width:100%;height:80%;" />	
 						</td>	        	
 			        </tr>			       				        		       
 				</table>

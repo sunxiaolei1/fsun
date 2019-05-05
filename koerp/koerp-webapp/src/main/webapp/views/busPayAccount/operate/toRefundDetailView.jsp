@@ -8,7 +8,7 @@
 <!-- BasSku dialog -->
 <div class="easyui-layout" fit=true style="height:100%;">		
 	<div data-options="region:'center',split:true" style="border: 0px solid #ccc;" >		
-		<h1 style="font-size:14px;text-align:left;margin:10px 0px 10px 10px;">
+		<h1 style="font-size:12px;text-align:left;margin:10px 0px 10px 10px;">
 			<span style="color:red;">*</span>该订单存在挂账消费记录,故先结款挂账金额,若出现不够结款扣减则以当前选择的支付方式结算!</h1>								
 		<table id="refundPayAccountDataGrid"></table>
 	</div>						

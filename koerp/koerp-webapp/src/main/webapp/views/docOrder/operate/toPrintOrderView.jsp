@@ -224,7 +224,7 @@ function createTableOrderHead(div,header){
 				+ (receiveAddress != null ? receiveAddress : "")
 				+ "' /></td>");	 
 		 td.appendTo(tr);
-	     td = $("<td>手机号：<span>"+ (mobile!=null?mobile:"") +"</span></td>");			 
+	     td = $("<td>联系方式：<span>"+ (mobile!=null?mobile:"") +"</span></td>");			 
 		 td.appendTo(tr);
 		 td = $("<td>联系人：<span>"+ (contacts!=null?contacts:"") +"</span></td>");			 
 		 td.appendTo(tr);	     

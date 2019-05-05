@@ -12,7 +12,7 @@
 			<span class="title" style="top: 5px;">备注信息</span>		
 			<form id="remarkfm">			 
 			    <input id="takeId" name="takeId" value="${takeId}" hidden=true />
-				<table class="nb-formTable" style="width:100%;height:75%">
+				<table class="nb-formTable" style="width:100%;height:75%;">
 			        <tr style="height:40%;">
 			        	<th width="3%">原备注</th>
 						<td>

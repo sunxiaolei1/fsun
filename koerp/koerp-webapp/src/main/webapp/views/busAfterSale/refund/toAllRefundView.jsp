@@ -7,7 +7,6 @@
 	request.setAttribute("api", basePath);
 %>
 
-
 <style type="text/css">
 
 .fsun-wrap .title {
@@ -36,73 +35,88 @@
 
 </style> 
 
-<!-- 查询条件 -->
-<%@include file="../../addrefundtoolbar.jsp"%>	
 
-<div class="fsun-wrap">
-	<span class="title" style="top: 35px;">退货退款信息</span>
-	<form id="orderfm">
-		<input id="orderId" name="orderId" hidden="true" />
-		<input id="extOrderId" name="extOrderId" hidden="true" />		
-		<input id="shopId" name="shopId" hidden="true" />
-		<input id="buyerId" name="buyerId" hidden="true" />
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">
-	        <tr>
-	        	<th width="12%">原订单金额</th>
-				<td>
-					<input id="orderPrice" name="orderPrice" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2, formatter: priceFormat" />
-				</td>
-				<th width="12%">原实收金额</th>
-				<td>
-					<input id="receptPrice" name="receptPrice" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2, formatter: priceFormat" />
-				</td>
-	        	<th width="12%">客户名称</th>
-				<td>
-					<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly />								
-				</td>				
-				<th width="12%">所属店仓</th>
-				<td>
-					<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
-				</td>            												
-	        </tr>	
-	        <tr>	
-       			<th width="12%">退款金额</th>
-				<td>
-					<input id="refundPrice" name="refundPrice" class="easyui-numberbox" 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />
-				</td>									        			           
-				<th width="12%">支付方式<span style="color:red;">*</span></th>
-				<td>
-					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
-				</td>
-				<th width="12%">支付流水号</th>
-				<td>
-					<input id="tradeNo" name="tradeNo" class="easyui-textbox" />								
-				</td>
-				<th width="12%">支付卡号</th>
-				<td>
-					<input id="cardNo" name="cardNo" class="easyui-textbox" />								
-				</td>
-	        </tr>	       		        		        
-	        <tr>	
-	        	<th width="12%">退货原因<span style="color:red;">*</span></th>
-				<td>
-					<input id="refundReason" name="refundReason" class="easyui-combobox" editable="false" required />								
-				</td>        			        	
-	            <th width="12%">备注</th>
-	        	<td colspan="5">
-					<input id="memo" name="memo" data-options="multiline:true"
-						class="easyui-textbox" style="width:600px;height:40px;" />
-				</td>		        			           
-	        </tr>
-		</table>		
-	</form>	
-	<div style="height: 320px;width: 100%;" >
-		<table id="refundDetailDataGrid" ></table>
+<div class="easyui-layout" data-options="fit:true" >
+	<!-- 查询条件 -->
+	<%@include file="../../addrefundtoolbar.jsp"%>	
+
+	<div data-options="region:'center',split:true, border:false" >
+		<div class="easyui-layout" data-options="fit:true" >
+			<div data-options="region:'north',split:true, border:false" style="height:215px;">
+				<div class="fsun-wrap">
+					<span class="title" style="top: 1px;">退货退款信息</span>
+					<form id="orderfm">
+						<input id="orderId" name="orderId" hidden="true" />
+						<input id="extOrderId" name="extOrderId" hidden="true" />		
+						<input id="shopId" name="shopId" hidden="true" />
+						<input id="buyerId" name="buyerId" hidden="true" />
+						<table class="nb-formTable" style="width:100%;">
+					        <tr>
+					        	<th width="12%">原订单金额</th>
+								<td>
+									<input id="orderPrice" name="orderPrice" class="easyui-numberbox" disabled 
+										data-options="min:0,precision:2, formatter: priceFormat" style="width:95%;" />
+								</td>
+								<th width="12%">原实收金额</th>
+								<td>
+									<input id="receptPrice" name="receptPrice" class="easyui-numberbox" disabled 
+										data-options="min:0,precision:2, formatter: priceFormat" style="width:95%;" />
+								</td>
+					        					
+								<th width="12%">所属店仓</th>
+								<td>
+									<input id="shopName" name="shopName" class="easyui-textbox" readOnly style="width:95%;" />								
+								</td>            												
+					        </tr>	
+					        <tr>	
+				       			<th width="12%">退款金额</th>
+								<td>
+									<input id="refundPrice" name="refundPrice" class="easyui-numberbox" 
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:95%;" />
+								</td>
+								<th width="12%">退货原因</th>
+								<td>
+									<input id="refundReason" name="refundReason" class="easyui-combobox" 
+										editable="false" style="width:95%;" />								
+								</td>
+								<th width="12%">客户名称</th>
+								<td>
+									<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly style="width:95%;" />								
+								</td>									        			           								
+					        </tr>	       		        		        
+					        <tr>	
+					        	<th width="12%">支付方式</th>
+								<td>
+									<input id="payMode" name="payMode" class="easyui-combobox" 
+										editable="false" style="width:95%;" />								
+								</td>
+								<th width="12%">支付流水号</th>
+								<td>
+									<input id="tradeNo" name="tradeNo" class="easyui-textbox" style="width:95%;" />								
+								</td>
+								<th width="12%">支付卡号</th>
+								<td>
+									<input id="cardNo" name="cardNo" class="easyui-textbox" style="width:95%;" />								
+								</td>        			        					            		        			           
+					        </tr>
+					        <tr>	     			        	
+					            <th width="12%">备注</th>
+					        	<td colspan="5">
+									<input id="memo" name="memo" data-options="multiline:true"
+										class="easyui-textbox" style="width:70%;height:46px;" />
+								</td>		        			           
+					        </tr>
+						</table>		
+					</form>	
+				</div>	
+			</div>
+			
+			<div data-options="region:'center',split:true, border:false" >
+				<table id="refundDetailDataGrid" ></table>
+			</div>
+		</div>
 	</div>
-</div>	
+</div>
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>

@@ -62,7 +62,7 @@ function showSignView(){
 
 	$("<div></div>").dialog({
 		id:"showSignDialog",
-	    title:"调拨单【"+ $("#asnNo",$orderfm).textbox("getValue") +"】签收明细",
+	    title:"调拨单【"+ $("#asnNo",$orderfm).val() +"】签收明细",
 	    width:1100,
 	    height:450,
 	    closed:false,
@@ -191,7 +191,7 @@ function getSaveData(){
 	
 	var saveData = {
 	     "params": {
-	    	 "asnNo": $("#asnNo",$orderfm).textbox("getValue"),
+	    	 "asnNo": $("#asnNo",$orderfm).val(),
 			 "header": baseInfo,
 			 "details": currDetailData
 			},
@@ -226,7 +226,7 @@ function getSignData(){
 	var baseInfo = formJson($orderfm);	
 	var saveData = {
 	     "params": {
-	    	 "asnNo": $("#asnNo",$orderfm).textbox("getValue"),
+	    	 "asnNo": $("#asnNo",$orderfm).val(),
 			 "header": baseInfo,
 			 "details": currDetailData
 			},

@@ -135,7 +135,7 @@ function reflushDataGrid(){
  * 创建客户
  */
 function toAddCustomerView(){
-	commonDialog("ordersDialog", "创建客户", "75%", "68%", 
+	commonDialog("ordersDialog", "创建客户", "75%", "355px", 
 		"${api}/bus/customer/toDetailView?id=", "icon-client");
 }
 
@@ -143,7 +143,7 @@ function toAddCustomerView(){
  * 会员开卡
  */
 function toVipActiveView(){
-	commonDialog("ordersDialog", "会员开卡", "90%", "88%", 
+	commonDialog("ordersDialog", "会员开卡", "97%", "420px", 
 		"${api}/bus/vipUnpaid/toVipActiveView", "icon-memu_visa");
 }
 

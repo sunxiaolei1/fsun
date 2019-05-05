@@ -48,13 +48,13 @@
 		原订单商品[单号:${orderId}]
 	</b>
 </div>	
-<div style="height: 145px;width: 100%;">      		
+<div style="height: 140px;width: 100%;">      		
 	<table id="orderDetailDataGrid"></table>
 </div>	
 
 <div class="fsun-wrap">
-	<span class="title" style="top: 207px;">退货退款信息</span>	
-	<div style="height: 155px;width: 100%;">
+	<span class="title" style="top: 202px;">退货退款信息</span>	
+	<div style="height: 140px;width: 100%;">
 		<table id="refundDetailDataGrid"></table>
 	</div>
 	<form id="orderfm">
@@ -62,55 +62,58 @@
 		<input id="extOrderId" name="extOrderId" hidden="true" />		
 		<input id="shopId" name="shopId" hidden="true" />
 		<input id="buyerId" name="buyerId" hidden="true" />
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">
+		<table class="nb-formTable" style="width:100%;">
 	        <tr>
 	        	<th width="12%">原订单金额</th>
 				<td>
 					<input id="orderPrice" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2, formatter: priceFormat" />
+						data-options="min:0,precision:2, formatter: priceFormat" style="width:95%;" />
 				</td>
 				<th width="12%">原实收金额</th>
 				<td>
 					<input id="receptPrice" class="easyui-numberbox" disabled 
-						data-options="min:0,precision:2, formatter: priceFormat" />
-				</td>
-	        	<th width="12%">客户名称</th>
-				<td>
-					<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly />								
-				</td>				
+						data-options="min:0,precision:2, formatter: priceFormat" style="width:95%;" />
+				</td>	        					
 				<th width="12%">所属店仓</th>
 				<td>
-					<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
+					<input id="shopName" name="shopName" class="easyui-textbox" readOnly style="width:95%;" />								
 				</td>            												
-	        </tr>	
-	        <tr>	
-       			<th width="12%">退款金额</th>
+	        </tr>
+	        <tr>
+	        	<th width="12%">退款金额</th>
 				<td>
 					<input id="refundPrice" name="refundPrice" class="easyui-numberbox" 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" />
-				</td>									        			           
-				<th width="12%">支付方式<span style="color:red;">*</span></th>
+						data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:95%;" />
+				</td>
+				<th width="12%">退货原因</th>
 				<td>
-					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
+					<input id="refundReason" name="refundReason" class="easyui-combobox" 
+						editable="false" style="width:95%;" />								
+				</td>
+				<th width="12%">客户名称</th>
+				<td>
+					<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly style="width:95%;" />								
+				</td>
+	        </tr>	
+	        <tr>	      			 									        			           
+				<th width="12%">支付方式</th>
+				<td>
+					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" style="width:95%;" />							
 				</td>
 				<th width="12%">支付流水号</th>
 				<td>
-					<input id="tradeNo" name="tradeNo" class="easyui-textbox" />								
+					<input id="tradeNo" name="tradeNo" class="easyui-textbox" style="width:95%;" />								
 				</td>
 				<th width="12%">支付卡号</th>
 				<td>
-					<input id="cardNo" name="cardNo" class="easyui-textbox" />								
+					<input id="cardNo" name="cardNo" class="easyui-textbox" style="width:95%;" />							
 				</td>
 	        </tr>	       		        		        
-	        <tr>	
-	        	<th width="12%">退货原因<span style="color:red;">*</span></th>
-				<td>
-					<input id="refundReason" name="refundReason" class="easyui-combobox" editable="false" required />								
-				</td>        			        	
+	        <tr>		        	       			        	
 	            <th width="12%">备注</th>
 	        	<td colspan="5">
-					<input id="memo" name="memo" data-options="multiline:true"
-						class="easyui-textbox" style="width:600px;height:40px;" />
+					<input id="memo" name="memo"
+						class="easyui-textbox" style="width:90%;" />
 				</td>		        			           
 	        </tr>
 		</table>

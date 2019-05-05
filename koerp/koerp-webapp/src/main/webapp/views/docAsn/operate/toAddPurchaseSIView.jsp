@@ -46,7 +46,7 @@
 				<td>
 					<input id="supplierContact" name="supplierContact" class="easyui-textbox" />								
 				</td>
-	        	<th width="12%">手机号</th>
+	        	<th width="12%">联系方式</th>
 				<td>
 					<input id="supplierTel" name="supplierTel" class="easyui-textbox" />								
 				</td>	        									
