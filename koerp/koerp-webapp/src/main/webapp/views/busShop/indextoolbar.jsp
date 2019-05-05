@@ -19,7 +19,7 @@
 
 //跳转至新增界面
 function toAddView(){		
-	commonDialog("ordersDialog", "创建店仓", "75%", "65%", 
+	commonDialog("ordersDialog", "创建店仓", "75%", "350px", 
 		"${api}/bus/shop/toDetailView?shopId=", "icon-add");
 }
 
@@ -30,7 +30,7 @@ function toDetailView(){
 		$.messager.alert("提示","只能选择一行数据！");
 		return;
 	}
-	commonDialog("ordersDialog", "店仓("+ rows[0].shop_name +")明细", "75%", "65%", 
+	commonDialog("ordersDialog", "店仓("+ rows[0].shop_name +")明细", "75%", "350px", 
 		"${api}/bus/shop/toDetailView?shopId="+ rows[0].shop_id, "icon-edit");
 }
 

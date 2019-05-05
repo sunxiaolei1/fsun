@@ -14,37 +14,37 @@
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
 			<div data-options="region:'north',split:true, border:false" style="height:180px;">	
-				<div class="fsun-wrap" style="padding:15px 5px 0px 5px;">
+				<div class="fsun-wrap">
 					<form id="orderfm">
 						<span class="title" style="top: 1px;">单据基本信息</span>	
 						<input id="sellerId" name="sellerId" hidden="true" />
 						<input id="sellerName" name="sellerName" hidden="true" />
 						<input id="buyerId" name="buyerId" hidden="true" />	
 						<input id="shopId" name="shopId" hidden="true" />		
-						<table class="nb-formTable" style="width:100%;margin-top:2px;">
+						<table class="nb-formTable" style="width:100%;">
 					        <tr>
-					            <th width="7%">单据编号</th>
-								<td style="width:27%;">
+					            <th width="8%">单据编号</th>
+								<td style="width:32%;">
 									<input id="takeId" name="takeId" class="easyui-textbox" style="width:95%;" readOnly />
 								</td>
-								<th width="8%">寄存单号</th>
-								<td style="width:22%;">
-									<input id="orderId" name="orderId" class="easyui-textbox" style="width:90%;" readOnly />
+								<th width="8%">提货人</th>
+								<td>
+									<input id="takeName" name="takeName" class="easyui-textbox" style="width:95%;" />
 								</td>
 								<th width="8%">所属店仓</th>
-								<td colspan="3" style="width:26%;">
+								<td colspan="3" style="width:22%;">
 									<input id="shopName" name="shopName" 
 										class="easyui-textbox" readOnly style="width:90%;"/>								
 								</td>																				
 					        </tr>	
-					        <tr>		        		        		        		
-								<th width="7%">提货人</th>
-								<td>
-									<input id="takeName" name="takeName" class="easyui-textbox" style="width:95%;" />
-								</td>
+					        <tr>
+					        	<th width="8%">寄存单号</th>
+								<td style="width:32%;">
+									<input id="orderId" name="orderId" class="easyui-textbox" style="width:95%;" readOnly />
+								</td>		        		        		        										
 					        	<th width="8%">提货时间</th>
 								<td>
-									<input id="takeTime" name="takeTime" class="easyui-datetimebox" style="width:90%;"/>
+									<input id="takeTime" name="takeTime" class="easyui-datetimebox" style="width:95%;"/>
 								</td>
 								<th width="8%">客户名称</th>
 								<td colspan="3" >
@@ -53,10 +53,10 @@
 								</td>				        		            													        						        									
 					        </tr>	        
 					        <tr>
-					        	<th width="7%">备注</th>
-								<td colspan="7" style="width:92%;">
+					        	<th width="8%">备注</th>
+								<td colspan="7" style="width:88%;">
 									<input id="memo" name="memo"  data-options="multiline:true" 
-										class="easyui-textbox" style="width:80%;height:46px;"/>	
+										class="easyui-textbox" style="width:70%;height:46px;"/>	
 								</td>	        	
 					        </tr>
 						</table>

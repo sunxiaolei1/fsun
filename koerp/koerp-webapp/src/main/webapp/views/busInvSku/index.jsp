@@ -26,7 +26,7 @@
 
 var frozenColumns = [[
 	{field:'id',checkbox:true},
-	{field:'sku',title:'SKU',width:70,align:'center',sortable:true},	
+	{field:'sku',title:'SKU',width:70,align:'center',sortable:true, styler:reportContentStyler},		
 	{field:'goods_name',title:'商品名称',width:140,align:'center',sortable:true},
 	{field:'shop_id',title:'所属店仓',width:120,align:'center',sortable:true, formatter:function(value, row){
 		return row.shop_name; 
@@ -34,11 +34,16 @@ var frozenColumns = [[
 ]];
 
 var columns = [[
-	{field:'qty',title:'可用数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},	
-	{field:'lock_qty',title:'冻结数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},	
-	{field:'damaged_qty',title:'破损数量',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},
-	{field:'take_inv_qty',title:'寄提库存',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},
-	{field:'vir_inv_qty',title:'虚拟库存',width:80,align:'center',formatter:intNumBaseFormat, sortable:true},
+	{field:'qty',title:'可用数量',width:80,align:'center',formatter:intNumBaseFormat, 
+		sortable:true, styler:reportNumberStyler},	
+	{field:'lock_qty',title:'冻结数量',width:80,align:'center',formatter:intNumBaseFormat, 
+		sortable:true, styler:reportNumberStyler},
+	{field:'damaged_qty',title:'破损数量',width:80,align:'center',formatter:intNumBaseFormat, 
+		sortable:true, styler:reportNumberStyler},
+	{field:'take_inv_qty',title:'寄提库存',width:80,align:'center',formatter:intNumBaseFormat, 
+		sortable:true, styler:reportNumberStyler},
+	{field:'vir_inv_qty',title:'虚拟库存',width:80,align:'center',formatter:intNumBaseFormat, 
+		sortable:true, styler:reportNumberStyler},
 	{field:'bar_code',title:'条形码',width:120,align:'center',sortable:true},	
 	{field:'brand_code',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.brandCode); 

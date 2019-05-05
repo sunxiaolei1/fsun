@@ -21,7 +21,7 @@ function toDetailView(){
 		return;
 	}	
 	var url = "${api}/bus/invSku/toDetailView?sku="+ rows[0].sku+"&shopId="+ rows[0].shop_id;
-	var icon = "icon-edit";
+	var icon = "icon-application_view_detail";
 	var subtitle = rows[0].shop_name +"("+ rows[0].goods_name +")";
 	parent.addTab(subtitle, url, icon);	
 }

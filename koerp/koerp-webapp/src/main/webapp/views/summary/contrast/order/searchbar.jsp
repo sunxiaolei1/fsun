@@ -7,38 +7,39 @@
 		<%@include file="../../../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>
-					<td width="6%">关键字:</td>
+					<td width="8%">关键字:</td>
 					<td>
-						<input name="keywords" id="keywords" data-options="prompt:'输入销售单号、客户名称、手机号...'" class="easyui-textbox" style="width:240px" />
+						<input name="keywords" id="keywords" data-options="prompt:'销售单号、客户名称、手机号...'" 
+							class="easyui-textbox" style="width:85%" />
 					</td>														
-					<td width="6%">单据类型:</td>
+					<td width="8%">单据类型:</td>
 					<td>
-						<input id="orderTypeCombo" name="orderType" editable="false" class="easyui-combobox" />
+						<input id="orderTypeCombo" name="orderType" editable="false" class="easyui-combobox" style="width:80%" />
 					</td>				
-					<td  width="6%">交易状态:</td>
+					<td  width="8%">交易状态:</td>
 					<td>
-						<input id="tradeStatusCombo" name="tradeStatus" editable="false" class="easyui-combobox" />
+						<input id="tradeStatusCombo" name="tradeStatus" editable="false" class="easyui-combobox" style="width:80%" />
 					</td>					
-					<td  width="6%">交易门店:</td>
+					<td  width="8%">交易门店:</td>
 					<td>
-						<input id="shopText" name="shopId"  class="easyui-combogrid" />
+						<input id="shopText" name="shopId"  class="easyui-combogrid" style="width:80%" />
 					</td>
 					
 				</tr>	
 				<tr>	
-					<td width="6%">客户名称:</td>
+					<td width="8%">客户名称:</td>
 					<td>
-						<input id="allCustomerCombo" name="customerCode"  class="easyui-combogrid" style="width:240px"/>
+						<input id="allCustomerCombo" name="customerCode"  class="easyui-combogrid" style="width:80%" />
 					</td>	
-					<td  width="6%">经办人:</td>
+					<td  width="8%">经办人:</td>
 					<td>
-						<input id="salesmanText" name="carrierId"  class="easyui-combogrid" />
+						<input id="salesmanText" name="carrierId"  class="easyui-combogrid" style="width:80%" />
 					</td>																																										
-					<td width="6%">单据日期:</td>
-					<td colspan="3">
-						<input id="startDate" name="startDate" editable=false class="easyui-datebox" />
+					<td width="8%">单据日期:</td>
+					<td colspan="3" style="width:38%;" >
+						<input id="startDate" name="startDate" editable=false class="easyui-datebox" style="width:26%" />
 						-
-						<input id="endDate" name="endDate" editable=false class="easyui-datebox" />&nbsp;
+						<input id="endDate" name="endDate" editable=false class="easyui-datebox" style="width:26%" />&nbsp;
 						<a id="searchBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012092109942'" onclick="query()">查询</a>
 						<a id="resetBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-2012080412301'" onclick="reset()">重置</a>						
 					</td>

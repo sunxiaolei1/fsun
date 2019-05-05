@@ -16,7 +16,7 @@
 <script type="text/javascript">
 
 var columns = [[
-    {field:'order_no',title:'单据编号',width:170,align:'center',sortable:true},
+    {field:'order_no',title:'单据编号',width:200,align:'center',sortable:true},
     {field:'trade_type',title:'交易类型',width:90,align:'center',sortable:true},
     {field:'shop_name',title:'交易店仓',width:120,align:'center',sortable:true},
 	{field:'customer_name',title:'客户名称',width:130,align:'center',sortable:true},

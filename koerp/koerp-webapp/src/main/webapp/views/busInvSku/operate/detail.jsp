@@ -27,9 +27,12 @@ var frozenColumns = [[
 ]];
 
 var columns = [[
-	{field:'qty',title:'可用数量',width:70,align:'center',formatter:intNumBaseFormat},	
-	{field:'lock_qty',title:'冻结数量',width:70,align:'center',formatter:intNumBaseFormat},	
-	{field:'damaged_qty',title:'破损数量',width:70,align:'center',formatter:intNumBaseFormat},
+	{field:'qty',title:'可用数量',width:70,align:'center',
+		formatter:intNumBaseFormat, styler:reportNumberStyler},
+	{field:'lock_qty',title:'冻结数量',width:70,align:'center',
+		formatter:intNumBaseFormat, styler:reportNumberStyler},	
+	{field:'damaged_qty',title:'破损数量',width:70,align:'center',
+		formatter:intNumBaseFormat, styler:reportNumberStyler},
 	{field:'trade_order_no',title:'单据编号',width:220,align:'center',sortable:true},		
 	{field:'trade_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docTradeType); 

@@ -16,7 +16,7 @@
 <script type="text/javascript">
 
 var columns = [[
-    {field:'order_no',title:'单据编号',width:140,align:'center',sortable:true},
+    {field:'order_no',title:'单据编号',width:160,align:'center',sortable:true},
     {field:'shop_id',title:'出库店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
 		return row.shop_name; 
 	}},

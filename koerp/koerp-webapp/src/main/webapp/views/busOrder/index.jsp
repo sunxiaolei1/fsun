@@ -2,14 +2,14 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>   
 <%@ include file="../headerJS.jsp" %>
 
-<div class="easyui-layout" style="width:100%;height:100%;">
-	<div title="销售单列表"  border="false" data-options="region:'center',split:true,collapsible:false" style="padding:5px;">
-		<div class="easyui-layout" data-options="fit:true">	
+<div class="easyui-layout" data-options="fit:true" >
+	<div title="销售单列表" data-options="region:'center',split:true,collapsible:false,border:false" style="padding:5px;">
+		<div class="easyui-layout" data-options="fit:true" >	
 			<!-- 查询条件 -->
 			<%@include file="./searchbar.jsp"%>
 			
 			<!-- table -->
-			<div id="gridDiv" data-options="region:'center'" style="border: 0px solid #D3D3D3;">
+			<div id="gridDiv" data-options="region:'center',border:false" >
 				<table id="ordersDataGrid"> 
 				</table>
 			</div>
@@ -26,7 +26,7 @@
 
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
-	{field:'order_id',title:'单据编号',width:140,align:'center',sortable:true},
+	{field:'order_id',title:'单据编号',width:200,align:'center',sortable:true, styler:reportContentStyler},	
 	{field:'order_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.orderType); 
 	}},
@@ -63,13 +63,13 @@ var frozenColumns = [[
 ]];
 
 var columns = [[		 
-	{field:'order_price',title:'订单金额',width:80,align:'center',formatter:numBaseFormat},
-	{field:'coupon_price',title:'商品优惠',width:80,align:'center',formatter:numBaseFormat},
-	{field:'discount_price',title:'商家优惠',width:80,align:'center',formatter:numBaseFormat},
-	{field:'to_zero_price',title:'抹零金额',width:80,align:'center',formatter:numBaseFormat},
-	{field:'pay_price',title:'实付金额',width:80,align:'center',formatter:numBaseFormat},
-	{field:'dib_price',title:'找零金额',width:80,align:'center',formatter:numBaseFormat},
-	{field:'recept_price',title:'实收金额',width:80,align:'center',formatter:numBaseFormat},
+	{field:'order_price',title:'订单金额',width:80,align:'center',formatter:numBaseFormat, styler:reportNumberStyler},
+	{field:'coupon_price',title:'商品优惠',width:80,align:'center',formatter:numBaseFormat, styler:reportNumberStyler},
+	{field:'recept_price',title:'实收金额',width:80,align:'center',formatter:numBaseFormat, styler:reportNumberStyler},
+	{field:'discount_price',title:'商家优惠',width:80,align:'center',formatter:numBaseFormat, styler:reportNumberStyler},	
+	{field:'to_zero_price',title:'抹零金额',width:80,align:'center',formatter:numBaseFormat, styler:reportNumberStyler},
+	{field:'pay_price',title:'实付金额',width:80,align:'center',formatter:numBaseFormat, styler:reportNumberStyler},
+	{field:'dib_price',title:'找零金额',width:80,align:'center',formatter:numBaseFormat, styler:reportNumberStyler},	
 	{field:'print_count',title:'已打印',width:60,align:'center', sortable:true, formatter:function(value, row){
 		return (value>0?"<b style='color:green;'>是</b>":(value==0?"<b style='color:red;'>否</b>":"")); 
 	}},

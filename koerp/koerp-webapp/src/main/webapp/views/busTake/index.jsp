@@ -26,7 +26,7 @@
 
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
-	{field:'take_id',title:'单据编号',width:220,align:'center',sortable:true},	
+	{field:'take_id',title:'单据编号',width:240,align:'center',sortable:true, styler:reportContentStyler},	
 	{field:'order_id',title:'寄存单号',width:160,align:'center',sortable:true}		
 ]];
 

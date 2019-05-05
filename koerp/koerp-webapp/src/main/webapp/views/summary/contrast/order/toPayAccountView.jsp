@@ -24,8 +24,6 @@ $(function() {
 	
 	$("#currPayAccountDataGrid").datagrid({
 		view:footerStyleView,
-		width:"auto",
-	    height:"auto",
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -43,14 +41,14 @@ $(function() {
 	    fitColumns:true,
 	    showFooter:true,
 	    columns: [[
-           	{field:"line_no",title:"行号", width:80,align:"center", checkbox:true},          		
-        	{field:"pay_mode",title:"支付方式", width:80,align:"center",sortable:true},            	         	
-        	{field:"recept_price",title:"应收金额", width:80, align:"center",formatter:numBaseFormat},
-        	{field:"pay_price",title:"应付金额", width:80, align:"center",formatter:numBaseFormat},
-        	{field:"dib_price",title:"找零金额", width:80, align:"center",formatter:numBaseFormat},
-        	{field:"discount_amount",title:"优惠金额", width:80, align:"center",formatter:numBaseFormat},  
-        	{field:"trade_no",title:"支付流水号", width:150, align:"center"},  
-        	{field:"card_no",title:"支付卡号", width:150, align:"center"},
+           	{field:"line_no",title:"行号", width:80,align:"center", hidden:true},          		
+        	{field:"pay_mode",title:"支付方式", width:90,align:"center",sortable:true},            	         	
+        	{field:"recept_price",title:"应收金额", width:90, align:"center",formatter:numBaseFormat},
+        	{field:"pay_price",title:"应付金额", width:90, align:"center",formatter:numBaseFormat},
+        	{field:"dib_price",title:"找零金额", width:90, align:"center",formatter:numBaseFormat},
+        	{field:"discount_amount",title:"优惠金额", width:90, align:"center",formatter:numBaseFormat},  
+        	{field:"trade_no",title:"支付流水号", width:120, align:"center"},  
+        	{field:"card_no",title:"支付卡号", width:120, align:"center"},
         	{field:'trade_time',title:'交易时间',width:130,align:'center'}
         ]],
 	    loadFilter:function(data) {    

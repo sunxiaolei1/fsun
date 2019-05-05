@@ -7,132 +7,128 @@
 	request.setAttribute("api", basePath);
 %> 
 
-<style type="text/css">
+<div class="easyui-layout" data-options="fit:true" >
 
-.toolbar{
-	height:30px;
-	overflow:hidden;
-	border: 1px solid #D3D3D3;
-	background: #f3f3f3;
-	padding-top:2px;
-}
-
-</style> 
-
-
-<div id="detailtoolbar" class="toolbar" data-options="region:'center'">	
-	<a href="#" id="order_refresh" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="parent.refreshCurrTab()">刷新</a>			
-	<a href="#" id="order_return" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="parent.closeCurrTab()">返回</a>
-</div>
-
-<form id="orderfm">
-	<div class="easyui-tabs" >
+	<div class="easyui-tabs" data-options="border:false">
 		<div title="基本信息" style="padding:5px;">
-			<div class="fsun-wrap" style="padding: 15px 10px 5px 10px;margin-top: 8px;">
-				<span class="title" style="top: 66px;">退货信息(退货单号:<span id='refundId'></span>)</span>	
-				<span class="title" style="top: 66px;left:50%">原订单信息(订单号:<span id='orderId'></span>)</span>	
-				<div style="width:100%;height:40%;">
-					<table class="nb-formTable" style="width:49%;float:left;">
-						<tr>
-				        	<th width="12%">退货类型</th>
-							<td>
-								<input name="refundType" id="refundType" class="easyui-textbox" editable="false"/>								
-							</td>
-				            <th width="12%">退货状态</th>
-							<td>
-								<input name="refundStatus" id="refundStatus" class="easyui-textbox" editable="false" />
-							</td>														
-				        </tr>
-				        <tr>
-				            <th width="12%">客户名称</th>
-							<td>
-								<input name="buyerName" id="buyerName" class="easyui-textbox" editable="false" />
-							</td>
-							<th width="12%">所属店仓</th>
-							<td>
-								<input name="shopName" id="shopName" class="easyui-textbox" editable="false" />
-							</td>							
-				        </tr>				        
-				        <tr>
-				            <th width="12%">退款金额</th>
-							<td>
-								<input name="refundPrice" id="refundPrice" class="easyui-numberbox" 
-									data-options="min:0,precision:2" editable="false" />
-							</td>
-							<th width="12%">退货原因</th>
-							<td>
-								<input name="refundReason" id="refundReason" class="easyui-textbox"  editable="false"/>
-							</td>													
-				        </tr>
-				        <tr>				            
-							<th width="12%">单据日期</th>
-							<td colspan="3">
-								<input name="refundTime" id="refundTime" class="easyui-datebox" editable="false" />
-							</td>																										
-				        </tr>
-				        <tr>				            							
-							<th width="12%">备注</th>
-							<td colspan="3">
-								<input name="memo" id="memo" data-options="multiline:true" class="easyui-textbox" 
-									style="width:360px;height:50px;" />
-							</td>																			
-				        </tr>					        				       
-			        </table>			        	
-			        <table class="nb-formTable" style="width:50%;float:right;">
-				        <tr>				            
-							<th width="12%">单据类型</th>
-							<td>
-								<input id="orderType" name="orderType" class="easyui-textbox" editable="false"/>
-							</td>
-							<th width="12%">交易状态</th>
-							<td>
-								<input id="tradeStatus" name="tradeStatus" class="easyui-textbox" editable="false"/>
-							</td>
-				        </tr>
-				        <tr>				            
-							<th width="12%">订单金额</th>
-							<td>
-								<input id="orderPrice" name="orderPrice" class="easyui-numberbox" 
-									data-options="min:0,precision:2" editable="false"/>
-							</td>
-							<th width="12%">商品优惠</th>
-							<td>
-								<input id="couponPrice" name="couponPrice" class="easyui-numberbox" 
-									data-options="min:0,precision:2" editable="false"/>
-							</td>
-				        </tr>
-				        <tr>
-				        	<th width="12%">实收金额</th>
-							<td>
-								<input id="receptPrice" name="receptPrice" class="easyui-numberbox" 
-									data-options="min:0,precision:2" editable="false"/>
-							</td>				            
-							<th width="12%">商家优惠</th>
-							<td>
-								<input id="discountPrice" name="discountPrice" class="easyui-numberbox" 
-									data-options="min:0,precision:2" editable="false"/>
-							</td>						
-				        </tr>
-				        <tr>				            
-							<th width="12%">抹零金额</th>
-							<td colspan="3">
-								<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" 
-									data-options="min:0,precision:2" editable="false"/>
-							</td>							
-				        </tr>
-				        <tr>				            
-							<th width="12%">备注</th>
-							<td colspan="3">
-								<input name="orderMemo" id="orderMemo" data-options="multiline:true" 
-									class="easyui-textbox" style="width:360px;height:50px;" editable="false" />
-							</td>							
-				        </tr>				        	       
-			        </table>
-				</div>										
+			<div class="fsun-wrap">
+				<form id="orderfm">
+					<span class="title" style="top: 33px;">退货信息(退货单号:<span id='refundId'></span>)</span>	
+					<span class="title" style="top: 33px;left:50%">原订单信息(订单号:<span id='orderId'></span>)</span>							
+					<div class="easyui-layout" style="height:96%;">
+						<div data-options="region:'north',split:true,border:false">
+							<table class="nb-formTable" style="width:49%;float:left;">
+								<tr>
+						        	<th width="12%">退货类型</th>
+									<td>
+										<input name="refundType" id="refundType" class="easyui-textbox" 
+											editable="false" style="width:80%;" />							
+									</td>
+						            <th width="12%">退货状态</th>
+									<td>
+										<input name="refundStatus" id="refundStatus" class="easyui-textbox" 
+											editable="false" style="width:80%;" />	
+									</td>														
+						        </tr>
+						        <tr>
+						            <th width="12%">客户名称</th>
+									<td>
+										<input name="buyerName" id="buyerName" class="easyui-textbox" 
+											editable="false" style="width:80%;" />	
+									</td>
+									<th width="12%">所属店仓</th>
+									<td>
+										<input name="shopName" id="shopName" class="easyui-textbox" 
+											editable="false" style="width:80%;" />	
+									</td>							
+						        </tr>				        
+						        <tr>
+						            <th width="12%">退款金额</th>
+									<td>
+										<input name="refundPrice" id="refundPrice" class="easyui-numberbox" 
+											data-options="min:0,precision:2" editable="false" style="width:80%;" />	
+									</td>
+									<th width="12%">退货原因</th>
+									<td>
+										<input name="refundReason" id="refundReason" class="easyui-textbox"  
+											editable="false" style="width:80%;" />	
+									</td>													
+						        </tr>
+						        <tr>				            
+									<th width="12%">单据日期</th>
+									<td colspan="3">
+										<input name="refundTime" id="refundTime" class="easyui-datebox" 
+											editable="false" style="width:40%;" />	
+									</td>																										
+						        </tr>
+						        <tr>				            							
+									<th width="12%">备注</th>
+									<td colspan="3">
+										<input name="memo" id="memo" data-options="multiline:true" class="easyui-textbox" 
+											style="width:70%;height:50px;" />
+									</td>																			
+						        </tr>					        				       
+					        </table>			        	
+					        <table class="nb-formTable" style="width:50%;float:right;">
+						        <tr>				            
+									<th width="12%">单据类型</th>
+									<td>
+										<input id="orderType" name="orderType" class="easyui-textbox" 
+											editable="false" style="width:80%;" />	
+									</td>
+									<th width="12%">交易状态</th>
+									<td>
+										<input id="tradeStatus" name="tradeStatus" class="easyui-textbox" 
+											editable="false" style="width:80%;" />	
+									</td>
+						        </tr>
+						        <tr>				            
+									<th width="12%">订单金额</th>
+									<td>
+										<input id="orderPrice" name="orderPrice" class="easyui-numberbox" 
+											data-options="min:0,precision:2" editable="false" style="width:80%;" />	
+									</td>
+									<th width="12%">商品优惠</th>
+									<td>
+										<input id="couponPrice" name="couponPrice" class="easyui-numberbox" 
+											data-options="min:0,precision:2" editable="false" style="width:80%;" />	
+									</td>
+						        </tr>
+						        <tr>
+						        	<th width="12%">实收金额</th>
+									<td>
+										<input id="receptPrice" name="receptPrice" class="easyui-numberbox" 
+											data-options="min:0,precision:2" editable="false" style="width:80%;" />	
+									</td>				            
+									<th width="12%">商家优惠</th>
+									<td>
+										<input id="discountPrice" name="discountPrice" class="easyui-numberbox" 
+											data-options="min:0,precision:2" editable="false" style="width:80%;" />	
+									</td>						
+						        </tr>
+						        <tr>				            
+									<th width="12%">抹零金额</th>
+									<td colspan="3">
+										<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" 
+											data-options="min:0,precision:2" editable="false" style="width:30%;" />	
+									</td>							
+						        </tr>
+						        <tr>				            
+									<th width="12%">备注</th>
+									<td colspan="3">
+										<input name="orderMemo" id="orderMemo" data-options="multiline:true" 
+											class="easyui-textbox" style="width:70%;height:50px;" editable="false" />
+									</td>							
+						        </tr>				        	       
+					        </table>
+						</div>
+						<div data-options="region:'center', border:false" >	
+							<table id="orderDetailDataGrid"></table>
+						</div>				
+					</div>					
+				</form>										
 			</div>	
-			<div style="width:100%;height:38%;">
-				<table id="orderDetailDataGrid"></table>
-			</div>						
+									
 		</div>	
 		<div title="补退款信息" closable="false" style="padding:5px;">
 		    <div style="width:100%;height:83%;">
@@ -145,8 +141,8 @@
 		    </div>				
 		</div>					
 	</div>		
-</form>
-	
+
+</div>	
 
 <script type="text/javascript">
 

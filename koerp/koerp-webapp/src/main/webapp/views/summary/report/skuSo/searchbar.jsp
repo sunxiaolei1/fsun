@@ -7,11 +7,11 @@
 		<%@include file="../../../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
 				<tr>									
-					<td  width="6%">出库店仓:</td>
+					<td  width="8%">出库店仓:</td>
 					<td>
 						<input id="shopText" name="shopId"  class="easyui-combogrid" />
 					</td>																																						
-					<td width="6%">单据日期:</td>
+					<td width="8%">单据日期:</td>
 					<td colspan="5">
 						<input id="startDate" name="startDate" editable=false class="easyui-datebox" style="width:140px;" />
 						-
