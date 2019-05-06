@@ -14,39 +14,40 @@
 	<form id="orderfm">
 		<span class="title" style="top: 63px;">基本信息</span>
 		<input id="shopId" name="shopId" hidden="true"/>									      
-	   	<table class="nb-formTable" style="width:100%;height:70%;">
+	   	<table class="nb-formTable">
 	   		 <tr>					
-				<th width="12%">店仓名称<span style="color:red;">*</span></th>
+				<th>店仓名称<span style="color:red;">*</span></th>
 				<td>
-					<input name="shopName" id="shopName" class="easyui-textbox" required />
+					<input name="shopName" id="shopName" class="easyui-textbox" required style="width:80%;"/>
 				</td>
-				<th width="12%">店仓编码<span style="color:red;">*</span></th>
+				<th>店仓编码<span style="color:red;">*</span></th>
 				<td>
-					<input name="shopCode" id="shopCode" class="easyui-textbox" data-options="required:true,validType:'uniqueValue'" /> 
+					<input name="shopCode" id="shopCode" class="easyui-textbox" 
+						data-options="required:true,validType:'uniqueValue'" style="width:80%;"/> 
 				</td>						
 	        </tr>			   		
 			<tr>
-				<th width="12%">联系人</th>
+				<th>联系人</th>
 				<td>	
-					<input id="contacts" name="contacts" class="easyui-textbox" />
+					<input id="contacts" name="contacts" class="easyui-textbox" style="width:80%;"/>
 				</td>
-	        	<th width="12%">手机号</th>
+	        	<th>手机号</th>
 				<td>	
-					<input id="tel" name="tel" class="easyui-textbox" />
+					<input id="tel" name="tel" class="easyui-textbox" style="width:80%;"/>
 				</td>			          			
 			</tr> 
 			<tr>
-	        	<th width="12%">地址</th>
+	        	<th>地址</th>
 				<td colspan="3">
 					<input id="address" name="address"
 						class="easyui-textbox" style="width:80%;"/>
 				</td>		        	
 	        </tr> 	
 	        <tr>
-	        	<th width="12%">备注</th>
+	        	<th>备注</th>
 				<td colspan="3">
 					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:80%;height:100%;"/>
+						class="easyui-textbox" style="width:80%;"/>
 				</td>		        	
 	        </tr>		        			       
 		</table>			

@@ -7,10 +7,6 @@
 
 <style type="text/css">
 
-.easyui-textbox, .easyui-combogrid, .easyui-datebox, .easyui-combobox, .easyui-numberbox, .easyui-datetimebox , .easyui-numberspinner{
-	width: 162px;
-}
-
 .toolbar{
 	height:28px;
 	overflow:hidden;
@@ -18,22 +14,6 @@
 	border-bottom:1px solid #D3D3D3;
 	background: #f3f3f3;
 	padding-top:2px;
-}
-
-.fsun-wrap {
-	border: 1px solid #ccc;
-	padding: 15px 5px 5px 5px;
-	margin-top: 10px;
-}
-
-.fsun-wrap .title {
-	position: absolute;
-	color: #416AA3;
-	font-weight: bold;
-	left: 2%;
-	line-height: 2em;
-	padding: 0 1em;
-	background-color: #fff;
 }
 
 </style>
@@ -47,59 +27,59 @@
 	<form id="vipCardfm">
 		<span class="title" style="top: 62px;">基础信息</span>		
 		<input id="id" name="id" hidden="true"/>									      
-	   	<table class="nb-formTable" style="width:100%;">
+	   	<table class="nb-formTable">
 	   		 <tr>					
-				<th width="12%">所属客户</th>
+				<th>所属客户</th>
 				<td>
 					<input name="customerCode" id="vipCustomer" class="easyui-combogrid" required style="width:80%;" />	
-					<div title='创建会员' class="icon-customer-btn" onclick="javascript:toAddCustomerView();" 
+					<div title='创建会员' class="icon-customer-btn" onclick="javascript:toAddVipCustomerView();" 
 						style="margin-right:6px;" ></div>	
 				</td>
-				<th width="12%">本金比例</th>
+				<th>本金比例</th>
 				<td>
 					<input name="originPrecent" id="originPrecent" class="easyui-numberspinner" 
-						data-options="min:1,max:2,precision:2,increment:0.01,value:1" required style="width:90%;" />	
+						data-options="min:1,max:2,precision:2,increment:0.01,value:1" required />	
 				</td>											
-	        	<th width="12%">卡级别</th>
+	        	<th>卡级别</th>
 				<td>
-					<input name="cardType" id="cardType" class="easyui-combobox" required style="width:90%;" />	
+					<input name="cardType" id="cardType" class="easyui-combobox" required />	
 				</td>	        								          			
 			</tr>       
 	        <tr>
-	        	<th width="12%">卡号<span style="color:red;">*</span></th>
+	        	<th>卡号<span style="color:red;">*</span></th>
 				<td>	
 					<input id="cardNo" name="cardNo" class="easyui-textbox" 
-						data-options="required:true,validType:'uniqueValue'" style="width:85%;" />	 
+						data-options="required:true,validType:'uniqueValue'" />	 
 				</td>
-	        	<th width="12%">持卡人<span style="color:red;">*</span></th>
+	        	<th>持卡人<span style="color:red;">*</span></th>
 				<td>
-					<input name="cnName" id="cnName" class="easyui-textbox" required style="width:85%;" />	
+					<input name="cnName" id="cnName" class="easyui-textbox" required />	
 				</td>	
-	        	<th width="12%">手机号</th>
+	        	<th>手机号</th>
 				<td>
-					<input name="mobile" id="mobile" class="easyui-textbox" style="width:85%;" />	
+					<input name="mobile" id="mobile" class="easyui-textbox" />	
 				</td>			          																				
 			</tr>		
 			<tr>
-				<th width="12%">微信号</th>
+				<th>微信号</th>
 				<td>
-					<input name="wechat" id="wechat" class="easyui-textbox" style="width:90%;" />	
+					<input name="wechat" id="wechat" class="easyui-textbox" />	
 				</td>	
-	        	<th width="12%">性别</th>
+	        	<th>性别</th>
 				<td>
-					<input name="sex" id="sex" class="easyui-textbox" style="width:90%;" />	
+					<input name="sex" id="sex" class="easyui-textbox" />	
 				</td>			          															
-				<th width="12%">生日</th>
+				<th>生日</th>
 				<td>
-					<input name="brithday" id="brithday" class="easyui-datebox" style="width:90%;" />	
+					<input name="brithday" id="brithday" class="easyui-datebox" />	
 				</td>			
 			</tr>
 	        <tr>
-	        	<th width="12%">邮箱</th>
+	        	<th>邮箱</th>
 				<td>
-					<input name="email" id="email" class="easyui-textbox" style="width:90%;" />	
+					<input name="email" id="email" class="easyui-textbox" />	
 				</td>
-	        	<th width="12%">备注</th>
+	        	<th>备注</th>
 				<td colspan="3">
 					<input id="memo" name="memo" class="easyui-textbox" style="width:70%;"/>
 				</td>		        	
@@ -110,35 +90,35 @@
 
 <div class="fsun-wrap">
 	<form id="rachargefm">
-		<span class="title" style="top: 248px;">充值信息</span>				
+		<span class="title" style="top: 225px;">充值信息</span>				
 		<input id="shopId" name="shopId" hidden="true" />		
-		<table class="nb-formTable" style="width:100%;">	               		
+		<table class="nb-formTable" >	               		
 	        <tr>
-	        	<th width="12%">交易门店</th>
+	        	<th>交易门店</th>
 				<td>
-					<input id="shopName" name="shopName" class="easyui-textbox" disabled  style="width:90%;" />								
+					<input id="shopName" name="shopName" class="easyui-textbox" disabled  />								
 				</td>
-				<th width="12%">交易类型</th>
+				<th>交易类型</th>
 				<td>
-					<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly style="width:90%;" />	
+					<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />	
 				</td>	        		
-				<th width="12%">支付方式</th>
+				<th>支付方式</th>
 				<td>
-					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required style="width:90%;" />									
+					<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />									
 				</td>            	        	
 	        </tr>
 	        <tr>
-	        	<th width="12%">充值金额</th>
+	        	<th>充值金额</th>
 				<td>
 					<input id="rachargePrice"  class="easyui-numberbox" required 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />								
+						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
 				</td>
-				<th width="12%">交易金额</th>
+				<th>交易金额</th>
 				<td>
 					<input id="tradePrice" name="tradePrice" class="easyui-numberbox" readOnly 
-						data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />								
+						data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
 				</td>		
-				<th width="12%">赠送金额</th>
+				<th>赠送金额</th>
 				<td>
 					<input id="newGiftPrice" name="newGiftPrice" class="easyui-numberbox" readOnly style="width:40%;"
 						data-options="min:0,precision:2,value:0, formatter: priceFormat" />	
@@ -147,9 +127,10 @@
 				</td>								
 	        </tr>	
 	        <tr>	        			
-				<th width="12%">备注</th>
+				<th>备注</th>
 				<td colspan="5">
-					<input id="memo" name="memo" class="easyui-textbox" style="width:70%;"/>
+					<input id="memo" name="memo" class="easyui-textbox" data-options="multiline:true"
+						style="width:70%;"/>
 				</td>							
 	        </tr>	
 		</table>
@@ -322,13 +303,13 @@ function initPriceOnChange(){
 /**
  * 
  */
-function toAddCustomerView(){
+function toAddVipCustomerView(){
 	
 	$("<div></div>").dialog({
 		id:"customerDialog",
 	    title:"&nbsp;创建会员",
-	    width:"75%",
-		height:"67%",
+	    width:"85%",
+		height:"360px",
 	    iconCls:"icon-client",
 	    closed:false,
 	    cache:false,

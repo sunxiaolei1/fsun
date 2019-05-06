@@ -13,33 +13,33 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:150px;">
+			<div data-options="region:'north',split:true, border:false" style="height:140px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
-						<span class="title" style="top: 1px;">单据基本信息</span>		
+						<span class="title" style="top: 1px;">基本信息</span>		
 						<input id="iId" name="iId" hidden="true" />	
 						<input id="fromShopId" name="fromShopId" hidden="true" />	
 						<input id="orderPrice" name="orderPrice" hidden="true" />	
-						<table class="nb-formTable" style="width:100%;">
+						<table class="nb-formTable">
 					        <tr>
-					            <th width="12%">单据编号</th>
+					            <th>单据编号</th>
 								<td>
 									<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly style="width:95%;" />	
 								</td>
-								<th width="12%">单据类型</th>
+								<th>单据类型</th>
 								<td>
 									<input id="orderType" name="orderType" class="easyui-combobox" readOnly style="width:95%;" />									
 								</td>					
-								<th width="12%">出库店仓</th>
+								<th>出库店仓</th>
 								<td>
 									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly style="width:95%;" />									
 								</td>								
 					        </tr>		               		
 					        <tr>
-					        	<th width="12%">备注</th>
+					        	<th>备注</th>
 								<td colspan="5">
 									<input id="memo" name="memo"  data-options="multiline:true" 
-										class="easyui-textbox" style="width:80%;height:50px;" />
+										class="easyui-textbox" style="width:70%;height:50px;" />
 								</td>	        	
 					        </tr>
 						</table>

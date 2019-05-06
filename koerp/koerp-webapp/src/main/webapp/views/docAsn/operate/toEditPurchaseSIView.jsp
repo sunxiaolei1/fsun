@@ -13,7 +13,7 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:181px;">
+			<div data-options="region:'north',split:true, border:false" style="height:160px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
 						<span class="title" style="top: 1px;">采购信息(单号:<span>${asnNo}</span>)</span>	
@@ -21,17 +21,17 @@
 						<input id="toShopId" name="toShopId" hidden="true" />	
 						<input id="orderPrice" name="orderPrice" hidden="true" />	
 						<input id="asnNo" name="asnNo" hidden="true" />	
-						<table class="nb-formTable" style="width:100%;">
+						<table class="nb-formTable">
 					        <tr>					            
-								<th width="12%">单据类型</th>
+								<th>单据类型</th>
 								<td>
 									<input id="asnType" name="asnType" class="easyui-combobox" readOnly style="width:95%;" />							
 								</td>
-								<th width="12%">外部单号</th>
+								<th>外部单号</th>
 								<td>
 									<input id="extOrderNo" name="extOrderNo" class="easyui-textbox" readOnly style="width:95%;" />
 								</td>
-								<th width="12%">入库店仓</th>
+								<th>入库店仓</th>
 								<td>
 									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly style="width:95%;" />	
 									<input id="orderNo" name="orderNo" hidden=true />																
@@ -39,26 +39,26 @@
 					        </tr>	
 					        <tr>
 					        		            
-								<th width="12%">供应商</th>
+								<th>供应商</th>
 								<td>
 									<input id="supplierName" name="supplierName" class="easyui-textbox" readOnly style="width:95%;" />							
 								</td>					
-								<th width="12%">联系人</th>
+								<th>联系人</th>
 								<td>
 									<input id="supplierContact" name="supplierContact" class="easyui-textbox" readOnly style="width:95%;" />								
 								</td>
-					        	<th width="12%">联系方式</th>
+					        	<th>联系方式</th>
 								<td>
 									<input id="supplierTel" name="supplierTel" class="easyui-textbox" readOnly style="width:95%;" />	
 								</td>	        									
 					        </tr>
 					        <tr>
-								<th width="12%">发货地址</th>
+								<th>发货地址</th>
 								<td>
 									<input id="supplierAddress" name="supplierAddress" class="easyui-textbox" 
 										data-options="multiline:true" readOnly style="width:95%;height:50px;" />
 								</td>
-					        	<th width="12%">备注</th>
+					        	<th>备注</th>
 								<td colspan="3">
 									<input id="memo" name="memo"  data-options="multiline:true" 
 										class="easyui-textbox" readOnly style="width:70%;height:50px;" />

@@ -81,7 +81,7 @@ var columns = [[
 			return formatterDate(dateParser(value));
 		}		
 	}},
-	{field:'expected_time',title:'预期收货时间',width:130,align:'center',sortable:true},	
+	{field:'expected_time',title:'预货时间',width:130,align:'center',sortable:true},	
 	{field:'supplier_name',title:'供应商名称',width:100,align:'center',sortable:true},	
 	//{field:'print_count',title:'是否打印',width:80,align:'center',sortable:true, formatter:function(value, row){
 	//	return (row.print_count>0?"<span style='color:red;'>是</span>":"否"); 
@@ -89,7 +89,7 @@ var columns = [[
 	{field:'created_name',title:'制单人',width:80,align:'center',sortable:true},
 	{field:'created_time',title:'单据时间',width:130,align:'center',sortable:true},
 	{field:'memo',title:'备注',width:200,align:'center',sortable:true},	
-	{field:'ext_order_no',title:'外部订单号',width:140,align:'center',sortable:true},
+	{field:'ext_order_no',title:'外部单号',width:140,align:'center',sortable:true},
 	{field:'po_no',title:'申请单号',width:150,align:'center',sortable:true},
 	{field:'order_no',title:'出库单号',width:150,align:'center',sortable:true}
 		

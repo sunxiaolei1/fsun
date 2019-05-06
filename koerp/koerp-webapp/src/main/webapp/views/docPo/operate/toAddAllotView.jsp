@@ -12,7 +12,7 @@
 	
 <div class="fsun-wrap">
 	<form id="orderfm">
-		<span class="title" style="top: 35px;">单据基本信息</span>		
+		<span class="title" style="top: 35px;">基本信息</span>		
 		<input id="toShopId" name="toShopId" hidden="true" />
 		<input id="iId" name="iId" hidden="true" />
 		<input id="iName" name="iName" hidden="true" />

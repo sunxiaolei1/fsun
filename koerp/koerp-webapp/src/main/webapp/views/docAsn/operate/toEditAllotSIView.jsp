@@ -13,80 +13,80 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:250px;">
-				<div class="fsun-wrap">
+			<div data-options="region:'north',split:true, border:false" style="height:210px;overflow:hidden;">
+				<div class="fsun-wrap" >
 					<form id="orderfm">
 						<span class="title" style="top: 1px;">调拨入库信息(单号:<span>${asnNo}</span>)</span>				
 						<input id="iId" name="iId" hidden="true" />	
 						<input id="toShopId" name="toShopId" hidden="true" />	
 						<input id="fromShopId" name="fromShopId" hidden="true" />
 						<input id="asnNo" name="asnNo" hidden="true" />
-						<table class="nb-formTable" style="width:100%;">
+						<table class="nb-formTable">
 					        <tr>
-								<th width="12%">出库单号</th>
+								<th>出库单号</th>
 								<td>
 									<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly style="width:95%;" />
 								</td>
-								<th width="12%">申请单号</th>
+								<th>申请单号</th>
 								<td>
 									<input id="poNo" name="poNo" class="easyui-textbox" readOnly style="width:95%;" />
 								</td>
-								<th width="12%">单据类型</th>
+								<th>单据类型</th>
 								<td>
 									<input id="asnType" name="asnType" class="easyui-combobox" readOnly style="width:95%;" />								
 								</td>																				
 					        </tr>	
 					        <tr>	
-					        	<th width="12%">入库店仓</th>
+					        	<th>入库店仓</th>
 								<td>
 									<input id="toShopName" name="toShopName" 
 										class="easyui-textbox" readOnly style="width:95%;" />							
 								</td>	        		        		
-								<th width="12%">经办人</th>
+								<th>经办人</th>
 								<td>
 									<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly style="width:95%;" />
 								</td>
-					        	<th width="12%">预收时间</th>
+					        	<th>预收时间</th>
 								<td>
 									<input id="expectedTime" name="expectedTime" class="easyui-datetimebox" disabled style="width:95%;" />
 								</td>				        		            													        						        									
 					        </tr>
 					        <tr>		        	
-								<th width="12%">出库店仓</th>
+								<th>出库店仓</th>
 								<td>
 									<input id="fromShopName" name="fromShopName" 
 										class="easyui-textbox" readOnly style="width:95%;" />							
 								</td>
-								<th width="12%">联系方式</th>
+								<th>联系方式</th>
 								<td>
 									<input id="mobile" name="mobile" class="easyui-textbox" readOnly style="width:95%;" />								
 								</td>	
-								<th width="12%">出库时间</th>
+								<th>出库时间</th>
 								<td>
 									<input id="deliveryTime" name="deliveryTime" class="easyui-datebox" disabled style="width:95%;" />							
 								</td>	        			        		            													        						        									
 					        </tr>
 					        <tr>
-								<th width="12%">发货地址</th>
+								<th>发货地址</th>
 								<td>
 									<input id="address" name="address" 
 										class="easyui-textbox" readOnly style="width:95%;" />
 								</td>
-					        	<th width="12%">审核人</th>
+					        	<th>审核人</th>
 								<td>
 									<input id="checkName" name="checkName" class="easyui-textbox" readOnly style="width:95%;" />
 									<input hidden="true" id="checkUserId" name="checkUserId" />								
 								</td>	
-								<th width="12%">审核状态</th>
+								<th>审核状态</th>
 								<td>
 									<input id="checkStatus" name="checkStatus" class="easyui-combobox" readOnly style="width:95%;" />								
 								</td>	        	
 					        </tr>
 					        <tr>
-					        	<th width="12%">备注</th>
+					        	<th>备注</th>
 								<td colspan="5">
 									<input id="memo" name="memo"  data-options="multiline:true" 
-										class="easyui-textbox" style="width:70%;height:46px;"/>
+										class="easyui-textbox" style="width:70%;"/>
 									<input id="userDefine1" name="userDefine1" hidden=true />
 									<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach"  style="margin-left:10px;"
 										plain="false" disabled onclick="openRefundView()">调退明细</a>

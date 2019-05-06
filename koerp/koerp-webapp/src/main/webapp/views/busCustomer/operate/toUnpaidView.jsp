@@ -13,62 +13,62 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:200px;" >
+			<div data-options="region:'north',split:true, border:false" style="height:170px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
 						<span class="title" style="top: 1px;">挂账结款信息</span>				
 						<input id="customerCode" name="customerCode" hidden="true" />	
 						<input id="shopId" name="shopId" hidden="true" />		
-						<table class="nb-formTable" style="width:100%;">
+						<table class="nb-formTable">
 					        <tr>	            
-								<th width="15%">客户名称</th>
+								<th>客户名称</th>
 								<td>
 									<input name="customerName" class="easyui-textbox" disabled />								
 								</td>
-								<th width="12%">客户类型</th>
+								<th>客户类型</th>
 								<td>
 									<input name="customerTypeName" class="easyui-textbox" disabled />								
 								</td>
-								<th width="12%">交易类型</th>
+								<th>交易类型</th>
 								<td>
 									<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly />
 								</td>																					                													        	
 					        </tr>
 					        <tr>	            								
-								<th width="15%">结款门店</th>
+								<th>结款门店</th>
 								<td>
 									<input id="shopName" name="shopName" class="easyui-textbox" disabled />								
 								</td>
-								<th width="12%">挂账总额</th>
+								<th>挂账总额</th>
 								<td>
 									<input id="totalPrice" name="totalPrice" class="easyui-numberbox" disabled
 										data-options="min:0,precision:2, formatter: priceFormat" />								
 								</td>				
-								<th width="12%">已结金额</th>
+								<th>已结金额</th>
 								<td>
 									<input id="paidPrice" name="paidPrice" class="easyui-numberbox" disabled 
 										data-options="min:0,precision:2, formatter: priceFormat" />								
 								</td>																							                													        	
 					        </tr>
 					        <tr>
-					        	<th width="12%">支付方式<span style="color:red;">*</span></th>
+					        	<th>支付方式<span style="color:red;">*</span></th>
 								<td>
 									<input id="payMode" name="payMode" class="easyui-combobox" editable="false" required />								
 								</td>	            
-								<th width="12%">欠款金额</th>
+								<th>欠款金额</th>
 								<td>
 									<input id="unpaidPrice" name="unpaidPrice" class="easyui-numberbox" disabled 
 										data-options="precision:2, formatter: priceFormat" />								
 								</td>				
-								<th width="12%">结款金额<span style="color:red;">*</span></th>
+								<th>结款金额<span style="color:red;">*</span></th>
 								<td>
 									<input id="tradePrice" name="tradePrice" class="easyui-numberbox" required
 										data-options="min:0,precision:2,value:0, formatter: priceFormat" />							
 								</td>														
 					        </tr>	
 					        <tr>	        	
-								<th width="12%">备注</th>
-								<td colspan="5" width="86%">
+								<th>备注</th>
+								<td colspan="5">
 									<input id="memo" name="memo" class="easyui-textbox" style="width:75%;"/>
 								</td>							
 					        </tr>

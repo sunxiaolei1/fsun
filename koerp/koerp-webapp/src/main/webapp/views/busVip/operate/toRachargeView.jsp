@@ -7,6 +7,13 @@
 	request.setAttribute("api", basePath);
 %>
 
+<style type="text/css">
+
+.nb-formTable th {width:9%;}
+.nb-formTable td {width:16%;}
+
+</style>
+
 <div class="easyui-layout" data-options="fit:true" >
 
 	<!-- 查询条件 -->
@@ -14,82 +21,82 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:200px;" >
+			<div data-options="region:'north',split:true, border:false" style="height:170px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
 						<span class="title" style="top: 1px;">充值信息</span>				
 						<input id="customerCode" name="customerCode" hidden="true" />	
 						<input id="shopId" name="shopId" hidden="true" />		
-						<table class="nb-formTable" style="width:100%;">
+						<table class="nb-formTable">
 					        <tr>
-					            <th width="12%">会员卡号</th>
-								<td width="13%">
-									<input id="cardNo" name="cardNo" class="easyui-textbox" readOnly style="width:80%;"/>
+					            <th>会员卡号</th>
+								<td>
+									<input id="cardNo" name="cardNo" class="easyui-textbox" readOnly style="width:90%;" />
 								</td>
-								<th width="12%">客户名称</th>
-								<td width="13%">
-									<input id="customerName" name="customerName" class="easyui-textbox" readOnly style="width:80%;"/>							
+								<th>客户名称</th>
+								<td>
+									<input id="customerName" name="customerName" class="easyui-textbox" readOnly style="width:90%;" />						
 								</td>
-								<th width="12%">交易类型</th>
-								<td width="13%">
-									<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly style="width:80%;"/>
+								<th>交易类型</th>
+								<td>
+									<input id="tradeType" name="tradeType" class="easyui-combobox" readOnly style="width:90%;" />
 								</td>
-								<th width="12%">交易门店</th>
-								<td width="13%">
-									<input id="shopName" name="shopName" class="easyui-textbox" disabled style="width:80%;"/>							
+								<th>交易门店</th>
+								<td>
+									<input id="shopName" name="shopName" class="easyui-textbox" disabled style="width:90%;" />							
 								</td>																	
 					        </tr>
 					        <tr>
-					        	<th width="12%">卡类型</th>
+					        	<th>卡类型</th>
 								<td>
-									<input id="cardType" name="cardType" class="easyui-combobox" disabled style="width:80%;"/>								
+									<input id="cardType" name="cardType" class="easyui-combobox" disabled style="width:90%;" />								
 								</td>
-					            <th width="12%">持卡人</th>
+					            <th>持卡人</th>
 								<td>
-									<input id="cnName" name="cnName" class="easyui-textbox" disabled style="width:80%;"/>
+									<input id="cnName" name="cnName" class="easyui-textbox" disabled style="width:90%;" />
 								</td>				
-								<th width="12%">可用余额</th>
+								<th>可用余额</th>
 								<td>
 									<input id="enablePrice" name="enablePrice" class="easyui-numberbox" disabled 
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;"/>							
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />						
 								</td>	
-								<th width="12%">赠金余额</th>
+								<th>赠金余额</th>
 								<td>
 									<input id="giftPrice" name="giftPrice" class="easyui-numberbox" disabled 
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;"/>								
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />							
 								</td>							
 					        </tr>		               		
 					        <tr>	        		
-								<th width="12%">充值金额<span style="color:red;">*</span></th>
+								<th>充值金额<span style="color:red;">*</span></th>
 								<td>
 									<input id="rachargePrice"  class="easyui-numberbox" required 
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;"/>							
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />						
 								</td>
-								<th width="12%">本金比例</th>
+								<th>本金比例</th>
 								<td>
 									<input id="originPrecent" name="originPrecent" class="easyui-numberbox" disabled 
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;"/>								
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />							
 								</td>
-								<th width="12%">交易金额</th>
+								<th>交易金额<span style="color:red;">*</span></th>
 								<td>
 									<input id="tradePrice" name="tradePrice" class="easyui-numberbox" readOnly 
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;"/>								
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />							
 								</td>		
-								<th width="12%">赠送金额</th>
+								<th>赠送金额</th>
 								<td>
 									<input id="newGiftPrice" name="newGiftPrice" class="easyui-numberbox" readOnly style="width:45%;"
 										data-options="min:0,precision:2,value:0, formatter: priceFormat" />	
-									<input id="trimPrice" class="easyui-numberspinner" style="width:44%;"
-										data-options="min:0,precision:2,value:0.00" />								
+									<input id="trimPrice" class="easyui-numberspinner" style="width:52%;"
+										data-options="min:0,precision:2,value:0.00" />										
 								</td>		        	
 					        </tr>
 					        <tr>
-					        	<th width="12%">支付方式</th>
+					        	<th>支付方式</th>
 								<td>
 									<input id="payMode" name="payMode" class="easyui-combobox" 
-										editable="false" required style="width:80%;"/>							
+										editable="false" required style="width:90%;" />							
 								</td>				
-								<th width="12%">备注</th>
+								<th>备注</th>
 								<td colspan="5" >
 									<input id="memo" name="memo" class="easyui-textbox" style="width:70%;" />
 								</td>							
@@ -119,13 +126,13 @@ var currDetailData = [];
 var currOrderDetailDataGrid  = $("#orderDetailDataGrid");
 var $orderfm = $("#orderfm");
 var rachargeColumns = [[
-	{field:'unpaidId',checkbox:true},
+	{field:'unpaidId',hidden:true},
 	//{field:"customerName",title:"客户名称", width:120,align:"center"},
 	{field:"shopName",title:"交易门店", width:120,align:"center"},
 	{field:"payMode",title:"支付方式", width:80,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.payMode); 
 	}},
-	{field:"tradeType",title:"交易类型", width:80,align:"center",sortable:true, formatter:function(value, row){
+	{field:"tradeType",title:"交易类型", width:90,align:"center",sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.tradeType); 
 	}},
 	{field:"orderId",title:"销售单号", width:130,align:"center"},

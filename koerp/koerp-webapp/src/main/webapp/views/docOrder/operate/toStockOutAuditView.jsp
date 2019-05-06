@@ -12,7 +12,7 @@
 	
 <div class="fsun-wrap">
 	<form id="orderfm">
-		<span class="title" style="top: 35px;">单据基本信息</span>		
+		<span class="title" style="top: 35px;">基本信息</span>		
 		<input id="iId" name="iId" hidden="true" />	
 		<input id="poNo" name="poNo" hidden="true" />
 		<input id="fromShopId" name="fromShopId" hidden="true" />	
@@ -47,7 +47,7 @@
 				<td>
 					<input id="deliveryTime" name="deliveryTime" class="easyui-datebox" editable="false" required/>								
 				</td>	
-				<th width="16%">预期收货时间<span style="color:red;">*</span></th>
+				<th width="16%">预收时间<span style="color:red;">*</span></th>
 				<td>
 					<input id="expectedTime" name="expectedTime" class="easyui-datetimebox" editable="false" required/>								
 				</td>

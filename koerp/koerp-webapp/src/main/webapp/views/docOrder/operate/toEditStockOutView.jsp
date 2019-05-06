@@ -13,7 +13,7 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:220px;">
+			<div data-options="region:'north',split:true, border:false" style="height:200px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
 						<span class="title" style="top: 1px;">调拨出库信息(单号:<span>${orderNo}</span>)</span>		
@@ -23,23 +23,23 @@
 						<input id="toShopId" name="toShopId" hidden="true" />
 						<input id="orderPrice" name="orderPrice" hidden="true" />
 						<input id="orderNo" name="orderNo" hidden="true" />	
-						<table class="nb-formTable" style="width:100%;margin-top:2px;">
+						<table class="nb-formTable">
 					        <tr>					            
-								<th width="12%">单据类型</th>
+								<th>单据类型</th>
 								<td>
 									<input id="orderType" name="orderType" class="easyui-combobox" readOnly style="width:95%;" />								
 								</td>	
-								<th width="12%">审核人</th>
+								<th>审核人</th>
 								<td>
 									<input id="iName" name="iName" class="easyui-textbox" readOnly style="width:95%;" />								
 								</td>
-								<th width="12%">经办人</th>
+								<th>经办人</th>
 								<td>
 									<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly style="width:95%;" />													
 								</td>													
 					        </tr>
 					        <tr>
-					        	<th width="12%">出库店仓</th>
+					        	<th>出库店仓</th>
 								<td>
 									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly style="width:95%;" />								
 								</td>
@@ -53,26 +53,26 @@
 								</td>
 							</tr>	
 					        <tr>
-					        	<th width="12%">收货店仓</th>
+					        	<th>收货店仓</th>
 								<td>
 									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly style="width:95%;" />							
 								</td>
-								<th width="12%">联系方式</th>
+								<th>联系方式</th>
 								<td>
 									<input id="mobile" name="mobile" class="easyui-textbox" readOnly style="width:95%;" />								
 								</td>
-					        	<th width="12%">联系人</th>
+					        	<th>联系人</th>
 								<td>
 									<input id="contacts" name="contacts" class="easyui-textbox" readOnly style="width:95%;" />							
 								</td>	        									        	
 					        </tr>				               			        	               		
 					        <tr>
-					        	<th width="12%">收货地址</th>
+					        	<th>收货地址</th>
 								<td>
 									<input id="receiveAddress" name="receiveAddress" class="easyui-textbox"
 										data-options="multiline:true"  style="width:95%;height:50px;" readOnly />
 								</td>
-					        	<th width="12%">备注</th>
+					        	<th>备注</th>
 								<td colspan="3">
 									<input id="memo" name="memo"  data-options="multiline:true" 
 										class="easyui-textbox" style="width:55%;height:50px;"/>
@@ -218,7 +218,7 @@ function openRefundView(){
 		return;
 	}
 	var url = "${api}/doc/asn/allotRefund/toBaseDetailView/"+ refundNo;	
-	commonDialog("ordersDialog", "调退明细", "95%", "90%", url, "icon-book_open");
+	commonDialog("ordersDialog", "调退明细", "95%", "420px", url, "icon-book_open");
 }
 
 </script>

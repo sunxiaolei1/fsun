@@ -21,11 +21,11 @@
 
 </style>
 
-<div class="easyui-layout" style="width:100%;height:100%;">
+<div class="easyui-layout" data-options="fit:true" >
 	<div data-options="region:'center',split:true,collapsible:false" style="padding:5px">
 		<!-- table -->
 		<div id="gridDiv" data-options="region:'center'" style="height: 100%">
-			<div class="easyui-layout" style="width:100%;height:100%;">
+			<div class="easyui-layout" data-options="fit:true" >
 				<div data-options="region:'west',split:true" style="width:66%;" >
 					<table id="takeOrdersDataGrid"></table>
 				</div>	
@@ -39,8 +39,8 @@
 
 <div id="takeTools" style="display: none;">	
 	<span style="float:right;">	
-		<input id="keywordsText" class="easyui-searchbox" style="width:300px"
-		data-options="searcher:queryOrder,prompt:'输入客户名称、单据编号、手机号搜索...'"  />
+		<input id="keywordsText" class="easyui-searchbox" style="width:250px"
+		data-options="searcher:queryOrder,prompt:'输入客户名称、单据编号、手机号...'"  />
 	</span>		
 	<div style="height:26px;">
 		<span class="skutitle" >
@@ -73,8 +73,6 @@ $(function() {
 	initDetailsDataGrid();
 	//初始化寄存单列表
 	currTakeOrdersDataGrid.datagrid({
-		width:500,
-		height:250,
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -93,19 +91,9 @@ $(function() {
 	    pageList: GLOBAL_PAGE_SIZE_LIST,
 	    showFooter:true,
 	    columns: [[
-			{field:'ck',checkbox:true},
-			{field:'order_id',title:'单据编号',width:140,align:'center'},
-			{field:'trade_status',title:'交易状态',width:80,align:'center', formatter:function(value, row){
-				if(value){
-					var spanHeader = "<b style='color:green;'>";
-					if(value=='40'){
-						spanHeader = "<b style='color:red;'>";
-					}
-					var spanFooter = "</b>";
-					return spanHeader + formatter(value, window.parent.tradeStatus) + spanFooter;
-				}
-			}},
-			{field:'take_status',title:'寄提状态',width:80,align:'center', formatter:function(value, row){
+			//{field:'ck',checkbox:true},
+			{field:'order_id',title:'单据编号',width:160,align:'center'},			
+			{field:'take_status',title:'寄提状态',width:65,align:'center', formatter:function(value, row){
 				if(value){
 					var spanHeader = "<b style='color:green;'>";
 					if(value=='00'){
@@ -117,16 +105,26 @@ $(function() {
 					return spanHeader + formatter(value, window.parent.orderTakeStatus) + spanFooter;
 				}
 				return "--";
-			}},
-			{field:'refund_status',title:'退货状态',width:100,align:'center', formatter:function(value, row){
-				var refundStatus = formatter(value, window.parent.refundStatus);
-				return refundStatus!=null?"<b style='color:red;'>"+ refundStatus +"</b>":"--"; 
-			}},
+			}},			
 			{field:'buyer_name',title:'客户名称',width:100,align:'center'},
 			{field:'shop_id',title:'所属店仓',width:130,align:'center', formatter:function(value, row){
 				return row.shop_name; 
-			}}//,
-			//{field:'order_price',title:'订单金额',width:80,align:'center',formatter:numBaseFormat}
+			}},
+			{field:'trade_status',title:'交易状态',width:65,align:'center', formatter:function(value, row){
+				if(value){
+					var spanHeader = "<b style='color:green;'>";
+					if(value=='40'){
+						spanHeader = "<b style='color:red;'>";
+					}
+					var spanFooter = "</b>";
+					return spanHeader + formatter(value, window.parent.tradeStatus) + spanFooter;
+				}
+			}},
+			{field:'refund_status',title:'退货状态',width:80,align:'center', formatter:function(value, row){
+				var refundStatus = formatter(value, window.parent.refundStatus);
+				return refundStatus!=null?"<b style='color:red;'>"+ refundStatus +"</b>":"--"; 
+			}},
+			{field:'order_price',title:'订单金额',width:80,align:'center',formatter:numBaseFormat}
 			
 	    ]],
 	    loadMsg:"数据加载中请稍后……",
@@ -135,7 +133,7 @@ $(function() {
 	    singleSelect: true,
 	    selectOnCheck: true,
 	    checkOnSelect: true,
-	    fitColumns: true,
+	    fitColumns: false,
 	    onSelect:function(index, data){	  
 	    	currSelectedRowId = data.order_id;
 	    	initDetailsDataGrid(currSelectedRowId);
@@ -186,8 +184,6 @@ function initDetailsDataGrid(currSelectedRowId){
 		});  			
 	}else{
 		currTakeDetailsDataGrid.datagrid({
-			width:500,
-			height:250,
 		    nowrap:false,
 		    striped:true,
 		    border:true,
@@ -202,7 +198,7 @@ function initDetailsDataGrid(currSelectedRowId){
 		    showFooter:true,
 		    columns: [[
 	           //{field:'ck',checkbox:true},
-	        	{field:"sku",title:"SKU",width:80,align:'center',sortable:true},	
+	        	{field:"sku",title:"SKU",width:70,align:'center',sortable:true},	
 	        	{field:"goodsName",title:"商品名称",width:120,align:'center',sortable:true},
 	        	{field:"untakeQty",title:"可寄提库存",width:80,align:'center'},
 	        	{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){

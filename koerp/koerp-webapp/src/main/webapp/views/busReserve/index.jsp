@@ -71,7 +71,7 @@ $(function() {
 	
 	//初始化搜索框
 	$('#keywordsSearcher').searchbox({
-         prompt: '输入客户编号,客户名称,手机号检索...',
+         prompt: '输入客户编号,客户名称,手机号...',
          searcher: function (value, name) {       	 
         	 var queryParams = currDataGrid.datagrid("options").queryParams;		
        		 queryParams.q = value;		

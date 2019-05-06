@@ -4,12 +4,11 @@
 
 
 <div class="easyui-layout" data-options="fit:true">
-	<div data-options="region:'north',split:true" style="width:80%;height:45px;padding:5px" >
-		<label>分类查询：</label>
-		<input id="categorySearch" class="easyui-searchbox" style="width:140px"
-			  data-options="searcher:searchCategory,prompt:'输入名称检索...'"  />
+	<div data-options="region:'north',split:true" style="width:100%;height:45px;padding:5px" >
+		检索: <input id="categorySearch" class="easyui-searchbox" style="width:70%;"
+			  data-options="searcher:searchCategory,prompt:'输入分类...'"  />
 	</div>
-	<div data-options="region:'center',split:true">
+	<div data-options="region:'center',split:true" >
 	  	<ul id="categoryTree" ></ul>
 	</div>
 </div>		

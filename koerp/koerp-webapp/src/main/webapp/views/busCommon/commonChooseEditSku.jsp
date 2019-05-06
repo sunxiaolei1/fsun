@@ -21,12 +21,12 @@
 </style>
 
 <!-- BasSku dialog -->
-<div id="chooseSkuDialog" class="alert">
+<div id="chooseSkuDialog" >
 	<div class="easyui-layout" style="height:100%;">		
-		<div data-options="region:'west',split:true,border:false"  style="width:230px;">
+		<div data-options="region:'west',split:true,border:false"  style="width:20%;">
 			<%@include file="./commonCategoryTreeSearch.jsp"%>
 		</div>			
-		<div data-options="region:'center',border:false">			
+		<div data-options="region:'center',border:false" >			
 			<table id="skusDatagrid"> 
 			</table>
 		</div>		
@@ -41,7 +41,7 @@
 			<b style="color:red;position:relative;top:2px;left:-5px;">全部添加</b>					
 		</label>							
 		&nbsp;&nbsp;	 -->
-		<input id="vaguefieldText" class="easyui-searchbox" style="width:300px"
+		<input id="vaguefieldText" class="easyui-searchbox" style="width:250px;"
 		data-options="searcher:querySku,prompt:'输入商品名称、SKU筛选...'"  />
 	</span>		
 	<div style="height:24px;">
@@ -100,13 +100,13 @@ $(function() {
 			{field: 'skuId', checkbox: true},						
 			{field: "sku", title: "SKU", width: 80, align: "center"},
 			{field: "goodsName", title: "名称", width: 160, align: "center"},
-			{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
+			{field:"categoryCode",title:"商品分类", width:90,align:"center", formatter:function(value, row){
 				return formatter(value, window.parent.categoryCode); 
 			}},
-			{field: "property", title: "规格", width: 120, align: "center"},			
-			{field: "salePrice", title: "单价", width: 60, align: "center",formatter:numBaseFormat},						
+			//{field: "property", title: "规格", width: 120, align: "center"},			
+			{field: "salePrice", title: "单价", width: 80, align: "center",formatter:numBaseFormat},						
 			{field: "qty", title: "数量", width: 60, align: "center"},
-			{field:"unit",title:"单位", width:60,align:"center", formatter:function(value, row){
+			{field:"unit",title:"单位", width:50,align:"center", formatter:function(value, row){
 				return formatter(value, window.parent.unitCode); 
 			}},
 			{field: "operatestatus", title: "状态", width: 60, align: "center",
@@ -121,7 +121,7 @@ $(function() {
 					}								
 				}	
 			},
-			{field: "selected", title: "操作", width: 70, align: "center",
+			{field: "selected", title: "操作", width: 80, align: "center",
 				formatter: function(value, row, index){	
 					if(value!=null){
 						if(value){						

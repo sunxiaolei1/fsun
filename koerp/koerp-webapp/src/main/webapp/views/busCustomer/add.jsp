@@ -8,60 +8,60 @@
 <div class="fsun-wrap">
 	<form id="customerfm">
 		<span class="title" style="top: 30px;">基本信息</span>										      
-	   	<table class="nb-formTable" style="width:100%;">			   		
+	   	<table class="nb-formTable">			   		
 	        <tr>
-	        	<th width="8%">客户类型<span style="color:red;">*</span></th>
+	        	<th>客户类型<span style="color:red;">*</span></th>
 				<td>	
 					<input id="customerType" name="customerType" class="easyui-combobox" 
 						editable="false" required />
 				</td>			          
-				<th width="8%">客户编号<span style="color:red;">*</span></th>
+				<th>客户编号<span style="color:red;">*</span></th>
 				<td>
 					<input name="customerCode" id="customerCode" class="easyui-textbox" 
 						data-options="prompt:'系统自动生成'"  disabled />
 				</td>
 			</tr>
 	        <tr>					
-				<th width="8%">客户名称<span style="color:red;">*</span></th>
+				<th>客户名称<span style="color:red;">*</span></th>
 				<td>
 					<input name="customerName" id="customerName" class="easyui-textbox" 
 						data-options="required:true,validType:'uniqueValue'" />
 				</td>
-				<th width="8%">信用额度</th>
+				<th>信用额度</th>
 				<td>
 					<input name="creditPrice" id="creditPrice" class="easyui-numberbox" 
 						data-options="min:0,precision:2,value:0, formatter: priceFormat"/>
 				</td>					
 	        </tr>
 	        <tr>			          															
-				<th width="8%">联系人</th>
+				<th>联系人</th>
 				<td>
 					<input name="contacts" id="contacts" class="easyui-textbox" />
 				</td>
-				<th width="8%">手机号</th>
+				<th>手机号</th>
 				<td>
 					<input name="tel" id="tel" class="easyui-textbox" />
 				</td>
 			</tr>
 	        <tr>
-				<th width="8%">所属销售代表</th>
-				<td>
+				<th>销售代表</th>
+				<td colspan="3">
 					<input name="salesman" id="salesman" class="easyui-combogrid" />
 				</td>
 	        </tr>
 	        <tr>
-	        	<th width="8%">详细地址</th>
+	        	<th>详细地址</th>
 				<td>
 					<input id="address" name="address" data-options="multiline:true"
-						class="easyui-textbox" style="width:98%;height:50px;"/>
+						class="easyui-textbox" style="width:90%;height:50px;"/>
 				</td>
-				<th width="8%">备注</th>
+				<th>备注</th>
 				<td>
 					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:98%;height:50px;"/>
+						class="easyui-textbox" style="width:90%;height:50px;"/>
 				</td>
 			</tr>	       		        			       
-		</table>			
+		</table>
 	</form>			
 </div>					
 

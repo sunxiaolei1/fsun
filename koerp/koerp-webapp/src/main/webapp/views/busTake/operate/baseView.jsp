@@ -5,8 +5,6 @@
 $(function () { 
 	
 	currOrderDetailDataGrid.datagrid({
-		width:"auto",
-	    height:"auto",
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -51,8 +49,8 @@ function showTakeOutView(){
 	$("<div></div>").dialog({
 		id:"showSoDialog",
 	    title:"寄提单【"+ $("#takeId",$orderfm).textbox("getValue") +"】出库明细",
-	    width:1100,
-	    height:450,
+	    width:"95%",
+	    height:"360px",
 	    closed:false,
 	    cache:false,
 	    href:"${api}/bus/take/toShowTakeOutView",
@@ -94,8 +92,6 @@ function showTakeOutView(){
      			}	
      		}); 
 			$("#busTakeDetailsConfirmDataGrid").datagrid({
-				width:"auto",
-			    height:"auto",
 			    nowrap:false,
 			    striped:true,
 			    border:true,

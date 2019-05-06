@@ -13,65 +13,62 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:210px;">
+			<div data-options="region:'north',split:true, border:false" style="height:190px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
-						<span class="title" style="top: 1px;">单据基本信息</span>		
+						<span class="title" style="top: 1px;">基本信息(单号:<span>${orderNo}</span>)</span>	
 						<input id="fromShopId" name="fromShopId" hidden="true" />	
-						<input id="orderPrice" name="orderPrice" hidden="true" />	
-						<table class="nb-formTable" style="width:100%;">
-					        <tr>
-					            <th width="12%">单据编号</th>
-								<td>
-									<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly style="width:95%;" />	
-								</td>
-								<th width="12%">单据类型</th>
+						<input id="orderPrice" name="orderPrice" hidden="true" />
+						<input id="orderNo" name="orderNo" hidden="true" />	
+						<table class="nb-formTable">
+					        <tr>					        
+								<th>单据类型</th>
 								<td>
 									<input id="orderType" name="orderType" class="easyui-combobox" readOnly style="width:95%;" />								
 								</td>	
-								<th width="12%">出库事由</th>
+								<th>出库事由</th>
 								<td>
 									<input id="orderMode" name="orderMode" class="easyui-combobox" readOnly style="width:95%;" />									
+								</td>
+								<th>出库店仓</th>
+								<td>
+									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly style="width:95%;" />									
 								</td>																				
 					        </tr>
 					        <tr>
-					        	<th width="12%">客户名称</th>
+					        	<th>客户名称</th>
 								<td>				
 									<input id="onsignName" name="onsignName" class="easyui-textbox" readOnly style="width:95%;" />										
 								</td>
-								<th width="12%">经办人</th>
+								<th>经办人</th>
 								<td>						
 									<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly style="width:95%;" />								
-								</td>
-								<th width="12%">出库店仓</th>
-								<td>
-									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly style="width:95%;" />									
-								</td>					        						        
-					        </tr>
-					        <tr>
-					        	<th width="12%">领用人</th>
+								</td>								
+								<th>领用人</th>
 								<td>
 									<input id="iName" name="iName" class="easyui-textbox" readOnly style="width:95%;" />														
-								</td>
-					        	<th width="12%">联系人</th>
+								</td>					        						        
+					        </tr>
+					        <tr>					        	
+					        	<th>联系人</th>
 								<td>
 									<input id="contacts" name="contacts" class="easyui-textbox" readOnly style="width:95%;" />									
 								</td>
-					        	<th width="12%">联系方式</th>
+					        	<th>联系方式</th>
 								<td>
 									<input id="mobile" name="mobile" class="easyui-textbox" readOnly style="width:95%;" />									
+								</td>
+								<th>收货地址</th>
+								<td>
+									<input id="receiveAddress" name="receiveAddress" class="easyui-textbox" 
+										readOnly style="width:95%;" />	
 								</td>	        										        		        	
 					        </tr>
-					        <tr>
-					        	<th width="12%">收货地址</th>
-								<td>
-									<input id="receiveAddress" name="receiveAddress" class="easyui-textbox"
-										  data-options="multiline:true" style="width:95%;height:46px;" readOnly/>
-								</td>	        					
-					        	<th width="12%">备注</th>
-								<td colspan="3">
+					        <tr>				        		        					
+					        	<th>备注</th>
+								<td colspan="5">
 									<input id="memo" name="memo" data-options="multiline:true" 
-										class="easyui-textbox" style="width:80%;height:46px;"/>
+										class="easyui-textbox" style="width:70%;height:46px;"/>
 								</td>	        	
 					        </tr>
 						</table>
@@ -104,15 +101,15 @@ var $orderfm = $("#orderfm");
 var soColumns = [[
 	{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
-	{field:"goodsName",title:"商品名称", width:140,align:"center"},
-	{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:"goodsName",title:"商品名称", width:200,align:"center"},
+	{field:"barCode",title:"条形码", width:110,align:"center"},
 	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.brandCode); 
 	}},
 	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.categoryCode); 
 	}},
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	{field:'property',title:'规格',width:100,align:'center',sortable:true},
 	//{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"price",title:"单价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"shippedQty",title:"数量", width:80,align:"center",

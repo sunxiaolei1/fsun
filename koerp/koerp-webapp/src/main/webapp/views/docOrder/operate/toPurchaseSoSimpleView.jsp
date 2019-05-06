@@ -8,7 +8,7 @@
 	
 <div class="fsun-wrap">
 	<form id="sofm">
-		<span class="title" style="top: 30px;">单据基本信息</span>		
+		<span class="title" style="top: 30px;">基本信息</span>		
 		<input id="iId" name="iId" hidden="true" />	
 		<input id="supplierId" name="supplierId" hidden="true" />
 		<input id="supplierAddress" name="supplierAddress" hidden="true" />

@@ -32,6 +32,9 @@
     color: #575765;
 }
 
+.nb-formTable th {width:9%;}
+.nb-formTable td {width:16%;}
+
 </style>
 
 <div class="easyui-layout" data-options="fit:true" >	
@@ -41,117 +44,102 @@
 		<a href="#" id="order_return" class="easyui-linkbutton" iconCls="icon-2012080412301" plain="true" onclick="orderReturn()">返回</a>
 	</div>	
 	
-	<div data-options="region:'center',border:false" style="padding:2px;">
+	<div data-options="region:'center',border:false">
 		<div class="easyui-layout" data-options="fit:true" >	
-			<div style="height:208px;" data-options="region:'north',split:true,border:false">
-				<!-- <div class="fsun-wrap"> -->
+			<div data-options="region:'north',split:true,border:false" style="height:200px;overflow:hidden;">
+				<div class="fsun-wrap">
 					<form id="orderfm">
-						<!-- <span class="title" style="top:1px;">单据基本信息</span>	 -->	
+						<span class="title" style="top:1px;"><span id="titleDiv"></span></span>	
 						<input id="fromShopId" name="fromShopId" hidden="true" />	
 						<input id="orderPrice" name="orderPrice" hidden="true" />
 						<input id="refundId" name="refundId" hidden="true" />		
-						<table class="nb-formTable" style="width:100%;margin-bottom:0px;">
-							<tr>
-					            <th width="12%">单据编号</th>
-								<td width="13%">
-									<input id="orderId" name="orderId" class="easyui-textbox" readOnly style="width:95%;" />
-								</td>
-								<th width="12%">单据类型</th>
-								<td width="13%">
-									<input id="orderType" name="orderType" class="easyui-combobox" readOnly style="width:80%;" />								
-								</td>										
-								<th width="12%">所属店仓</th>
-								<td width="13%">
-									<input id="shopName" name="shopName" class="easyui-textbox" readOnly style="width:80%;" />								
-								</td>
-								<th width="12%">经办人</th>
-								<td width="13%">
-									<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly style="width:80%;" />								
-								</td>								
-					        </tr>
+						<table class="nb-formTable">
 					        <tr>
-					        	<th width="12%">客户名称</th>
+					        	<th>单据类型</th>
 								<td>
-									<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly style="width:95%;" />
-									<input id="buyerId" name="buyerId" hidden="true" />									
+									<input id="orderType" name="orderType" class="easyui-combobox" readOnly style="width:90%;" />								
 								</td>
-					        	<th width="12%">订单金额</th>
+					        	<th>订单金额</th>
 								<td>
 									<input id="orderPrice" name="orderPrice" class="easyui-numberbox" readOnly
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;" />									
-								    <input id="balancePrice" hidden="true" />	
-								</td>
-					        	<th width="12%">商品优惠</th>
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />									
+								   	<input id="balancePrice" hidden="true" />	
+								</td>					
+					        	<th>商品优惠</th>
 								<td>
 									<input id="couponPrice" name="couponPrice" class="easyui-numberbox" readOnly
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;" />									
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />									
 								</td>
-					        	<th width="12%">抹零金额</th>
+					        	<th>抹零金额</th>
 								<td>
 									<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" readOnly
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;" />									
-								</td>	        						        		        	
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />							
+								</td>																						
 					        </tr>
 					        <tr>
-					        	<th width="12%">实收金额</th>
+					        	<th>实收金额</th>
 								<td>
 									<input id="receptPrice" name="receptPrice" class="easyui-numberbox" readOnly
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:95%;" />									
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />									
 								</td>		        	
-					        	<th width="12%">实付金额</th>
+					        	<th>实付金额</th>
 								<td>
 									<input id="payPrice" name="payPrice" class="easyui-numberbox" readOnly
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;" />									
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />									
 								</td>
-								<th width="12%">找零金额</th>
+								<th>找零金额</th>
 								<td>
 									<input id="dibPrice" name="dibPrice" class="easyui-numberbox" readOnly
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;" />									
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />								
 								</td>
-					        	<th width="12%">商家优惠</th>
+								<th>商家优惠</th>
 								<td>
 									<input id="discountPrice" name="discountPrice" class="easyui-numberbox" readOnly
-										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:80%;" />									
-								</td>		        		        						        		        	
-					        </tr> 
-					        <tr>       	
-					        	<th width="12%">收货人</th>
+										data-options="min:0,precision:2,value:0, formatter: priceFormat" style="width:90%;" />									
+								</td>					        			        		        						        		        	
+					        </tr>					       					        
+					        <tr> 
+								<th>经办人</th>
 								<td>
-									<input id="receiveName" name="receiveName" class="easyui-textbox" style="width:95%;" />							
-								</td>
-					        	<th width="12%">联系方式</th>
+									<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly style="width:90%;" />								
+								</td>  	
+					        	<th>收货人</th>
 								<td>
-									<input id="mobile" name="mobile" class="easyui-textbox" style="width:80%;" />							
+									<input id="receiveName" name="receiveName" class="easyui-textbox" style="width:90%;" />								
 								</td>
-								<th width="12%">收货地址</th>
-								<td colspan="3">
-									<input id="address" name="address" class="easyui-textbox" style="width:70%;"/>
-								</td>        						        		        	
-					        </tr>     
-							<tr>	        					
-					        	<th width="12%">注意事项</th>
-								<td colspan="3">
+								<th>联系方式</th>
+								<td>
+									<input id="mobile" name="mobile" class="easyui-textbox" style="width:90%;" />								
+								</td>
+								<th>收货地址</th>
+								<td>
+									<input id="address" name="address" class="easyui-textbox" style="width:90%;" />									
+								</td>							        						        		        	
+					        </tr>    
+					        <tr>	        					
+					        	<th>注意事项</th>
+								<td colspan="3" width="40%">
 									<input id="sellerNotes" name="sellerNotes"  data-options="multiline:true" readOnly
-										class="easyui-textbox" style="width:60%;height:50px;"/>	
+										class="easyui-textbox" style="width:50%;height:46px;"/>	
 									<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach" 
-										plain="false" disabled onclick="openRefundView()">退换货明细</a>	
+										plain="false" disabled onclick="openRefundView()">退换货明细</a>										
 								</td>
-								<th width="12%">备注</th>
-								<td colspan="3">
+								<th>备注</th>
+								<td colspan="3" width="40%">
 									<input id="memo" name="memo"  data-options="multiline:true" readOnly 
-										class="easyui-textbox" style="width:60%;height:50px;"/>
+										class="easyui-textbox" style="width:50%;height:46px;"/>
 									<a href="#" class="easyui-linkbutton" iconCls="icon-money" 
 										plain="false" onclick="openPayAccountView()">账单明细</a>			
 								</td>	        	
 					        </tr>
 						</table>
 					</form>		
-				<!-- </div> -->	
+				</div>
 			</div>
 			<div data-options="region:'center', border:false" >
 				<div id="detailskutoolbar" style="display:none" >
 					<span style="float:right;margin-top:2px;margin-bottom:2px;">	
-						<input id="skuSearcher" class="easyui-searchbox" style="width:350px">
+						<input id="skuSearcher" class="easyui-searchbox" style="width:300px">
 					</span>
 					<div style="height:26px;">
 						<b class="skutitle" >
@@ -188,7 +176,7 @@ var currOrderDetailDataGrid = $("#orderDetailDataGrid");
 var currPayAccountDataGrid = $("#payAccountDataGrid");
 var $orderfm = $("#orderfm");   
 var soColumns = [[
-	{field:'ck',checkbox:true},
+	//{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
 	{field:"goodsName",title:"商品名称", width:140,align:"center"},
 	//{field:"barCode",title:"条形码", width:140,align:"center"},
@@ -198,7 +186,7 @@ var soColumns = [[
 	//{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
 	//	return formatter(value, window.parent.categoryCode); 
 	//}},
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	{field:'property',title:'规格',width:100,align:'center',sortable:true},
 	{field:'isGift',title:'赠品信息',width:160,align:'center',sortable:true,formatter:function(value, row){
 		var info = "--";
 		if(value!=null && value){
@@ -380,6 +368,8 @@ $(function () {
 				if(refundId!=null && refundId!=''){
 					$("#refundLink").linkbutton("enable");
 				}
+				$("#titleDiv",$orderfm).text("基本信息(单号: "+ header.orderId 
+						+", 客户名称: "+ header.buyerName +", 交易门店: "+ header.shopName +")");			
 			}
 			//获取当前单据的账单明细
 			currPayAccountData =  docOrderDto.payAccounts;

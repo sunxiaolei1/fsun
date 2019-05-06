@@ -11,7 +11,7 @@
 					<td width="15%">
 						<input name="q" id="q" data-options="prompt:'客户编号,名称,手机号...'" class="easyui-textbox" style="width:95%" />
 					</td>
-					<td  width="10%">所属销售代表:</td>
+					<td  width="10%">销售代表:</td>
 					<td width="12%">
 						<input id="salesmanText" name="salesman"  class="easyui-combogrid" style="width:90%" />			
 					</td>

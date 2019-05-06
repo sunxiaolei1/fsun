@@ -14,66 +14,66 @@
 	<form id="orderfm">
 		<span class="title" style="top: 63px;">基本信息</span>		
 		<input id="skuId" name="skuId" hidden="true"/>										      
-	   	<table class="nb-formTable" style="width:100%;height:82%;">
+	   	<table class="nb-formTable">
 	   		 <tr>					
-				<th width="12%">商品名称<span style="color:red;">*</span></th>
+				<th>商品名称<span style="color:red;">*</span></th>
 				<td>
 					<input name="goodsName" id="goodsName" class="easyui-textbox" required />
 				</td>
-				<th width="12%">商品分类<span style="color:red;">*</span></th>
+				<th>商品分类<span style="color:red;">*</span></th>
 				<td>	
 					<input id="categoryCode" name="categoryCode" class="easyui-combobox" editable=false required />
 				</td>							
 	        </tr>			   		
 	        <tr>	
-	        	<th width="12%">商品SKU<span style="color:red;">*</span></th>
+	        	<th>商品SKU<span style="color:red;">*</span></th>
 				<td>
 					<input name="sku" id="sku" class="easyui-textbox" data-options="required:true,validType:'uniqueValue'" /> 
 				</td>
-	        	<th width="12%">所属品牌<span style="color:red;">*</span></th>
+	        	<th>所属品牌<span style="color:red;">*</span></th>
 				<td>
 					<input name="brandCode" id="brandCode" class="easyui-combobox" editable=false required />
 				</td>	        				          			
 			</tr> 
 			<tr>
-				<th width="12%">英文名称</th>
+				<th>英文名称</th>
 				<td>	
 					<input id="enName" name="enName" class="easyui-textbox" />
 				</td>
-	        	<th width="12%">单位<span style="color:red;">*</span></th>
+	        	<th>单位<span style="color:red;">*</span></th>
 				<td>	
 					<input id="unit" name="unit" class="easyui-combobox" editable=false required />
 				</td>			          			
 			</tr>  
 			<tr>
-				<th width="12%">商品条形码</th>
+				<th>商品条形码</th>
 				<td>
 					<input name="barCode" id="barCode" class="easyui-textbox" />
 				</td>					
-				<th width="12%">分销价</th>
+				<th>分销价</th>
 				<td>
 					<input name="marketPrice" id="marketPrice" class="easyui-numberspinner" 
 						data-options="min:0, precision:2,increment:1,value:0" required />
 				</td>							
 	        </tr>        
 	        <tr>
-	        	<th width="12%">成本价</th>
+	        	<th>成本价</th>
 				<td>
 					<input name="costPrice" id="costPrice" class="easyui-numberspinner" 
 						data-options="min:0, precision:2,increment:1,value:0" required />
 				</td>
-				<th width="12%">原销售价</th>
+				<th>原销售价</th>
 				<td>
 					<input name="originSalePrice" id="originSalePrice" class="easyui-numberspinner" 
 						data-options="min:0, precision:2,increment:1,value:0" required />
 				</td>			          																				
 			</tr>		
 			<tr>
-				<th width="12%">商品规格<span style="color:red;">*</span></th>
+				<th>商品规格<span style="color:red;">*</span></th>
 				<td>
 					<input name="property" id="property" class="easyui-textbox" required   />				
 				</td>
-				<th width="12%">告警阀值</th>
+				<th>告警阀值</th>
 				<td>
 					<input name="warningQty" id="warningQty" class="easyui-numberspinner" 
 						data-options="precision:0" />
@@ -95,15 +95,15 @@
 				</th>		        	
 	        </tr>
 			<tr>
-	        	<th width="12%">商品详情</th>
-				<td style="width:36%;">
+	        	<th>商品详情</th>
+				<td>
 					<input id="descr" name="descr"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:90%;height:90%;"/>
+						class="easyui-textbox" style="width:90%;height:46px;"/>
 				</td>						        	
-	        	<th width="12%">备注</th>
-				<td style="width:36%;">
+	        	<th>备注</th>
+				<td>
 					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:90%;height:90%;"/>
+						class="easyui-textbox" style="width:90%;height:46px;"/>
 				</td>		        	
 	        </tr>		        			       
 		</table>				

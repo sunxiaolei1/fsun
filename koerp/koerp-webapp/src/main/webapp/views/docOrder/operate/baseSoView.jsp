@@ -5,8 +5,6 @@
 $(function () { 
 	
 	currOrderDetailDataGrid.datagrid({
-		width:"auto",
-	    height:"auto",
 	    nowrap:false,
 	    striped:true,
 	    border:true,

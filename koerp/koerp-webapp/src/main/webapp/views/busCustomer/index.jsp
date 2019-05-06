@@ -49,7 +49,7 @@ var columns =
 			}
 		},
 		{field:'tel',title:'手机号',width:110,align:'center',sortable:true},
-		{field:'salesman',title:'所属销售代表',width:100,align:'center',sortable:true, formatter:function(value, row){
+		{field:'salesman',title:'销售代表',width:100,align:'center',sortable:true, formatter:function(value, row){
 			return row.salesman_name; 
 		}},						
 		{field:"credit_price",title:"信用额度(元)",width:80, align:'center',formatter:numBaseFormat,

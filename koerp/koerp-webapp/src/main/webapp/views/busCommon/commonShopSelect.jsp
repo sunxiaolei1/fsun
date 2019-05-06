@@ -28,7 +28,7 @@ var shopcolumns =
 	{field:"enabled",title:"状态", width:60,align:'center', formatter:function(value, row){
 		return formatter(value, window.parent.isEnable); 
 	}},		
-	{field:'memo',title:'备注',width:160,align:'center',sortable:true}
+	{field:'memo',title:'备注',width:300,align:'center',sortable:true}
 ]];
 
 var currDialog;

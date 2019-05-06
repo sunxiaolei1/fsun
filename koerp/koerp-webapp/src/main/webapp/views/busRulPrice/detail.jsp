@@ -120,9 +120,7 @@ $(function () {
 	currRulId = '${rulId}';
 	currOrderDetailDataGrid = $("#rulSkuDataGrid");
 	
-	currOrderDetailDataGrid.datagrid({	
-		width:"auto",
-	    height:"auto",
+	currOrderDetailDataGrid.datagrid({			
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -226,8 +224,8 @@ function openAddView(){
 	$("<div></div>").dialog({
 		id:"codesDialog",
 	    title:"&nbsp;店仓选择列表",
-	    width:"80%",
-	    height:"60%",
+	    width:"90%",
+	    height:"360px",
 	    closed:false,
 	    cache:false,
 	    params:{

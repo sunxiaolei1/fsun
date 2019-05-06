@@ -52,7 +52,7 @@ $(function() {
 	
 	//初始化搜索框
 	$('#takeGoodsSearcher').searchbox({
-	     prompt: '输入寄提单号、商品名称、SKU搜索...',
+	     prompt: '输入寄提单号、商品名称、SKU...',
 	     searcher: function (value, name) {
 	    	 currTakeGoodsDataGrid.datagrid({searchValue: value})
 	    	 	.datagrid("loadData", currTakeGoodsDetailData);
@@ -62,8 +62,6 @@ $(function() {
 	//初始化寄存单列表
 	currTakeGoodsDataGrid.datagrid({
 		view:footerStyleView,
-		width:500,
-		height:'auto',
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -80,27 +78,39 @@ $(function() {
 	    pageSize: GLOBAL_PAGE_SIZE,
 	    pageList: GLOBAL_PAGE_SIZE_LIST,
 	    showFooter:true,
-	    columns: [[
+	    frozenColumns:[[
 			//{field:'ck',checkbox:true},
 			//{field:'order_id',title:'寄存单号',width:140,align:'center',sortable:true},
-			{field:'take_id',title:'寄提单号',width:280,align:'center',sortable:true},
-			{field:'shop_name',title:'提货店仓',width:130,align:'center',sortable:true},					
-			{field:"sku",title:"SKU", width:80,align:"center",sortable:true},
-			{field:"goods_name",title:"商品名称", width:200,align:"center",sortable:true},
-			{field:"bar_code",title:"条形码", width:140,align:"center",sortable:true},
+			{field:'take_id',title:'寄提单号',width:220,align:'center',sortable:true},
+			{field:"sku",title:"SKU", width:60,align:"center",sortable:true},
+			{field:"goods_name",title:"商品名称", width:130,align:"center",sortable:true}	
+        ]],
+	    columns: [[			
+			{field:'qty',title:'提货数量',width:70,align:'center',
+				styler: function(value, rowData, rowIndex){
+		    		return 'font-weight:bold;color:green;';
+		    	},
+		    	formatter:intNumBaseFormat
+		    },
+			{field:'sale_price',title:'实付单价',width:70,align:'center',
+		    	styler: function(value, rowData, rowIndex){
+		    		return 'font-weight:bold;color:green;';
+		    	},
+		    	formatter:numBaseFormat
+		    },
+			{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){
+				return formatter(value, window.parent.unitCode); 
+			}},
+			{field:'take_time',title:'提货时间',width:130,align:'center'},
+			{field:'shop_name',title:'提货店仓',width:130,align:'center',sortable:true},								
+			{field:"bar_code",title:"条形码", width:110,align:"center",sortable:true},
 			{field:'brand_code',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 				return formatter(value, window.parent.brandCode); 
 			}},
 			{field:"category_code",title:"商品分类", width:100,align:"center",sortable:true, formatter:function(value, row){
 				return formatter(value, window.parent.categoryCode); 
 			}},
-			{field:'property',title:'规格',width:120,align:'center',sortable:true},
-			{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
-				return formatter(value, window.parent.unitCode); 
-			}},
-			{field:'qty',title:'提货数量',width:90,align:'center',formatter:numBaseFormat},
-			{field:'sale_price',title:'实付单价',width:90,align:'center',formatter:numBaseFormat},
-			{field:'take_time',title:'提货时间',width:130,align:'center'}
+			{field:'property',title:'规格',width:120,align:'center',sortable:true}
 	    ]],
 	    loadMsg:"数据加载中请稍后……",
 	    emptyMsg:"没有符合条件的记录",
@@ -108,7 +118,7 @@ $(function() {
 	    singleSelect: true,
 	    selectOnCheck: true,
 	    checkOnSelect: true,
-	    fitColumns: true,
+	    fitColumns: false,
 	    loadFilter:function(data) {     		
     		var fields = ["qty"];       		
     		//排序拦截器

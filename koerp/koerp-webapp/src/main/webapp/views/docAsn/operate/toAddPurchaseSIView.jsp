@@ -12,7 +12,7 @@
 	
 <div class="fsun-wrap">
 	<form id="orderfm">
-		<span class="title" style="top: 35px;">单据基本信息</span>		
+		<span class="title" style="top: 35px;">基本信息</span>		
 		<input id="iId" name="iId" hidden="true" />	
 		<input id="toShopId" name="toShopId" hidden="true" />	
 		<input id="orderPrice" name="orderPrice" hidden="true" />	
@@ -33,7 +33,7 @@
 				</td>																
 	        </tr>	
 	        <tr>
-	        	<th width="12%">外部订单号</th>
+	        	<th width="12%">外部单号</th>
 				<td>
 					<input id="extOrderNo" name="extOrderNo" class="easyui-textbox" />
 				</td>	            

@@ -7,169 +7,180 @@
 	request.setAttribute("api", basePath);
 %>
 
-<!-- 查询条件 -->
-<%@include file="../../addordertoolbar.jsp"%>
+<div class="easyui-layout" data-options="fit:true" >
+
+	<!-- 查询条件 -->
+	<%@include file="../../addordertoolbar.jsp"%>
 	
-<div class="fsun-wrap">
-	<form id="orderfm">
-		<span class="title" style="top: 35px;">单据基本信息</span>		
-		<input id="shopId" name="shopId" hidden="true" />
-		<input id="cashId" name="cashId" hidden="true" />
-		<input id="cashName" name="cashName" hidden="true" />
-		<input id="payType" name="payType" hidden="true" />
-		<input id="isSettlemented" name="isSettlemented" hidden="true" />	
-		<input id="originPrice" name="originPrice" hidden="true" />	
-		<input id="takeStatus" name="takeStatus" hidden="true" />				
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">
-	        <tr>
-	            <th width="12%">单据编号<span style="color:red;">*</span></th>
-				<td>
-					<input id="orderId" name="orderId" class="easyui-textbox" readOnly />
-				</td>
-				<th width="12%">单据类型<span style="color:red;">*</span></th>
-				<td>
-					<input id="orderType" name="orderType" class="easyui-combobox" readOnly required/>								
-				</td>										
-				<th width="12%">所属店仓<span style="color:red;">*</span></th>
-				<td>
-					<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
-				</td>
-				<th width="12%">经办人</th>
-				<td>
-					<input id="salesman" name="carrierId" class="easyui-combogrid" />	
-					<input hidden=true id="carrierName" name="carrierName" />								
-				</td>								
-	        </tr>
-	        <tr>
-	        	<th width="12%">客户名称<span style="color:red;">*</span></th>
-				<td>
-					<input id="allCustomer" name="buyerId" class="easyui-combogrid" required/>
-					<input hidden=true id="buyerName" name="buyerName" />		
-				</td>
-	        	<th width="12%">订单金额</th>
-				<td>
-					<input id="orderPrice" name="orderPrice" class="easyui-numberbox" readOnly required
-						data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
-				</td>
-	        	<th width="12%">商品优惠</th>
-				<td>
-					<input id="couponPrice" name="couponPrice" class="easyui-numberbox" readOnly required
-						data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
-				</td>
-	        	<th width="12%">抹零金额</th>
-				<td>
-					<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" readOnly required
-						data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
-				</td>	        						        		        	
-	        </tr>
-	        <tr>       	
-	        	<th width="12%">收货人</th>
-				<td>
-					<input id="receiveName" name="receiveName" class="easyui-textbox" />								
-				</td>
-	        	<th width="12%">联系方式</th>
-				<td>
-					<input id="mobile" name="mobile" class="easyui-textbox" />								
-				</td>
-				<th width="12%">收货地址</th>
-				<td colspan="3">
-					<input id="address" name="address" class="easyui-textbox" style="width:480px;"/>
-				</td>	        						        		        	
-	        </tr>        
-	        <tr>        	
-	        	<th width="12%">注意事项</th>
-				<td colspan="7">
-					<input id="sellerNotes" name="sellerNotes" data-options="multiline:true" 
-						class="easyui-textbox" style="width:800px;height:50px;"/>
-				</td>
-	        </tr>	        
-		</table>
-	</form>			
-</div>	
-<div style="height: 275px; width: 100%;">
-	<div id="detailskutoolbar" style="display:none;">
-		<%@include file="./detailskutoolbar.jsp"%>
+	<div data-options="region:'center',split:true, border:false" >
+		<div class="easyui-layout" data-options="fit:true" >
+			<div data-options="region:'north',split:true, border:false" style="height:186px;overflow:hidden;">
+				<div class="fsun-wrap">
+					<form id="orderfm">
+						<span class="title" style="top: 1px;">基本信息(单号:<span id="orderId0"></span>)</span>		
+						<input id="shopId" name="shopId" hidden="true" />
+						<input id="cashId" name="cashId" hidden="true" />
+						<input id="cashName" name="cashName" hidden="true" />
+						<input id="payType" name="payType" hidden="true" />
+						<input id="isSettlemented" name="isSettlemented" hidden="true" />	
+						<input id="originPrice" name="originPrice" hidden="true" />	
+						<input id="takeStatus" name="takeStatus" hidden="true" />
+						<input id="orderId" name="orderId" hidden="true" />			
+						<table class="nb-formTable">
+					        <tr>					            
+								<th>单据类型</th>
+								<td>
+									<input id="orderType" name="orderType" class="easyui-combobox" readOnly required/>								
+								</td>										
+								<th>所属店仓</th>
+								<td>
+									<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
+								</td>
+								<th>经办人</th>
+								<td>
+									<input id="salesman" name="carrierId" class="easyui-combogrid" />	
+									<input hidden=true id="carrierName" name="carrierName" />								
+								</td>								
+					        </tr>
+					        <tr>
+					        	<th>订单金额</th>
+								<td>
+									<input id="orderPrice" name="orderPrice" class="easyui-numberbox" readOnly required
+										data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+								</td>
+					        	<th>商品优惠</th>
+								<td>
+									<input id="couponPrice" name="couponPrice" class="easyui-numberbox" readOnly required
+										data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+								</td>
+					        	<th>抹零金额</th>
+								<td>
+									<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" readOnly required
+										data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+								</td>	        						        		        	
+					        </tr>
+					        <tr>  
+					        	<th>客户名称</th>
+								<td>
+									<input id="allCustomer" name="buyerId" class="easyui-combogrid" required/>
+									<input hidden=true id="buyerName" name="buyerName" />		
+								</td>     	
+					        	<th>收货人</th>
+								<td>
+									<input id="receiveName" name="receiveName" class="easyui-textbox" />								
+								</td>
+					        	<th>联系方式</th>
+								<td>
+									<input id="mobile" name="mobile" class="easyui-textbox" />								
+								</td>									        						        		        	
+					        </tr>        
+					        <tr> 
+					        	<th>收货地址</th>
+								<td>
+									<input id="address" name="address" data-options="multiline:true" 
+										class="easyui-textbox" style="height:46px;"/>
+								</td>       	
+					        	<th>注意事项</th>
+								<td colspan="3">
+									<input id="sellerNotes" name="sellerNotes" data-options="multiline:true" 
+										class="easyui-textbox" style="width:70%;height:46px;"/>
+								</td>
+					        </tr>	        
+						</table>
+					</form>			
+				</div>	
+			</div>
+			
+			<div data-options="region:'center',split:true, border:false" >
+				<div id="detailskutoolbar" style="display:none;">
+					<%@include file="./detailskutoolbar.jsp"%>
+				</div>
+				<table id="orderDetailDataGrid"></table>
+			</div>
+		</div>
 	</div>
-	<table id="orderDetailDataGrid"></table>
 </div>	
 
-<div id="payAccountWin" class="easyui-window" title="结帐信息" iconCls="icon-money" closed="true" align="center" style="display:none;width:90%;height:85%;top:40px;" modal="true">  
-   	 <div class="easyui-layout" fit=true  id='base_layout'>	
-   	 	<div data-options="region:'north'" style="height:280px;">
+<div id="payAccountWin" class="easyui-window" title="结帐信息" iconCls="icon-money" closed="true" align="center" 
+	style="display:none;width:95%;height:400px;border: 0px solid #ccc;" modal="true">  
+   	 <div class="easyui-layout" id='base_layout' style="height:100%;" >
+   	 	<div data-options="region:'north',border:false" style="height:230px;" >
    	 		<div id="payAccountToolbar" style="display:none;">
 				<%@include file="./payAccountToolbar.jsp"%>
 			</div>
    	 		<table id="payAccountDataGrid"></table>
-   	 	</div> 		 	
-   	 	<div data-options="region:'center'" >
+   	 	</div>	 	
+   	 	<div data-options="region:'center'" style="overflow:hidden;" >
    	 	    <form id="payAccountfm">	
-				<table class="nb-formTable" style="width:100%;margin-top:2px;">
+				<table class="nb-formTable">
 			        <tr>
-			            <th width="12%">单据编号</th>
+			            <th>单据编号</th>
 						<td>
 							<input id="orderId" name="orderId" class="easyui-textbox" readOnly />
 						</td>
-						<th width="12%">单据类型</th>
+						<th>单据类型</th>
 						<td>
 							<input id="orderType" name="orderType" class="easyui-combobox" readOnly />								
 						</td>										
-						<th width="12%">所属店仓</th>
+						<th>所属店仓</th>
 						<td>
-							<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
-						</td>
-						<th width="12%">经办人</th>
-						<td>
-							<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly />								
-						</td>								
+							<input id="shopName" name="shopName" class="easyui-textbox" readOnly />							
+						</td>													
 			        </tr>
 			        <tr>
-			        	<th width="12%">客户名称</th>
-						<td>
-							<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly/>
-							<input id="buyerId" name="buyerId" hidden="true" />									
-						</td>
-			        	<th width="12%">订单金额</th>
+			        	<th>订单金额</th>
 						<td>
 							<input id="orderPrice" name="orderPrice" class="easyui-numberbox" readOnly
-								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+								data-options="min:0,precision:2,value:0, formatter: priceFormat" />								
 						    <input id="balancePrice" hidden="true" />	
 						</td>
-			        	<th width="12%">商品优惠</th>
+			        	<th>客户名称</th>
 						<td>
-							<input id="couponPrice" name="couponPrice" class="easyui-numberbox" readOnly
-								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+							<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly />
+							<input id="buyerId" name="buyerId" hidden="true" />									
 						</td>
-			        	<th width="12%">抹零金额</th>
+			        	<th>经办人</th>
 						<td>
-							<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" readOnly
-								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
-						</td>	        						        		        	
+							<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly />								
+						</td>		        			        		        						        		        	
 			        </tr>
 			        <tr>
-			        	<th width="12%">实收金额</th>
+			        	<th>实收金额</th>
 						<td>
 							<input id="receptPrice" name="receptPrice" class="easyui-numberbox" readOnly
-								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+								data-options="min:0,precision:2,value:0, formatter: priceFormat" />									
 						</td>		        	
-			        	<th width="12%">实付金额</th>
+			        	<th>实付金额</th>
 						<td>
 							<input id="payPrice" name="payPrice" class="easyui-numberbox" readOnly
-								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
+								data-options="min:0,precision:2,value:0, formatter: priceFormat" />									
 						</td>
-						<th width="12%">找零金额</th>
+						<th>找零金额</th>
 						<td>
 							<input id="dibPrice" name="dibPrice" class="easyui-numberbox" readOnly
-								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
-						</td>
-			        	<th width="12%">商家优惠</th>
+								data-options="min:0,precision:2,value:0, formatter: priceFormat" />									
+						</td>		        			        		        						        		        	
+			        </tr> 
+			        <tr>
+			        	<th>商家优惠</th>
 						<td>
 							<input id="discountPrice" name="discountPrice" class="easyui-numberbox" readOnly
-								data-options="min:0,precision:2,value:0, formatter: priceFormat"/>									
-						</td>		        		        						        		        	
-			        </tr>        
+								data-options="min:0,precision:2,value:0, formatter: priceFormat" />									
+						</td>		        	
+			        	<th>商品优惠</th>
+						<td>
+							<input id="couponPrice" name="couponPrice" class="easyui-numberbox" readOnly
+								data-options="min:0,precision:2,value:0, formatter: priceFormat" />									
+						</td>
+			        	<th>抹零金额</th>
+						<td>
+							<input id="toZeroPrice" name="toZeroPrice" class="easyui-numberbox" readOnly
+								data-options="min:0,precision:2,value:0, formatter: priceFormat" />									
+						</td>	        						        		        	
+			        </tr>			               
 				</table>
 			</form> 		   	
-   	 	</div> 	
+   	 	</div>  		
    	 </div>	 
 </div>
 				
@@ -193,162 +204,85 @@ var currOrderDetailDataGrid = $("#orderDetailDataGrid");
 var currPayAccountDataGrid = $("#payAccountDataGrid");
 var $orderfm = $("#orderfm");   
 var $payAccountfm = $("#payAccountfm"); 
-var soColumns = '${hasEditPricePower}'=='0' ? [[
-	{field:'ck',checkbox:true},
-	{field:"sku",title:"SKU", width:80,align:"center"},
-	{field:"goodsName",title:"商品名称", width:140,align:"center"},
-	//{field:"barCode",title:"条形码", width:140,align:"center"},
-	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.brandCode); 
-	}},
-	//{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
-	//	return formatter(value, window.parent.categoryCode); 
-	//}},
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
-	{field:'isGift',title:'赠品信息',width:160,align:'center',sortable:true,formatter:function(value, row){
-		var info = "--";
-		if(value!=null && value){
-			debugger
-			var goodsType = row.goodsType; 
-			if(goodsType!=null && goodsType!=''){
-				info = formatter(goodsType, window.parent.busGoodsType) 
-					+ "[数量:"+ intNumBaseFormat(row.giftCount)
-					+",金额:"+ numBaseFormat(row.giftPrice) +"]";				
-			}
-		}
-		return info; 
-	}},
-	/* {field:"isGift",title:"有无赠品", width:60,align:"center",formatter:function(value, row){
-		return value!=null?(value?'有':"无"):""; 
-	}},
-	{field:"goodsType",title:"赠送类型", width:80,align:"center", formatter:function(value, row){
-		return value!=''?formatter(value, window.parent.busGoodsType):"--"; 
-	}},
-	{field:"giftCount",title:"赠送数量", width:80,align:"center",formatter:intNumBaseFormat},
-	{field:"giftPrice",title:"赠送金额", width:80,align:"center",formatter:numBaseFormat}, */
-	{field:"originSalePrice",title:"销售单价", width:80,align:"center",formatter:numBaseFormat},
-	{field:"salePrice",title:"实付单价", width:80,align:"center",
-		/* styler: function(value, rowData, rowIndex){
-	    	return 'font-weight:bold;color:green;';
-	    }, */
-	    formatter:numBaseFormat/* ,
-		editor:{
-			type:'numberbox',
-			options:{					
-				min:0,
-				precision:2,
-				required: true
-			}
-		} */
-	},
-	{field:"qty",title:"数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-	    	return 'font-weight:bold;color:green;';
-	    },
-	    formatter:intNumBaseFormat,
-		editor:{
-			type:'numberbox',
-			options:{					
-				min:1,
-				precision:0,
-				required: true
-			}
-		}
-	},
-	{field:"costPrice",title:"成本价", width:80, hidden:true},
-	{field:"totalPrice",title:"实付金额", width:80,align:"center",formatter:numBaseFormat},
-	{field:"totalPartPrice",title:"分摊金额", width:80, hidden:true},
-	{field:"couponPrice",title:"商品优惠", width:80,hidden:true},
-	{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){
-		return formatter(value, window.parent.unitCode); 
-	}},
-	{field:"stockOut",title:"操作",width:80,align:"center", 
-		formatter: function(value, row, index){	
-			if (row.sku=="合计:"){//这里是判断哪些行
-                return '';  
-            }	
-			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
-		}
-	}
-]]:[[
-  	{field:'ck',checkbox:true},
-	{field:"sku",title:"SKU", width:80,align:"center"},
-	{field:"goodsName",title:"商品名称", width:140,align:"center"},
-	//{field:"barCode",title:"条形码", width:140,align:"center"},
-	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.brandCode); 
-	}},
-	//{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
-	//	return formatter(value, window.parent.categoryCode); 
-	//}},
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
-	{field:'isGift',title:'赠品信息',width:160,align:'center',sortable:true,formatter:function(value, row){
-		var info = "--";
-		if(value!=null && value){
-			debugger
-			var goodsType = row.goodsType; 
-			if(goodsType!=null && goodsType!=''){
-				info = formatter(goodsType, window.parent.busGoodsType) 
-					+ "[数量:"+ intNumBaseFormat(row.giftCount)
-					+",金额:"+ numBaseFormat(row.giftPrice) +"]";				
-			}
-		}
-		return info; 
-	}},
-	/* {field:"isGift",title:"有无赠品", width:60,align:"center",formatter:function(value, row){
-		return value!=null?(value?'有':"无"):""; 
-	}},
-	{field:"goodsType",title:"赠送类型", width:80,align:"center", formatter:function(value, row){
-		return value!=''?formatter(value, window.parent.busGoodsType):"--"; 
-	}},
-	{field:"giftCount",title:"赠送数量", width:80,align:"center",formatter:intNumBaseFormat},
-	{field:"giftPrice",title:"赠送金额", width:80,align:"center",formatter:numBaseFormat}, */
-	{field:"originSalePrice",title:"销售单价", width:80,align:"center",formatter:numBaseFormat},
-	{field:"salePrice",title:"实付单价", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-	    	return 'font-weight:bold;color:green;';
-	    },
-	    formatter:numBaseFormat ,
-		editor:{
-			type:'numberbox',
-			options:{					
-				min:0,
-				precision:2,
-				required: true
-			}
-		}
-	},
-	{field:"qty",title:"数量", width:80,align:"center",
-		styler: function(value, rowData, rowIndex){
-	    	return 'font-weight:bold;color:green;';
-	    },
-	    formatter:intNumBaseFormat,
-		editor:{
-			type:'numberbox',
-			options:{					
-				min:1,
-				precision:0,
-				required: true
-			}
-		}
-	},
-	{field:"costPrice",title:"成本价", width:80, hidden:true},
-	{field:"totalPrice",title:"实付金额", width:80,align:"center",formatter:numBaseFormat},
-	{field:"totalPartPrice",title:"分摊金额", width:80, hidden:true},
-	{field:"couponPrice",title:"商品优惠", width:80,hidden:true},
-	{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){
-		return formatter(value, window.parent.unitCode); 
-	}},
-	{field:"stockOut",title:"操作",width:80,align:"center", 
-		formatter: function(value, row, index){	
-			if (row.sku=="合计:"){//这里是判断哪些行
-                return '';  
-            }	
-			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
-		}
-	}
+var soColumns = [[
+   	{field:'ck',checkbox:true},
+ 	{field:"sku",title:"SKU", width:80,align:"center"},
+ 	{field:"goodsName",title:"商品名称", width:140,align:"center"},
+ 	//{field:"barCode",title:"条形码", width:140,align:"center"},
+ 	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
+ 		return formatter(value, window.parent.brandCode); 
+ 	}},
+ 	//{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
+ 	//	return formatter(value, window.parent.categoryCode); 
+ 	//}},
+ 	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+ 	{field:'isGift',title:'赠品信息',width:160,align:'center',sortable:true,formatter:function(value, row){
+ 		var info = "--";
+ 		if(value!=null && value){
+ 			debugger
+ 			var goodsType = row.goodsType; 
+ 			if(goodsType!=null && goodsType!=''){
+ 				info = formatter(goodsType, window.parent.busGoodsType) 
+ 					+ "[数量:"+ intNumBaseFormat(row.giftCount)
+ 					+",金额:"+ numBaseFormat(row.giftPrice) +"]";				
+ 			}
+ 		}
+ 		return info; 
+ 	}},
+ 	/* {field:"isGift",title:"有无赠品", width:60,align:"center",formatter:function(value, row){
+ 		return value!=null?(value?'有':"无"):""; 
+ 	}},
+ 	{field:"goodsType",title:"赠送类型", width:80,align:"center", formatter:function(value, row){
+ 		return value!=''?formatter(value, window.parent.busGoodsType):"--"; 
+ 	}},
+ 	{field:"giftCount",title:"赠送数量", width:80,align:"center",formatter:intNumBaseFormat},
+ 	{field:"giftPrice",title:"赠送金额", width:80,align:"center",formatter:numBaseFormat}, */
+ 	{field:"originSalePrice",title:"销售单价", width:80,align:"center",formatter:numBaseFormat},
+ 	{field:"salePrice",title:"实付单价", width:80,align:"center",
+ 		/* styler: function(value, rowData, rowIndex){
+ 	    	return 'font-weight:bold;color:green;';
+ 	    }, */
+ 	    formatter:numBaseFormat /* ,
+ 		editor:{
+ 			type:'numberbox',
+ 			options:{					
+ 				min:0,
+ 				precision:2,
+ 				required: true
+ 			}
+ 		} */
+ 	},
+ 	{field:"qty",title:"数量", width:80,align:"center",
+ 		styler: function(value, rowData, rowIndex){
+ 	    	return 'font-weight:bold;color:green;';
+ 	    },
+ 	    formatter:intNumBaseFormat,
+ 		editor:{
+ 			type:'numberbox',
+ 			options:{					
+ 				min:1,
+ 				precision:0,
+ 				required: true
+ 			}
+ 		}
+ 	},
+ 	{field:"costPrice",title:"成本价", width:80, hidden:true},
+ 	{field:"totalPrice",title:"实付金额", width:80,align:"center",formatter:numBaseFormat},
+ 	{field:"totalPartPrice",title:"分摊金额", width:80, hidden:true},
+ 	{field:"couponPrice",title:"商品优惠", width:80,hidden:true},
+ 	{field:"unit",title:"单位",width:50,align:"center", formatter:function(value, row){
+ 		return formatter(value, window.parent.unitCode); 
+ 	}},
+ 	{field:"stockOut",title:"操作",width:100,align:"center", 
+ 		formatter: function(value, row, index){	
+ 			if (row.sku=="合计:"){//这里是判断哪些行
+                 return '';  
+             }	
+ 			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
+ 		}
+ 	}
 ]];
-
+              
 var payAccountColumns = [[
 	{field:'ck',checkbox:true},             		
 	{field:"payMode",title:"支付方式", width:80,align:"center",formatter:function(value, row){
@@ -410,6 +344,7 @@ $(function () {
 				delete header.carrierId;
 				delete header.buyerId;
 				$orderfm.form("load", header);	
+				$("#orderId0", $orderfm).text(header.orderId);
 			}
 			
 			initSalesmanGrid(carrierId, $orderfm);
@@ -490,7 +425,7 @@ function initAddSku(rowData){
 	skuDto.marketPrice = rowData.marketPrice;
 	skuDto.originSalePrice = rowData.originSalePrice;
 	skuDto.salePrice = rowData.salePrice;
-	skuDto.totalPrice = skuDto.salePrice * (skuDto.qty - skuDto.giftCount);
+	skuDto.totalPrice = skuDto.salePrice * (skuDto.qty-skuDto.giftCount);
 	skuDto.couponPrice = skuDto.giftPrice + (skuDto.qty-skuDto.giftCount)*(skuDto.originSalePrice-skuDto.salePrice);
 	skuDto.totalPartPrice = skuDto.totalPrice;
 		

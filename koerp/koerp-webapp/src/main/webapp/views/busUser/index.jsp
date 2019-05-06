@@ -46,8 +46,6 @@ $(function() {
 	
 	currDataGrid = $("#ordersDataGrid");
 	currDataGrid.datagrid({
-		width:500,
-		height:250,
 	    nowrap:false,
 	    striped:true,
 	    border:true,

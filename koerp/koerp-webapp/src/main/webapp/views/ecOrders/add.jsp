@@ -9,7 +9,7 @@
 				<table class="nb-formTable">
 			        <tr>
 			            <th width="12%">
-			                <label>外部订单号</label>
+			                <label>外部单号</label>
 			            </th>
 			            <td>
 			            	${entity.extorderid}

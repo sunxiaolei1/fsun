@@ -6,8 +6,6 @@ $(function () {
 	
 	currOrderDetailDataGrid.datagrid({
 		view:footerStyleView,
-		width:"auto",
-	    height:"auto",
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -147,7 +145,7 @@ function getSaveData(){
 	baseInfo.discountPrice = payAccountInfo.discountPrice;	
 	var saveData = {
 	     "params": {
-	    	 "orderId": $("#orderId",$orderfm).textbox("getValue"),
+	    	 "orderId": $("#orderId",$orderfm).val(),
 			 "header": baseInfo,
 			 "details": currDetailData,
 			 "payAccounts": currPayAccountData
@@ -163,7 +161,7 @@ function getOrderCancelData(){
 	     "params": {
 	    	"memo":  $("#memo",$orderfm).textbox("getValue")
 	      },
-	     "saveUrl": "${api}/bus/order/status/${cancelStatus}?orderIds="+ $("#orderId",$orderfm).textbox("getValue")
+	     "saveUrl": "${api}/bus/order/status/${cancelStatus}?orderIds="+ $("#orderId",$orderfm).val()
 	}
 	return saveData;
 	
