@@ -134,18 +134,20 @@
 					</div>									
 				</div>	
 				
-				<div data-options="region:'center', border:false" >				
-					<table id="orderDetailDataGrid"></table>													
+				<div data-options="region:'center', border:false" style="padding:5px;">				
+					<div style="height:85%;">
+				 		<table id="orderDetailDataGrid"></table>
+				 	</div>														
 				</div>				
 			</div>						
 		</div>	
 		<div title="补退款信息" closable="false" style="padding:5px;">
-		    <div style="width:100%;height:83%;">
+		    <div style="height:90%;">
 		    	<table id="cashordersDataGrid"></table>
 		    </div>				
 		</div>					
 		<div title="操作日志" closable="false" style="padding:5px;">
-		     <div style="width:100%;height:83%;">
+		     <div style="height:90%;">
 		    	<table id="orderLogDataGrid"></table>
 		    </div>				
 		</div>					

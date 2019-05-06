@@ -6,7 +6,7 @@
 %>
 
 <div class="easyui-layout" data-options="fit:true" >
-	<div data-options="region:'north',split:true, border:false" style="height:180px;">
+	<div data-options="region:'north',split:true, border:false" style="height:180px;overflow:hidden;">
 		<div class="fsun-wrap">
 			<form id="refundfm">
 				<span class="title" style="top: 1px;">基本信息(退货单号:<span id='refundId'></span>)</span>		
@@ -14,40 +14,40 @@
 				<input id="extOrderId" name="extOrderId" hidden="true" />		
 				<input id="shopId" name="shopId" hidden="true" />
 				<input id="buyerId" name="buyerId" hidden="true" />
-				<table class="nb-formTable" style="width:100%;">
+				<table class="nb-formTable">
 			        <tr>
-			        	<th width="6%">客户名称</th>
+			        	<th>客户名称</th>
 						<td>
 							<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly />								
 						</td>				
-						<th width="6%">所属店仓</th>
+						<th>所属店仓</th>
 						<td>
 							<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
 						</td> 
-						<th width="6%">退货原因</th>
+						<th>退货原因</th>
 						<td>
 							<input id="refundReason" name="refundReason" class="easyui-combobox" editable="false" required />								
 						</td>            												
 			        </tr>	
 			        <tr>
-			        	<th width="6%">原订单金额</th>
+			        	<th>原订单金额</th>
 						<td>
 							<input id="orderPrice" class="easyui-numberbox" disabled 
 								data-options="min:0,precision:2, formatter: priceFormat" />
 						</td>
-						<th width="6%">原实收金额</th>
+						<th>原实收金额</th>
 						<td>
 							<input id="receptPrice" class="easyui-numberbox" disabled 
 								data-options="min:0,precision:2, formatter: priceFormat" />
 						</td>	
-			      		<th width="6%">退款金额</th>
+			      		<th>退款金额</th>
 						<td>
 							<input id="refundPrice" name="refundPrice" class="easyui-numberbox" 
 								data-options="min:0,precision:2,value:0, formatter: priceFormat" />
 						</td>									        			           				
 			        </tr>	       		        		        
 			        <tr>		        	       			        	
-			            <th width="6%">备注</th>
+			            <th>备注</th>
 			        	<td colspan="5">
 							<input id="memo" name="memo" data-options="multiline:true"
 								class="easyui-textbox" style="width:70%;height:46px;" />
@@ -63,7 +63,7 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<span style="float:right;margin-top:2px;margin-bottom:2px;">	
-			<input id="refundSkuSearcher" class="easyui-searchbox" style="width:350px">
+			<input id="refundSkuSearcher" class="easyui-searchbox" style="width:300px">
 		</span>
 		<div style="height:24px;">
 			<b class="skutitle" >
