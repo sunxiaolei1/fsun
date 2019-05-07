@@ -252,7 +252,7 @@ $(function () {
 				$.each(payAccounts, function(){
 					if(this.payMode==6){
 						var receptPrice = this.receptPrice;
-						currOrderUnpayPrice = (currOrderUnpayPrice + Number(receptPrice));
+						currOrderUnpayPrice = CalcAmount.add(currOrderUnpayPrice, receptPrice, 2);
 					}					
 				});
 			}
@@ -266,7 +266,7 @@ $(function () {
 						this.originTotalPrice = this.totalPrice; 
 						this.totalPartPrice = 0;						
 					}									
-					refundPrice = (refundPrice + Number(this.totalPrice));				
+					refundPrice = CalcAmount.add(refundPrice, this.totalPrice, 2);			
 					currRefundDetails.push(this);	
 				}			
 			});
@@ -311,7 +311,7 @@ function getSaveData(){
 					payMode: 6
 				});
 			}else{
-				var diffPrice = Number(refundPrice) - currOrderUnpayPrice;
+				var diffPrice = CalcAmount.subtract(refundPrice, currOrderUnpayPrice, 2);
 				//挂账记录
 				payAccounts.push({
 					receptPrice: currOrderUnpayPrice,

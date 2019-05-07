@@ -158,6 +158,7 @@ public class SummaryContrastVipUnpaidController extends BaseController {
 			fieldMap.put("trade_status_name", "交易状态");
 			fieldMap.put("trade_time", "交易时间");
 			fieldMap.put("trade_price", "交易金额");
+			fieldMap.put("gift_price", "赠送金额");
 			fieldMap.put("memo", "备注");
 			ExcelUtil.listToExcel(list, fieldMap, "挂账结款消费明细", response);
 		} catch (Exception e) {

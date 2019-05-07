@@ -353,7 +353,7 @@ $(function () {
 	    		rowData.salePrice = Number(rowData.salePrice);
 	    		rowData.originSalePrice = rowData.salePrice;
 		    	rowData.qty = Number(rowData.qty);
-	    		rowData.totalPrice = rowData.salePrice * rowData.qty;
+	    		rowData.totalPrice = CalcAmount.multiply(rowData.salePrice, rowData.qty, 2);
 	    	}else{	    		   	
 	    		rowData.totalPrice = 0;
 	    	}	    	
@@ -405,7 +405,7 @@ $(function () {
 				$.each(payAccounts, function(){
 					if(this.payMode==6){
 						var receptPrice = this.receptPrice;
-						currOrderUnpayPrice = (currOrderUnpayPrice + Number(receptPrice));
+						currOrderUnpayPrice = CalcAmount.add(currOrderUnpayPrice, receptPrice, 2);
 					}					
 				});
 			}
@@ -486,7 +486,7 @@ function updateRefundPrice(refundDetails, $div){
 
 	var refundPrice = 0;
 	$.each(refundDetails, function(){
-		refundPrice += this.totalPrice;
+		refundPrice = CalcAmount.add(refundPrice, this.totalPrice, 2);
     });
 	var buyerId = $("#buyerId",$orderfm).val();
 	if(buyerId!=null && buyerId.startWith("JXS")){
@@ -523,7 +523,7 @@ function getSaveData(){
 					payMode: 6
 				});
 			}else{
-				var diffPrice = Number(refundPrice) - currOrderUnpayPrice;
+				var diffPrice = CalcAmount.subtract(refundPrice, currOrderUnpayPrice, 2);
 				//挂账记录
 				payAccounts.push({
 					receptPrice: currOrderUnpayPrice,

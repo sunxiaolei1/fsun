@@ -199,14 +199,6 @@ var soColumns = [[
 		}
 		return info; 
 	}},
-	/* {field:"isGift",title:"有无赠品", width:60,align:"center",formatter:function(value, row){
-		return value!=null?(value?'有':"无"):""; 
-	}},
-	{field:"goodsType",title:"赠送类型", width:80,align:"center", formatter:function(value, row){
-		return (value!=null && value!='')?formatter(value, window.parent.busGoodsType):"--"; 
-	}},
-	{field:"giftCount",title:"赠送数量", width:80,align:"center",formatter:intNumBaseFormat},
-	{field:"giftPrice",title:"赠送金额", width:80,align:"center",formatter:numBaseFormat}, */
 	{field:"originSalePrice",title:"销售单价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"salePrice",title:"实付单价", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
@@ -294,23 +286,7 @@ $(function () {
 	    fitColumns:true,
 	    showFooter:true,
 	    toolbar: "#detailskutoolbar",
-	    columns: soColumns,	    
-	    onBeforeLoad:function(param){
-	    	if('1' == '${hasEditPricePower}'){
-	    		var columnOption = $(this).datagrid("getColumnOption", "salePrice");	    		
-		    	columnOption.editor = {
-	    			type:'numberbox',
-	    			options:{					
-	    				min:0,
-	    				precision:2,
-	    				required: true
-	    			}
-	    		};
-		    	columnOption.styler = function(value, rowData, rowIndex){
-	    	    	return 'font-weight:bold;color:green;';
-	    	    };
-	    	}    	
-	    },	
+	    columns: soColumns,
 	    loadFilter:function(data) {     		
     		var fields = ["totalPrice","giftPrice","couponPrice"];       		
     		//排序拦截器
@@ -329,22 +305,7 @@ $(function () {
 	    loadMsg:"数据加载中请稍后……",
 	    emptyMsg:"没有符合条件的记录",
 	    selectOnCheck: true,
-	    checkOnSelect: true,
-	    onAfterEdit: function(rowIndex, rowData, changes){
-	    	if(typeof rowData.salePrice !=undefined && typeof rowData.qty!=undefined){
-	    		rowData.salePrice = Number(rowData.salePrice);
-		    	rowData.qty = Number(rowData.qty);
-	    		rowData.totalPrice = rowData.salePrice * (rowData.qty - rowData.giftCount);
-	    		rowData.couponPrice = rowData.giftPrice + 
-	    			(rowData.qty - rowData.giftCount)*(rowData.originSalePrice - rowData.salePrice);
-	    	}else{	    		   	
-	    		rowData.totalPrice = 0;
-	    		rowData.couponPrice = 0;
-	    	}
-	    	$(this).datagrid("refreshRow", rowIndex);
-	    	//同步订单头信息
-	    	syncOrderHeaderInfo();	    	
-	    }
+	    checkOnSelect: true
 	});
 	
 	$.ajax({

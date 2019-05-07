@@ -74,7 +74,9 @@ public class DocAsnController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView(url);
 		modelAndView.addObject("asnNo", asnNo);
 		modelAndView.addObject("asnType", asnType);
-		modelAndView.addObject("cancelStatus", DocAsnStatusEnum.SI_SHQX.getCode());		
+		modelAndView.addObject("cancelStatus", DocAsnStatusEnum.SI_SHQX.getCode());	
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
 		//单据状态权限控制按钮显示
 		modelAndView.addObject("buttontype", buttontype);
 		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, asnNo, null);

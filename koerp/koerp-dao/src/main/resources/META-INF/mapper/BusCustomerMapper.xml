@@ -121,6 +121,7 @@
       <result column="p_trade_status" property="tradeStatus"/>
       <result column="p_trade_time" property="tradeTime"/>
       <result column="p_trade_price" property="tradePrice"/>
+      <result column="p_gift_price" property="giftPrice"/>
       <result column="p_memo" property="memo"/>
       <result column="p_order_id" property="orderId"/>
       <result column="p_card_no" property="cardNo"/>

@@ -43,6 +43,7 @@ var columns = [[
 		return formatter(value, window.parent.tradeStatus); 
 	}},	
 	{field:'trade_price',title:'交易金额',width:100,align:'center',formatter:numBaseFormat, styler:reportNumberStyler},
+	{field:'gift_price',title:'赠送金额',width:80,align:'center',formatter:numBaseFormat, styler:reportNumberStyler},
 	{field:"trade_time",title:"交易时间", width:140,align:"center",sortable:true},
 	{field:"memo",title:"备注", width:200,align:"center"}	
 ]];

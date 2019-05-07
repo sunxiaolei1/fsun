@@ -68,6 +68,8 @@ public class DocOrderController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView(url);
 		modelAndView.addObject("orderNo", orderNo);
 		modelAndView.addObject("cancelStatus", DocOrderStatusEnum.SO_CKQX.getCode());
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
 		//单据状态权限控制按钮显示
 		modelAndView.addObject("buttontype", buttontype);
 		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, orderNo, null);

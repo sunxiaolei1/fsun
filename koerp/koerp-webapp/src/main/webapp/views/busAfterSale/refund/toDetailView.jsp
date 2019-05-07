@@ -182,7 +182,13 @@ $(function () {
 	    fitColumns:true,	    
 	    columns:[[			
 			{field:"sku",title:"SKU", width:80,align:"center",sortable:true},
-			{field:"tradeType",title:"交易类型",width:60,align:"center",sortable:true},	
+			{field:"tradeType",title:"交易类型",width:60,align:"center",sortable:true, styler:function(value, row){
+				var style = 'font-weight:bold;color:green;';
+				if(value=='退货'){
+					style = 'font-weight:bold;color:red;';
+				}
+				return style;
+			}},		
 			{field:"goodsName",title:"商品名称", width:140,align:"center",sortable:true},
 			//{field:"barCode",title:"条形码", width:140,align:"center"},
 			{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){

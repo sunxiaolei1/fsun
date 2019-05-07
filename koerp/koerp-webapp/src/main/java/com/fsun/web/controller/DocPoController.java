@@ -69,6 +69,8 @@ public class DocPoController extends BaseController {
 		ModelAndView modelAndView = new ModelAndView(url);
 		modelAndView.addObject("poNo", poNo);
 		modelAndView.addObject("cancelStatus", DocPoStatusEnum.CANCEL.getCode());
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
 		//单据状态权限控制按钮显示
 		modelAndView.addObject("buttontype", buttontype);
 		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, poNo, null);

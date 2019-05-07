@@ -158,16 +158,22 @@ $(function() {
 	    onAfterEdit: function(rowIndex, rowData, changes){
 	    	$.each(currCheckedSkus, function(){	    		
 	    		if(rowData.sku == this.sku){
-	    			this.qty = rowData.qty;	    			
-	    			this.salePrice = rowData.salePrice;
-	    			debugger
+	    			this.qty = Number(rowData.qty);	    			
+	    			this.salePrice = Number(rowData.salePrice);
 	    			if(typeof this.giftCount!="undefined" && typeof this.giftPrice!="undefined"){
-	    				var receptQty = Number(this.qty)-Number(this.giftCount);
-		    			this.totalPrice = Number(this.salePrice) * receptQty;
-		    			this.couponPrice = Number(this.giftPrice) + receptQty*(Number(this.originSalePrice)-Number(this.salePrice));
-	    			}else{
-		    			this.totalPrice = Number(this.salePrice) * Number(this.qty);
-		    			this.couponPrice =  Number(this.qty)*(Number(this.originSalePrice)-Number(this.salePrice));
+	    				var receptQty = CalcAmount.subtract(this.qty, this.giftCount);	    			
+		    			//非赠品商品优惠
+				    	var couponPrice = CalcAmount.subtract(this.originSalePrice, this.salePrice);
+				    	var couponAmount = CalcAmount.multiply(receptQty, couponPrice);			    	
+				    	//计算实付金额和总商品优惠
+				    	this.couponPrice = CalcAmount.add(this.giftPrice, couponAmount, 2);
+				    	this.totalPrice = CalcAmount.multiply(receptQty, this.salePrice, 2);
+	    			}else{		    			
+		    			//非赠品商品单价
+				    	var couponPrice = CalcAmount.subtract(this.originSalePrice, this.salePrice);
+				    	//计算实付金额和总商品优惠
+		    			this.couponPrice =  CalcAmount.multiply(this.qty, couponPrice, 2);
+		    			this.totalPrice = CalcAmount.multiply(this.qty, this.salePrice, 2);
 	    			}	    			
 	    			//currDatagrid.datagrid("refreshRow", rowIndex);
 	    			//刷新父页面商品列表

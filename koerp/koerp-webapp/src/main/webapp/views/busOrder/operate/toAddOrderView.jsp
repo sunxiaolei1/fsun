@@ -411,8 +411,16 @@ function initAddSku(rowData){
 	skuDto.marketPrice = rowData.marketPrice;
 	skuDto.originSalePrice = rowData.originSalePrice;
 	skuDto.salePrice = rowData.salePrice;
-	skuDto.totalPrice = skuDto.salePrice * (skuDto.qty-skuDto.giftCount);
-	skuDto.couponPrice = skuDto.giftPrice + (skuDto.qty-skuDto.giftCount)*(skuDto.originSalePrice-skuDto.salePrice);
+	//skuDto.totalPrice = skuDto.salePrice * (skuDto.qty-skuDto.giftCount);
+	//skuDto.couponPrice = skuDto.giftPrice + (skuDto.qty-skuDto.giftCount)*(skuDto.originSalePrice-skuDto.salePrice);	
+	//实付金额
+	var receptQty = CalcAmount.subtract(skuDto.qty, skuDto.giftCount);
+	var couponPrice = CalcAmount.subtract(skuDto.originSalePrice, skuDto.salePrice);
+	skuDto.totalPrice = CalcAmount.multiply(skuDto.salePrice, receptQty, 2);
+	//商品优惠
+	var tempPrice = CalcAmount.multiply(receptQty, couponPrice);
+	skuDto.couponPrice = CalcAmount.add(skuDto.giftPrice, tempPrice, 2);  	
+	
 	skuDto.totalPartPrice = skuDto.totalPrice;
 		
 	skuDto.barCode = rowData.barCode;  

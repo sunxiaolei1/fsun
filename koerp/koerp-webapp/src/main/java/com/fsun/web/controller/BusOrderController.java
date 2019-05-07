@@ -122,7 +122,9 @@ public class BusOrderController extends BaseController {
 		String url = this.getUrlByType(orderType, OrderOperateTypeEnum.EDIT.getCode());
 		ModelAndView modelAndView = new ModelAndView(url);
 		modelAndView.addObject("orderId", orderId);
-		modelAndView.addObject("cancelStatus", OrderStatusEnum.CANCEL.getCode());			
+		modelAndView.addObject("cancelStatus", OrderStatusEnum.CANCEL.getCode());
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
 		//单据状态权限控制按钮显示
 		modelAndView.addObject("buttontype", buttontype);
 		List<String> hiddenbuttons = orderButtonsApi.getHiddenButtonsMap(buttontype, orderId, null);

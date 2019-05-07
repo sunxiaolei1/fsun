@@ -69,9 +69,14 @@ $(function () {
 	    	if(typeof rowData.salePrice !=undefined && typeof rowData.qty!=undefined){
 	    		rowData.salePrice = Number(rowData.salePrice);
 		    	rowData.qty = Number(rowData.qty);
-	    		rowData.totalPrice = rowData.salePrice * (rowData.qty - rowData.giftCount);
-	    		rowData.couponPrice = rowData.giftPrice + 
-	    			(rowData.qty - rowData.giftCount)*(rowData.originSalePrice - rowData.salePrice);
+		    	//非赠品商品数量
+		    	var receptQty = CalcAmount.subtract(rowData.qty, rowData.giftCount);
+		    	//非赠品商品优惠
+		    	var couponPrice = CalcAmount.subtract(rowData.originSalePrice, rowData.salePrice);
+		    	var couponAmount = CalcAmount.multiply(receptQty, couponPrice);
+	    		//计算实付金额和商品优惠
+		    	rowData.totalPrice = CalcAmount.multiply(rowData.salePrice, receptQty, 2);
+	    		rowData.couponPrice = CalcAmount.add(rowData.giftPrice, couponAmount, 2); 	    		
 	    	}else{	    		   	
 	    		rowData.totalPrice = 0;
 	    		rowData.couponPrice = 0;
@@ -91,8 +96,8 @@ function syncOrderHeaderInfo(){
 	var couponPrice = 0;
 	var orderPrice = 0;
 	$.each(currDetailData, function(){
-		couponPrice = couponPrice + Number(this.couponPrice);
-		orderPrice = orderPrice + Number(this.totalPrice);
+		couponPrice = CalcAmount.add(couponPrice, this.couponPrice, 2);
+		orderPrice = CalcAmount.add(orderPrice, this.totalPrice, 2);
 	});		   	    	
    	$("#orderPrice", $orderfm).numberbox("setValue", orderPrice);
     $("#couponPrice", $orderfm).numberbox("setValue", couponPrice);

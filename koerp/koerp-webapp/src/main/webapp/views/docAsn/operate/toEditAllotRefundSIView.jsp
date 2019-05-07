@@ -197,9 +197,9 @@ function synAllotQty(rowIndex, rowData, changes){
 	var receiveQty = Number(rowData.receiveQty);
 	var rejectedQty = Number(rowData.rejectedQty);
 	if(rejectedQty > expectedQty){
-		rowData.rejectedQty = expectedQty - receiveQty;	
+		rowData.rejectedQty = CalcAmount.subtract(expectedQty, receiveQty);
 	}else{
-		rowData.receiveQty = expectedQty - rejectedQty;						
+		rowData.receiveQty = CalcAmount.subtract(expectedQty, rejectedQty);						
 	}
 	var signType = '20';
 	if(expectedQty==rowData.receiveQty){

@@ -139,6 +139,40 @@ var footerStyleView = $.extend({}, $.fn.datagrid.defaults.view, {
     }
 });
 
+//动态修改datagrid单元格
+$.extend($.fn.datagrid.methods, {
+	editCell: function(jq, param) {
+		return jq.each(function() {
+			var opts = $(this).datagrid("options");
+			var fields = $(this).datagrid("getColumnFields", true).concat($(this).datagrid("getColumnFields"));
+			for(var i = 0; i < fields.length; i++) {
+				var col = $(this).datagrid("getColumnOption", fields[i]);
+				col.editor1 = col.editor;
+				if(fields[i] != param.field) {
+					col.editor = null;
+				}
+			}
+			$(this).datagrid("beginEdit", param.index);
+			for(var i = 0; i < fields.length; i++) {
+				var col = $(this).datagrid("getColumnOption", fields[i]);
+				col.editor = col.editor1;
+			}
+		});
+	}
+});
+
+var editIndex = undefined;
+
+function endEditing(id) {
+	if(editIndex == undefined) { return true; }
+	if($("#" + id).datagrid("validateRow", editIndex)) {
+		$("#" + id).datagrid("endEdit", editIndex);
+		editIndex = undefined;
+		return true;
+	} else {
+		return false;
+	}
+}
 
 
 /**
@@ -156,6 +190,39 @@ function ajaxLoadEnd() {
 	$(".datagrid-mask").remove();
 	$(".datagrid-mask-msg").remove();
 }
+
+/** 
+ * 在页面中任何嵌套层次的窗口中获取顶层窗口 
+ * @return 当前页面的顶层窗口对象 
+ */
+function getTopWinow(){
+   var p = window;
+   while(p != p.parent){
+       p = p.parent;
+   }
+   return p;
+}
+
+/**
+ * 居中弹出提示信息
+ * @param title
+ * @param msg
+ */
+function showMessageCenter(title, msg, height) {
+	$.messager.show({
+		width: '300px',
+		height: height||'auto',
+		title: title,
+		msg: msg,
+		timeout: 2000,
+		showType: 'slide',
+		style: {
+			right: '',
+			bottom: ''
+		}
+	});
+}
+
 
 /**
  * jsom转map
@@ -205,87 +272,6 @@ function formJson(fm) {
 	return json;
 }
 
-/**
- * 弹出确认框并提交
- * @param url 
- * @param data 
- * @param func 成功后回调
- * @returns
- */
-function confirmPost(url, data, func) {
-	$.messager.confirm('Confirm', '是否确定?', function(r) {
-		if(r) {
-			$.post(url, data, function(result) {
-				if(result.code == 200) {
-					func(result);
-				} else {
-					$.messager.show({
-						title: 'Error',
-						msg: result.msg
-					});
-				}
-			}, 'json');
-		}
-	});
-}
-
-/**
- * post json 
- * @param url
- * @param data
- * @param func 成功后回调
- * @returns
- */
-function postJson(url, data, func) {
-	$.ajax({
-		type: "POST",
-		url: url,
-		contentType: "application/json; charset=utf-8",
-		data: JSON.stringify(data),
-		dataType: "json",
-		success: function(result) {
-			if(result.code != 200) {
-				$.messager.show({
-					title: 'Error',
-					msg: result.msg
-				});
-			} else {
-				func(result);
-			}
-		},
-		error: function(message) {
-			alert("提交数据失败！");
-		}
-	});
-}
-
-/**
- * post  
- * @param url
- * @param data
- * @param func 成功后回调
- * @returns
- */
-function post(url, data, func) {
-	$.ajax({
-		type: "POST",
-		url: url,
-		data: data,
-		success: function(result) {
-			if(result.code != 200) {
-				$.messager.show({
-					title: 'Error',
-					msg: result.msg
-				});
-			} else {
-				func(result);
-			}
-		},
-		error: function(message) {
-			alert("提交数据失败！");
-		}
-	});
-}
 
 /**
  * 日期格式化
@@ -331,7 +317,7 @@ Date.prototype.format = function(fmt) {
         }
     }
    return fmt; 
-}
+};
 
 /**
  * 字符转日期
@@ -367,9 +353,80 @@ function trim(str) {
  * @param s2
  * @returns
  */
-String.prototype.replaceAll  = function(s1,s2){    
+String.prototype.replaceAll = function(s1,s2){    
     return this.replace(new RegExp(s1,"gm"),s2);    
 };
+
+String.prototype.endWith = function(s){
+	if(s==null||s==""||this.length==0||s.length>this.length)
+		return false;
+	if(this.substring(this.length-s.length)==s)
+		return true;
+	else
+		return false;
+	return true;
+};
+
+String.prototype.startWith = function(s){
+	if(s==null||s==""||this.length==0||s.length>this.length)
+		return false;
+	if(this.substr(0,s.length)==s)
+		return true;
+	else
+		return false;
+	return true;
+};
+
+/**
+ * 获取字符串的长度(英文占1个字符，中文汉字占2个字符)
+ */
+String.prototype.getLength=function(){
+	var len = 0;
+	if(this.length!=null){
+		 for (var i = 0; i < this.length; i++) {
+			if (this.charCodeAt(i) > 127 || this.charCodeAt(i) == 94) {
+				len += 2;
+			} else {
+				len++;
+			}
+		}  
+	}
+    return len;
+};
+
+/**
+ * 截取字符串(支持中英文混合) 
+ */
+String.prototype.getSub = function(n) {
+	var r = /[^\x00-\xff]/g;
+	if (this.replace(r, "mm").length <= n) {
+		return this;
+	}
+	var m = Math.floor(n / 2);
+	for (var i = m; i < this.length; i++) {
+		if (this.substr(0, i).replace(r, "mm").length >= n) {
+			return this.substr(0, i) + "...";
+		}
+	}
+	return this;
+};
+
+
+//换行
+function formatStr(str){
+	return str.replace(/(.{18})/g,'$1\n');
+}
+
+//换行
+function formatStr30(str,number){
+	return str.replace(/(.{30})/g,'$1\n');
+}
+
+//获取字节长度
+function getCharacterByteLen(str){
+    var char = str.match(/[^\x00-\xff]/ig);
+    return str.length + (char == null ? 0 : char.length);
+}
 
 /**
  * 获取当前格式化后的日期(yyyy-MM-dd HH:MM:SS)
@@ -392,35 +449,6 @@ function getCurrentFormatDate() {
 	return currentdate;
 }
 
-Array.prototype.contains = function(needle) {
-	for(i in this) {
-		if(this[i] == needle) {
-			return true;
-		}
-	}
-	return false;
-};
-
-String.prototype.endWith=function(s){
-	if(s==null||s==""||this.length==0||s.length>this.length)
-		return false;
-	if(this.substring(this.length-s.length)==s)
-		return true;
-	else
-		return false;
-	return true;
-}
-
-String.prototype.startWith=function(s){
-	if(s==null||s==""||this.length==0||s.length>this.length)
-		return false;
-	if(this.substr(0,s.length)==s)
-		return true;
-	else
-		return false;
-	return true;
-}
-
 //格式化年月日时分秒
 formatterDateTime = function(date) {
 	var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
@@ -440,151 +468,18 @@ formatterDate = function(date) {
 	return date.getFullYear() + '-' + month + '-' + day;
 };
 
-/**
- * 获取字符串的长度(英文占1个字符，中文汉字占2个字符)
- */
-String.prototype.getLength=function(){
-	var len = 0;
-	if(this.length!=null){
-		 for (var i = 0; i < this.length; i++) {
-			if (this.charCodeAt(i) > 127 || this.charCodeAt(i) == 94) {
-				len += 2;
-			} else {
-				len++;
-			}
-		}  
-	}
-    return len;
-}
 
-/**
- * 截取字符串(支持中英文混合) 
- */
-String.prototype.getSub = function(n) {
-	var r = /[^\x00-\xff]/g;
-	if (this.replace(r, "mm").length <= n) {
-		return this;
-	}
-	var m = Math.floor(n / 2);
-	for (var i = m; i < this.length; i++) {
-		if (this.substr(0, i).replace(r, "mm").length >= n) {
-			return this.substr(0, i) + "...";
+Array.prototype.contains = function(needle) {
+	for(i in this) {
+		if(this[i] == needle) {
+			return true;
 		}
 	}
-	return this;
-} 
-
-
-//换行
-function formatStr(str){
-	return str.replace(/(.{18})/g,'$1\n');
-}
-
-//换行
-function formatStr30(str,number){
-	return str.replace(/(.{30})/g,'$1\n');
-}
-
-/** 
- * 在页面中任何嵌套层次的窗口中获取顶层窗口 
- * @return 当前页面的顶层窗口对象 
- */
-function getTopWinow(){
-   var p = window;
-   while(p != p.parent){
-       p = p.parent;
-   }
-   return p;
-}
+	return false;
+};
 
 /**
- *	删除datagrid指定的行
- *	@param id datagrid id
- *  @param type 0:表示指定选中的行	非0:表示所有行
- */
-function deleteDataGridRows(id, type) {
-	var findType = "getRows";
-	if(type == 0) {
-		findType = "getSelections";
-	}
-	var rows = $("#" + id).datagrid(findType);
-	var copyRows = [];
-	for(var j = 0; j < rows.length; j++) {
-		copyRows.push(rows[j]);
-	}
-
-	for(var i = 0; i < copyRows.length; i++) {
-		var index = $("#" + id).datagrid("getRowIndex", copyRows[i]);
-		$("#" + id).datagrid("deleteRow", index);
-	}
-}
-
-//动态修改datagrid单元格
-$.extend($.fn.datagrid.methods, {
-	editCell: function(jq, param) {
-		return jq.each(function() {
-			var opts = $(this).datagrid("options");
-			var fields = $(this).datagrid("getColumnFields", true).concat($(this).datagrid("getColumnFields"));
-			for(var i = 0; i < fields.length; i++) {
-				var col = $(this).datagrid("getColumnOption", fields[i]);
-				col.editor1 = col.editor;
-				if(fields[i] != param.field) {
-					col.editor = null;
-				}
-			}
-			$(this).datagrid("beginEdit", param.index);
-			for(var i = 0; i < fields.length; i++) {
-				var col = $(this).datagrid("getColumnOption", fields[i]);
-				col.editor = col.editor1;
-			}
-		});
-	}
-});
-
-var editIndex = undefined;
-
-function endEditing(id) {
-	if(editIndex == undefined) { return true; }
-	if($("#" + id).datagrid("validateRow", editIndex)) {
-		$("#" + id).datagrid("endEdit", editIndex);
-		editIndex = undefined;
-		return true;
-	} else {
-		return false;
-	}
-}
-
-function onClickCell(id, index, field, value) {
-	if(endEditing(id)) {
-		$("#" + id).datagrid("editCell", { index: index, field: field });
-		editIndex = index;
-	} else {
-		$("#" + id).datagrid("selectRow", index);
-	}
-}
-
-/**
- * 居中弹出提示信息
- * @param title
- * @param msg
- */
-function showMessageCenter(title, msg, height) {
-	$.messager.show({
-		width: '300px',
-		height: height||'auto',
-		title: title,
-		msg: msg,
-		timeout: 2000,
-		showType: 'slide',
-		style: {
-			right: '',
-			bottom: ''
-		}
-	});
-}
-
-/**
- *删除数组指定下标或指定对象
+ * 删除数组指定下标或指定对象
  */
 Array.prototype.remove = function(obj) {
 	for(var i = 0; i < this.length; i++) {
@@ -599,335 +494,125 @@ Array.prototype.remove = function(obj) {
 			this.length = this.length - 1;
 		}
 	}
-}
-
-//获取字节长度
-function getCharacterByteLen(str){
-    var char = str.match(/[^\x00-\xff]/ig);
-    return str.length + (char == null ? 0 : char.length);
-}
-
-/**
- * 初始化基本的combox
- * @param id
- * @param url
- * @param data
- * @param value
- * @param text
- * @param onSelectFunc 选中是触发
- */
-function initCombox(id, url, data, value, text, onSelectFunc){
-	$.ajax({
-       	url:url,	
-       	dataType: "json",
-        async:false,
-        data:data,
-       	success:function(result){
-        	if(result && result.entry){
-        		var data = result.entry;
-        		data.unshift({
-        			regionId:"",
-        			regionName:"请选择..."
-				});
-        		
-        		$('#'+id).combobox({   	
-        	   	 	valueField: value,
-        	   	  	textField: text,
-        	   	  	data: data,
-        	   	  	editable:false,  
-	        	   	onSelect:function(record){
-	     	       		if(onSelectFunc && typeof(onSelectFunc)=="function"){
-	     	       			onSelectFunc(record);
-	     	       		}
-	     	       	}
-        	   	});	 
-        	}
-       	}
-	});
-}
-
-/**
- * 省选择时触发
- * @param node 选中项
- */
-function onChangeProvince(node) {
-	if(node && node.regionId && node.regionId != '') {
-		$("#province").val(node.regionName);
-		initCombox("cityCombo", API_PATH + "/region/findRegionList", {"parentId":node.regionId},
-				'regionId', 'regionName', onChangeCity);
-		
-		$('#districtCombo').combobox('clear');
-		$('#districtCombo').combobox('loadData', {});
-	}else if(node.regionId=='') {
-		$('#cityCombo').combobox('clear');
-		$('#cityCombo').combobox('loadData', {});
-		
-		$('#districtCombo').combobox('clear');
-		$('#districtCombo').combobox('loadData', {});
-	}
-}
-
-/**
- * 市选择时触发
- * @param node 选中项
- */
-function onChangeCity(node) {
-	if(node && node.regionId) {
-		$("#city").val(node.regionName);
-		initCombox("districtCombo", API_PATH + "/region/findRegionList", {"parentId":node.regionId},
-			'regionId', 'regionName', onChangeDistrict);
-	}
-}
-
-/**
- * 地区选择时触发
- * @param node 选中项
- */
-function onChangeDistrict(node) {
-	if(node && node.regionId) {
-		$("#district").val(node.regionName);
-	}
-}
-
-/**
- * 转换部门树型结构数据
- * @param rows
- * @returns {Array}
- */
-function convertDeptTreeData(rows){
-	//判断是否为根节点
-	function exists(rows, parentId){
-		for(var i=0;i<rows.length;i++){
-			if (rows[i].deptId == parentId){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	var nodes = [];
-	for(var i=0;i<rows.length;i++){
-		var row = rows[i];
-		//判断是否为根节点
-		if (!exists(rows, row.parentId)){
-			nodes.push(row);
-		}
-	}
-	
-	//存储所有根节点
-	var rootNodes = [];
-	for(var i=0;i<nodes.length;i++){
-		var node = nodes[i];
-		node["id"] = node.deptId;
-		node["text"] = node.deptName;
-		rootNodes.push(node);
-	}
-	
-	//遍历并包装所有根节点下的子节点
-	while(rootNodes.length){
-		var node = rootNodes.shift();
-		for(var i=0;i<rows.length;i++){
-			var row = rows[i];
-			if (row.parentId == node.deptId){
-				var child = row;
-				child["id"] = child.deptId;
-				child["text"] = child.deptName;
-				if (node.children){
-					node.children.push(child);
-				}else{
-					node.children = [child];
-				}
-				rootNodes.push(child);
-			}
-		}
-	}
-	
-	return nodes;
-}
-
-/**
- * 转换菜单树型结构数据
- * @param rows
- * @returns {Array}
- */
-function convertAppTreeData(rows){
-	//判断是否为根节点
-	function exists(rows, parentId){
-		for(var i=0;i<rows.length;i++){
-			if (rows[i].appId == parentId){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	var nodes = [];
-	for(var i=0;i<rows.length;i++){
-		var row = rows[i];
-		//判断是否为根节点
-		if (!exists(rows, row.parentAppId)){
-			nodes.push(row);
-		}
-	}
-	
-	//存储所有根节点
-	var rootNodes = [];
-	for(var i=0;i<nodes.length;i++){
-		var node = nodes[i];
-		node["id"] = node.appId;
-		node["text"] = node.appName;
-		rootNodes.push(node);
-	}
-	
-	//遍历并包装所有根节点下的子节点
-	while(rootNodes.length){
-		var node = rootNodes.shift();
-		for(var i=0;i<rows.length;i++){
-			var row = rows[i];
-			if (row.parentAppId == node.appId){
-				var child = row;
-				child["id"] = child.appId;
-				child["text"] = child.appName;
-				if (node.children){
-					node.children.push(child);
-				}else{
-					node.children = [child];
-				}
-				rootNodes.push(child);
-			}
-		}
-	}
-	
-	return nodes;
-}
-
-
-/**
- * 重置树
- * @param id
- */
-function resetTree(id){
-	var root = $("#" + id).tree('getRoot');  
-    $("#" + id).tree('uncheck',root.target);
-    
-	//收缩根节点下的所有子节点
-	$("#" + id).tree("collapseAll");
-	//展开根节点
-	var rootNode = $("#" + id).tree("getRoot");
-	$("#" + id).tree("expand", rootNode.target);
-	//选中根节点
-	$("#" + id).tree("select", rootNode.target);
-}
+};
 
 /******************************  解决js金额精度误差问题   **************************************/
-//方案1
-//除法
-function accDiv(arg1, arg2) {
-	var t1 = 0, t2 = 0, r1, r2;
-	try {
-		t1 = arg1.toString().split(".")[1].length
-	} catch (e) {
-	}
-	try {
-		t2 = arg2.toString().split(".")[1].length
-	} catch (e) {
-	}
-	with (Math) {
-		r1 = Number(arg1.toString().replace(".", ""))
-		r2 = Number(arg2.toString().replace(".", ""))
-		return accMul((r1 / r2), pow(10, t2 - t1));
-	}
-} 
 
-// 乘法
-function accMul(arg1, arg2) {
-	var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
-	try {
-		m += s1.split(".")[1].length
-	} catch (e) {
+/*** method **
+ *  add / subtract / multiply /divide
+ * CalcAmount.add(0.1, 0.2) >> 0.3
+ * CalcAmount.multiply(19.9, 100) >> 1990
+ *
+ */
+var CalcAmount = function() {
+	/*
+	 * 数值格式化
+	 */
+	function formatFloat(value, digit){	 
+		var m = Math.pow(10, digit);	 
+		return Math.round(value*m, 10)/m;
 	}
-	try {
-		m += s2.split(".")[1].length
-	} catch (e) {
-	}
-	return Number(s1.replace(".", "")) * Number(s2.replace(".", ""))
-			/ Math.pow(10, m)
-}
-
-// 加法
-function accAdd(arg1, arg2) {
-	var r1, r2, m;
-	try {
-		r1 = arg1.toString().split(".")[1].length
-	} catch (e) {
-		r1 = 0
-	}
-	try {
-		r2 = arg2.toString().split(".")[1].length
-	} catch (e) {
-		r2 = 0
-	}
-	m = Math.pow(10, Math.max(r1, r2))
-	return (arg1 * m + arg2 * m) / m
-}
-
-// 减法
-function Subtr(arg1, arg2) {
-	var r1, r2, m, n;
-	try {
-		r1 = arg1.toString().split(".")[1].length
-	} catch (e) {
-		r1 = 0
-	}
-	try {
-		r2 = arg2.toString().split(".")[1].length
-	} catch (e) {
-		r2 = 0
-	}
-	m = Math.pow(10, Math.max(r1, r2));
-	n = (r1 >= r2) ? r1 : r2;
-	return ((arg1 * m - arg2 * m) / m).toFixed(n);
-}
-
-//方案2
-function decNum(a){/*获取小数位数*/
-    var r=0;
-    a=a.toString();
-    if(a.indexOf(".")!== -1) r=a.split(".")[1].length;
-    return r;
-}
-
-function calc(a,b,type){//加减乘除
-    var r,
-    da=decNum(a),
-    db=decNum(b),
-    dsum=da+db,
-    dmin=Math.min(da,db),
-    dmax=Math.max(da,db);
-    
-    dsum += dmax-dmin;
-    dsum = Math.pow(10,dsum);
-    dmax = Math.pow(10,dmax);
-    a=parseInt(a.toString().replace(".",""));
-    b=parseInt(b.toString().replace(".",""));
-    if(da>db){
-        b*=Math.pow(10,da-db);
-    }else{
-        a*=Math.pow(10,db-da);
+    /*
+     * 判断obj是否为一个整数
+     */
+    function isInteger(obj) {
+        return Math.floor(obj) === obj;
     }
-    switch(type){
-        case "add":
-            r=(a+b)/dmax;
-            break;
-        case "subtract":
-            r=(a-b)/dmax;
-            break;
-        case "multiply":
-            r=(a*b)/dsum;
-            break;
-        case "divide":
-            r=a/b;
-            break;
+    /*
+     * 将一个浮点数转成整数，返回整数和倍数。如 3.14 >> 314，倍数是 100
+     * @param floatNum {number} 小数
+     * @return {object}
+     *   {times:100, num: 314}
+     */
+    function toInteger(floatNum) {
+        var ret = {times: 1, num: 0};
+        if (isInteger(floatNum)) {
+            ret.num = floatNum;
+            return ret;
+        }
+        var strfi  = floatNum + '';
+        var dotPos = strfi.indexOf('.');
+        var len    = strfi.substr(dotPos+1).length;
+        var times  = Math.pow(10, len);
+        var intNum = Number(floatNum.toString().replace('.',''));
+        ret.times  = times;
+        ret.num    = intNum;
+        return ret;
     }
-    return r;
-}
+    /*
+     * 核心方法，实现加减乘除运算，确保不丢失精度
+     * 思路：把小数放大为整数（乘），进行算术运算，再缩小为小数（除）
+     *
+     * @param a {number} 运算数1
+     * @param b {number} 运算数2
+     * @param digits {number} 精度，保留的小数点数，比如 2, 即保留为两位小数
+     * @param op {string} 运算类型，有加减乘除（add/subtract/multiply/divide）
+     *
+     */
+    function operation(a, b, digits, op) {
+    	a = Number(a);
+    	b = Number(b);
+        var o1 = toInteger(a);
+        var o2 = toInteger(b);
+        var n1 = o1.num;
+        var n2 = o2.num;
+        var t1 = o1.times;
+        var t2 = o2.times;
+        var max = t1 > t2 ? t1 : t2;
+        var result = null;
+        switch (op) {
+            case 'add':
+                if (t1 === t2) { // 两个小数位数相同
+                    result = n1 + n2;
+                } else if (t1 > t2) { // o1 小数位 大于 o2
+                    result = n1 + n2 * (t1 / t2);
+                } else { // o1 小数位 小于 o2
+                    result = n1 * (t2 / t1) + n2;
+                }
+                result = result / max;
+                break;
+            case 'subtract':
+                if (t1 === t2) {
+                    result = n1 - n2;
+                } else if (t1 > t2) {
+                    result = n1 - n2 * (t1 / t2);
+                } else {
+                    result = n1 * (t2 / t1) - n2;
+                }
+                result = result / max;
+                break;
+            case 'multiply':
+                result = (n1 * n2) / (t1 * t2);
+                break;
+            case 'divide':
+                result = (n1 / n2) * (t2 / t1); 
+                break;
+        }   
+        if(typeof(digits) == "undefined"){
+        	return result;
+        }
+        return formatFloat(result, digits);
+    }
+    // 加减乘除的四个接口
+    function add(a, b, digits) {
+        return operation(a, b, digits, 'add');
+    }
+    function subtract(a, b, digits) {
+        return operation(a, b, digits, 'subtract');
+    }
+    function multiply(a, b, digits) {
+        return operation(a, b, digits, 'multiply');
+    }
+    function divide(a, b, digits) {
+        return operation(a, b, digits, 'divide');
+    }
+    // exports
+    return {
+        add: add,
+        subtract: subtract,
+        multiply: multiply,
+        divide: divide
+    };
+}();
+
+

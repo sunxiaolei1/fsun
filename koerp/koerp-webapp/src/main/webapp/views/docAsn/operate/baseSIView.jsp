@@ -5,8 +5,6 @@
 $(function () { 
 	
 	currOrderDetailDataGrid.datagrid({
-		width:"auto",
-	    height:"auto",
 	    nowrap:false,
 	    striped:true,
 	    border:true,
@@ -27,6 +25,7 @@ $(function () {
 	    toolbar: "#detailskutoolbar",
 	    columns: siColumns,
 	    onBeforeLoad:function(param){
+	    	debugger
 	    	if('1' == '${hasEditPricePower}'){
 	    		var columnOption = $(this).datagrid("getColumnOption", "price");
 	    		columnOption.editor = {
@@ -123,9 +122,9 @@ function showSignView(){
 	            		var rejectedQty = 0;
 	            		var damagedQty = 0;
 	            		$.each(rows, function(){
-	            			receiveQty += Number(this.receiveQty);
-	            			damagedQty += Number(this.damagedQty);
-	            			rejectedQty += Number(this.rejectedQty);
+	            			receiveQty = CalcAmount.add(receiveQty, this.receiveQty);
+	            			damagedQty = CalcAmount.add(damagedQty, this.damagedQty);
+	            			rejectedQty = CalcAmount.add(rejectedQty, this.rejectedQty);
 	            		});
 	            		//var prifix = "[签收合计："+ receiveQty + ", 残次合计："+ damagedQty +", 退货合计："+ rejectedQty +"]";
 	            		var prifix = "[签收合计："+ receiveQty + ", 退货合计："+ rejectedQty +"]";

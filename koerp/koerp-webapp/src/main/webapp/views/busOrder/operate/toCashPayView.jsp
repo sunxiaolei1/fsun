@@ -64,7 +64,8 @@ $(function () {
 		onChange:function(newValue,oldValue){	
 			var receptPrice = $("#receptPrice", $paymodefm).numberbox("getValue");
 			if(Number(newValue)>Number(receptPrice)){
-				$("#dibPrice", $paymodefm).numberbox("setValue",Number(newValue)-Number(receptPrice));
+				//$("#dibPrice", $paymodefm).numberbox("setValue",Number(newValue)-Number(receptPrice));
+				$("#dibPrice", $paymodefm).numberbox("setValue",CalcAmount.subtract(newValue, receptPrice, 2));			
 			}else{
 				$("#dibPrice", $paymodefm).numberbox("setValue",0);
 			}     

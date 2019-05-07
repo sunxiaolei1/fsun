@@ -181,12 +181,12 @@ $(function () {
    	});
 	
 	$('#trimPrice', $orderfm).numberspinner({  
-	    onChange:function(newValue,oldValue){ 
-	    	var diffPrice = Number(newValue) - Number(oldValue);
+	    onChange:function(newValue,oldValue){	    	
+	    	var diffPrice = CalcAmount.subtract(newValue, oldValue);
 	    	var tradePrice = $("#tradePrice", $orderfm).numberbox("getValue");
 	    	var newGiftPrice = $("#newGiftPrice", $orderfm).numberbox("getValue");
-	    	$("#tradePrice", $orderfm).numberbox("setValue", Number(tradePrice) + diffPrice);
-			$("#newGiftPrice", $orderfm).numberbox("setValue", Number(newGiftPrice) + diffPrice); 	       
+	    	$("#tradePrice", $orderfm).numberbox("setValue", CalcAmount.add(tradePrice, diffPrice, 2));
+			$("#newGiftPrice", $orderfm).numberbox("setValue", CalcAmount.add(newGiftPrice, diffPrice, 2));       
 		}  
 	});
 	
@@ -194,9 +194,10 @@ $(function () {
 		onChange:function(newValue,oldValue){	
 			var originPrecent = $("#originPrecent", $orderfm).numberbox("getValue");
 			var trimPrice = $('#trimPrice', $orderfm).numberspinner("getValue");
-			var tradePrice = Number(newValue) * Number(originPrecent);
-			$("#tradePrice", $orderfm).numberbox("setValue", tradePrice + Number(trimPrice));
-			$("#newGiftPrice", $orderfm).numberbox("setValue",tradePrice-Number(newValue) + Number(trimPrice)); 
+			var tradePrice = CalcAmount.multiply(newValue, originPrecent);
+			var enablePrice = CalcAmount.add(tradePrice, trimPrice, 2);
+			$("#tradePrice", $orderfm).numberbox("setValue", enablePrice);
+			$("#newGiftPrice", $orderfm).numberbox("setValue",CalcAmount.subtract(enablePrice, newValue, 2));
 	    }
    	});
 	

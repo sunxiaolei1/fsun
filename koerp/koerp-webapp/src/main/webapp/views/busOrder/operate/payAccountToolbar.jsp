@@ -81,7 +81,8 @@ function addPayRow(payMode) {
            			if(Number(row.receptPrice)>0){
            				currPayAccountData.push(row);
                			currPayAccountDataGrid.datagrid("loadData", currPayAccountData);
-               			$("#balancePrice", $payAccountfm).val(balancePrice - row.receptPrice);
+               			//$("#balancePrice", $payAccountfm).val(balancePrice - row.receptPrice);
+               			$("#balancePrice", $payAccountfm).val(CalcAmount.subtract(balancePrice, row.receptPrice, 2));
                			$('#payModeDialog').dialog("destroy");   
            			}          			
            			           		
@@ -125,7 +126,8 @@ function addPayRow(payMode) {
 function delPayAccountOne(rowIndex){
 	var receptPrice = Number(currPayAccountData[rowIndex].receptPrice);
 	var balancePrice = Number($("#balancePrice", $payAccountfm).val());
-	$("#balancePrice", $payAccountfm).val(balancePrice + receptPrice);
+	//$("#balancePrice", $payAccountfm).val(balancePrice + receptPrice);
+	$("#balancePrice", $payAccountfm).val(CalcAmount.add(balancePrice, receptPrice, 2));
 	currPayAccountData.splice(rowIndex,1);
 	currPayAccountDataGrid.datagrid("loadData", currPayAccountData);
 	

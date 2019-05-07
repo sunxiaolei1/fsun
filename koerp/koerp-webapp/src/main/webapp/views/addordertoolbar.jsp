@@ -98,7 +98,7 @@ function initPayAccountData(paramsData){
         });
 	}
 	
-	var balancePrice = Number(header.orderPrice) - Number(header.toZeroPrice);
+	var balancePrice = CalcAmount.subtract(header.orderPrice, header.toZeroPrice, 2);
 	if(balancePrice==0){
 		currPayAccountData.push({
         	"payMode": 2,
@@ -123,8 +123,8 @@ function toPayAccountWin(paramsData){
 	var header = paramsData.header;
 	$payAccountfm.form("load", header);
 	//初始支付余额
-	$("#balancePrice",$payAccountfm).val(header.orderPrice-header.toZeroPrice);
-	
+	//$("#balancePrice",$payAccountfm).val(header.orderPrice-header.toZeroPrice);
+	$("#balancePrice",$payAccountfm).val(CalcAmount.subtract(header.orderPrice, header.toZeroPrice, 2));
 	currPayAccountDataGrid.datagrid({
 		view:footerStyleView,
 	    nowrap:false,
@@ -155,10 +155,18 @@ function toPayAccountWin(paramsData){
     	    //同步订单头金额信息   	       	    		
    	    	$("#payPrice", $payAccountfm).numberbox("setValue", Number(data.footer[0].payPrice));
    	    	$("#dibPrice", $payAccountfm).numberbox("setValue", Number(data.footer[0].dibPrice));
-    	    $("#discountPrice", $payAccountfm).numberbox("setValue", 
+   	    	  	    	
+    	    /* $("#discountPrice", $payAccountfm).numberbox("setValue", 
    	    		Number(data.footer[0].discountAmount) - $("#toZeroPrice", $payAccountfm).numberbox("getValue"));   	    	
    	    	$("#receptPrice", $payAccountfm).numberbox("setValue", 
-   	    		Number(data.footer[0].receptPrice)-Number(data.footer[0].discountAmount));
+   	    		Number(data.footer[0].receptPrice)-Number(data.footer[0].discountAmount)); */    	
+   	    	var receptPrice = data.footer[0].receptPrice;
+   	    	var discountAmount = data.footer[0].discountAmount;	
+   	    	var toZeroPrice = $("#toZeroPrice", $payAccountfm).numberbox("getValue");
+ 	    	$("#discountPrice", $payAccountfm).numberbox("setValue", 
+ 	    		CalcAmount.subtract(discountAmount, toZeroPrice, 2));   	    	
+ 	    	$("#receptPrice", $payAccountfm).numberbox("setValue", 
+ 	    		CalcAmount.subtract(receptPrice, discountAmount, 2)); 
 			return data; 
         },
         rowStyler:function(index,row){	    		    	

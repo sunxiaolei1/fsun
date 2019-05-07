@@ -51,16 +51,22 @@ function updatePreviewOrder(paramsData){
 	
 	var hasAddSku = false;
 	$.each(diffOrderDetails, function(){
-		if(typeof(this.orderlineid)=="undefined"){
-			neworderprice += this.orderqty * this.saleprice;
-			newpayprice += this.totalprice;	
+		if(typeof(this.orderlineid)=="undefined"){			
+			//neworderprice += this.orderqty * this.saleprice;
+			//newpayprice += this.totalprice;				
+			var orderPrice = CalcAmount.multiply(this.orderqty, this.saleprice);
+			neworderprice = CalcAmount.add(neworderprice, orderPrice);
+			newpayprice = CalcAmount.add(newpayprice, this.totalprice);
 			diffSkus.push(this);	
 			hasAddSku = true;
 		}else{
 			//未被替换
 			if(10 == this.aftersalestatus){												
-				neworderprice += this.orderqty * this.saleprice;
-				newpayprice += this.totalprice;
+				//neworderprice += this.orderqty * this.saleprice;
+				//newpayprice += this.totalprice;
+				var orderPrice = CalcAmount.multiply(this.orderqty, this.saleprice);
+				neworderprice = CalcAmount.add(neworderprice, orderPrice);
+				newpayprice = CalcAmount.add(newpayprice, this.totalprice);
 				diffSkus.push(this);
 			}else{
 				deleteSkus.push(this);
@@ -79,21 +85,30 @@ function updatePreviewOrder(paramsData){
 	
 	var diffqtyError = false;
 	$.each(deleteSkuDetails, function(){	
-		var diffqty = this.oldorderqty-this.orderqty;
+		//var diffqty = this.oldorderqty-this.orderqty;
+		var diffqty = CalcAmount.subtract(this.oldorderqty, this.orderqty);
 		if(diffqty<0){
 			diffqtyError = true;
 			return false;
 		}	
 		if(diffqty>0){		
-			neworderprice += this.diffqty * this.saleprice;
-			newpayprice += this.diffqty * this.payprice;
+			//neworderprice += this.diffqty * this.saleprice;
+			//newpayprice += this.diffqty * this.payprice;
+			var diffAmount = CalcAmount.multiply(this.diffqty, this.saleprice);
+			neworderprice = CalcAmount.add(neworderprice, diffAmount);
+			var diffPayAmount = CalcAmount.multiply(this.diffqty, this.payprice);
+			newpayprice = CalcAmount.add(newpayprice, diffPayAmount);
+			
 			var orderlineid = this.orderlineid;	
 			$.each(deleteSkus, function(){			
 				if(this.orderlineid==orderlineid){
 					var that = cloneObj(this);
 					that.orderqty = diffqty;
-					that.totalprice = diffqty * that.payprice; 
-					that.discountprice = diffqty * that.saleprice - that.totalprice;
+					//that.totalprice = diffqty * that.payprice; 
+					//that.discountprice = diffqty * that.saleprice - that.totalprice;				
+					that.totalprice = CalcAmount.multiply(that.orderqty, that.payprice, 2);
+					var tempPrice = CalcAmount.multiply(that.orderqty, that.saleprice);
+					that.discountprice = CalcAmount.subtract(tempPrice, that.totalprice, 2);
 					diffSkus.push(that);	
 					return false;
 				}				
@@ -113,32 +128,37 @@ function updatePreviewOrder(paramsData){
 	//新订单商品总金额
 	$("#neworderprice", $diffOrderfm).numberbox("setValue", neworderprice);	
 	//新订单商品优惠
-	var discountprice = neworderprice - newpayprice;
+	//var discountprice = neworderprice - newpayprice;
+	var discountprice = CalcAmount.subtract(neworderprice, newpayprice, 2);	
 	$("#discountprice", $diffOrderfm).numberbox("setValue", discountprice);	
 	
 	//新订单优惠
 	var sellercouponprice = $("#sellercouponprice", $diffOrderfm).numberbox("getValue");
-	var couponfee = discountprice + Number(sellercouponprice);
+	//var couponfee = discountprice + Number(sellercouponprice);
+	var couponfee = CalcAmount.add(discountprice, sellercouponprice, 2);
 	$("#couponfee", $diffOrderfm).val(couponfee);
 	
 	//新订单实收金额
 	var shippingfee = $("#shippingfee", $diffOrderfm).numberbox("getValue");	
-	newpayprice = newpayprice + Number(shippingfee) - Number(sellercouponprice);
+	//newpayprice = newpayprice + Number(shippingfee) - Number(sellercouponprice);
+	var payShipPrice = CalcAmount.add(newpayprice, shippingfee);
+	newpayprice = CalcAmount.subtract(payShipPrice, sellercouponprice, 2);	
 	$("#newpayprice", $diffOrderfm).numberbox("setValue",newpayprice);
 	
 	//补退金额
 	var originalpayprice = $("#originalpayprice", $diffOrderfm).numberbox("getValue");
 	var integralamount = $("#integralamount", $diffOrderfm).numberbox("getValue");
 	var bonusamount =  $("#bonusamount", $diffOrderfm).numberbox("getValue");
-	var changeprice = newpayprice - Number(originalpayprice) + Number(integralamount/100) + Number(bonusamount) ;
+	//var changeprice = newpayprice - Number(originalpayprice) + Number(integralamount/100) + Number(bonusamount) ;
+	var newpayprice0 = CalcAmount.subtract(newpayprice, originalpayprice);
+	var integralBonusamount = CalcAmount.add(integralamount/100, bonusamount);
+	var changeprice = CalcAmount.add(newpayprice0, integralBonusamount, 2);
 	$("#changeprice", $diffOrderfm).numberbox("setValue",changeprice);
 	$("#difforderprice", $diffOrderfm).val(changeprice);
 	
 	diffOrderSkuDataGrid.datagrid({
 		view:footerStyleView,
 		title:'差异商品明细',
-		width:"auto",
-	    height:"auto",
 	    nowrap:false,
 	    striped:true,
 	    border:true,

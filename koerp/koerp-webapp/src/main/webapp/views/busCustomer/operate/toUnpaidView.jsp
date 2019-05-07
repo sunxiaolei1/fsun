@@ -110,7 +110,8 @@ var rachargeColumns = [[
 	}},
 	{field:"tradeTime",title:"交易时间", width:140,align:"center",sortable:true},
 	{field:'tradePrice',title:'交易金额',width:100,align:'center',formatter:numBaseFormat},
-	{field:"memo",title:"备注", width:240,align:"center"},
+	{field:'giftPrice',title:'赠送金额',width:90,align:'center',formatter:numBaseFormat},
+	{field:"memo",title:"备注", width:160,align:"center"},
 	{field: "selected", title: "操作", width: 100, align: "center",
 		formatter: function(value, row, index){	
 			var tradeType = row.tradeType;
@@ -166,7 +167,7 @@ $(function () {
 	    toolbar: "#detailskutoolbar",
 	    columns: rachargeColumns,
 	    loadFilter:function(data) {     		
-    		var fields = ["tradePrice"];       		
+    		var fields = ["tradePrice","giftPrice"];       		
     		//排序拦截器
     		sortFilter($(this), data);		
     	    //分页拦截器

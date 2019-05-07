@@ -107,9 +107,14 @@ function addGiftSkuRow() {
 	        	    				this.isGift = data.isGift;
 	        	    				this.goodsType = data.goodsType;
 	        	    				this.giftCount = data.giftCount;
-	        	    				this.giftPrice = Number(this.giftCount) * Number(this.originSalePrice);
-	        	    				this.totalPrice = this.salePrice * (this.qty - this.giftCount);
-	        	    				this.couponPrice = this.giftPrice + (this.qty - this.giftCount)*(this.originSalePrice - this.salePrice);	    	        	    		
+	        	    				this.giftPrice = CalcAmount.multiply(this.giftCount, this.originSalePrice);
+	        	    				//实付金额
+	        	    				var receptQty = CalcAmount.subtract(this.qty, this.giftCount);
+	        	    				var couponPrice = CalcAmount.subtract(this.originSalePrice, this.salePrice);
+	        	    				this.totalPrice = CalcAmount.multiply(this.salePrice, receptQty, 2);
+	        	    				//商品优惠
+	        	    				var tempPrice = CalcAmount.multiply(receptQty, couponPrice);
+	        	    				this.couponPrice = CalcAmount.add(this.giftPrice, tempPrice, 2);    	        	    		
 	    	        	    		return;
 	        	    			}
 	        	    		});
@@ -164,8 +169,15 @@ function delGiftSkuRow(){
 				this.goodsType = "";
 		  		this.giftCount = 0;
 		  		this.giftPrice = 0; 
-		  		this.totalPrice = this.salePrice * (this.qty - this.giftCount);
-		  		this.couponPrice = this.giftPrice + (this.qty - this.giftCount)*(this.originSalePrice - this.salePrice);
+		  		//this.totalPrice = this.salePrice * (this.qty - this.giftCount);
+		  		//this.couponPrice = this.giftPrice + (this.qty - this.giftCount)*(this.originSalePrice - this.salePrice);
+		  	    //实付金额
+				var receptQty = CalcAmount.subtract(this.qty, this.giftCount);
+				var couponPrice = CalcAmount.subtract(this.originSalePrice, this.salePrice);
+				this.totalPrice = CalcAmount.multiply(this.salePrice, receptQty, 2);
+				//商品优惠
+				var tempPrice = CalcAmount.multiply(receptQty, couponPrice);
+				this.couponPrice = CalcAmount.add(this.giftPrice, tempPrice, 2);    
 			}
 		});
   		currOrderDetailDataGrid.datagrid("loadData", currDetailData);	

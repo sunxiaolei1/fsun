@@ -270,9 +270,10 @@ function initPriceOnChange(){
 	    	var originPrecent = $("#originPrecent", $vipCardfm).numberspinner("getValue");
 	    	var rachargePrice = $('#rachargePrice', $rachargefm).numberbox("getValue");	    	
 	    	//更新数据
-	    	var tradePrice = Number(originPrecent) * Number(rachargePrice) + Number(newValue);
+	    	var tempPrice = CalcAmount.multiply(originPrecent, rachargePrice);
+	    	var tradePrice = CalcAmount.add(tempPrice, Number(newValue), 2);
 	    	$("#tradePrice", $rachargefm).numberbox("setValue", tradePrice);
-			$("#newGiftPrice", $rachargefm).numberbox("setValue", tradePrice - Number(rachargePrice)); 	       
+			$("#newGiftPrice", $rachargefm).numberbox("setValue", CalcAmount.subtract(tradePrice, rachargePrice, 2)); 	       
 		}  
 	});
 	//本金比例微调
@@ -281,9 +282,10 @@ function initPriceOnChange(){
 	    	var trimPrice = $('#trimPrice', $rachargefm).numberspinner("getValue");
 	    	var rachargePrice = $('#rachargePrice', $rachargefm).numberbox("getValue");
 	    	//更新数据
-	    	var tradePrice = Number(newValue) * Number(rachargePrice) + Number(trimPrice);
+	    	var tempPrice = CalcAmount.multiply(newValue, rachargePrice);
+	    	var tradePrice = CalcAmount.add(tempPrice, trimPrice, 2);
 	    	$("#tradePrice", $rachargefm).numberbox("setValue", tradePrice);
-			$("#newGiftPrice", $rachargefm).numberbox("setValue", tradePrice - Number(rachargePrice)); 	       
+			$("#newGiftPrice", $rachargefm).numberbox("setValue",  CalcAmount.subtract(tradePrice, rachargePrice, 2));     
 		}  
 	});
 	//充值金额变化
@@ -292,9 +294,10 @@ function initPriceOnChange(){
 			var originPrecent = $("#originPrecent", $vipCardfm).numberspinner("getValue");
 			var trimPrice = $('#trimPrice', $rachargefm).numberspinner("getValue");
 			//更新数据
-			var tradePrice = Number(newValue) * Number(originPrecent) + Number(trimPrice);
+			var tempPrice = CalcAmount.multiply(newValue, originPrecent);
+			var tradePrice = CalcAmount.add(tempPrice, trimPrice, 2);
 			$("#tradePrice", $rachargefm).numberbox("setValue", tradePrice);
-			$("#newGiftPrice", $rachargefm).numberbox("setValue",tradePrice - Number(newValue)); 
+			$("#newGiftPrice", $rachargefm).numberbox("setValue",CalcAmount.subtract(tradePrice, newValue, 2));
 	    }
    	});	
 	

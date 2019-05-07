@@ -172,7 +172,7 @@ function initAddSku(rowData){
 	skuDto.unit = rowData.unit;
 	skuDto.costPrice = rowData.costPrice;
 	skuDto.price = rowData.salePrice;
-	skuDto.totalPrice = rowData.salePrice * skuDto.shippedQty;
+	skuDto.totalPrice = CalcAmount.multiply(rowData.salePrice, skuDto.shippedQty, 2);
 		
 	skuDto.barCode = rowData.barCode;  
 	skuDto.categoryCode = rowData.categoryCode;  
