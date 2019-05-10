@@ -26,30 +26,29 @@
 					        <tr>
 					            <th>单据编号</th>
 								<td>
-									<input id="poNo" name="poNo" class="easyui-textbox" readOnly style="width:95%;" />
+									<input id="poNo" name="poNo" class="easyui-textbox" readOnly  />
 								</td>
 								<th>单据类型</th>
 								<td>
-									<input id="poType" name="poType" class="easyui-combobox" readOnly required style="width:95%;" />								
+									<input id="poType" name="poType" class="easyui-combobox" readOnly required  />								
 								</td>
 								<th>出库店仓</th>
 								<td>
-									<input id="shopCombo" name="fromShopId" class="easyui-combobox" required style="width:95%;" />								
+									<input id="shopCombo" name="fromShopId" class="easyui-combobox" required  />								
 								</td>
 							</tr>	       
 					        <tr>
 					        	<th>联系人</th>
 								<td>
-									<input id="iContact" name="iContact" class="easyui-textbox" style="width:95%;" />								
+									<input id="iContact" name="iContact" class="easyui-textbox"  />								
 								</td>
 					        	<th>联系方式</th>
 								<td>
-									<input id="iTel" name="iTel" class="easyui-textbox" style="width:95%;" />							
+									<input id="iTel" name="iTel" class="easyui-textbox"  />							
 								</td>
 								<th>入库店仓</th>
 								<td>					
-									<input id="toShopName" name="toShopName" class="easyui-textbox" 
-										readOnly style="width:95%;" />								
+									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly  />								
 								</td>	
 					        </tr>
 					        <tr>

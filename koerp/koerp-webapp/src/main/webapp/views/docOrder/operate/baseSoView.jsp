@@ -99,7 +99,7 @@ function getSaveData(){
 	}
 	var saveData = {
 	     "params": {
-	    	 "orderNo": $("#orderNo",$orderfm).textbox("getValue"),
+	    	 "orderNo": $("#orderNo",$orderfm).val(),
 			 "header": baseInfo,
 			 "details": currDetailData
 			},
@@ -114,7 +114,7 @@ function getOrderCancelData(){
 	     "params": {
 	    	"memo":  $("#memo",$orderfm).textbox("getValue")
 	      },
-	     "saveUrl": "${api}/doc/order/status/${cancelStatus}?orderNos="+ $("#orderNo",$orderfm).textbox("getValue")
+	     "saveUrl": "${api}/doc/order/status/${cancelStatus}?orderNos="+ $("#orderNo",$orderfm).val()
 	}
 	return saveData;
 	

@@ -7,47 +7,55 @@
 	request.setAttribute("api", basePath);
 %>
 
-<!-- 查询条件 -->
-<%@include file="../../addtoolbar.jsp"%>
+<div class="easyui-layout" data-options="fit:true" >
+	<!-- 查询条件 -->
+	<%@include file="../../addtoolbar.jsp"%>
 	
-<div class="fsun-wrap">
-	<form id="orderfm">
-		<span class="title" style="top: 35px;">基本信息</span>		
-		<input id="iId" name="iId" hidden="true" />	
-		<input id="toShopId" name="toShopId" hidden="true" />	
-		<input id="orderPrice" name="orderPrice" hidden="true" />	
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">
-	        <tr>
-	            <th width="12%">单据编号<span style="color:red;">*</span></th>
-				<td>
-					<input id="asnNo" name="asnNo" class="easyui-textbox" readOnly />
-				</td>
-				<th width="12%">单据类型<span style="color:red;">*</span></th>
-				<td>
-					<input id="asnType" name="asnType" class="easyui-combobox" required readOnly />								
-				</td>					
-				<th width="12%">入库店仓<span style="color:red;">*</span></th>
-				<td colspan="3" >
-					<input id="toShopName" name="toShopName" class="easyui-textbox" style="width:256px;" readOnly />								
-				</td>								
-	        </tr>		               		
-	        <tr>
-	        	<th width="12%">备注</th>
-				<td colspan="7">
-					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:800px;height:50px;"/>
-				</td>	        	
-	        </tr>
-		</table>
-	</form>			
-</div>	
-
-<div style="height: 350px; width: 100%;">
-	<div id="detailskutoolbar" style="display:none;">
-		<%@include file="./detailskutoolbar.jsp"%>
+	<div data-options="region:'center',split:true, border:false" >
+		<div class="easyui-layout" data-options="fit:true" >
+			<div data-options="region:'north',split:true, border:false" style="height:140px;overflow:hidden;">
+				<div class="fsun-wrap">
+					<form id="orderfm">
+						<span class="title" style="top: 1px;">基本信息</span>		
+						<input id="iId" name="iId" hidden="true" />	
+						<input id="toShopId" name="toShopId" hidden="true" />	
+						<input id="orderPrice" name="orderPrice" hidden="true" />	
+						<table class="nb-formTable">
+					        <tr>
+					            <th width="12%">单据编号<span style="color:red;">*</span></th>
+								<td>
+									<input id="asnNo" name="asnNo" class="easyui-textbox" readOnly />
+								</td>
+								<th width="12%">单据类型<span style="color:red;">*</span></th>
+								<td>
+									<input id="asnType" name="asnType" class="easyui-combobox" required readOnly />								
+								</td>					
+								<th width="12%">入库店仓<span style="color:red;">*</span></th>
+								<td colspan="3" >
+									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly />								
+								</td>								
+					        </tr>		               		
+					        <tr>
+					        	<th width="12%">备注</th>
+								<td colspan="7">
+									<input id="memo" name="memo"  data-options="multiline:true" 
+										class="easyui-textbox" style="width:70%;height:50px;"/>
+								</td>	        	
+					        </tr>
+						</table>
+					</form>			
+				</div>
+			</div>
+			
+			<div data-options="region:'center',split:true, border:false" >
+				<div id="detailskutoolbar" style="display:none;">
+					<%@include file="./detailskutoolbar.jsp"%>
+				</div>
+				<table id="orderDetailDataGrid"></table>
+			</div>
+		</div>
 	</div>
-	<table id="orderDetailDataGrid"></table>
-</div>					
+</div>				
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>

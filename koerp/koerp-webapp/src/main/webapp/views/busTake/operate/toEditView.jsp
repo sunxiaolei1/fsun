@@ -26,29 +26,29 @@
 					        <tr>					            
 								<th>客户名称</th>
 								<td>
-									<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly style="width:95%;"/>							
+									<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly />							
 								</td>							
 								<th>所属店仓</th>
 								<td>
-									<input id="shopName" name="shopName" class="easyui-textbox" readOnly style="width:95%;"/>								
+									<input id="shopName" name="shopName" class="easyui-textbox" readOnly />								
 								</td>
 								<th>寄存单号</th>
 								<td>
-									<input id="orderId" name="orderId" class="easyui-textbox" readOnly style="width:95%;" />
+									<input id="orderId" name="orderId" class="easyui-textbox" readOnly  />
 								</td>																				
 					        </tr>	
 					        <tr>
 					        	<th>提货状态</th>
 								<td>
-									<input id="takeStatus" name="takeStatus" class="easyui-combobox" readOnly style="width:95%;" />								
+									<input id="takeStatus" name="takeStatus" class="easyui-combobox" readOnly  />								
 								</td>
 					        	<th>提货人</th>
 								<td>
-									<input id="takeName" name="takeName" class="easyui-textbox" readOnly style="width:95%;" />
+									<input id="takeName" name="takeName" class="easyui-textbox" readOnly  />
 								</td>		        		        		        										
 					        	<th>提货时间</th>
 								<td>
-									<input id="takeTime" name="takeTime" class="easyui-datetimebox" readOnly style="width:95%;"/>
+									<input id="takeTime" name="takeTime" class="easyui-datetimebox" readOnly />
 								</td>												        		            													        						        									
 					        </tr>	        
 					        <tr>

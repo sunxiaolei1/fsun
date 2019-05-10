@@ -48,7 +48,7 @@ function showTakeOutView(){
 
 	$("<div></div>").dialog({
 		id:"showSoDialog",
-	    title:"寄提单【"+ $("#takeId",$orderfm).textbox("getValue") +"】出库明细",
+	    title:"寄提单【"+ $("#takeId",$orderfm).val() +"】出库明细",
 	    width:"95%",
 	    height:"360px",
 	    closed:false,
@@ -159,7 +159,7 @@ function getTakeOutData(){
 	var baseInfo = formJson($orderfm);	
 	var saveData = {
 	     "params": {
-	    	 "takeId": $("#takeId",$orderfm).textbox("getValue"),
+	    	 "takeId": $("#takeId",$orderfm).val(),
 			 "header": baseInfo,
 			 "details": currDetailData
 			},
@@ -174,7 +174,7 @@ function getOrderCancelData(){
 	     "params": {
 	    	"memo":  $("#memo",$orderfm).textbox("getValue")
 	      },
-	     "saveUrl": "${api}/bus/take/status/${cancelStatus}?takeIds="+ $("#takeId",$orderfm).textbox("getValue")
+	     "saveUrl": "${api}/bus/take/status/${cancelStatus}?takeIds="+ $("#takeId",$orderfm).val()
 	}
 	return saveData;
 	
@@ -184,12 +184,11 @@ function getOrderCancelData(){
  * 保存成功后触发
  */
 function afterSaveFunc(){
-	
 	var requestFrom = "${requestFrom}";
 	if(requestFrom=='take'){
 		parent.closeCurrTab("reflushDataGrid");
 	}else{
-		parent.closeCurrTab("parent.refreshCurrTab");	
+		parent.refreshCurrTab();
 	}		
 }
 

@@ -26,11 +26,10 @@
 					            <th>单据编号</th>
 								<td style="width:32%;">
 									<input id="takeId" name="takeId" class="easyui-textbox" readOnly style="width:95%;"  />
-								</td>
-								
+								</td>								
 								<th>客户名称</th>
 								<td>
-									<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly style="width:90%;"/>							
+									<input id="buyerName" name="buyerName" class="easyui-textbox" readOnly style="width:95%;"/>							
 								</td>
 								<th>所属店仓</th>
 								<td>
@@ -44,7 +43,7 @@
 								</td>	
 								<th>提货人</th>
 								<td>
-									<input id="takeName" name="takeName" class="easyui-textbox" style="width:90%;" />
+									<input id="takeName" name="takeName" class="easyui-textbox" style="width:95%;" />
 								</td>	        		        		        										
 					        	<th>提货时间</th>
 								<td>

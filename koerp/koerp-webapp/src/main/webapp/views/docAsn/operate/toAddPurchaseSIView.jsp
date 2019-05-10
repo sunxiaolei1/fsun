@@ -7,72 +7,76 @@
 	request.setAttribute("api", basePath);
 %>
 
-<!-- 查询条件 -->
-<%@include file="../../addtoolbar.jsp"%>
+<div class="easyui-layout" data-options="fit:true" >
+	<!-- 查询条件 -->
+	<%@include file="../../addtoolbar.jsp"%>
 	
-<div class="fsun-wrap">
-	<form id="orderfm">
-		<span class="title" style="top: 35px;">基本信息</span>		
-		<input id="iId" name="iId" hidden="true" />	
-		<input id="toShopId" name="toShopId" hidden="true" />	
-		<input id="orderPrice" name="orderPrice" hidden="true" />	
-		<table class="nb-formTable" style="width:100%;margin-top:2px;">
-	        <tr>
-	            <th width="12%">单据编号<span style="color:red;">*</span></th>
-				<td>
-					<input id="asnNo" name="asnNo" class="easyui-textbox" readOnly />
-				</td>
-				<th width="12%">单据类型<span style="color:red;">*</span></th>
-				<td>
-					<input id="asnType" name="asnType" class="easyui-combobox" required readOnly />								
-				</td>
-				<th width="12%">入库店仓<span style="color:red;">*</span></th>
-				<td colspan="3" >
-					<input id="toShopName" name="toShopName" class="easyui-textbox" 
-					  style="width:400px;" readOnly />								
-				</td>																
-	        </tr>	
-	        <tr>
-	        	<th width="12%">外部单号</th>
-				<td>
-					<input id="extOrderNo" name="extOrderNo" class="easyui-textbox" />
-				</td>	            
-				<th width="12%">供应商</th>
-				<td>
-					<input id="supplierId" name="supplierId" class="easyui-combogrid" />
-					<input hidden=true id="supplierName" name="supplierName" />									
-				</td>					
-				<th width="12%">联系人</th>
-				<td>
-					<input id="supplierContact" name="supplierContact" class="easyui-textbox" />								
-				</td>
-	        	<th width="12%">联系方式</th>
-				<td>
-					<input id="supplierTel" name="supplierTel" class="easyui-textbox" />								
-				</td>	        									
-	        </tr>
-	        <tr>
-				<th width="12%">发货地址</th>
-				<td colspan="3">
-					<input id="supplierAddress" name="supplierAddress" class="easyui-textbox" 
-						data-options="multiline:true"  style="width:400px;height:46px;"/>
-				</td>
-	        	<th width="12%">备注</th>
-				<td colspan="3">
-					<input id="memo" name="memo"  data-options="multiline:true" 
-						class="easyui-textbox" style="width:400px;height:46px;"/>
-				</td>	        	
-	        </tr>
-		</table>
-	</form>			
-</div>	
-
-<div style="height: 320px; width: 100%;">
-	<div id="detailskutoolbar" style="display:none;">
-		<%@include file="./detailskutoolbar.jsp"%>
+	<div data-options="region:'center',split:true, border:false" >
+		<div class="easyui-layout" data-options="fit:true" >
+			<div data-options="region:'north',split:true, border:false" style="height:160px;overflow:hidden;">
+				<div class="fsun-wrap">
+					<form id="orderfm">
+						<span class="title" style="top: 1px;">采购信息(单号:<span id="asnNoDiv"></span>)</span>	
+						<input id="iId" name="iId" hidden="true" />	
+						<input id="toShopId" name="toShopId" hidden="true" />	
+						<input id="orderPrice" name="orderPrice" hidden="true" />	
+						<input id="asnNo" name="asnNo" hidden="true" />
+						<table class="nb-formTable">
+					        <tr>
+								<th>单据类型<span style="color:red;">*</span></th>
+								<td>
+									<input id="asnType" name="asnType" class="easyui-combobox" required readOnly />								
+								</td>
+								<th>外部单号</th>
+								<td>
+									<input id="extOrderNo" name="extOrderNo" class="easyui-textbox" />
+								</td>
+								<th>入库店仓<span style="color:red;">*</span></th>
+								<td>
+									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly />								
+								</td>																
+					        </tr>	
+					        <tr>					        		            
+								<th>供应商</th>
+								<td>
+									<input id="supplierId" name="supplierId" class="easyui-combogrid" />
+									<input hidden=true id="supplierName" name="supplierName" />									
+								</td>					
+								<th>联系人</th>
+								<td>
+									<input id="supplierContact" name="supplierContact" class="easyui-textbox" />								
+								</td>
+					        	<th>联系方式</th>
+								<td>
+									<input id="supplierTel" name="supplierTel" class="easyui-textbox" />								
+								</td>	        									
+					        </tr>
+					        <tr>
+								<th>发货地址</th>
+								<td>
+									<input id="supplierAddress" name="supplierAddress" class="easyui-textbox" 
+										data-options="multiline:true"  style="width:95%;height:50px;"/>
+								</td>
+					        	<th>备注</th>
+								<td colspan="3">
+									<input id="memo" name="memo"  data-options="multiline:true" 
+										class="easyui-textbox" style="width:70%;height:50px;"/>
+								</td>	        	
+					        </tr>
+						</table>
+					</form>			
+				</div>
+			</div>
+			
+			<div data-options="region:'center',split:true, border:false" >
+				<div id="detailskutoolbar" style="display:none;">
+					<%@include file="./detailskutoolbar.jsp"%>
+				</div>
+				<table id="orderDetailDataGrid"></table>
+			</div>
+		</div>
 	</div>
-	<table id="orderDetailDataGrid"></table>
-</div>					
+</div>
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>
@@ -163,7 +167,8 @@ $(function () {
 			/***************************              基本信息初始化                        ************************/			
 			var header = docAsnDto.header;
 			if(header!=null){
-				$orderfm.form("load", header);	
+				$orderfm.form("load", header);
+				$("#asnNoDiv").text(header.asnNo);
 			}
 			
 			var details = docAsnDto.details;	

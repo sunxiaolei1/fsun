@@ -205,7 +205,7 @@ function getOrderCancelData(){
 	     "params": {
 	    	"memo":  $("#memo",$orderfm).textbox("getValue")
 	      },
-	     "saveUrl": "${api}/doc/asn/status/${cancelStatus}?asnNos="+ $("#asnNo",$orderfm).textbox("getValue")
+	     "saveUrl": "${api}/doc/asn/status/${cancelStatus}?asnNos="+ $("#asnNo",$orderfm).val()
 	}
 	return saveData;
 	

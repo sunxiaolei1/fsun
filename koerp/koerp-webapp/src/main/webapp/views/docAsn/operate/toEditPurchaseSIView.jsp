@@ -25,15 +25,15 @@
 					        <tr>					            
 								<th>单据类型</th>
 								<td>
-									<input id="asnType" name="asnType" class="easyui-combobox" readOnly style="width:95%;" />							
+									<input id="asnType" name="asnType" class="easyui-combobox" readOnly />							
 								</td>
 								<th>外部单号</th>
 								<td>
-									<input id="extOrderNo" name="extOrderNo" class="easyui-textbox" readOnly style="width:95%;" />
+									<input id="extOrderNo" name="extOrderNo" class="easyui-textbox" readOnly />
 								</td>
 								<th>入库店仓</th>
 								<td>
-									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly style="width:95%;" />	
+									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly />	
 									<input id="orderNo" name="orderNo" hidden=true />																
 								</td>																			
 					        </tr>	
@@ -41,15 +41,15 @@
 					        		            
 								<th>供应商</th>
 								<td>
-									<input id="supplierName" name="supplierName" class="easyui-textbox" readOnly style="width:95%;" />							
+									<input id="supplierName" name="supplierName" class="easyui-textbox" readOnly />							
 								</td>					
 								<th>联系人</th>
 								<td>
-									<input id="supplierContact" name="supplierContact" class="easyui-textbox" readOnly style="width:95%;" />								
+									<input id="supplierContact" name="supplierContact" class="easyui-textbox" readOnly />								
 								</td>
 					        	<th>联系方式</th>
 								<td>
-									<input id="supplierTel" name="supplierTel" class="easyui-textbox" readOnly style="width:95%;" />	
+									<input id="supplierTel" name="supplierTel" class="easyui-textbox" readOnly />	
 								</td>	        									
 					        </tr>
 					        <tr>
