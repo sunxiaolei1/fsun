@@ -1,10 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
-	request.setAttribute("api", basePath);
-%>
+
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView()">添加</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="toDetailView()">修改</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-stop_red" plain="true" onclick="disabledBatch()">禁用</a>

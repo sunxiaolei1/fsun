@@ -34,7 +34,7 @@ public class BusPayAccountController extends BaseController {
 	}
 	
 	@RequestMapping("/toRefundDetailView")
-	public String toPreviewOrder() {
+	public String toRefundDetailView() {
 		return "/busPayAccount/operate/toRefundDetailView";
 	}
 	

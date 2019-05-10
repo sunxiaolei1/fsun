@@ -2,9 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>   
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
-
 <%
-	request.setAttribute("api", request.getContextPath());
+	request.setAttribute("api", request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort() + request.getContextPath());
 %>
 
 <html>

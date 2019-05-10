@@ -1,9 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
-	request.setAttribute("api", basePath);
-%>
 
 <!-- BasSku dialog -->
 <div class="easyui-layout" data-options="fit:true">		

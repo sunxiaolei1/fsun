@@ -1,11 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
-<script type="text/javascript"  src="<%=request.getContextPath()%>/jquery-easyui/commons/js/LodopFuncs.js"></script>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
-	request.setAttribute("api", basePath);
-%>
+
 <a href="#" class="easyui-linkbutton" iconCls="icon-lorry_delete" plain="true" onclick="toAddView('12')">盘亏出库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-vcard_edit" plain="true" onclick="toAddView('16')">领用出库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-lorry_error" plain="true" onclick="toAddView('15')">报损出库</a>

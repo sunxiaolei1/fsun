@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
 <script type="text/javascript"  src="<%=request.getContextPath()%>/jquery-easyui/commons/js/LodopFuncs.js"></script>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
-	request.setAttribute("api", basePath);
-%>
+
 <a href="#" class="easyui-linkbutton" iconCls="icon-vcard_add" plain="true" onclick="toAddView('1')">销售出库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-vcard_key" plain="true" onclick="toAddView('2')">销售寄存</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
