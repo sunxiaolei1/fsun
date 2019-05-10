@@ -95,15 +95,15 @@ var $orderfm = $("#orderfm");
 var siColumns = [[
 	{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
-	{field:"goodsName",title:"商品名称", width:140,align:"center"},
-	{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:"goodsName",title:"商品名称", width:200,align:"center"},
+	{field:"barCode",title:"条形码", width:110,align:"center"},
 	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.brandCode); 
 	}},
 	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.categoryCode); 
 	}},
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	{field:'property',title:'规格',width:100,align:'center',sortable:true},
 	//{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"price",title:"单价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"receiveQty",title:"数量", width:80,align:"center",
@@ -123,7 +123,7 @@ var siColumns = [[
 	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}},
-	{field:"stockIn",title:"操作",width:80,align:"center", 
+	{field:"stockIn",title:"操作",width:100,align:"center", 
 		formatter: function(value, row, index){						
 			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
 		}
@@ -184,7 +184,7 @@ $(function () {
  * 创建退货单
  */
 function toCreateAsnRefundView(){
-	var asnNo = $("#asnNo", $orderfm).textbox("getValue");
+	var asnNo = $("#asnNo", $orderfm).val();
 	var rows = currOrderDetailDataGrid.datagrid("getSelections");
 	if(rows.length==0){
 		$.messager.alert("提示", "请勾选要退货的商品", "info");

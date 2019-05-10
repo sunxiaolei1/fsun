@@ -124,7 +124,13 @@ function getOrderCancelData(){
  * 保存成功后触发
  */
 function afterSaveFunc(){
-	parent.closeCurrTab("reflushDataGrid");
+	var orderType = $("#orderType",$orderfm).combobox("getValue");
+	if(orderType=='13'){
+		parent.closeCurrTab("parent.refreshCurrTab");
+	}else{
+		parent.closeCurrTab("reflushDataGrid");
+	}
+	
 }
 
 /******************************    供选择商品的子页面使用      ********************************/

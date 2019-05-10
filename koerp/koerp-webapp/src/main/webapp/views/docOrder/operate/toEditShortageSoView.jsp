@@ -24,15 +24,15 @@
 					        <tr>
 					            <th>单据编号</th>
 								<td>
-									<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly style="width:95%;" />	
+									<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly  />	
 								</td>
 								<th>单据类型</th>
 								<td>
-									<input id="orderType" name="orderType" class="easyui-combobox" readOnly style="width:95%;" />									
+									<input id="orderType" name="orderType" class="easyui-combobox" readOnly  />									
 								</td>					
 								<th>出库店仓</th>
 								<td>
-									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly style="width:95%;" />									
+									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly  />									
 								</td>								
 					        </tr>		               		
 					        <tr>
@@ -72,15 +72,15 @@ var $orderfm = $("#orderfm");
 var soColumns = [[
 	{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
-	{field:"goodsName",title:"商品名称", width:140,align:"center"},
-	{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:"goodsName",title:"商品名称", width:200,align:"center"},
+	{field:"barCode",title:"条形码", width:110,align:"center"},
 	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.brandCode); 
 	}},
 	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.categoryCode); 
 	}},
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	{field:'property',title:'规格',width:100,align:'center',sortable:true},
 	//{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"price",title:"单价", width:80,align:"center",formatter:numBaseFormat},
 	{field:"shippedQty",title:"数量", width:80,align:"center",
@@ -100,7 +100,7 @@ var soColumns = [[
 	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}},
-	{field:"stockOut",title:"操作",width:80,align:"center", 
+	{field:"stockOut",title:"操作",width:100,align:"center", 
 		formatter: function(value, row, index){						
 			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
 		}

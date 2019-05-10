@@ -124,14 +124,14 @@ var siColumns = [[
 	//{field:'signType',title:"签收类型", width:80,align:"center"},
 	{field:"sku",title:"SKU", width:80,align:"center"},
 	{field:"goodsName",title:"商品名称", width:200,align:"center"},
-	{field:"barCode",title:"条形码", width:140,align:"center"},
+	{field:"barCode",title:"条形码", width:110,align:"center"},
 	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.brandCode); 
 	}},
 	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.categoryCode); 
 	}},
-	{field:'property',title:'规格',width:120,align:'center',sortable:true},
+	{field:'property',title:'规格',width:100,align:'center',sortable:true},
 	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}},

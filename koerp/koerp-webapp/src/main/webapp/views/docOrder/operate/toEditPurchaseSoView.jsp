@@ -28,43 +28,43 @@
 					        <tr>
 					        	<th>单据编号</th>
 								<td>
-									<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly style="width:95%;" />								
+									<input id="orderNo" name="orderNo" class="easyui-textbox" readOnly />								
 								</td>					            
 								<th>单据类型</th>
 								<td>
-									<input id="orderType" name="orderType" class="easyui-combobox" readOnly style="width:95%;" />								
+									<input id="orderType" name="orderType" class="easyui-combobox" readOnly />								
 								</td>
 								<th>入库单号</th>
 								<td >
-									<input id="userDefine1" name="userDefine1" class="easyui-textbox" readOnly style="width:95%;" />									
+									<input id="userDefine1" name="userDefine1" class="easyui-textbox" readOnly />									
 								</td> 																																
 					        </tr>
 					        <tr>
 								<th>出库店仓</th>
 								<td>
-									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly style="width:95%;" />								
+									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly />								
 								</td>
 								<th>出库时间</th>
 								<td>
-									<input id="deliveryTime" name="deliveryTime" class="easyui-datetimebox" readOnly style="width:95%;" />								
+									<input id="deliveryTime" name="deliveryTime" class="easyui-datetimebox" readOnly />								
 								</td>         
 								<th>供应商</th>
 								<td>
-									<input id="supplierName" name="supplierName" class="easyui-textbox" readOnly style="width:95%;" />								
+									<input id="supplierName" name="supplierName" class="easyui-textbox" readOnly />								
 								</td>				        		        	
 					        </tr>	
 					        <tr>  					        						
 								<th>收货人</th>
 								<td>
-									<input id="contacts" name="contacts" class="easyui-textbox" readOnly style="width:95%;" />									
+									<input id="contacts" name="contacts" class="easyui-textbox" readOnly />									
 								</td>
 					        	<th>联系方式</th>
 								<td>
-									<input id="mobile" name="mobile" class="easyui-textbox" readOnly style="width:95%;" />								
+									<input id="mobile" name="mobile" class="easyui-textbox" readOnly />								
 								</td>
 								<th>收货地址</th>
 								<td>
-									<input id="address" name="address" class="easyui-textbox" readOnly style="width:95%;" />		
+									<input id="address" name="address" class="easyui-textbox" readOnly />		
 								</td>	        									
 					        </tr>					        
 					        <tr>								
@@ -104,7 +104,7 @@ var $orderfm = $("#orderfm");
 var soColumns = [[
 	{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
-	{field:"goodsName",title:"商品名称", width:200,align:"center"},
+	{field:"goodsName",title:"商品名称", width:160,align:"center"},
 	{field:"barCode",title:"条形码", width:110,align:"center"},
 	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.brandCode); 
@@ -138,7 +138,7 @@ var soColumns = [[
 	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
 		return formatter(value, window.parent.unitCode); 
 	}},
-	{field:"stockOut",title:"操作",width:90,align:"center", 
+	{field:"stockOut",title:"操作",width:100,align:"center", 
 		formatter: function(value, row, index){						
 			return commonAssemBottonHtml('delOne', index, '删除', 'icon-script_delete');													
 		}
