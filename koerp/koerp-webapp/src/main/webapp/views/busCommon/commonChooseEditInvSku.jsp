@@ -94,7 +94,14 @@ $(function() {
 				return formatter(value, window.parent.categoryCode); 
 			}},
 			//{field: "property", title: "规格", width: 120, align: "center"},
-			{field: "stockQty", title: "库存", width: 60, align: "center"},
+			{field: "stockQty", title: "库存", width: 60, align: "center",
+				styler: function(value, row){
+					if(row.warningQty==null || value>=row.warningQty){
+						return "font-weight:bold;color:green;"
+					}
+					return "font-weight:bold;color:red;";
+				}
+			},
 			{field: "originSalePrice", title: "原价", width: 70, align: "center",formatter:numBaseFormat},
 			{field: "salePrice", title: "单价", width: 70, align: "center",formatter:numBaseFormat},
 			{field: "qty", title: "数量", width: 60, align: "center"},

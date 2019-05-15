@@ -1,5 +1,6 @@
 package com.fsun.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,6 +12,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fsun.api.bus.OverviewApi;
 import com.fsun.common.utils.MD5Utils;
 import com.fsun.domain.common.HttpResult;
+import com.fsun.domain.dto.BusUserDto;
+import com.fsun.domain.entity.OverviewCondition;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
@@ -28,6 +33,9 @@ import com.fsun.web.controller.base.BaseController;
 
 @Controller
 public class HomeController extends BaseController {
+	
+	@Autowired
+	private OverviewApi overviewApi;
 	
 	/**
 	 * 登录
@@ -110,6 +118,25 @@ public class HomeController extends BaseController {
 	@RequestMapping("/403")
 	public String unauthorizedRole() {
 		return "/403";
+	}
+	
+	
+	/**
+	 * 首页获取初始化数据
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/overview/getInitData", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult getInitData(OverviewCondition condition){
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			HashMap<String, Object> map = overviewApi.getInitData(condition, currUser);
+			return success(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
 	}
 	
 	

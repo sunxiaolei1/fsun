@@ -16,7 +16,7 @@
     <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
     <result column="cost_price" property="costPrice" jdbcType="DECIMAL" />
     <result column="origin_sale_price" property="originSalePrice" jdbcType="DECIMAL" />
-    <result column="warning_qty" property="warningQty" jdbcType="INTEGER" />
+    <result column="warning_qty" property="warningQty" jdbcType="DECIMAL" />
     <result column="qty" property="qty" jdbcType="DECIMAL" />
     <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
@@ -140,7 +140,7 @@
       #{parentSkuId,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, #{productType,jdbcType=SMALLINT}, 
       #{brandCode,jdbcType=VARCHAR}, #{assistId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
       #{enName,jdbcType=VARCHAR}, #{property,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, 
-      #{costPrice,jdbcType=DECIMAL}, #{originSalePrice,jdbcType=DECIMAL}, #{warningQty,jdbcType=INTEGER}, 
+      #{costPrice,jdbcType=DECIMAL}, #{originSalePrice,jdbcType=DECIMAL}, #{warningQty,jdbcType=DECIMAL}, 
       #{qty,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, 
       #{convertQty,jdbcType=DECIMAL}, #{convertUnit,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, 
       #{memo,jdbcType=VARCHAR}, #{descr,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, 
@@ -315,7 +315,7 @@
         #{originSalePrice,jdbcType=DECIMAL},
       </if>
       <if test="warningQty != null" >
-        #{warningQty,jdbcType=INTEGER},
+        #{warningQty,jdbcType=DECIMAL},
       </if>
       <if test="qty != null" >
         #{qty,jdbcType=DECIMAL},
@@ -434,7 +434,7 @@
         origin_sale_price = #{originSalePrice,jdbcType=DECIMAL},
       </if>
       <if test="warningQty != null" >
-        warning_qty = #{warningQty,jdbcType=INTEGER},
+        warning_qty = #{warningQty,jdbcType=DECIMAL},
       </if>
       <if test="qty != null" >
         qty = #{qty,jdbcType=DECIMAL},
@@ -526,7 +526,7 @@
       market_price = #{marketPrice,jdbcType=DECIMAL},
       cost_price = #{costPrice,jdbcType=DECIMAL},
       origin_sale_price = #{originSalePrice,jdbcType=DECIMAL},
-      warning_qty = #{warningQty,jdbcType=INTEGER},
+      warning_qty = #{warningQty,jdbcType=DECIMAL},
       qty = #{qty,jdbcType=DECIMAL},
       unit = #{unit,jdbcType=VARCHAR},
       unit_name = #{unitName,jdbcType=VARCHAR},

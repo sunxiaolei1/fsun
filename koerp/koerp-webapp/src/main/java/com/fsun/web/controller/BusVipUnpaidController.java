@@ -127,7 +127,7 @@ public class BusVipUnpaidController extends BaseController {
 		
 		BusAccessLogCondition condition = new BusAccessLogCondition();
 		condition.setCreatedTime(new Date());
-		condition.setExt0("会员卡充值及挂账结款交易记录");
+		condition.setExt0("会员卡充值、备用金充值及挂账结款交易记录");
 		condition.setIp(request.getRemoteAddr());
 		condition.setRequestStatus((short)200);
 		condition.setRequestType((short)0);
@@ -208,18 +208,38 @@ public class BusVipUnpaidController extends BaseController {
 	@ResponseBody
 	public HttpResult changeStatus(@PathVariable("status") String status, 
 		@RequestParam("ids") String ids, @RequestBody BusVipUnpaidCondition condition) {
+		
+		BusAccessLogCondition busAccessLogCondition = new BusAccessLogCondition();
+		busAccessLogCondition.setCreatedTime(new Date());
+		busAccessLogCondition.setExt0("交易记录状态变更操作");
+		busAccessLogCondition.setIp(request.getRemoteAddr());
+		busAccessLogCondition.setRequestStatus((short)200);
+		busAccessLogCondition.setRequestType((short)0);
+		busAccessLogCondition.setRequestJson(JSON.toJSONString(condition));
+		busAccessLogCondition.setExt4("1");
+		busAccessLogCondition.setExt2(status);
 		try {
 			if (!StringUtils.isEmpty(ids)) {
-				SysUser user = getCurrentUser();	
+				SysUser user = getCurrentUser();
+				busAccessLogCondition.setExt1(user.getUsername());			
 				busVipUnpaidApi.changeStatus(ids.split(","), status, user, condition);
+				busAccessLogCondition.setRequestId(ids);
+				busAccessLogApi.create(busAccessLogCondition);				
 				return success(SCMErrorEnum.SUCCESS);
 			}
 			return failure(SCMErrorEnum.INVALID_PARAMS);
 		} catch (VipUnpaidException e) {
 			e.printStackTrace();
+			busAccessLogCondition.setRequestStatus((short)-100);
+			busAccessLogCondition.setErrorMsg(e.getErrorMsg());			
+			busAccessLogApi.create(busAccessLogCondition);
 			return failure(SCMException.CODE_UPDATE, e.getErrorMsg());
 		}catch (Exception e) {
 			e.printStackTrace();
+			busAccessLogCondition.setRequestStatus((short)-100);
+			String errorMessage = e.getMessage().length()>800?e.getMessage().substring(0, 800):e.getMessage();
+			busAccessLogCondition.setErrorMsg(errorMessage);			
+			busAccessLogApi.create(busAccessLogCondition);
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}
 	}

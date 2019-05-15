@@ -161,6 +161,50 @@
     	<include refid="conditions" />
   </select>
   
+  <select id="getSaleQuota" resultType="java.util.Map" parameterType="java.lang.Integer" >    
+	SELECT 
+	  o.shop_name AS name, 
+	  CONCAT(
+		CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 1 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 2 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 3 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 4 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 5 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 6 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 7 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 8 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 9 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 10 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 11 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR),
+		",", CAST(ROUND(sum(CASE DATE_FORMAT(o.settle_time,'%m') WHEN 12 THEN o.order_price ELSE 0 END)/10000, 2) AS CHAR)			
+	  ) AS saleAmount
+	FROM BUS_ORDER o
+	WHERE o.trade_status = '30' AND DATE_FORMAT(o.settle_time,'%Y') = #{year}
+	GROUP BY o.shop_id
+	ORDER BY o.shop_id ASC
+  </select>
+
+  <select id="getSkusQuota" resultType="java.util.Map" parameterType="java.lang.Integer" >    
+	SELECT 
+  		CONCAT(g.goods_name,"(", g.sku, ")") AS name,
+		ROUND(SUM(g.total_price)/10000, 2) AS z 	 
+	FROM BUS_ORDER o
+	LEFT JOIN BUS_GOODS g ON o.order_id = g.order_id
+	WHERE o.trade_status = '30' AND DATE_FORMAT(o.settle_time,'%Y') = #{year}
+	GROUP BY g.sku
+	ORDER BY z DESC
+	LIMIT 10
+  </select>
+  
+  <select id="getSkusTotalAmount" resultType="java.math.BigDecimal" 
+  		parameterType="java.lang.Integer" >    
+	SELECT 
+		ROUND(SUM(g.total_price)/10000, 2)
+	FROM BUS_ORDER o
+	LEFT JOIN BUS_GOODS g ON o.order_id = g.order_id
+	WHERE o.trade_status = '30' AND DATE_FORMAT(o.settle_time,'%Y') = #{year}
+  </select>
+  
   <select id="selectListMap" resultType="java.util.Map" 
   	parameterType="com.fsun.domain.entity.BusOrderCondition" >    
 	SELECT 

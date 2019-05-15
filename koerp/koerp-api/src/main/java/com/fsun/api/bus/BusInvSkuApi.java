@@ -1,10 +1,12 @@
 package com.fsun.api.bus;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
 import com.fsun.api.base.BaseFooterApi;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusInvSkuCondition;
 import com.fsun.domain.entity.BusInvSkuDetailsCondition;
 import com.fsun.domain.model.BusInvSku;
@@ -56,4 +58,12 @@ public interface BusInvSkuApi extends BaseFooterApi<BusInvSku, BusInvSkuConditio
 	 * @return
 	 */
 	public List<HashMap<String, Object>> exportInvSkuDetails(BusInvSkuDetailsCondition condition);
+
+	/**
+	 * 配置商品库存预警
+	 * @param split
+	 * @param warningQty
+	 * @param user
+	 */
+	public void configWarning(String[] split, BigDecimal warningQty, BusUserDto user);
 }

@@ -1,6 +1,7 @@
 package com.fsun.web.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +22,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fsun.api.bus.BusBasSkuApi;
 import com.fsun.api.bus.BusInvSkuApi;
 import com.fsun.common.utils.ExcelUtil;
+import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusInvSkuCondition;
 import com.fsun.domain.entity.BusInvSkuDetailsCondition;
 import com.fsun.domain.model.BusBasSku;
@@ -53,6 +57,11 @@ public class BusInvSkuController extends BaseController {
 		return "/busCommon/commonChooseInvSku";
 	}
 	
+	@RequestMapping("/toConfigWarningView")
+	public String toConfigWarningView() {
+		return "/busInvSku/operate/toConfigWarningView";
+	}
+
 	@RequestMapping("/toChooseEditSku")
 	public ModelAndView toChooseEditSku() {
 		ModelAndView modelAndView = new ModelAndView("/busCommon/commonChooseEditInvSku");
@@ -153,7 +162,8 @@ public class BusInvSkuController extends BaseController {
 			fieldMap.put("lock_qty", "冻结数量");
 			fieldMap.put("damaged_qty", "破损数量");
 			fieldMap.put("take_inv_qty", "寄提库存");
-			fieldMap.put("vir_inv_qty", "虚拟库存");			
+			fieldMap.put("vir_inv_qty", "虚拟库存");	
+			fieldMap.put("warning_qty", "库存预警");	
 			fieldMap.put("bar_code", "条形码");
 			fieldMap.put("brand_name", "品牌");
 			fieldMap.put("category_name", "商品分类");
@@ -200,5 +210,20 @@ public class BusInvSkuController extends BaseController {
 		}
 	}
 	
-	
+	@RequestMapping(value="/configWarning/{warningQty}", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult configWarning(@PathVariable("warningQty") BigDecimal warningQty, 
+		@RequestParam("ids") String ids) {
+		try {
+			if (!StringUtils.isEmpty(ids)) {
+				BusUserDto busUserDto = getCurrentUser();	
+				busInvSkuApi.configWarning(ids.split(","), warningQty, busUserDto);
+				return success(SCMErrorEnum.SUCCESS);
+			}
+			return failure(SCMErrorEnum.INVALID_PARAMS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
 }

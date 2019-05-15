@@ -57,6 +57,18 @@ public class BusInvSku {
      * 表字段 : bus_inv_sku.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 告警阀值
+     * 表字段 : bus_inv_sku.warning_qty
+     */
+    private BigDecimal warningQty;
+    
+    /**
+     * 禁止售卖值
+     * 表字段 : bus_inv_sku.disabled_qty
+     */
+    private BigDecimal disabledQty;
 
     public String getId() {
         return id;
@@ -129,6 +141,22 @@ public class BusInvSku {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+    
+	public BigDecimal getWarningQty() {
+		return warningQty;
+	}
+
+	public void setWarningQty(BigDecimal warningQty) {
+		this.warningQty = warningQty;
+	}
+
+	public BigDecimal getDisabledQty() {
+		return disabledQty;
+	}
+
+	public void setDisabledQty(BigDecimal disabledQty) {
+		this.disabledQty = disabledQty;
+	}
 
 	public BusInvSku() {
 		super();
@@ -142,6 +170,23 @@ public class BusInvSku {
 		this.qty = qty;
 		this.lockQty = lockQty;
 		this.damagedQty = damagedQty;
+	}
+
+	public BusInvSku(String id, String sku, String shopId, BigDecimal qty, BigDecimal lockQty, 
+		BigDecimal damagedQty, String memo, Date createdTime, Date updatedTime, 
+		BigDecimal warningQty, BigDecimal disabledQty) {
+		super();
+		this.id = id;
+		this.sku = sku;
+		this.shopId = shopId;
+		this.qty = qty;
+		this.lockQty = lockQty;
+		this.damagedQty = damagedQty;
+		this.memo = memo;
+		this.createdTime = createdTime;
+		this.updatedTime = updatedTime;
+		this.warningQty = warningQty;
+		this.disabledQty = disabledQty;
 	}
     
     

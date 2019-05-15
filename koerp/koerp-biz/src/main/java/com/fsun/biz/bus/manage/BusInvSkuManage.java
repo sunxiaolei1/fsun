@@ -19,6 +19,7 @@ import com.fsun.domain.entity.BusInvSkuCondition;
 import com.fsun.domain.entity.BusVipCondition;
 import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.VipCardTypeEnum;
+import com.fsun.domain.model.BusBasSku;
 import com.fsun.domain.model.BusCustomer;
 import com.fsun.domain.model.BusInvSku;
 import com.fsun.exception.bus.InvSkuException;
@@ -36,6 +37,18 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 	
 	@Autowired
 	private BusVipManage busVipManage;
+	
+	@Autowired
+	private BusBasSkuManage busBasSkuManage;
+	
+	/**
+	 * 获取库存告警列表
+	 * @param busInvSkuCondition
+	 * @return
+	 */
+	public List<HashMap<String, Object>> getWarningList(BusInvSkuCondition condition) {
+		return mapper.getWarningList(condition);
+	}
 
 	/**
 	 * java对象分页查询
@@ -111,7 +124,8 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 	public BusInvSku stockIn(BusInvSku domain){		
 		 String sku = domain.getSku();	
 		 String shopId = domain.getShopId();
-		 if(StringUtils.isEmpty(sku)){
+		 BusBasSku busBasSku = busBasSkuManage.loadBySku(sku);
+		 if (busBasSku == null) {
 			throw new InvSkuException(SCMErrorEnum.BUS_SKU_ISNULL);
 		 }
 		 if(StringUtils.isEmpty(shopId)){
@@ -129,6 +143,7 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 		 }else{
 			 domain.setId(PKMapping.GUUID(PKMapping.bus_inv_sku));
 			 domain.setCreatedTime(now);	
+			 domain.setWarningQty(busBasSku.getWarningQty());
 			 mapper.insert(domain);
 			 return domain;
 		 }		
@@ -141,32 +156,34 @@ public class BusInvSkuManage extends CrudManage<BusInvSkuMapper, BusInvSku>{
 	 * @param domain
 	 */
 	public BusInvSku stockOut(BusInvSku domain){
-		String sku = domain.getSku();	
-		 String shopId = domain.getShopId();
-		 if(StringUtils.isEmpty(sku)){
+		String sku = domain.getSku();
+		String shopId = domain.getShopId();
+		BusBasSku busBasSku = busBasSkuManage.loadBySku(sku);
+		if (busBasSku == null) {
 			throw new InvSkuException(SCMErrorEnum.BUS_SKU_ISNULL);
-		 }
-		 if(StringUtils.isEmpty(shopId)){
+		}
+		if (StringUtils.isEmpty(shopId)) {
 			throw new InvSkuException(SCMErrorEnum.BUS_SHOP_ISNULL);
-		 }	 
-		 Date now = new Date();
-		 BusInvSku old = this.loadBySkuAndShopId(sku, shopId);
-		 if(old!=null){
-			 old.setDamagedQty(old.getDamagedQty().subtract(domain.getDamagedQty()));
-			 old.setLockQty(old.getLockQty().subtract(domain.getLockQty()));
-			 old.setQty(old.getQty().subtract(domain.getQty()));
-			 old.setUpdatedTime(now);
-			 mapper.updateByPrimaryKey(old);
-			 return old;
-		 }else{
-			 domain.setId(PKMapping.GUUID(PKMapping.bus_inv_sku));
-			 domain.setCreatedTime(now);
-			 domain.setDamagedQty(domain.getDamagedQty().negate());
-			 domain.setLockQty(domain.getLockQty().negate());
-			 domain.setQty(domain.getQty().negate());
-			 mapper.insert(domain);
-			 return domain;
-		 }	
+		}
+		Date now = new Date();
+		BusInvSku old = this.loadBySkuAndShopId(sku, shopId);
+		if (old != null) {
+			old.setDamagedQty(old.getDamagedQty().subtract(domain.getDamagedQty()));
+			old.setLockQty(old.getLockQty().subtract(domain.getLockQty()));
+			old.setQty(old.getQty().subtract(domain.getQty()));
+			old.setUpdatedTime(now);
+			mapper.updateByPrimaryKey(old);
+			return old;
+		} else {
+			domain.setId(PKMapping.GUUID(PKMapping.bus_inv_sku));
+			domain.setCreatedTime(now);
+			domain.setDamagedQty(domain.getDamagedQty().negate());
+			domain.setLockQty(domain.getLockQty().negate());
+			domain.setQty(domain.getQty().negate());
+			domain.setWarningQty(busBasSku.getWarningQty());
+			mapper.insert(domain);
+			return domain;
+		}
 	}
 	
 	/*************************************          私有方法                   ****************************************/

@@ -30,6 +30,33 @@ import com.fsun.exception.enums.SCMErrorEnum;
 public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
 	
 	/**
+	 * 获取当前年份各门店对应的销业绩(按月汇总)
+	 * @param year
+	 * @return
+	 */
+	public List<HashMap<String, Object>> getSaleQuota(int year) {
+		return mapper.getSaleQuota(year);
+	}
+	
+	/**
+	 * 获取当前年份商品销售占比
+	 * @param year
+	 * @return
+	 */
+	public List<HashMap<String, Object>> getSkusQuota(int year) {
+		return mapper.getSkusQuota(year);
+	}
+	
+	/**
+	 * 获取当前年份商品销售总额
+	 * @param year
+	 * @return
+	 */
+	public BigDecimal getSkusTotalAmount(int year) {
+		return mapper.getSkusTotalAmount(year);
+	}
+	
+	/**
 	 * 根据出库类型生成销售单号
 	 * @param orderType
 	 * @param shopCode

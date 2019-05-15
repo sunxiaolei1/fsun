@@ -1,5 +1,6 @@
 package com.fsun.dao.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.fsun.dao.config.Mapper;
@@ -16,5 +17,12 @@ public interface BusInvSkuMapper extends BaseMySqlMapper<BusInvSku>{
 	 * @return
 	 */
 	public List<InvSkuDto> selectInvSkuList(BusInvSkuCondition condition);
+
+	/**
+	 * 获取库存告警列表
+	 * @param condition
+	 * @return
+	 */
+	public List<HashMap<String, Object>> getWarningList(BusInvSkuCondition condition);
 
 }

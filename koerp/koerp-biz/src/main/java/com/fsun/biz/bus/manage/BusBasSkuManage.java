@@ -18,6 +18,21 @@ import com.fsun.domain.model.BusBasSku;
  */
 @Component
 public class BusBasSkuManage extends CrudManage<BusBasSkuMapper, BusBasSku>{
+	
+	/**
+	 * 通过sku获取对应的单个商品
+	 * @param sku
+	 * @return
+	 */
+	public BusBasSku loadBySku(String sku) {
+		BusBasSkuCondition condition = new BusBasSkuCondition();
+		condition.setSku(sku);
+		List<BusBasSku> list = mapper.selectList(condition);
+		if(list!=null && list.size()==1){
+			return list.get(0);
+		}
+		return null;
+	}
 
 	/**
 	 * 
@@ -47,4 +62,5 @@ public class BusBasSkuManage extends CrudManage<BusBasSkuMapper, BusBasSku>{
 			busBasSku.setSalePrice(salePrice);
 		}	
 	}
+
 }

@@ -84,6 +84,19 @@ public class BusInvSkuCondition extends SortCondition{
      * 商品分类
      */
     private String categoryCode;
+       
+    /**
+     * 告警阀值
+     * 表字段 : bus_inv_sku.warning_qty
+     */
+    private BigDecimal warningQty;
+    
+    /**
+     * 禁止售卖值
+     * 表字段 : bus_inv_sku.disabled_qty
+     */
+    private BigDecimal disabledQty;
+    
 
     public String getSku() {
         return sku;
@@ -211,6 +224,22 @@ public class BusInvSkuCondition extends SortCondition{
 	 */
 	public void setCategoryCode(String categoryCode) {
 		this.categoryCode = categoryCode;
+	}
+
+	public BigDecimal getWarningQty() {
+		return warningQty;
+	}
+
+	public void setWarningQty(BigDecimal warningQty) {
+		this.warningQty = warningQty;
+	}
+
+	public BigDecimal getDisabledQty() {
+		return disabledQty;
+	}
+
+	public void setDisabledQty(BigDecimal disabledQty) {
+		this.disabledQty = disabledQty;
 	}
 	
 }

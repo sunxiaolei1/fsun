@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<script type="text/javascript"  src="<%=request.getContextPath()%>/jquery-easyui/commons/js/LodopFuncs.js"></script>
 
 <a href="#" class="easyui-linkbutton" iconCls="icon-lorry_delete" plain="true" onclick="toAddView('12')">盘亏出库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-vcard_edit" plain="true" onclick="toAddView('16')">领用出库</a>

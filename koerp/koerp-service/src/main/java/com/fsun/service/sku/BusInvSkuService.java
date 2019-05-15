@@ -1,15 +1,18 @@
 package com.fsun.service.sku;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.BusInvSkuApi;
 import com.fsun.biz.bus.manage.BusInvSkuDetailsManage;
 import com.fsun.biz.bus.manage.BusInvSkuManage;
 import com.fsun.domain.common.PageModel;
+import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusInvSkuCondition;
 import com.fsun.domain.entity.BusInvSkuDetailsCondition;
 import com.fsun.domain.model.BusInvSku;
@@ -95,5 +98,15 @@ public class BusInvSkuService implements BusInvSkuApi {
 	@Override
 	public List<HashMap<String, Object>> exportInvSkuDetails(BusInvSkuDetailsCondition condition) {
 		return busInvSkuDetailsManage.export(condition);
+	}
+
+	@Transactional
+	@Override
+	public void configWarning(String[] ids, BigDecimal warningQty, BusUserDto user) {
+		for (String id : ids) {
+			BusInvSku busInvSku = busInvSkuManage.load(id);
+			busInvSku.setWarningQty(warningQty);
+			busInvSkuManage.update(busInvSku);
+		}
 	}
 }

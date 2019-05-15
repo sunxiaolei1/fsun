@@ -34,7 +34,14 @@ var frozenColumns = [[
 
 var columns = [[
 	{field:'qty',title:'可用数量',width:80,align:'center',formatter:intNumBaseFormat, 
-		sortable:true, styler:reportNumberStyler},	
+		sortable:true, 
+		styler: function(value, row){
+			if(row.warning_qty==null || value>=row.warning_qty){
+				return "font-weight:bold;color:green;"
+			}
+			return "font-weight:bold;color:red;";
+		}
+	},	
 	{field:'lock_qty',title:'冻结数量',width:80,align:'center',formatter:intNumBaseFormat, 
 		sortable:true, styler:reportNumberStyler},
 	{field:'damaged_qty',title:'破损数量',width:80,align:'center',formatter:intNumBaseFormat, 
@@ -42,7 +49,16 @@ var columns = [[
 	{field:'take_inv_qty',title:'寄提库存',width:80,align:'center',formatter:intNumBaseFormat, 
 		sortable:true, styler:reportNumberStyler},
 	{field:'vir_inv_qty',title:'虚拟库存',width:80,align:'center',formatter:intNumBaseFormat, 
-		sortable:true, styler:reportNumberStyler},
+		sortable:true, 
+		styler: function(value, row){
+			if(row.warning_qty==null || value>=row.warning_qty){
+				return "font-weight:bold;color:green;"
+			}
+			return "font-weight:bold;color:red;";
+		}
+	},
+	{field:'warning_qty',title:'库存预警',width:80,align:'center',formatter:intNumBaseFormat, 
+			sortable:true, styler:reportContentStyler},
 	{field:'bar_code',title:'条形码',width:120,align:'center',sortable:true},	
 	{field:'brand_code',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.brandCode); 

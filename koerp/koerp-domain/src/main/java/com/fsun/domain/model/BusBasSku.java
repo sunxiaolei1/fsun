@@ -92,7 +92,7 @@ public class BusBasSku {
      * 库存预警值
      * 表字段 : bus_bas_sku.warning_qty
      */
-    private Integer warningQty;
+    private BigDecimal warningQty;
 
     /**
      * 数量
@@ -355,11 +355,11 @@ public class BusBasSku {
         this.originSalePrice = originSalePrice;
     }
 
-    public Integer getWarningQty() {
+    public BigDecimal getWarningQty() {
         return warningQty;
     }
 
-    public void setWarningQty(Integer warningQty) {
+    public void setWarningQty(BigDecimal warningQty) {
         this.warningQty = warningQty;
     }
 
