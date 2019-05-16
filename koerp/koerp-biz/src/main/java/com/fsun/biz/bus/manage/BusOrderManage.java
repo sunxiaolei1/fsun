@@ -162,16 +162,11 @@ public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
 	    	for (int i = 0; i < length; i++) {   		
 	    		BusGoods goodsDto = goodsDtos.get(i);   		
 				if (i < length - 1) {
-					//公式: 单价*数量  = 金额
-					//公式： 金额*账单实收价/销售总价
-					//注：当订单出现满赠情况且赠的是同一个产品,则对应的赠送的东西直接分摊到该满赠产品中去（即:并不分摊到别的产品中去)
-					if (goodsDto.getIsGift()) {
-						totalPartPrice = goodsDto.getTotalPrice().subtract(goodsDto.getGiftPrice())
-							.multiply(totalReceptPrice).divide(totalPrice, 2, BigDecimal.ROUND_HALF_UP);
-					} else {
-						totalPartPrice = goodsDto.getTotalPrice().multiply(totalReceptPrice).
-							divide(totalPrice, 2, BigDecimal.ROUND_HALF_UP);
-					}
+					//公式: 单价　×　数量  = 金额
+					//公式：同一个商品销售合计金额　×　账单实收价/销售总价　=　同一个商品的实收金额
+					//注:无论该商品有无赠品都自加实付金额				
+					totalPartPrice = goodsDto.getTotalPrice().multiply(totalReceptPrice).
+						divide(totalPrice, 2, BigDecimal.ROUND_HALF_UP);					
 					//可售商品的n-1商品分摊价
 					newPartPrice = newPartPrice.add(totalPartPrice);
 					if (totalReceptPrice.compareTo(newPartPrice) < 0) {
@@ -218,13 +213,9 @@ public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
 	    List<BusGoods> secondGoodsDtos = secondGoodsMap.get(firstGoodsDto.getSkuId());
 	    if (secondGoodsDtos != null && secondGoodsDtos.size() > 0) {
 	    	//核算套餐下的单品的总销售金额
-	    	//TotalPrice-GiftPrice,考虑同个菜品满赠情况
-	    	for (BusGoods goodsDto : secondGoodsDtos) {
-	    		if (goodsDto.getIsGift()) {
-	    			totalPrice = totalPrice.add(goodsDto.getTotalPrice().subtract(goodsDto.getGiftPrice()));
-	    		} else {
-	    			totalPrice = totalPrice.add(goodsDto.getTotalPrice());
-	    		}
+	    	//无论该商品有无赠品都自加实付金额
+	    	for (BusGoods goodsDto : secondGoodsDtos) {	    		
+	    		totalPrice = totalPrice.add(goodsDto.getTotalPrice());	    		
 	    	}
 	     	this.settleChildren(totalReceptPrice, totalPrice, secondGoodsDtos, secondGoodsMap, priceMap, apportionDetails);
 	    }
@@ -299,12 +290,9 @@ public class BusOrderManage extends CrudManage<BusOrderMapper, BusOrder>{
 		        if (busGoods.getTotalPartPrice().compareTo(BigDecimal.ZERO) < 0) {
 		        	priceMap.put("oldTotalPartPrice", new BigDecimal(-2));
 		        }
-		        //TotalPrice-GiftPrice 考虑同一商品满赠情况
-		        if (busGoods.getIsGift()) {
-		        	totalPrice = totalPrice.add(busGoods.getTotalPrice().subtract(busGoods.getGiftPrice()));
-		        } else {
-		        	totalPrice = totalPrice.add(busGoods.getTotalPrice());
-		        }	        
+		        //无论该商品有无赠品都自加实付金额		       
+		        totalPrice = totalPrice.add(busGoods.getTotalPrice());
+		        //商品类型为套餐的情况	        
 		        if (ProductTypeEnum.PACKAGE.getValue().equals(busGoods.getProductType())) {
 		        	String skuId = busGoods.getSkuId();
 		        	BigDecimal skuNumber = priceMap.get(skuId);

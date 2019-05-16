@@ -496,6 +496,54 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		
 	}
 	
+	@Transactional
+	@Override
+	public void synApportionErrorOrder(String orderIds, BusUserDto currUser) {
+		String username = currUser.getUsername();
+		if(!"super".equals(username)){
+			throw new OrderException(SCMErrorEnum.USER_ILLEGAL);
+		}
+		if(orderIds!=null && orderIds!=""){
+			Date now = new Date();
+			for (String orderId : orderIds.split(",")) {
+				BusOrder busOrder = busOrderManage.load(orderId);
+				List<BusGoods> busGoodsList = busGoodsManage.listByHeaderId(orderId);
+				List<BusPayAccount> busPayAccounts = busPayAccountManage.listByHeaderId(orderId);
+				if(busOrder!=null && busGoodsList!=null && busGoodsList.size()>0 
+						&& busPayAccounts!=null && busPayAccounts.size()>0){
+					BigDecimal totalPartPrice = BigDecimal.ZERO;
+					boolean isEnabled = true;
+					for (BusGoods busGoods : busGoodsList) {						
+						if(busGoods.getTotalPartPrice()==null || busGoods.getTotalPartPrice().compareTo(BigDecimal.ZERO)<0){
+							isEnabled = false;
+							break;
+ 						}
+						totalPartPrice = totalPartPrice.add(busGoods.getTotalPartPrice());
+					}
+					BigDecimal receptPrice = busOrder.getReceptPrice();
+					if(!isEnabled || receptPrice.compareTo(totalPartPrice)!=0){
+						Set<BusGoods> apportionDetails = new HashSet<>();
+						BusOrderDto busOrderDto = new BusOrderDto();
+						busOrderDto.setHeader(busOrder);
+						busOrderDto.setDetails(busGoodsList);
+						busOrderDto.setPayAccounts(busPayAccounts);
+						busOrderManage.initApportionDetails(busOrderDto, apportionDetails);
+						for (BusGoods busGoods : apportionDetails) {
+							BigDecimal calcTotalPrice = busGoods.getQty().subtract(busGoods.getGiftCount()).
+								multiply(busGoods.getSalePrice()).setScale(2, BigDecimal.ROUND_HALF_UP);;
+							if(busGoods.getTotalPrice().compareTo(calcTotalPrice)!=0){
+								throw new OrderException(SCMErrorEnum.BUS_SKU_AMOUNT_ILLEGAL);
+							}
+							busGoods.setUpdatedTime(now);		
+							busGoodsManage.update(busGoods);
+						}
+					}
+				}				
+			}
+		}
+		
+	}
+	
 	/****************************    私有方法          ******************************/
 	
 	/**

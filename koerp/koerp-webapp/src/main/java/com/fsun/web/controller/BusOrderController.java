@@ -339,6 +339,19 @@ public class BusOrderController extends BaseController {
 		}
 	}
 	
+	@RequestMapping(value="/synApportionErrorOrder/{orderIds}", method = RequestMethod.GET)
+	@ResponseBody
+	public HttpResult synApportionErrorOrder(@PathVariable("orderIds") String orderIds) {
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			busOrderApi.synApportionErrorOrder(orderIds, currUser);
+			return success();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
 	/*************************************  售后单据操作     *******************************************/
 	
 	/**
