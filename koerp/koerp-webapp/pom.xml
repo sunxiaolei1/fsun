@@ -55,11 +55,11 @@
 		<artifactId>jackson-annotations</artifactId>
 	</dependency>
   	
-  	<!-- log4j -->
+  	<!-- log4j 
   	<dependency>
   		<groupId>org.slf4j</groupId>
   		<artifactId>slf4j-log4j12</artifactId>
-  	</dependency>  
+  	</dependency>  -->
   	
   	<!-- servlet api -->  
   	<dependency>
@@ -108,6 +108,15 @@
 		<groupId>commons-fileupload</groupId>
 		<artifactId>commons-fileupload</artifactId>
 	</dependency>
+	
+	<!--cas客户端-->
+	<dependency>
+ 		<groupId>org.jasig.cas.client</groupId>
+ 		<artifactId>cas-client-core</artifactId>
+ 		<version>3.3.3</version>
+	</dependency>
+
+
     
   </dependencies>
   
