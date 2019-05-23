@@ -21,6 +21,7 @@
             <list>
                 <value>classpath:META-INF/jdbc.properties</value>
                 <value>classpath:system.properties</value>
+                <value>classpath:shiro.properties</value>
             </list>
         </property>
     </bean>

@@ -36,45 +36,6 @@ public class HomeController extends BaseController {
 	
 	@Autowired
 	private OverviewApi overviewApi;
-	
-	/**
-	 * 登录
-	 * 
-	 * @param condition
-	 *            查询条件
-	 */
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseBody
-	public HttpResult login(@Valid SysUser user, BindingResult bindingResult) {
-		try {
-			if (bindingResult.hasErrors()) {
-				List<ObjectError> error = bindingResult.getAllErrors();
-				for (ObjectError objectError : error) {
-					int errorCode = SCMErrorEnum.INVALID_PARAMS.getErrorCode();
-					return failure(errorCode, objectError.getDefaultMessage());
-				}
-			}						
-			UsernamePasswordToken token = new UsernamePasswordToken(
-					user.getUsername(), MD5Utils.md5SaltEncode(user.getPassword(), user.getUsername()));
-			Subject subject = SecurityUtils.getSubject();
-			subject.login(token);
-
-		} catch (IncorrectCredentialsException ice) {
-			return failure("密码错误!");
-
-		} catch (UnknownAccountException uae) {
-			return failure("用户名或密码错误，请重新输入!");
-
-		} catch (ExcessiveAttemptsException eae) {
-			return failure("登录多次错误，请稍后再试!");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return failure(SCMErrorEnum.SYSTEM_ERROR);
-		}
-
-		return success();
-	}
 
 	/**
 	 * 展示页
@@ -95,19 +56,6 @@ public class HomeController extends BaseController {
 		} else {
 			return "redirect:/";
 		}
-	}
-
-	/**
-	 * 退出
-	 * 
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout() {
-		// 使用权限管理工具进行用户的退出，跳出登录，给出提示信息
-		SecurityUtils.getSubject().logout();
-		return "redirect:/";
 	}
 
 	/**

@@ -121,8 +121,13 @@
   <!-- Shiro配置 -->    
   <filter>    
     <filter-name>shiroFilter</filter-name>    
-    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>    
-  </filter>    
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>  
+    <init-param>
+		<param-name>targetBeanName</param-name>
+		<param-value>shiroFilter</param-value>
+	</init-param>  
+  </filter> 
+     
   <filter-mapping>    
     <filter-name>shiroFilter</filter-name>    
     <url-pattern>/*</url-pattern>    
@@ -156,7 +161,7 @@
   
   <!-- 首页 -->
   <welcome-file-list>
-	<welcome-file>login.jsp</welcome-file>
+	<welcome-file>center.jsp</welcome-file>
   </welcome-file-list>
    <!-- 首页 -->
     <session-config>
