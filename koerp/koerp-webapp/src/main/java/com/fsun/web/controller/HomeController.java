@@ -3,26 +3,15 @@ package com.fsun.web.controller;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.validation.Valid;
-
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fsun.api.bus.OverviewApi;
-import com.fsun.common.utils.MD5Utils;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.OverviewCondition;
@@ -38,8 +27,7 @@ public class HomeController extends BaseController {
 	private OverviewApi overviewApi;
 
 	/**
-	 * 展示页
-	 * 
+	 * 首页 
 	 * @return
 	 */
 	@RequestMapping("/center")
@@ -51,11 +39,9 @@ public class HomeController extends BaseController {
 			//获取菜单
 		    modelMap.addAttribute("sysList", userApi.findMenusByUser(user.getId()));
 		    //获取权限
-			this.initRolePermissions(modelMap);
-			return "center";
-		} else {
-			return "redirect:/";
+			this.initRolePermissions(modelMap);		
 		}
+		return "center";	
 	}
 
 	/**
