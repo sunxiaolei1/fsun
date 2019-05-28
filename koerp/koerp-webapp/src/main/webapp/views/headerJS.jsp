@@ -78,7 +78,8 @@
 		        complete: function(XHR, TS){
 		            var resText = XHR.responseText;
 		            var sessionstatus = XHR.getResponseHeader("sessionStatus");
-		            if (911 == XHR.status && "timeout" == sessionstatus) {
+		            debugger
+		            if ((911 == XHR.status && "timeout" == sessionstatus)) {
 		            	$.messager.alert("提示", "对不起，您的会话已经过期，请重新登录后继续操作！", "info", function(){
 		            		var timestmp = (new Date()).valueOf();  
 		            		var top = getTopWinow();

@@ -4,6 +4,19 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   <display-name>koerp-webapp</display-name>
   
+  <listener>    
+        <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>    
+  </listener>    
+        
+  <filter>    
+       <filter-name>CAS Single Sign Out Filter</filter-name>    
+       <filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>    
+  </filter>    
+  <filter-mapping>    
+    <filter-name>CAS Single Sign Out Filter</filter-name>    
+    <url-pattern>/*</url-pattern>    
+  </filter-mapping> 
+  
   <!-- springMVC 配置 -->
   <servlet>
      <servlet-name>spring</servlet-name>
@@ -118,6 +131,26 @@
   </listener>
   <!-- 系统配置加载初始化监听器 -->
   
+  <!-- 跨域 -->
+  <filter>
+	<filter-name>CrosFilter</filter-name>
+	<filter-class>com.fsun.web.filter.CrossDomainFilter</filter-class>
+  </filter>
+  <filter-mapping>
+	<filter-name>CrosFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <!-- 跨域 -->
+  <filter>
+	<filter-name>TimeOutFilter</filter-name>
+	<filter-class>com.fsun.web.filter.SessionTimeOutFilter</filter-class>
+  </filter>
+  <filter-mapping>
+	<filter-name>TimeOutFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+
   <!-- 中文字符过滤filter -->
   <filter>
     <filter-name>Set_Character_Encoding</filter-name>
