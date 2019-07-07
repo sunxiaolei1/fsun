@@ -31,7 +31,7 @@
 	<script type="text/javascript" src="<%=request.getContextPath()%>/jquery-easyui/commons/js/loading.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/jquery-easyui/commons/js/ecorderoperate.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/jquery-easyui/commons/js/enumtype.js"></script>
-
+    
 	<script type="text/javascript"> 
 		//处理键盘事件 禁止后退键（Backspace）密码或单行、多行文本框除外 
 		function banBackSpace(e){

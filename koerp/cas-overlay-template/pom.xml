@@ -95,6 +95,13 @@
 		    <version>${cas.version}</version>
 		</dependency>
 		
+		<dependency>  
+		    <groupId>org.jasig.cas</groupId>  
+		    <artifactId>cas-server-support-rest</artifactId>  
+		    <version>${cas.version}</version>  
+		     <scope>compile</scope>  
+		</dependency>  
+		
 		<dependency>
 	  		<groupId>c3p0</groupId>
 	  		<artifactId>c3p0</artifactId>
