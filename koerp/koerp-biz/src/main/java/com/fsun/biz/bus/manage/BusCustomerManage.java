@@ -44,6 +44,7 @@ public class BusCustomerManage extends CrudManage<BusCustomerMapper, BusCustomer
 	public BusCustomer loadByCode(String customerCode) {
 		BusCustomerCondition condition = new BusCustomerCondition();
 		condition.setCustomerCode(customerCode);
+		condition.setEnabled(true);
 		List<BusCustomer> list = mapper.selectList(condition);
 		if(list!=null && list.size()==1){
 			return list.get(0);

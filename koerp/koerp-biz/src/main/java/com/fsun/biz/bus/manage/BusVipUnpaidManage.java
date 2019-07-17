@@ -17,6 +17,8 @@ import com.fsun.domain.enums.TradeTypeEnum;
 import com.fsun.domain.model.BusVip;
 import com.fsun.domain.model.BusVipUnpaid;
 import com.fsun.domain.model.SysUser;
+import com.fsun.exception.bus.VipUnpaidException;
+import com.fsun.exception.enums.SCMErrorEnum;
 
 /**
  * @author fsun
@@ -82,6 +84,8 @@ public class BusVipUnpaidManage extends CrudManage<BusVipUnpaidMapper, BusVipUnp
 				busVip.setUpdatedName(busVipUnpaid.getCreatedName());
 				busVip.setUpdatedTime(busVipUnpaid.getCreatedTime());
 				busVipManage.syncPrice(busVip, enablePrice, giftPrice);
+			}else{
+				throw new VipUnpaidException(SCMErrorEnum.BUS_VIP_ILLEGAL);
 			}
 		}
 		return super.create(busVipUnpaid);
