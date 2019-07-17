@@ -84,6 +84,7 @@ public class BusShopService implements BusShopApi {
 			busShop.setPosition(domain.getPosition());
 			busShop.setShopName(domain.getShopName());
 			busShop.setContacts(domain.getContacts());
+			busShop.setTel(domain.getTel());
 			busShop.setAddress(domain.getAddress());
 			busShop.setMemo(domain.getMemo());	
 			busShop.setUpdatedId(currentUser.getUsername());
