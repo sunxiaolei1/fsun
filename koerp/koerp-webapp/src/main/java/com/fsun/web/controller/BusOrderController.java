@@ -33,6 +33,7 @@ import com.fsun.domain.enums.OrderTypeEnum;
 import com.fsun.domain.enums.PayModeEnum;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.exception.bus.OrderException;
+import com.fsun.exception.bus.VipUnpaidException;
 import com.fsun.exception.common.SCMException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.web.controller.base.BaseController;
@@ -309,6 +310,13 @@ public class BusOrderController extends BaseController {
 			
 			return success(orderId);
 		} catch(OrderException e){
+			e.printStackTrace();
+			
+			condition.setRequestStatus((short)-100);
+			condition.setErrorMsg(e.getErrorMsg());			
+			busAccessLogApi.create(condition);
+			return failure(SCMException.CODE_SAVE, e.getErrorMsg());
+		} catch(VipUnpaidException e){
 			e.printStackTrace();
 			
 			condition.setRequestStatus((short)-100);
