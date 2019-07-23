@@ -33,6 +33,11 @@ public enum ReportQueryTypeEnum {
 	 */
 	REFUND("b_bus_refund", "T_BUS_REFUND", 1),
 	
+	/**
+	 * 领用出库汇总
+	 */
+	USE_SO("b_doc_order", "T_DOC_ORDER", 1),
+	
 	
 	UNKNOW(null, "未知", 0);
 	
