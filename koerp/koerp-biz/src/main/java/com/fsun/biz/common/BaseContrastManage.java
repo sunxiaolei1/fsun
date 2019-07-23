@@ -2,7 +2,6 @@ package com.fsun.biz.common;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,7 +56,7 @@ public abstract class BaseContrastManage<M extends BaseMySqlMapper<T>, T extends
 	 * @param condition
 	 * @return
 	 */
-	public <C>Map<String, Object> findFooter(C condition) {
+	public <C>HashMap<String, Object> findFooter(C condition) {
 		return mapper.findFooter(condition);
 	}
 	

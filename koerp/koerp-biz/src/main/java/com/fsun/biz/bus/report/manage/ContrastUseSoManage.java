@@ -4,31 +4,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fsun.biz.common.BaseContrastManage;
-import com.fsun.dao.report.mapper.ContrastRefundMapper;
-import com.fsun.domain.report.ContrastRefundCondition;
-import com.fsun.domain.report.ContrastRefundModel;
+import com.fsun.dao.report.mapper.ContrastUseSoMapper;
+import com.fsun.domain.report.ContrastUseSoModel;
 import com.fsun.domain.report.ReportCondition;
 
 /**
  * @author fsun
- * @date 2019年4月23日
+ * @date 2019年7月23日
  */
 
 @Component
-public class ContrastRefundManage extends BaseContrastManage<ContrastRefundMapper, 
-		ContrastRefundModel>{
+public class ContrastUseSoManage extends BaseContrastManage<ContrastUseSoMapper, 
+	ContrastUseSoModel>{
 	
-	@Autowired
-	private ContrastRefundMapper contrastRefundMapper;
-
-	public List<HashMap<String, Object>> findPayAccount(ContrastRefundCondition condition) {
-		return contrastRefundMapper.findPayAccount(condition);
-	}
-
 	@Override
 	public List<Map<String, Object>> query(ReportCondition condition) {
 		// TODO Auto-generated method stub
@@ -40,5 +31,5 @@ public class ContrastRefundManage extends BaseContrastManage<ContrastRefundMappe
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }
