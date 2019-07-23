@@ -258,7 +258,7 @@ public class BusAfterSaleService extends BaseOrderService implements BusAfterSal
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] refundIds, String status, BusUserDto currUser, BusRefundCondition condition) {
+	public synchronized void changeStatus(String[] refundIds, String status, BusUserDto currUser, BusRefundCondition condition) {
 		Date now = new Date();
 		for (String refundId : refundIds) {
 			BusRefund header = this.load(refundId);

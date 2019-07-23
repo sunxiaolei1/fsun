@@ -302,7 +302,7 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] ids, String status, 
+	public synchronized void changeStatus(String[] ids, String status, 
 			SysUser currUser, BusVipUnpaidCondition condition) {		
 		for (String unpaidId : ids) {
 			BusVipUnpaid busVipUnpaid = this.load(unpaidId);
@@ -333,6 +333,12 @@ public class BusVipUnpaidService implements BusVipUnpaidApi {
 	 */
 	private boolean statusValidator(String currTradeStatus, BusVipUnpaid busVipUnpaid){
 		boolean isTrue = true;		
+		//标记为无效的单据，则状态也是无效的
+		Boolean unusual = busVipUnpaid.getUnusual();
+		if(unusual!=null && unusual){
+			return false; 
+		}
+		//
 		Short tradeStatus = busVipUnpaid.getTradeStatus();
 		switch (TradeStatusEnum.getByCode(currTradeStatus)) {
 			case COMPLETED:			

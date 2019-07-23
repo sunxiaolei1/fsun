@@ -193,7 +193,7 @@ public class BusTakeService extends BaseOrderService implements BusTakeApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] takeIds, String status, BusUserDto user, BusTakeCondition condition){		
+	public synchronized void changeStatus(String[] takeIds, String status, BusUserDto user, BusTakeCondition condition){		
 		Date now = new Date();
 		for (String takeId : takeIds) {
 			BusTake header = busTakeManage.load(takeId);

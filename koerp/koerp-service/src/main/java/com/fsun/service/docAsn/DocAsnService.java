@@ -192,7 +192,7 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] asnNos, String status, 
+	public synchronized void changeStatus(String[] asnNos, String status, 
 			BusUserDto user, DocAsnHeaderCondition condition) {		
 		Date now = new Date();
 		for (String asnNo : asnNos) {

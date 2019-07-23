@@ -197,7 +197,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] orderNos, String status, BusUserDto user, 
+	public synchronized void changeStatus(String[] orderNos, String status, BusUserDto user, 
 		DocOrderHeaderCondition condition) {
 		Date now = new Date();
 		for (String orderNo : orderNos) {

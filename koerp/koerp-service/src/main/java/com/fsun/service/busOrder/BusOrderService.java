@@ -190,7 +190,7 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] orderIds, String status, BusUserDto currUser, 
+	public synchronized void changeStatus(String[] orderIds, String status, BusUserDto currUser, 
 			BusOrderCondition condition) {		
 		Date now = new Date();
 		for (String orderId : orderIds) {

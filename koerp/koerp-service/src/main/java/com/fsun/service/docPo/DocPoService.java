@@ -100,7 +100,7 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 
 	@Transactional
 	@Override
-	public void changeStatus(String[] poNos, String status, BusUserDto user, 
+	public synchronized void changeStatus(String[] poNos, String status, BusUserDto user, 
 			DocPoHeaderCondition condition) {
 		Date now = new Date();
 		for (String poNo : poNos) {
