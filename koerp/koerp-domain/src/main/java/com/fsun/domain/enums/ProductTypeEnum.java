@@ -11,7 +11,8 @@ public enum ProductTypeEnum {
 	
 	UNKNOW(null,"未知"),
 	SINGLE((short)0, "单品"),
-	PACKAGE((short)1, "套餐");
+	PACKAGE((short)1, "套餐"),
+	MATERIEL((short)2, "物料");
 	
 	/** 常量 key */
 	private Short value;

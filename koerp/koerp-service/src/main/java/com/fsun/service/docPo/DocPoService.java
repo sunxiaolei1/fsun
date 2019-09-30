@@ -5,12 +5,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fsun.api.bus.DocPoApi;
 import com.fsun.biz.bus.manage.BusShopManage;
+import com.fsun.biz.bus.manage.DocAsnDetailsManage;
+import com.fsun.biz.bus.manage.DocAsnHeaderManage;
 import com.fsun.biz.bus.manage.DocPoDetailsManage;
 import com.fsun.biz.bus.manage.DocPoHeaderManage;
 import com.fsun.common.utils.PKMapping;
@@ -20,13 +23,22 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocPoDto;
 import com.fsun.domain.entity.DocPoDetailsCondition;
 import com.fsun.domain.entity.DocPoHeaderCondition;
+import com.fsun.domain.enums.DocAsnSignTypeEnum;
+import com.fsun.domain.enums.DocAsnStatusEnum;
+import com.fsun.domain.enums.DocAsnTypeEnum;
+import com.fsun.domain.enums.DocGoodsTypeEnum;
 import com.fsun.domain.enums.DocPoStatusEnum;
 import com.fsun.domain.enums.DocPoTypeEnum;
 import com.fsun.domain.enums.TradeFromEnum;
 import com.fsun.domain.model.BusShop;
+import com.fsun.domain.model.DocAsnDetails;
+import com.fsun.domain.model.DocAsnHeader;
+import com.fsun.domain.model.DocOrderDetails;
+import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.DocPoHeader;
 import com.fsun.domain.model.SysUser;
+import com.fsun.exception.bus.DocOrderException;
 import com.fsun.exception.bus.DocPoException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
@@ -46,6 +58,12 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 	
 	@Autowired
 	private BusShopManage busShopManage;
+	
+	@Autowired
+	private DocAsnHeaderManage docAsnHeaderManage;
+	
+	@Autowired
+	private DocAsnDetailsManage docAsnDetailsManage;
 
 	@Override
 	public HashMap<String, Object> getInitData(String poNo, String poType, BusUserDto currUser) {
@@ -185,8 +203,108 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 			docPoDetailsManage.create(docPoDetails);
 		}
 		header.setOrderPrice(orderPrice);
-		docPoHeaderManage.create(header);		
+		docPoHeaderManage.create(header);
+		
+		//如果是采购申请单时,模拟创建采购入库单
+		if(DocPoTypeEnum.PURCHASE_APPLY.getCode().equals(header.getPoType())){
+			if(true){
+				this.transferPurchaseStorage(header, details);
+			}			
+		}
+		
 		return poNo;
+	}
+	
+	/**
+	 * 申请单转成采购入库单
+	 * @param header
+	 * @return
+	 */
+	private String transferPurchaseStorage(DocPoHeader poHeader, List<DocPoDetails> poDetails){
+		DocAsnHeader header = new DocAsnHeader();
+		BigDecimal zero = BigDecimal.ZERO; 
+		String toShopId = poHeader.getToShopId();		
+		BusShop toShop = busShopManage.load(toShopId);		
+		if(toShop==null){
+			throw new DocOrderException(SCMErrorEnum.BUS_SHOP_NOT_EXIST);
+		}
+		//初始化头信息
+		String asnType = DocAsnTypeEnum.PURCHASE_SI.getCode();
+		String asnNo = docAsnHeaderManage.initAsnNo(asnType, toShop.getShopCode());		
+		header.setAsnNo(asnNo);
+		header.setAsnSource(TradeFromEnum.PC.getCode());
+		header.setAsnStatus(DocAsnStatusEnum.SI_DQS.getCode());
+		header.setAsnType(asnType);
+		header.setDeliveryTime(new Date());
+		header.setExpectedTime(new Date());				
+		header.setToShopId(poHeader.getToShopId());
+		header.setToShopName(poHeader.getToShopName());		
+		header.setExtOrderNo("ERP"+asnNo);
+		header.setOrderPrice(zero);
+		header.setPoNo(poHeader.getPoNo());
+		header.setPrintCount(0);
+		//默认从erp接口取
+		header.setMobile(toShop.getTel());
+		header.setAddress(toShop.getAddress());
+		header.setCarrierId("");
+		header.setCarrierName(toShop.getContacts());
+		header.setCreatedName("测试用户");
+		header.setCreatedTime(new Date());
+		docAsnHeaderManage.create(header);
+		//初始化明细信息		
+		int lineNo = 0;
+		for (DocPoDetails docPoDetails : poDetails) {
+			DocAsnDetails asnDetail = new DocAsnDetails();
+			BeanUtils.copyProperties(docPoDetails, asnDetail);
+			asnDetail.setAsnDetailId(PKMapping.GUUID(PKMapping.doc_asn_details));
+			asnDetail.setAsnNo(asnNo);	
+			asnDetail.setLineNo(lineNo++);
+			asnDetail.setOrderQty(docPoDetails.getOrderedQty());
+			asnDetail.setExpectedQty(docPoDetails.getOrderedQty());		
+			asnDetail.setGoodsType(DocGoodsTypeEnum.NORMAL.getValue());					
+			asnDetail.setReceiveQty(docPoDetails.getOrderedQty());
+			BigDecimal totalPrice = docPoDetails.getOrderedQty().multiply(docPoDetails.getPrice())
+				.setScale(2, BigDecimal.ROUND_HALF_UP);
+			asnDetail.setTotalPrice(totalPrice);
+			asnDetail.setSignType(DocAsnSignTypeEnum.ALL_SIGN.getCode());
+			asnDetail.setRejectedQty(zero);
+			asnDetail.setDamagedQty(zero);	
+			//用于签收回显
+			asnDetail.setUserDefine1(docPoDetails.getPoDetailId());
+			docAsnDetailsManage.create(asnDetail);			
+		}	
+		//审核采购申请及更新明细
+		this.auditPurchaseApply(header, poHeader, poDetails);
+		return asnNo;
+		
+	}
+	
+	
+	/**
+	 * 审核采购申请及更新明细
+	 * @param header
+	 * @param details
+	 */
+	public void auditPurchaseApply(DocAsnHeader header, DocPoHeader poHeader, List<DocPoDetails> details) {			
+		Date now = new Date();			
+		//更新申请单明细				
+		for (DocPoDetails docPoDetails : details) {											
+			docPoDetails.setExpectedQty(docPoDetails.getOrderedQty());
+			docPoDetails.setUpdatedTime(now);
+			docPoDetailsManage.update(docPoDetails);
+		}
+		//更新申请单状态								
+		poHeader.setUpdatedName(header.getUpdatedName());
+		poHeader.setUpdatedTime(header.getUpdatedTime());				
+		//审核信息
+		poHeader.setPoStatus(DocPoStatusEnum.AUDIT_PASS.getCode());
+		poHeader.setAuditTime(now);
+		poHeader.setAuditorId(header.getiId());
+		poHeader.setAuditor(header.getUpdatedName());
+		poHeader.setRelationNo(header.getExtOrderNo());
+		poHeader.setDeliveryTime(header.getDeliveryTime());
+		poHeader.setExpectedTime(header.getExpectedTime());
+		docPoHeaderManage.update(poHeader);				
 	}
 
 	@Transactional
@@ -327,15 +445,27 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		DocPoHeader header = new DocPoHeader();
 		String poNo = docPoHeaderManage.initPoNo(poType, currUser.getShopCode());
 		header.setPoNo(poNo);
+		BusShop busShop = null;
 		switch (DocPoTypeEnum.getByName(poType)) {
-			case PURCHASE_APPLY:			
+			case PURCHASE_APPLY:
+				header.setPoType(poType);
+				header.setToShopId(currUser.getShopId());
+				header.setToShopName(currUser.getShopName());
+				//初始化下单人门店信息
+				busShop = busShopManage.load(currUser.getShopId());
+				header.setiShopId(busShop.getShopId());
+				header.setiId(currUser.getId());
+				header.setiName(currUser.getRealname());
+				header.setiContact(busShop.getContacts());
+				header.setiTel(busShop.getTel());
+				header.setiAddress(busShop.getAddress());	
 				break;		
 			case ALLOT_APPLY:	
 				header.setPoType(poType);
 				header.setToShopId(currUser.getShopId());
 				header.setToShopName(currUser.getShopName());
 				//初始化下单人门店信息
-				BusShop busShop = busShopManage.load(currUser.getShopId());
+				busShop = busShopManage.load(currUser.getShopId());
 				header.setiShopId(busShop.getShopId());
 				header.setiId(currUser.getId());
 				header.setiName(currUser.getRealname());

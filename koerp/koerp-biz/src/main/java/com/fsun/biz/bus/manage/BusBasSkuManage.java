@@ -35,7 +35,7 @@ public class BusBasSkuManage extends CrudManage<BusBasSkuMapper, BusBasSku>{
 	}
 
 	/**
-	 * 
+	 * 用于选择商品的分页列表
 	 * @param condition
 	 * @return
 	 */
@@ -43,6 +43,28 @@ public class BusBasSkuManage extends CrudManage<BusBasSkuMapper, BusBasSku>{
 		List<BusBasSku> list = mapper.selectList(condition);
 		this.formatSalePrice(list, condition.getTradeType());
 		return new PageModel(list);
+	}
+	
+	/**
+	 * 用于撤柜退货选择商品(或物料)的分页列表
+	 * @param condition
+	 * @return
+	 */
+	public PageModel findRefundPage(BusBasSkuCondition condition) {
+		List<BusBasSku> list = mapper.selectList(condition);
+		this.formatSalePrice(list, condition.getTradeType());
+		return new PageModel(list);
+	}
+	
+	/**
+	 * 获取商品下的物料信息
+	 * @param skuId
+	 * @return
+	 */
+	public List<BusBasSku> findMateriels(String skuId, String tradeType) {	
+		List<BusBasSku> list = mapper.findMateriels(skuId);
+		this.formatSalePrice(list, tradeType);
+		return list;
 	}
 
 	/**

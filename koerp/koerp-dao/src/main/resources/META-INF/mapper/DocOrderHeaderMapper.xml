@@ -189,6 +189,7 @@
       <result column="d_line_no" property="lineNo"/> 
       <result column="d_category_code" property="categoryCode"/> 
       <result column="d_category_name" property="categoryName"/> 
+      <result column="d_product_type" property="productType"/> 
       <result column="d_bar_code" property="barCode"/> 
       <result column="d_brand_code" property="brandCode"/> 
       <result column="d_brand_name" property="brandName"/> 
@@ -279,6 +280,7 @@
 		d.line_no as d_line_no,
 		d.category_code as d_category_code,
 		d.category_name as d_category_name,
+		d.product_type as d_product_type,
 		d.bar_code as d_bar_code,
 		d.brand_code as d_brand_code,
 		d.brand_name as d_brand_name ,

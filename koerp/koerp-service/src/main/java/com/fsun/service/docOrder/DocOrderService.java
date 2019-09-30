@@ -17,6 +17,7 @@ import com.fsun.biz.bus.manage.BusShopManage;
 import com.fsun.biz.bus.manage.DocAsnDetailsManage;
 import com.fsun.biz.bus.manage.DocAsnHeaderManage;
 import com.fsun.biz.bus.manage.DocOrderDetailsManage;
+import com.fsun.biz.bus.manage.DocOrderDetailsMaterielManage;
 import com.fsun.biz.bus.manage.DocOrderHeaderManage;
 import com.fsun.biz.bus.manage.DocPoDetailsManage;
 import com.fsun.biz.bus.manage.DocPoHeaderManage;
@@ -28,6 +29,7 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
 import com.fsun.domain.entity.DocAsnDetailsCondition;
 import com.fsun.domain.entity.DocOrderDetailsCondition;
+import com.fsun.domain.entity.DocOrderDetailsMaterielCondition;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
 import com.fsun.domain.entity.DocOrderInitCondition;
 import com.fsun.domain.entity.DocPoDetailsCondition;
@@ -35,11 +37,13 @@ import com.fsun.domain.enums.DocAsnStatusEnum;
 import com.fsun.domain.enums.DocOrderModeEnum;
 import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
+import com.fsun.domain.enums.ProductTypeEnum;
 import com.fsun.domain.enums.TradeFromEnum;
 import com.fsun.domain.model.BusShop;
 import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocOrderDetails;
+import com.fsun.domain.model.DocOrderDetailsMateriel;
 import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.DocPoHeader;
@@ -62,6 +66,9 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 	
 	@Autowired
 	private DocOrderDetailsManage docOrderDetailsManage;
+	
+	@Autowired
+	private DocOrderDetailsMaterielManage docOrderDetailsMaterielManage;
 	
 	@Autowired
 	private DocPoDetailsManage docPoDetailsManage;
@@ -103,6 +110,14 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 			map.put("header", header);
 		}else{
 			map = docOrderHeaderManage.loadEntity(orderNo);
+			HashMap<String, Object> headerMap = (HashMap<String, Object>) map.get("header");
+			String orderType = (String)headerMap.get("orderType");
+			if(DocOrderTypeEnum.USE_SO.getCode().equals(orderType)){
+				DocOrderDetailsMaterielCondition condition0 = new DocOrderDetailsMaterielCondition();
+				condition0.setOrderNo(orderNo);
+				List<DocOrderDetailsMateriel> materiels = docOrderDetailsMaterielManage.list(condition0);
+				map.put("materiels", materiels);
+			}			
 		}
 		return map;
 	}
@@ -285,16 +300,31 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		//初始化明细
 		int lineNo = 1;
 		for (DocOrderDetails docOrderDetails : details) {
-			docOrderDetails.setSoDetailId(PKMapping.GUUID(PKMapping.doc_order_details));
-			docOrderDetails.setOrderNo(orderNo);
-			docOrderDetails.setLineNo(lineNo++);			
-			docOrderDetails.setOrderedQty(docOrderDetails.getShippedQty());
-			BigDecimal totalPrice = docOrderDetails.getShippedQty().multiply(docOrderDetails.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
-			docOrderDetails.setTotalPrice(totalPrice);
-			docOrderDetails.setCreatedTime(now);
-			orderPrice = orderPrice.add(totalPrice);
-			docOrderDetailsManage.create(docOrderDetails);
-			super.skuStockOut(header, docOrderDetails);
+			Short productType = docOrderDetails.getProductType();
+			if(ProductTypeEnum.MATERIEL.getValue().equals(productType)){
+				DocOrderDetailsMateriel docOrderDetailsMateriel = new DocOrderDetailsMateriel();
+				BeanUtils.copyProperties(docOrderDetails, docOrderDetailsMateriel);
+				docOrderDetailsMateriel.setSoDetailId(PKMapping.GUUID(PKMapping.doc_order_details_materiel));
+				docOrderDetailsMateriel.setOrderNo(orderNo);
+				docOrderDetailsMateriel.setLineNo(lineNo++);			
+				docOrderDetailsMateriel.setOrderedQty(docOrderDetailsMateriel.getShippedQty());
+				BigDecimal totalPrice = docOrderDetailsMateriel.getShippedQty().multiply(docOrderDetailsMateriel.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
+				docOrderDetailsMateriel.setTotalPrice(totalPrice);
+				docOrderDetailsMateriel.setCreatedTime(now);
+				orderPrice = orderPrice.add(totalPrice);
+				docOrderDetailsMaterielManage.create(docOrderDetailsMateriel);
+			}else{
+				docOrderDetails.setSoDetailId(PKMapping.GUUID(PKMapping.doc_order_details));
+				docOrderDetails.setOrderNo(orderNo);
+				docOrderDetails.setLineNo(lineNo++);			
+				docOrderDetails.setOrderedQty(docOrderDetails.getShippedQty());
+				BigDecimal totalPrice = docOrderDetails.getShippedQty().multiply(docOrderDetails.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
+				docOrderDetails.setTotalPrice(totalPrice);
+				docOrderDetails.setCreatedTime(now);
+				orderPrice = orderPrice.add(totalPrice);
+				docOrderDetailsManage.create(docOrderDetails);
+				super.skuStockOut(header, docOrderDetails);				
+			}			
 		}
 		header.setOrderPrice(orderPrice);
 		

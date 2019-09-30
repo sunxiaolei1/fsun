@@ -70,6 +70,11 @@ public class BusBasSkuService implements BusBasSkuApi {
 	public PageModel findListForPage(BusBasSkuCondition condition) {
 		return busBasSkuManage.findPage(condition);
 	}
+	
+	@Override
+	public PageModel findRefundListForPage(BusBasSkuCondition condition) {
+		return busBasSkuManage.findRefundPage(condition);
+	}
 
 	@Override
 	public List<BusBasSku> list(BusBasSkuCondition condition) {
@@ -147,6 +152,11 @@ public class BusBasSkuService implements BusBasSkuApi {
 	public int delete(String id) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<BusBasSku> findMateriels(String skuId, String tradeType) {
+		return busBasSkuManage.findMateriels(skuId, tradeType);
 	}
 
 }

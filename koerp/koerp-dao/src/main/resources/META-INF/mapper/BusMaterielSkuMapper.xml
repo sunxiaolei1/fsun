@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fsun.dao.mapper.BusMaterielSkuMapper" >
+  <resultMap id="BaseResultMap" type="com.fsun.domain.model.BusMaterielSku" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="materiel_skuId" property="materielSkuId" jdbcType="VARCHAR" />
+    <result column="bas_skuId" property="basSkuId" jdbcType="VARCHAR" />
+    <result column="materiel_qty" property="materielQty" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, materiel_skuId, bas_skuId, materiel_qty
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bus_materiel_sku
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bus_materiel_sku
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fsun.domain.model.BusMaterielSku" >
+    insert into bus_materiel_sku (id, materiel_skuId, bas_skuId, 
+      materiel_qty)
+    values (#{id,jdbcType=INTEGER}, #{materielSkuId,jdbcType=VARCHAR}, #{basSkuId,jdbcType=VARCHAR}, 
+      #{materielQty,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fsun.domain.model.BusMaterielSku" >
+    insert into bus_materiel_sku
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="materielSkuId != null" >
+        materiel_skuId,
+      </if>
+      <if test="basSkuId != null" >
+        bas_skuId,
+      </if>
+      <if test="materielQty != null" >
+        materiel_qty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="materielSkuId != null" >
+        #{materielSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="basSkuId != null" >
+        #{basSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="materielQty != null" >
+        #{materielQty,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fsun.domain.model.BusMaterielSku" >
+    update bus_materiel_sku
+    <set >
+      <if test="materielSkuId != null" >
+        materiel_skuId = #{materielSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="basSkuId != null" >
+        bas_skuId = #{basSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="materielQty != null" >
+        materiel_qty = #{materielQty,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fsun.domain.model.BusMaterielSku" >
+    update bus_materiel_sku
+    set materiel_skuId = #{materielSkuId,jdbcType=VARCHAR},
+      bas_skuId = #{basSkuId,jdbcType=VARCHAR},
+      materiel_qty = #{materielQty,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

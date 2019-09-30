@@ -14,7 +14,7 @@ public enum DocOrderTypeEnum {
 	SHORTAGE_SO("12","盘亏出库"),
 	PURCHASE_SO("13","采购退货"),
 	LOSE_SO("15","报损出库"),
-	USE_SO("16","领用出库"),
+	USE_SO("16","撤柜退货"),
 	UNKNOW("UNKNOW","未知");
 	
 	/** 常量code */

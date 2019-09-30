@@ -1,5 +1,7 @@
 package com.fsun.api.bus;
 
+import java.util.List;
+
 import com.fsun.api.base.BaseApi;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.entity.BusBasSkuCondition;
@@ -29,11 +31,18 @@ public interface BusBasSkuApi extends BaseApi<BusBasSku, BusBasSkuCondition> {
 	public void changeStatus(String[] split, Boolean enabled, SysUser user);
 
 	/**
-	 * 用于选择商品的分页商品列表
+	 * 用于选择商品的分页列表
 	 * @param condition
 	 * @return
 	 */
 	public PageModel findListForPage(BusBasSkuCondition condition);
+	
+	/**
+	 * 用于撤柜退货选择商品(或物料)的分页列表
+	 * @param condition
+	 * @return
+	 */
+	public PageModel findRefundListForPage(BusBasSkuCondition condition);
 
 	/**
 	 * 通过sku获取单个商品明细
@@ -42,6 +51,11 @@ public interface BusBasSkuApi extends BaseApi<BusBasSku, BusBasSkuCondition> {
 	 */
 	public BusBasSku loadBySku(String sku);
 
-	
+	/**
+	 * 获取商品下的物料信息
+	 * @param skuId
+	 * @return
+	 */
+	public List<BusBasSku> findMateriels(String skuId, String tradeType);
 
 }

@@ -223,8 +223,11 @@ public abstract class BaseOrderValidatorService {
 		switch (buttonsEnum){  	        
 	        case REFRESH: 	
 	        	isEnable = true; break;
-	        case RETURN_ORDER: 	
-	        	isEnable = true; break;	        	
+	        case RETURN_ORDER: 
+	        	if(!DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType)){
+	        		isEnable = true; 
+    			}
+	        	break;	        	
 	        case ADD_SI_REMARK:
 	        	isEnable = true; break;	                       
 	        case CANCEL_DOC_ASN: 
@@ -239,6 +242,9 @@ public abstract class BaseOrderValidatorService {
 	        			if(orderNo==null || orderNo.equals("")){
 	        				isEnable = true;
 	        			}
+	        			if(DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType)){
+	        				isEnable = false;
+	        			}
 	        		}	        		
 	        	}      
 	        	break;
@@ -250,7 +256,7 @@ public abstract class BaseOrderValidatorService {
 	        case CREATE_ASN_REFUND: 
 	        	if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
 	        		|| DocAsnStatusEnum.SI_WQSH.getCode().equals(asnStatus))
-	        			&& DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType)
+	        			&& !DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType)
 	        				&& (orderNo==null || orderNo.equals(""))){
 	        		isEnable = true;
 	        	}

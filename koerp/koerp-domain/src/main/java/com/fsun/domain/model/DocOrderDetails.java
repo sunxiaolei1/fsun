@@ -207,6 +207,12 @@ public class DocOrderDetails {
      * 表字段 : doc_order_details.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 产品类型 0 单品，1 组合 2 物料
+     * 表字段 : bus_materiel.product_type
+     */
+    private Short productType;
 
     public String getSoDetailId() {
         return soDetailId;
@@ -479,4 +485,18 @@ public class DocOrderDetails {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+	/**
+	 * @return the productType
+	 */
+	public Short getProductType() {
+		return productType;
+	}
+
+	/**
+	 * @param productType the productType to set
+	 */
+	public void setProductType(Short productType) {
+		this.productType = productType;
+	}
 }

@@ -43,6 +43,26 @@ public class BasSkuController extends BaseController {
 		return modelAndView;
 	}
 	
+	@RequestMapping("/toMaterielsView")
+	public ModelAndView toMaterielsView(String skuId) {		
+		ModelAndView modelAndView = new ModelAndView("/basSku/operate/toMaterielsView");
+		modelAndView.addObject("skuId", skuId);
+		return modelAndView;
+	}
+	
+	@RequestMapping("/materiels/{skuId}")
+	@ResponseBody
+	public HttpResult materiels(@PathVariable("skuId") String skuId, 
+			@RequestParam("tradeType") String tradeType) {				
+		try {
+			List<BusBasSku> list = busBasSkuApi.findMateriels(skuId, tradeType);			
+			return success(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}	
+	}
+	
 	@RequestMapping("/toChooseSku")
 	public String toChooseSku() {
 		return "/busCommon/commonChooseSku";
@@ -56,6 +76,14 @@ public class BasSkuController extends BaseController {
 		return modelAndView;
 	}	
 	
+	@RequestMapping("/toChooseEditSkuTreeGrid")
+	public ModelAndView toChooseEditSkuTreeGrid() {
+		ModelAndView modelAndView = new ModelAndView("/busCommon/commonChooseEditSkuTreeGrid");
+		//控制编辑单价权限		
+		modelAndView.addObject("hasEditPricePower", super.hasEditPricePower());	
+		return modelAndView;
+	}
+
 	@RequestMapping(value="/{skuId}", method = RequestMethod.GET)
 	@ResponseBody
 	public HttpResult load(@PathVariable("skuId") String skuId) {
@@ -103,6 +131,18 @@ public class BasSkuController extends BaseController {
 	public HttpResult findListForPage(BusBasSkuCondition condition) {
 		try {
 			PageModel pageModel = busBasSkuApi.findListForPage(condition);
+			return success(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/refund/findListForPage", method = {RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findRefundListForPage(BusBasSkuCondition condition) {
+		try {
+			PageModel pageModel = busBasSkuApi.findRefundListForPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {
 			e.printStackTrace();

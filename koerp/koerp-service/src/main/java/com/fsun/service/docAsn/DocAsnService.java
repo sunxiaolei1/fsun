@@ -78,7 +78,8 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		}else{
 			map = docAsnHeaderManage.loadEntity(asnNo);
 			//调拨入库初始化
-			if(DocAsnTypeEnum.ALLOT_SI.getCode().equals(asnType)){
+			if(DocAsnTypeEnum.ALLOT_SI.getCode().equals(asnType)
+				|| DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType)){
 				HashMap<String, Object> headerMap = (HashMap<String, Object>)map.get("header");
 				String asnStatus = (String)headerMap.get("asnStatus");
 				//如果是待签收状态
@@ -139,6 +140,10 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		//调拨入库
 		if(DocAsnTypeEnum.ALLOT_SI.getCode().equals(header.getAsnType())){
 			return this.allotSign(docAsnDto);
+		}
+		//采购签收入库
+		if(DocAsnTypeEnum.PURCHASE_SI.getCode().equals(header.getAsnType())){
+			return this.purchaseSign(docAsnDto);
 		}
 		//入参基本的校验
 		String iId = header.getiId();
@@ -356,6 +361,15 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 		}
 		return signType;
 	}
+	
+	/**
+	 * 采购签收入库操作
+	 * @param docAsnDto
+	 * @return
+	 */
+	private String purchaseSign(DocAsnDto docAsnDto){
+		return allotSign(docAsnDto);
+	}
 
 	/**
 	 * 签收入库操作
@@ -438,7 +452,7 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 				this.synRelationOrders(header, details);
 			}						
 			//判别是否有退货数量，若存在则制作退货单
-			if(rejectedQty.compareTo(BigDecimal.ZERO)>0){
+			if(rejectedQty.compareTo(BigDecimal.ZERO)>0){				
 				String refundOrderNo = this.transferAllotRefund(oriDocAsnHeader, header, details);
 				header.setUserDefine1(refundOrderNo);
 			}			
@@ -486,7 +500,13 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 			}		
 		}else{
 			throw new DocAsnException(SCMErrorEnum.BUS_ORDER_ILLEGAL);
-		}		
+		}	
+		
+		//如果是签收入库
+		if(DocAsnTypeEnum.PURCHASE_SI.getCode().equals(header.getAsnType())){
+			//调用erp接口同步erp出库单
+			return;
+		}
 		//更新出库单明细及状态
 		String orderNo = header.getOrderNo();
 		HashMap<String, Object> orderEntry = docOrderHeaderManage.loadEntity(orderNo);
@@ -521,6 +541,14 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 	 * @return
 	 */
 	private String transferAllotRefund(DocAsnHeader oriDocAsnHeader, DocAsnHeader currHeader, List<DocAsnDetails> details) {
+		
+		String extOrderNo = oriDocAsnHeader.getExtOrderNo();
+		if(extOrderNo!=null && !extOrderNo.equals("")){
+			//调用erp的退货接口
+			String refundAsnNo = "";
+			return refundAsnNo;
+		}
+		
 		DocOrderHeader oriOrderHeader = docOrderHeaderManage.load(oriDocAsnHeader.getOrderNo());
 		Date now = new Date();
 		if(oriOrderHeader!=null){	

@@ -120,7 +120,10 @@ var poColumns = [[
 	},
 	{field:"receiveQty",title:"签收数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
-	    	return 'font-weight:bold;color:green;';
+			if(rowData.expectedQty != rowData.receiveQty){
+				return 'font-weight:bold;color:red;';
+			}
+			return 'font-weight:bold;color:green;';
 	    },
 	    formatter:intNumBaseFormat
 	},

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <a href="#" class="easyui-linkbutton" iconCls="icon-brick_add" plain="true" onclick="toAddView('22')">盘盈入库</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-cart_put" plain="true" onclick="toAddView('23')">采购入库</a>
+<!-- <a href="#" class="easyui-linkbutton" iconCls="icon-cart_put" plain="true" onclick="toAddView('23')">采购入库</a> -->
 <a href="#" class="easyui-linkbutton" iconCls="icon-brick_magnify" plain="true" onclick="toAddView('25')">杂收入库</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	

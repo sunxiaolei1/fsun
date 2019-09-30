@@ -24,9 +24,9 @@
 <body class="easyui-layout" style="overflow-y: hidden" scroll="no">
 
 <!--头部--> 
-<div id="pf-hd" region="north" split="true" border="false" style="overflow: hidden;height:70px;background-color:#454763;"> 
+<div id="pf-hd" region="north" split="true" border="false" style="overflow: hidden; background-color: rgb(65, 105, 225); width: 1366px; height: 65px;"> 
 	<div class="pf-logo" style="border-right: 0px solid;">
-        <img src="<%=request.getContextPath()%>/jquery-easyui/images/main/logo2.png" alt="logo">
+        <img src="<%=request.getContextPath()%>/jquery-easyui/images/main/logo2.png" style="height:70%;" alt="logo">
     </div>
     
     <div class="pf-nav-wrap" style="display:none;">

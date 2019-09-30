@@ -300,7 +300,8 @@ public class DocPoController extends BaseController {
 		switch (OrderOperateTypeEnum.getByCode(operateType)) {
 			case ADD:	
 				switch (DocPoTypeEnum.getByName(poType)) {
-					case PURCHASE_APPLY:				
+					case PURCHASE_APPLY:
+						url = "/docPo/operate/toAddPurchaseView";
 						break;		
 					case ALLOT_APPLY:	
 						url = "/docPo/operate/toAddAllotView";
@@ -311,7 +312,8 @@ public class DocPoController extends BaseController {
 				break;		
 			case EDIT:
 				switch (DocPoTypeEnum.getByName(poType)) {
-					case PURCHASE_APPLY:				
+					case PURCHASE_APPLY:	
+						url = "/docPo/operate/toEditPurchaseView";
 						break;		
 					case ALLOT_APPLY:	
 						url = "/docPo/operate/toEditAllotView";

@@ -88,9 +88,10 @@ function getSaveData(){
 	}			
 
 	var baseInfo = formJson($orderfm);
-	var fromShopName = $('#shopCombo', $orderfm).combogrid("getText");
-	baseInfo.fromShopName = fromShopName;
-	
+	if(baseInfo.poType!='10'){
+		var fromShopName = $('#shopCombo', $orderfm).combogrid("getText");
+		baseInfo.fromShopName = fromShopName;	
+	}
 	var saveData = {
 	     "params": {
 	    	 "poNo": $("#poNo",$orderfm).textbox("getValue"),
@@ -127,8 +128,10 @@ function getUpdateData(){
 	}			
 
 	var baseInfo = formJson($orderfm);
-	var fromShopName = $('#shopCombo', $orderfm).combogrid("getText");
-	baseInfo.fromShopName = fromShopName;
+	if(baseInfo.poType!='10'){
+		var fromShopName = $('#shopCombo', $orderfm).combogrid("getText");
+		baseInfo.fromShopName = fromShopName;	
+	}
 	
 	var saveData = {
 	     "params": {

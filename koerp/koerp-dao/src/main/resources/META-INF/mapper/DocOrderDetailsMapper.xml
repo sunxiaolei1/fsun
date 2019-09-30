@@ -7,6 +7,7 @@
     <result column="line_no" property="lineNo" jdbcType="INTEGER" />
     <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
     <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="product_type" property="productType" jdbcType="SMALLINT" />
     <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
     <result column="brand_code" property="brandCode" jdbcType="VARCHAR" />
     <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
@@ -38,7 +39,7 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    so_detail_id, order_no, line_no, category_code, category_name, bar_code, brand_code, 
+    so_detail_id, order_no, line_no, category_code, category_name, product_type, bar_code, brand_code, 
     brand_name, goods_name, sku, parent_sku, property, lot_num, line_status, user_define1, 
     user_define2, user_define3, receive_time, receive_qty, ordered_qty, picked_qty, shipped_qty, 
     sub_qty, unit, convert_qty, convert_unit, total_price, cost_price, price, volume, 
@@ -79,7 +80,7 @@
   </delete>
   <insert id="insert" parameterType="com.fsun.domain.model.DocOrderDetails" >
     insert into doc_order_details (so_detail_id, order_no, line_no, 
-      category_code, category_name, bar_code, 
+      category_code, category_name, product_type, bar_code, 
       brand_code, brand_name, goods_name, 
       sku, parent_sku, property, 
       lot_num, line_status, user_define1, 
@@ -91,7 +92,8 @@
       rate_precent, memo, created_time, 
       updated_time)
     values (#{soDetailId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{lineNo,jdbcType=INTEGER}, 
-      #{categoryCode,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, 
+      #{categoryCode,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{productType,jdbcType=SMALLINT}, 
+      #{barCode,jdbcType=VARCHAR}, 
       #{brandCode,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
       #{sku,jdbcType=VARCHAR}, #{parentSku,jdbcType=VARCHAR}, #{property,jdbcType=VARCHAR}, 
       #{lotNum,jdbcType=VARCHAR}, #{lineStatus,jdbcType=VARCHAR}, #{userDefine1,jdbcType=VARCHAR}, 
@@ -120,6 +122,9 @@
       </if>
       <if test="categoryName != null" >
         category_name,
+      </if>
+      <if test="productType != null" >
+        product_type,
       </if>
       <if test="barCode != null" >
         bar_code,
@@ -225,6 +230,9 @@
       <if test="categoryName != null" >
         #{categoryName,jdbcType=VARCHAR},
       </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=SMALLINT},
+      </if>
       <if test="barCode != null" >
         #{barCode,jdbcType=VARCHAR},
       </if>
@@ -329,6 +337,9 @@
       <if test="categoryName != null" >
         category_name = #{categoryName,jdbcType=VARCHAR},
       </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=SMALLINT},
+      </if>
       <if test="barCode != null" >
         bar_code = #{barCode,jdbcType=VARCHAR},
       </if>
@@ -425,6 +436,7 @@
       line_no = #{lineNo,jdbcType=INTEGER},
       category_code = #{categoryCode,jdbcType=VARCHAR},
       category_name = #{categoryName,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=SMALLINT},
       bar_code = #{barCode,jdbcType=VARCHAR},
       brand_code = #{brandCode,jdbcType=VARCHAR},
       brand_name = #{brandName,jdbcType=VARCHAR},

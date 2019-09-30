@@ -66,9 +66,9 @@ var columns = [[
 		}	
 	}},
 	{field:'expected_time',title:'预收时间',width:130,align:'center',sortable:true},
-	{field:'order_mode',title:'出库事由',width:100,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.docOrderMode); 
-	}},
+	//{field:'order_mode',title:'出库事由',width:100,align:'center',sortable:true, formatter:function(value, row){
+	//	return formatter(value, window.parent.docOrderMode); 
+	//}},
 	{field:'print_count',title:'已打印',width:60,align:'center', sortable:true, formatter:function(value, row){
 		return (value>0?"<b style='color:green;'>是</b>":(value==0?"<b style='color:red;'>否</b>":"")); 
 	}},

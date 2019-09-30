@@ -104,6 +104,50 @@
     	<include refid="conditions" />
   </select>
   
+  <select id="findMateriels" resultMap="BaseResultMap" parameterType="java.lang.String" >    
+	SELECT 
+		m.sku_id as sku_id, 
+		m.bar_code as bar_code, 
+		m.sku as sku, 
+		m.category_code as category_code, 
+		m.product_type as product_type, 
+		m.brand_code as brand_code,  
+		m.assist_id as assist_id, 
+	    m.goods_name as goods_name, 
+	    m.en_name as en_name, 
+	    m.property as property, 
+	    m.market_price as market_price,  
+	    m.cost_price as cost_price, 
+	    m.origin_sale_price as origin_sale_price, 
+	    m.warning_qty as warning_qty, 
+	    m.unit as unit,  
+	    m.unit_name as unit_name, 
+	    m.convert_qty as convert_qty,  
+	    m.convert_unit as convert_unit,  
+	    m.keywords as keywords, 
+	    m.memo as memo, 
+	    m.descr as descr,  
+	    m.status as status, 
+	    m.is_recommend as is_recommend, 
+	    m.on_shelf_time as on_shelf_time, 
+	    m.off_shelf_time as off_shelf_time, 
+	    m.sort_code as sort_code,  
+	    m.is_enabled as is_enabled, 
+	    m.ext_0 as ext_0, 
+	    m.ext_1 as ext_1,  
+	    m.rate_precent as rate_precent,  
+	    m.settle_type as settle_type,  
+	    m.created_time as created_time, 
+	    m.updated_time as updated_time,  
+	    m.created_id as created_id, 
+	    m.updated_id as updated_id, 
+	    ms.materiel_qty as qty
+    FROM bus_materiel m, bus_materiel_sku ms
+    Where m.sku_id = ms.materiel_skuId AND ms.bas_skuId = #{skuId}
+  </select>
+  
+  
+  
   <select id="selectListMap" resultType="java.util.Map" 
   	parameterType="com.fsun.domain.entity.BusBasSkuCondition" >    
 	SELECT 
