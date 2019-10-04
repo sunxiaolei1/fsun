@@ -45,6 +45,16 @@ public class DocAsnController extends BaseController {
 	@Autowired
 	private OrderButtonsApi orderButtonsApi;
 
+	@RequestMapping("/allot/index")
+	public String allotIndex() {
+		return "/docAsn/allotIndex";
+	}
+	
+	@RequestMapping("/pur/index")
+	public String purIndex() {
+		return "/docAsn/purIndex";
+	}
+	
 	@RequestMapping("/index")
 	public String index() {
 		return "/docAsn/index";
@@ -103,7 +113,27 @@ public class DocAsnController extends BaseController {
 	public HttpResult findPage(DocAsnHeaderCondition condition) {
 		try {
 			BusUserDto currUser = super.getCurrentUser();
-			condition.setToShopId(currUser.getShopId());
+			//condition.setToShopId(currUser.getShopId());
+			PageModel pageModel = docAsnApi.findPage(condition);
+			return success(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/findMorePage", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findMorePage(DocAsnHeaderCondition condition) {
+		try {
+			BusUserDto currUser = super.getCurrentUser();
+			//condition.setToShopId(currUser.getShopId());
+			String[] asnTypes = new String[]{
+				DocAsnTypeEnum.OVER_SI.getCode(), 
+				DocAsnTypeEnum.SUNDRY_SI.getCode(), 
+				DocAsnTypeEnum.ALLOT_REFUND_SI.getCode()
+			};
+			condition.setAsnTypes(asnTypes);
 			PageModel pageModel = docAsnApi.findPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {

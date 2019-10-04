@@ -2,10 +2,10 @@
 <%@ include file="../headerJS.jsp" %>
 
 <div class="easyui-layout" data-options="fit:true" >	
-	<div title="要货入库单列表" data-options="region:'center',split:true,collapsible:false,border:false" style="padding:5px">
+	<div title="调拨入库单列表" data-options="region:'center',split:true,collapsible:false,border:false" style="padding:5px">
 		<div class="easyui-layout" data-options="fit:true" >	
 			<!-- 查询条件 -->
-			<%@include file="./searchbar.jsp"%>
+			<%@include file="./allotSearchbar.jsp"%>
 			
 			<!-- table -->
 			<div id="gridDiv" data-options="region:'center',border:false" >
@@ -18,7 +18,7 @@
 
 <div id="tools" style="display: none;">
     <!-- 操作按钮及事件  -->
-	<%@include file="./indextoolbar.jsp"%>
+	<%@include file="./allotIndextoolbar.jsp"%>
 </div>
 
 <script type="text/javascript">
@@ -71,7 +71,10 @@ var columns = [[
 		if(typeof value != "undefined"){
 			return formatterDate(dateParser(value));
 		}		
-	}},		
+	}},	
+	{field:'from_shop_id',title:'出库店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
+		return row.from_shop_name; 
+	}},	 
 	{field:'delivery_time',title:'出库时间',width:100,align:'center',sortable:true, formatter:function(value, row){
 		if(typeof value != "undefined"){
 			return formatterDate(dateParser(value));

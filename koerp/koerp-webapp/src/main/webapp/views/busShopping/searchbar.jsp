@@ -6,23 +6,19 @@
 			<table style="width:100%;padding:5px;">
 				<input name="asnType" value="23" hidden=true ></input>	
 				<tr>												
-					<td  width="8%">单据状态:</td>
-					<td>
+					<td width="8%">单据状态:</td>
+					<td colspan="3">
 						<input id="asnStatusCombo" name="asnStatus" editable="false" class="easyui-combobox" style="width:80%;"/>
-					</td>
-					<td  width="8%">出库店仓:</td>
-					<td>
-						<input id="fromShopCombo" name="fromShopId" class="easyui-combogrid" style="width:80%;"/>
-					</td>					
-					<td  width="8%">入库店仓:</td>
-					<td>
+					</td>										
+					<td width="8%">入库店仓:</td>
+					<td colspan="3">
 						<input id="toShopCombo" name="toShopId"  class="easyui-combogrid" style="width:80%;"/>
 					</td>																			
 				</tr>
 				<tr>
 					<td width="8%">关键字:</td>
 					<td colspan="3">
-						<input name="q" id="q" data-options="prompt:'输入入库单号,出库单号,申请单号...'" class="easyui-textbox" style="width:80%;"/>
+						<input name="q" id="q" data-options="prompt:'输入入库单号,申请单号...'" class="easyui-textbox" style="width:80%;"/>
 					</td>					
 					<td width="8%">单据日期:</td>
 					<td colspan="3" style="width:46%;" >

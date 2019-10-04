@@ -10,7 +10,8 @@ import java.util.List;
  */
 public enum DocPoStatusEnum {
 
-	CREATE("00","待审核"),
+	CREATE("00","新建"),
+	UN_AUDIT("05","送ERP审核"),
 	AUDIT_PASS("10","审核通过"),
 	AUDIT_REJECT("20","审核驳回"),
 	CANCEL("90","订单取消"),

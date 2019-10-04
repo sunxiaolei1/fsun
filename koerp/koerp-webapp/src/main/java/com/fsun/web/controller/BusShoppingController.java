@@ -22,8 +22,6 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocAsnDto;
 import com.fsun.domain.entity.DocAsnHeaderCondition;
 import com.fsun.domain.enums.DocAsnStatusEnum;
-import com.fsun.domain.enums.DocAsnTypeEnum;
-import com.fsun.domain.enums.OrderOperateTypeEnum;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.exception.bus.AfterSaleException;
 import com.fsun.exception.bus.DocAsnException;
@@ -91,7 +89,7 @@ public class BusShoppingController extends BaseController {
 	public HttpResult findPage(DocAsnHeaderCondition condition) {
 		try {
 			BusUserDto currUser = super.getCurrentUser();
-			condition.setToShopId(currUser.getShopId());
+			//condition.setToShopId(currUser.getShopId());			
 			PageModel pageModel = docAsnApi.findPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {

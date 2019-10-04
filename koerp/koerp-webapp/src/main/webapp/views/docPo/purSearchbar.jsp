@@ -4,29 +4,26 @@
 	<div id="queryDiv" style="height:80px;overflow:hidden;" data-options="region:'north',split:true">
 		<%@include file="../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
+				<input type="hidden" name="poType" value="10" />
 				<tr>
-					<td width="8%">单据类型:</td>
+					<!-- <td width="8%">单据类型:</td>
 					<td>
-						<input id="orderTypeCombo" name="orderType" editable="false" class="easyui-combobox" style="width:82%;"/>
-					</td>				
-					<td  width="8%">单据状态:</td>
+						<input id="poTypeCombo" name="poType" editable="false" class="easyui-combobox" style="width:82%;"/>
+					</td>	 -->
+					<td width="8%">关键字:</td>
 					<td>
-						<input id="orderStatusCombo" name="orderStatus" editable="false" class="easyui-combobox" style="width:80%;"/>
-					</td>
-					<td  width="8%">出库店仓:</td>
-					<td>
-						<input id="fromShopCombo" name="fromShopId"  class="easyui-combogrid" style="width:80%;"/>
-					</td>					
-					<td  width="8%">入库店仓:</td>
-					<td>
+						<input name="q" id="q" data-options="prompt:'输入申请单号...'" class="easyui-textbox" style="width:80%;"/>
+					</td>																	
+					<td width="8%">入库店仓:</td>
+					<td colspan="3">
 						<input id="toShopCombo" name="toShopId"  class="easyui-combogrid" style="width:80%;"/>
 					</td>																			
 				</tr>
 				<tr>
-					<td width="8%">关键字:</td>
-					<td colspan="3">
-						<input name="q" id="q" data-options="prompt:'输入出库单号,申请单号...'" class="easyui-textbox" style="width:80%;"/>
-					</td>					
+					<td  width="8%">单据状态:</td>
+					<td>
+						<input id="poStatusCombo" name="poStatus" editable="false" class="easyui-combobox" style="width:80%;"/>
+					</td>								
 					<td width="8%">单据日期:</td>
 					<td colspan="3" style="width:46%;" >
 						<input id="startDate" name="startDate" class="easyui-datebox" editable="false" style="width:28%;"/>
@@ -47,17 +44,17 @@
 
 $(function() {
 	
-	$('#orderStatusCombo').combobox({		
+	$('#poStatusCombo').combobox({		
 		valueField: 'codeCode',
    	  	textField: 'codeName',
-   	  	data: window.parent.docOrderStatusData	  
+   	  	data: window.parent.docPoStatusData	  
    	});
 	
-	$('#orderTypeCombo').combobox({		
+	/* $('#poTypeCombo').combobox({		
 		valueField: 'codeCode',
    	  	textField: 'codeName',
-   	  	data: window.parent.docOrderTypeData	  
-   	});
+   	  	data: window.parent.docPoTypeData	  
+   	}); */
 		
 	//初始化下拉框默认参数
 	initComboxParams();
@@ -65,7 +62,7 @@ $(function() {
 
 //查询
 function query(){
-	var url = "${api}/doc/order/findMorePage";
+	var url = "${api}/doc/po/findPage";
 	commonQuery(url);
 }
 

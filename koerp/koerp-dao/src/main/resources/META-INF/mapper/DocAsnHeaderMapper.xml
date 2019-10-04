@@ -70,7 +70,8 @@
   		<if test="q != null and q != ''">
   			and (a.order_no like concat(concat('%',#{q}),'%')  
   				or a.asn_no like concat(concat('%',#{q}),'%') 
-  				or a.po_no like concat(concat('%',#{q}),'%')  
+  				or a.po_no like concat(concat('%',#{q}),'%') 
+  				or a.ext_order_no like concat(concat('%',#{q}),'%')  
   				)
   		</if>
   		
@@ -81,7 +82,7 @@
   		<if test="orderNo != null and orderNo != ''">
   			and a.order_no = #{orderNo}
   		</if>
-  		
+
   		<if test="asnNo != null and asnNo != ''">
   			and a.asn_no = #{asnNo}
   		</if>
@@ -101,7 +102,14 @@
   		<if test="asnType != null and asnType != ''">
 			and a.asn_type = #{asnType,jdbcType=VARCHAR}
 		</if>
-  		
+		
+		<if test="asnTypes != null and asnTypes.length > 0">			
+			and (a.asn_type in
+			<foreach collection="asnTypes" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>)
+		</if>
+		
   		<if test="startTime != null">
 			and a.created_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
 		</if>

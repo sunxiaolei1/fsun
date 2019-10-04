@@ -11,7 +11,6 @@
 				<div class="fsun-wrap">
 					<form id="orderfm">
 						<span class="title" style="top: 1px;">基本信息</span>		
-						<input id="toShopId" name="toShopId" hidden="true" />
 						<input id="iId" name="iId" hidden="true" />
 						<input id="iName" name="iName" hidden="true" />
 						<input id="iShopId" name="iShopId" hidden="true" />
@@ -42,7 +41,7 @@
 								</td>
 								<th>入库店仓</th>
 								<td>					
-									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly  />								
+									<input id="toShopCombo" name="toShopId" class="easyui-combobox" required  />							
 								</td>	
 					        </tr>
 					        <tr>
@@ -78,6 +77,7 @@
 <!-- datagrid操作公共方法 -->
 <%@include file="./basePoView.jsp"%>
 <%@include file="../../busCommon/shopSelect.jsp"%>
+<%@include file="../../busCommon/toShopSelect.jsp"%>
 
 <script type="text/javascript">
 
@@ -148,8 +148,7 @@ $(function () {
    	});	
 	
 	//去除默认的请选择项
-	editInitComboxParams($orderfm, "");
-	
+	editInitComboxParams($orderfm, "");	
 	$.ajax({
 		type : "GET",
 		url : "${api}/doc/po/getInitData",
@@ -165,8 +164,10 @@ $(function () {
 			/***************************              基本信息初始化                        ************************/			
 			var header = docPoDto.header;
 			if(header!=null){				
-				initShopComboGrid(header.fromShopId, header.fromShopName, header.toShopId);
+				initShopComboGrid(header.fromShopId, header.fromShopName, "");
+				initToShopComboGrid(header.toShopId, header.toShopName, "");
 				delete header.fromShopId;
+				delete header.toShopId;
 				$orderfm.form("load", header);				
 				if(header.poStatus!=null && header.poStatus!=''
 					&& (header.poStatus=='10' || header.poStatus=='90')){

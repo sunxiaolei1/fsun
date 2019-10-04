@@ -333,6 +333,11 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
      */
     private String route;
 
+    /**
+     * 单据类型集合
+     */
+    private String[] orderTypes;
+    
     public String getOrderNo() {
         return orderNo;
     }
@@ -775,6 +780,20 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
 	 */
 	public void setContacts(String contacts) {
 		this.contacts = contacts;
+	}
+
+	/**
+	 * @return the orderTypes
+	 */
+	public String[] getOrderTypes() {
+		return orderTypes;
+	}
+
+	/**
+	 * @param orderTypes the orderTypes to set
+	 */
+	public void setOrderTypes(String[] orderTypes) {
+		this.orderTypes = orderTypes;
 	}
     
 }

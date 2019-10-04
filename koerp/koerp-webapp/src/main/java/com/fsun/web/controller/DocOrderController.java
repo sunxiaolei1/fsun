@@ -22,6 +22,7 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
 import com.fsun.domain.entity.DocOrderInitCondition;
+import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
@@ -49,6 +50,11 @@ public class DocOrderController extends BaseController {
 	@RequestMapping("/index")
 	public String index() {
 		return "/docOrder/index";
+	}
+	
+	@RequestMapping("/allot/index")
+	public String allotIndex() {
+		return "/docOrder/allotIndex";
 	}
 	
 	@RequestMapping("/toAddView")
@@ -94,8 +100,29 @@ public class DocOrderController extends BaseController {
 	@ResponseBody
 	public HttpResult findPage(DocOrderHeaderCondition condition) {
 		try {
-			BusUserDto currUser = super.getCurrentUser();
-			condition.setFromShopId(currUser.getShopId());
+			//BusUserDto currUser = super.getCurrentUser();
+			//condition.setFromShopId(currUser.getShopId());
+			PageModel pageModel = docOrderApi.findPage(condition);
+			return success(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/findMorePage", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public HttpResult findMorePage(DocOrderHeaderCondition condition) {
+		try {
+			//BusUserDto currUser = super.getCurrentUser();
+			//condition.setFromShopId(currUser.getShopId());
+			String[] orderTypes = new String[]{
+				DocOrderTypeEnum.SHORTAGE_SO.getCode(), 
+				DocOrderTypeEnum.PURCHASE_SO.getCode(), 
+				DocOrderTypeEnum.LOSE_SO.getCode(),
+				DocOrderTypeEnum.USE_SO.getCode()
+			};
+			condition.setOrderTypes(orderTypes);
 			PageModel pageModel = docOrderApi.findPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {

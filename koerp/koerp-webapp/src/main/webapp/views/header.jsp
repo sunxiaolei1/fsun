@@ -13,7 +13,7 @@
 	<meta http-equiv="Pragma" content="no-cache"> 
 	<meta http-equiv="Cache-Control" content="no-cache"> 
 	<meta http-equiv="Expires" content="0">
-    <title>订单管理平台</title>
+    <title>新零售管理平台</title>
 	<%@include file="headerJS.jsp" %>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/jquery-easyui/commons/js/codeFormatter.js"></script>
 	
@@ -24,9 +24,9 @@
 <body class="easyui-layout" style="overflow-y: hidden" scroll="no">
 
 <!--头部--> 
-<div id="pf-hd" region="north" split="true" border="false" style="overflow: hidden; background-color: rgb(65, 105, 225); width: 1366px; height: 65px;"> 
+<div id="pf-hd" region="north" split="true" border="false" style="overflow: hidden; background-color: #0092DC; width: 1366px; height: 65px;"> 
 	<div class="pf-logo" style="border-right: 0px solid;">
-        <img src="<%=request.getContextPath()%>/jquery-easyui/images/main/logo2.png" style="height:70%;" alt="logo">
+        <img src="<%=request.getContextPath()%>/jquery-easyui/images/main/logo2.png" style="height:65%;" alt="logo">
     </div>
     
     <div class="pf-nav-wrap" style="display:none;">

@@ -65,7 +65,7 @@ $(function() {
 
 //查询
 function query(){
-	var url = "${api}/doc/asn/findPage";
+	var url = "${api}/doc/asn/findMorePage";
 	commonQuery(url);
 }
 

@@ -1,12 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView(1)">签收审核</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView(0)">查看</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125519344_easyicon_net_16" plain="true" onclick="show()">展开查询条件</a>
  -->
 <script type="text/javascript">
+
+//跳转至盘盈入库新增界面
+function toAddView(asnType){
+	
+	var url = "${api}/doc/asn/toAddView?asnType="+ asnType;
+	var icon = "icon-add";
+	var subtitle = "创建入库单";
+	parent.addTab(subtitle, url, icon);	
+}
 
 //跳转至编辑界面
 function toDetailView(isSign){
@@ -20,12 +29,11 @@ function toDetailView(isSign){
 		$.messager.alert("提示","该单据已签收！");
 		return;	
 	}
-	var url = "${api}/bus/shopping/toDetailView?asnNo="+ row.asn_no +"&asnType="+ row.asn_type +"&buttontype=docAsn&isSign="+ isSign;
+	var url = "${api}/doc/asn/toDetailView?asnNo="+ row.asn_no +"&asnType="+ row.asn_type +"&buttontype=docAsn&isSign="+ isSign;
 	var icon = "icon-application_view_detail";
-	var subtitle = "要货单("+ row.asn_no +")详情";
+	var subtitle = "调拨单("+ row.asn_no +")详情";
 	parent.addTab(subtitle, url, icon);	
 }
-
 
 //刷新DataGrid
 function reflushDataGrid(){

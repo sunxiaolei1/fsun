@@ -10,8 +10,7 @@
 			<div data-options="region:'north',split:true, border:false" style="height:170px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
-						<span class="title" style="top: 1px;">基本信息</span>		
-						<input id="toShopId" name="toShopId" hidden="true" />
+						<span class="title" style="top: 1px;">基本信息</span>								
 						<input id="iId" name="iId" hidden="true" />
 						<input id="iName" name="iName" hidden="true" />
 						<input id="iShopId" name="iShopId" hidden="true" />
@@ -42,7 +41,7 @@
 								</td>
 								<th>入库店仓<span style="color:red;">*</span></th>
 								<td>					
-									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly />								
+									<input id="toShopCombo" name="toShopId" class="easyui-combobox" required />									
 								</td>	        						        		        	
 					        </tr>
 					        <tr>
@@ -78,6 +77,7 @@
 <!-- datagrid操作公共方法 -->
 <%@include file="./basePoView.jsp"%>
 <%@include file="../../busCommon/shopSelect.jsp"%>
+<%@include file="../../busCommon/toShopSelect.jsp"%>
 
 <script type="text/javascript">
 
@@ -151,8 +151,9 @@ $(function () {
 			var header = docPoDto.header;
 			if(header!=null){
 				$orderfm.form("load", header);	
-				var notInShopIdsStr = header.toShopId;
-				initShopComboGrid("", "", notInShopIdsStr);
+				var notInShopIdsStr = "";//header.toShopId;
+				initShopComboGrid("", "", notInShopIdsStr);				
+				initToShopComboGrid(header.toShopId, header.toShopName, "");
 			}
 			
 			var details = docPoDto.details;	

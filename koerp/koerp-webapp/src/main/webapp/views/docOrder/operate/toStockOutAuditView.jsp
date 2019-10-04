@@ -29,8 +29,8 @@
 								</td>
 								<th >经办人</th>
 								<td>
-									<input id="salesman" name="carrierId" class="easyui-combogrid" />	
-									<input hidden=true id="carrierName" name="carrierName" />								
+									<!-- <input id="salesman" name="carrierId" class="easyui-combogrid" /> -->	
+									<input class="easyui-textbox" id="carrierName" name="carrierName" />								
 								</td>													
 					        </tr>
 					        <tr>

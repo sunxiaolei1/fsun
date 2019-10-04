@@ -47,6 +47,18 @@ public class DocPoController extends BaseController {
 	@Autowired
 	private OrderButtonsApi orderButtonsApi;
 	
+	@RequestMapping("/allot/index")
+	public String allotIndex() {
+		return "/docPo/allotIndex";
+	}
+	
+	@RequestMapping("/pur/index")
+	public ModelAndView purIndex() {
+		ModelAndView modelAndView = new ModelAndView("/docPo/purIndex");		
+		modelAndView.addObject("toERP", DocPoStatusEnum.UN_AUDIT.getCode());			
+		return modelAndView;
+	}
+	
 	@RequestMapping("/index")
 	public String index() {
 		return "/docPo/index";
@@ -113,8 +125,8 @@ public class DocPoController extends BaseController {
 	@ResponseBody
 	public HttpResult findPage(DocPoHeaderCondition condition) {
 		try {
-			BusUserDto currUser = super.getCurrentUser();
-			condition.setToShopId(currUser.getShopId());
+			//BusUserDto currUser = super.getCurrentUser();
+			//condition.setToShopId(currUser.getShopId());
 			PageModel pageModel = docPoApi.findPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {

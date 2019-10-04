@@ -315,6 +315,11 @@ public class DocAsnHeaderCondition extends BaseOrderCondition{
      * 表字段 : doc_asn_header.updated_time
      */
     private Date updatedTime;
+    
+    /**
+     * 单据类型集合
+     */
+    private String[] asnTypes;
 
     public String getAsnNo() {
         return asnNo;
@@ -728,6 +733,20 @@ public class DocAsnHeaderCondition extends BaseOrderCondition{
 	 */
 	public void setPrintCount(Integer printCount) {
 		this.printCount = printCount;
+	}
+
+	/**
+	 * @return the asnTypes
+	 */
+	public String[] getAsnTypes() {
+		return asnTypes;
+	}
+
+	/**
+	 * @param asnTypes the asnTypes to set
+	 */
+	public void setAsnTypes(String[] asnTypes) {
+		this.asnTypes = asnTypes;
 	}
     
 }

@@ -100,6 +100,13 @@
   		<if test="orderType != null and orderType != ''">
 			and a.order_type = #{orderType,jdbcType=VARCHAR}
 		</if>
+		
+		<if test="orderTypes != null and orderTypes.length > 0 ">			
+			and (a.order_type in
+			<foreach collection="orderTypes" index="index" item="item" open="(" separator="," close=")" >
+				#{item} 
+			</foreach>)
+		</if>
   		
   		<if test="startTime != null">
 			and a.delivery_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}

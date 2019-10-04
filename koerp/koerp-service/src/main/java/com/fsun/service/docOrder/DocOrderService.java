@@ -221,9 +221,9 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 				throw new DocOrderException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
 			}
 			String shopId = header.getFromShopId();
-			if(!user.getShopId().equals(shopId)){
-				throw new DocOrderException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
-			}
+			//if(!user.getShopId().equals(shopId)){
+			//	throw new DocOrderException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
+			//}
 			if(!orderStatusValidator(status, header)){
 				throw new DocOrderException(SCMErrorEnum.BUS_ORDER_STATUS_INVALID);
 			}
@@ -385,7 +385,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		}
 		String shopId = currUser.getShopId(); 
 		if(shopId==null || !shopId.equals(header.getFromShopId())){
-			throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
+			//throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
 		}		
 		//追击备注
 		header.setUpdatedTime(new Date());
@@ -549,7 +549,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		//入参基本的校验
 		String iId = header.getiId();		
 		if(!currUser.getId().equals(iId)){
-			throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
+			//throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
 		}		
 		if(this.load(orderNo)!=null){
 			throw new DocOrderException(SCMErrorEnum.BUS_ORDER_EXISTED);

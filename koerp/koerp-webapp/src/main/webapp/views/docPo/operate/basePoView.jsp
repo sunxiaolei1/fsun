@@ -85,12 +85,18 @@ function getSaveData(){
 	if (!isValid || !isValid0){
 		$.messager.alert("错误", "提交的数据不正确!", "error");  
 		return null;
-	}			
-
+	}				
 	var baseInfo = formJson($orderfm);
 	if(baseInfo.poType!='10'){
 		var fromShopName = $('#shopCombo', $orderfm).combogrid("getText");
-		baseInfo.fromShopName = fromShopName;	
+		baseInfo.fromShopName = fromShopName;
+		
+		var toShopName = $('#toShopCombo', $orderfm).combogrid("getText");
+		baseInfo.toShopName = toShopName;		
+		if(baseInfo.fromShopId == baseInfo.toShopId){
+			$.messager.alert("错误", "出库店仓和入库店仓不可为同一个!", "error");  
+			return null;
+		}
 	}
 	var saveData = {
 	     "params": {
@@ -131,6 +137,13 @@ function getUpdateData(){
 	if(baseInfo.poType!='10'){
 		var fromShopName = $('#shopCombo', $orderfm).combogrid("getText");
 		baseInfo.fromShopName = fromShopName;	
+
+		var toShopName = $('#toShopCombo', $orderfm).combogrid("getText");
+		baseInfo.toShopName = toShopName;		
+		if(baseInfo.fromShopId == baseInfo.toShopId){
+			$.messager.alert("错误", "出库店仓和入库店仓不可为同一个!", "error");  
+			return null;
+		}
 	}
 	
 	var saveData = {

@@ -33,8 +33,6 @@ import com.fsun.domain.enums.TradeFromEnum;
 import com.fsun.domain.model.BusShop;
 import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
-import com.fsun.domain.model.DocOrderDetails;
-import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.DocPoHeader;
 import com.fsun.domain.model.SysUser;
@@ -131,16 +129,20 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 			String fromShopId = header.getFromShopId();
 			if(status.equals(DocPoStatusEnum.AUDIT_PASS.getCode()) 
 				|| status.equals(DocPoStatusEnum.AUDIT_REJECT.getCode()) ){
-				if(!user.getShopId().equals(fromShopId)){
+				/*if(!user.getShopId().equals(fromShopId)){
 					throw new DocPoException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
-				}
+				}*/
 				header.setAuditor(user.getRealname());
 				header.setAuditorId(user.getId());
 				header.setAuditTime(now);
 			}else if(status.equals(DocPoStatusEnum.CANCEL.getCode())){
-				if(!user.getShopId().equals(toShopId)){
+				/*if(!user.getShopId().equals(toShopId)){
 					throw new DocPoException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
-				}
+				}*/
+			}else if(status.equals(DocPoStatusEnum.UN_AUDIT.getCode())){
+				/*if(!user.getShopId().equals(toShopId)){
+					throw new DocPoException(SCMErrorEnum.BUS_SHOP_ILLEGAL);
+				}*/
 			}
 			//判别状态是否可用
 			if(!orderStatusValidator(status, header)){
@@ -153,7 +155,15 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 			if(memo!=null && !memo.equals("")){
 				header.setMemo(memo);
 			}			
-			docPoHeaderManage.update(header);					
+			docPoHeaderManage.update(header);	
+			
+			//如果是采购申请单时,模拟创建采购入库单
+			if(DocPoTypeEnum.PURCHASE_APPLY.getCode().equals(header.getPoType())){
+				if(status.equals(DocPoStatusEnum.UN_AUDIT.getCode())){
+					List<DocPoDetails> details = this.details(poNo);
+					this.transferPurchaseStorage(header, details);
+				}			
+			}
 		}
 	}
 
@@ -204,14 +214,6 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		}
 		header.setOrderPrice(orderPrice);
 		docPoHeaderManage.create(header);
-		
-		//如果是采购申请单时,模拟创建采购入库单
-		if(DocPoTypeEnum.PURCHASE_APPLY.getCode().equals(header.getPoType())){
-			if(true){
-				this.transferPurchaseStorage(header, details);
-			}			
-		}
-		
 		return poNo;
 	}
 	
@@ -315,9 +317,9 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		DocPoHeader header = docPoDto.getHeader();		
 		//入参基本的校验
 		String iId = header.getiId();	
-		if(!currUser.getId().equals(iId)){
+		/*if(!currUser.getId().equals(iId)){
 			throw new DocPoException(SCMErrorEnum.USER_ILLEGAL);
-		}	
+		}*/	
 		DocPoHeader oldHeader = this.load(poNo);
 		if(oldHeader==null){
 			throw new DocPoException(SCMErrorEnum.BUS_ORDER_NOT_EXIST);
@@ -418,7 +420,12 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 					|| DocPoStatusEnum.CANCEL.getCode().equals(oldStatus)){
 					isTrue = false;
 				}
-				break;		
+				break;	
+			case UN_AUDIT:	
+				if(!DocPoStatusEnum.CREATE.getCode().equals(oldStatus)){
+					isTrue = false;
+				}
+				break;	
 			case AUDIT_PASS:			
 				break;	
 			case AUDIT_REJECT:			

@@ -4,28 +4,25 @@
 	<div id="queryDiv" style="height:80px;overflow:hidden;" data-options="region:'north',split:true">
 		<%@include file="../busCommon/commonSearchHeader.jsp"%>		
 			<table style="width:100%;padding:5px;">
-				<tr>
-					<td width="8%">单据类型:</td>
-					<td>
-						<input id="orderTypeCombo" name="orderType" editable="false" class="easyui-combobox" style="width:82%;"/>
-					</td>				
-					<td  width="8%">单据状态:</td>
-					<td>
-						<input id="orderStatusCombo" name="orderStatus" editable="false" class="easyui-combobox" style="width:80%;"/>
-					</td>
+				<input type="hidden" name="orderType" value="11" />
+				<tr>													
 					<td  width="8%">出库店仓:</td>
-					<td>
-						<input id="fromShopCombo" name="fromShopId"  class="easyui-combogrid" style="width:80%;"/>
+					<td colspan="3">
+						<input id="fromShopCombo" name="fromShopId"  class="easyui-combogrid" style="width:90%;"/>
 					</td>					
 					<td  width="8%">入库店仓:</td>
-					<td>
+					<td colspan="3">
 						<input id="toShopCombo" name="toShopId"  class="easyui-combogrid" style="width:80%;"/>
 					</td>																			
 				</tr>
 				<tr>
+				    <td  width="8%">单据状态:</td>
+					<td>
+						<input id="orderStatusCombo" name="orderStatus" editable="false" class="easyui-combobox" style="width:80%;"/>
+					</td>
 					<td width="8%">关键字:</td>
-					<td colspan="3">
-						<input name="q" id="q" data-options="prompt:'输入出库单号,申请单号...'" class="easyui-textbox" style="width:80%;"/>
+					<td>
+						<input name="q" id="q" data-options="prompt:'输入出库单号,申请单号...'" class="easyui-textbox" style="width:85%;"/>
 					</td>					
 					<td width="8%">单据日期:</td>
 					<td colspan="3" style="width:46%;" >
@@ -65,7 +62,7 @@ $(function() {
 
 //查询
 function query(){
-	var url = "${api}/doc/order/findMorePage";
+	var url = "${api}/doc/order/findPage";
 	commonQuery(url);
 }
 
