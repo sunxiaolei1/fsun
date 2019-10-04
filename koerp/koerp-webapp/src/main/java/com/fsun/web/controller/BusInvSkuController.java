@@ -79,6 +79,22 @@ public class BusInvSkuController extends BaseController {
 		return modelAndView;
 	}
 	
+	/**
+	 * 首页商品库存明细
+	 * @param sku
+	 * @param shopId
+	 * @return
+	 */
+	@RequestMapping("/toDetailOverView")
+	public ModelAndView toDetailOverView(@RequestParam("sku") String sku,
+		@RequestParam("shopId") String shopId) {		
+		ModelAndView modelAndView = new ModelAndView("/busInvSku/operate/detailOverView");
+		modelAndView.addObject("sku", sku);
+		modelAndView.addObject("shopId", shopId);
+		return modelAndView;
+	}
+	
+	
 
 	/**
 	 * 通过sku和门店id获取商品库存明细

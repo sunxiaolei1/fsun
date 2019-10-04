@@ -126,6 +126,7 @@
 		b.property as property,
 		b.unit_name as unit_name,
 		a.memo as memo,
+		a.shop_id as shop_id,
 		(SELECT c.shop_name FROM bus_shop c WHERE c.shop_id = a.shop_id) as shop_name
     FROM bus_inv_sku a 
     Left JOIN bus_bas_sku b on b.sku = a.sku   
