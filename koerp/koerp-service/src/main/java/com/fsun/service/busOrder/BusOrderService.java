@@ -28,6 +28,7 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.entity.BusOrderCondition;
 import com.fsun.domain.enums.BusPayTypeEnum;
 import com.fsun.domain.enums.CustomerTypeEnum;
+import com.fsun.domain.enums.DocTradeStatusEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
@@ -406,6 +407,30 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		}
 		busOrderManage.create(header);		
 		return orderId;
+	}
+	
+	@Transactional
+	@Override
+	public String checkout(BusOrderDto busOrderDto) {
+		List<BusGoods> goods = busOrderDto.getDetails();
+		BusOrder header = busOrderDto.getHeader();
+		header.setTradeStatus(DocTradeStatusEnum.COMPLETED.getCode());
+		for (BusGoods busGoods : goods) {
+			super.skuStockOut(header, busGoods);
+		}	
+		return busOrderDto.getOrderId();
+	}
+	
+	@Transactional
+	@Override
+	public String cancel(BusOrderDto busOrderDto) {
+		List<BusGoods> goods = busOrderDto.getDetails();
+		BusOrder header = busOrderDto.getHeader();
+		header.setTradeStatus(DocTradeStatusEnum.CANCEL.getCode());
+		for (BusGoods busGoods : goods) {
+			super.skuStockIn(header, busGoods);
+		}	
+		return busOrderDto.getOrderId();
 	}
 	
 	@Override

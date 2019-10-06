@@ -78,6 +78,20 @@ public interface BusOrderApi extends BaseOrderCommonApi<BusOrder, BusOrderCondit
 	 * @param currUser
 	 */
 	public void synApportionErrorOrder(String orderIds, BusUserDto currUser);
+
+	/**
+	 * pos订单上传
+	 * @param busOrderDto
+	 * @return
+	 */
+	public String checkout(BusOrderDto busOrderDto);
+
+	/**
+	 * pos订单交易取消
+	 * @param busOrderDto
+	 * @return
+	 */
+	public String cancel(BusOrderDto busOrderDto);
 	
 
 }
