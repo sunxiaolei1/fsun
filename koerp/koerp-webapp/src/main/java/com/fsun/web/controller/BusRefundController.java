@@ -93,7 +93,7 @@ public class BusRefundController extends BaseController {
 	public HttpResult findPage(DocOrderHeaderCondition condition) {
 		try {
 			BusUserDto currUser = super.getCurrentUser();
-			condition.setFromShopId(currUser.getShopId());
+			//condition.setFromShopId(currUser.getShopId());
 			PageModel pageModel = docOrderApi.findPage(condition);
 			return success(pageModel);
 		} catch (Exception e) {

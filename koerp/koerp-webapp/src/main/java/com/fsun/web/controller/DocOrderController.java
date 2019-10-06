@@ -120,7 +120,7 @@ public class DocOrderController extends BaseController {
 				DocOrderTypeEnum.SHORTAGE_SO.getCode(), 
 				DocOrderTypeEnum.PURCHASE_SO.getCode(), 
 				DocOrderTypeEnum.LOSE_SO.getCode(),
-				DocOrderTypeEnum.USE_SO.getCode()
+				//DocOrderTypeEnum.USE_SO.getCode()
 			};
 			condition.setOrderTypes(orderTypes);
 			PageModel pageModel = docOrderApi.findPage(condition);
