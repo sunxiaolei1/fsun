@@ -46,13 +46,15 @@ public class DocAsnHeaderManage extends CrudManage<DocAsnHeaderMapper, DocAsnHea
 	 */
 	public String initAsnNo(String asnType, String shopCode) {
 		
-		String prefix = DateUtil.getNowDateStr().replace("-", "") + asnType + shopCode;
+		//String prefix = DateUtil.getNowDateStr().replace("-", "") + asnType + shopCode;
+		String prefix = DateUtil.getNowShortDateStr() + asnType;
 		List<String> list = mapper.getMaxNumber(prefix);
 		if(list!=null && list.size()>0){
 			String maxAsnNo = list.get(0);
 			return (Long.parseLong(maxAsnNo) + 1) + "";
 		}else{	
-			return prefix + "00001";
+			//return prefix + "00001";
+			return prefix + "01";
 		}
 	}
 

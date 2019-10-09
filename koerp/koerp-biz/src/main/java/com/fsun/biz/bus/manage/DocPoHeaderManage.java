@@ -37,13 +37,15 @@ public class DocPoHeaderManage extends CrudManage<DocPoHeaderMapper, DocPoHeader
 	 * @return
 	 */
 	public String initPoNo(String poType, String shopCode) {
-		String prefix = DateUtil.getNowDateStr().replace("-", "") + poType + shopCode;
+		//String prefix = DateUtil.getNowDateStr().replace("-", "") + poType + shopCode;
+		String prefix = DateUtil.getNowShortDateStr() + poType;
 		List<String> list = mapper.getMaxNumber(prefix);
 		if(list!=null && list.size()>0){
 			String maxPoNo = list.get(0);
 			return (Long.parseLong(maxPoNo) + 1) + "";
 		}else{	
-			return prefix + "00001";
+			//return prefix + "00001";
+			return prefix + "01";
 		}
 	}
 

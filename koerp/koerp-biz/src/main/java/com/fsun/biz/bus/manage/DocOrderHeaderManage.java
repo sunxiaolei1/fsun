@@ -23,13 +23,15 @@ public class DocOrderHeaderManage extends CrudManage<DocOrderHeaderMapper, DocOr
 	 * @return
 	 */
 	public String initOrderNo(String orderType, String shopCode) {
-		String prefix = DateUtil.getNowDateStr().replace("-", "") + orderType + shopCode;
+		//String prefix = DateUtil.getNowDateStr().replace("-", "") + orderType + shopCode;
+		String prefix = DateUtil.getNowShortDateStr() + orderType;
 		List<String> list = mapper.getMaxNumber(prefix);
 		if(list!=null && list.size()>0){
 			String maxOrderNo = list.get(0);
 			return (Long.parseLong(maxOrderNo) + 1) + "";
 		}else{	
-			return prefix + "00001";
+			//return prefix + "00001";
+			return prefix + "01";
 		}
 	}
 	

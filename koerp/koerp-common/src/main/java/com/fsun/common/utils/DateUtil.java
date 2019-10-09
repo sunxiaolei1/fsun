@@ -13,6 +13,9 @@ public class DateUtil {
 
 	// 默认日期格式
 	public static final String DATE_DEFAULT_FORMAT = "yyyy-MM-dd";
+	
+	// 默认简单日期格式
+	public static final String SHORT_DATE_DEFAULT_FORMAT = "yyMMdd";
 
 	// 默认时间格式
 	public static final String DATETIME_DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -21,6 +24,9 @@ public class DateUtil {
 
 	// 日期格式化
 	private static DateFormat dateFormat = null;
+	
+	// 日期格式化
+	private static DateFormat shortDateFormat = null;
 
 	// 时间格式化
 	private static DateFormat dateTimeFormat = null;
@@ -31,6 +37,7 @@ public class DateUtil {
 
 	static {
 		dateFormat = new SimpleDateFormat(DATE_DEFAULT_FORMAT);
+		shortDateFormat = new SimpleDateFormat(SHORT_DATE_DEFAULT_FORMAT);
 		dateTimeFormat = new SimpleDateFormat(DATETIME_DEFAULT_FORMAT);
 		timeFormat = new SimpleDateFormat(TIME_DEFAULT_FORMAT);
 		gregorianCalendar = new GregorianCalendar();
@@ -144,6 +151,15 @@ public class DateUtil {
 		return dateFormat.format(new Date());
 	}
 
+	/**
+	 * 获取当前日期(yyMMdd)
+	 * @param date
+	 * @return
+	 */
+	public static String getNowShortDateStr() {
+		return shortDateFormat.format(new Date());
+	}
+	
 	/**
 	 * 获取当前日期星期一日期
 	 * 
