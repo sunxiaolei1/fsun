@@ -93,7 +93,7 @@ public class HttpRequestUtils {
 			JSONObject bodyParam) {
 		return httpPost(url, headerParam, JSON.toJSONString(bodyParam), false);
 	}
-
+	
 	/**
 	 * httpPost
 	 * 
