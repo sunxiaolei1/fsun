@@ -1,50 +1,34 @@
 package com.fsun.service.docPo;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.fsun.api.bus.DocPoApi;
 import com.fsun.biz.bus.manage.BusShopManage;
 import com.fsun.biz.bus.manage.DocAsnDetailsManage;
 import com.fsun.biz.bus.manage.DocAsnHeaderManage;
 import com.fsun.biz.bus.manage.DocPoDetailsManage;
 import com.fsun.biz.bus.manage.DocPoHeaderManage;
-import com.fsun.common.utils.HttpRequestUtils;
 import com.fsun.common.utils.PKMapping;
-import com.fsun.common.utils.RouteUrlUtil;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocPoDto;
-import com.fsun.domain.dto.ErpOrderDto;
 import com.fsun.domain.entity.DocPoDetailsCondition;
 import com.fsun.domain.entity.DocPoHeaderCondition;
-import com.fsun.domain.enums.DocAsnSignTypeEnum;
-import com.fsun.domain.enums.DocAsnStatusEnum;
-import com.fsun.domain.enums.DocAsnTypeEnum;
-import com.fsun.domain.enums.DocGoodsTypeEnum;
 import com.fsun.domain.enums.DocPoStatusEnum;
 import com.fsun.domain.enums.DocPoTypeEnum;
 import com.fsun.domain.enums.TradeFromEnum;
 import com.fsun.domain.model.BusShop;
-import com.fsun.domain.model.DocAsnDetails;
-import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.DocPoHeader;
-import com.fsun.domain.model.ErpOrderDetails;
-import com.fsun.domain.model.ErpOrderHeader;
 import com.fsun.domain.model.SysUser;
-import com.fsun.exception.bus.DocOrderException;
 import com.fsun.exception.bus.DocPoException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.fsun.service.common.BaseOrderService;
@@ -169,7 +153,8 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 			if(DocPoTypeEnum.PURCHASE_APPLY.getCode().equals(header.getPoType())){
 				if(status.equals(DocPoStatusEnum.UN_AUDIT.getCode())){
 					List<DocPoDetails> details = this.details(poNo);
-					this.transferPurchaseStorage(header, details);
+					String relationNo = super.transferErpAllotSo(header, details);
+					header.setRelationNo(relationNo);					
 				}			
 			}
 		}
@@ -223,52 +208,6 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		header.setOrderPrice(orderPrice);
 		docPoHeaderManage.create(header);
 		return poNo;
-	}
-	
-	/**
-	 * 申请单转成ERP调拨单(待出库审核)
-	 * @param header
-	 * @return
-	 */
-	private String transferPurchaseStorage(DocPoHeader poHeader, List<DocPoDetails> poDetails){
-		
-		ErpOrderDto erpOrderDto = new ErpOrderDto();
-		ErpOrderHeader erpOrderHeader = new ErpOrderHeader();
-		String poNo = poHeader.getPoNo();
-		erpOrderHeader.setTrnNum(poNo);
-		erpOrderHeader.setCreateDate(poHeader.getCreatedTime());
-		//erpOrderHeader.setFromSite(fromSite);
-		//erpOrderHeader.setFromWhse(fromWhse);
-		//erpOrderHeader.setStat(stat);
-		erpOrderHeader.setCreatedBy(poHeader.getiName());		
-		erpOrderHeader.setToSite(poHeader.getToShopName());
-		erpOrderHeader.setToWhse(poHeader.getToShopId());
-		erpOrderDto.setHeader(erpOrderHeader);
-		//初始化明细信息		
-		List<ErpOrderDetails> details = new ArrayList<>();
-		for (DocPoDetails docPoDetails : poDetails) {
-			ErpOrderDetails erpOrderDetail = new ErpOrderDetails();
-			erpOrderDetail.setTrnNum(poNo);
-			erpOrderDetail.setTrnLine(docPoDetails.getLineNo());
-			erpOrderDetail.setItem(docPoDetails.getSku());			
-			erpOrderDetail.setuM(docPoDetails.getUnit());
-			erpOrderDetail.setUnitCost(docPoDetails.getCostPrice());
-			erpOrderDetail.setMatlCost(docPoDetails.getCostPrice());
-			erpOrderDetail.setUnitMatCost(docPoDetails.getCostPrice());
-			erpOrderDetail.setUnitMatCostConv(docPoDetails.getCostPrice());
-			erpOrderDetail.setUnitPrice(docPoDetails.getCostPrice());
-			erpOrderDetail.setQtyReq(docPoDetails.getOrderedQty());
-			//填写默认值
-			erpOrderDetail.setQtyReceived(docPoDetails.getOrderedQty());
-			erpOrderDetail.setQtyShipped(docPoDetails.getOrderedQty());
-			erpOrderDetail.setQtyLoss(BigDecimal.ZERO);
-			details.add(erpOrderDetail);			
-		}	
-		erpOrderDto.setDetails(details);
-		String jsonParam = JSON.toJSONString(erpOrderDto);
-		System.out.println("-----------------------------" + jsonParam);
-		JSONObject result = HttpRequestUtils.httpPost(RouteUrlUtil.ERP_CREATE_ORDER_URL, null, jsonParam, false);
-		return poHeader.getPoNo();
 	}
 	
 	@Transactional

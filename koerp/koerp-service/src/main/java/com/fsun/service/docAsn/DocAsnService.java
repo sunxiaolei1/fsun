@@ -456,9 +456,11 @@ public class DocAsnService extends BaseOrderService implements DocAsnApi {
 				String refundOrderNo = this.transferAllotRefund(oriDocAsnHeader, header, details);
 				header.setUserDefine1(refundOrderNo);
 			}			
-		}		
-		header.setOrderPrice(orderPrice);		
+		}	
+		header.setOrderPrice(orderPrice);			
 		docAsnHeaderManage.update(header);
+		//回传erp
+		super.transferErpAllotSo(header, details);
 		return asnNo;
 	}
 	

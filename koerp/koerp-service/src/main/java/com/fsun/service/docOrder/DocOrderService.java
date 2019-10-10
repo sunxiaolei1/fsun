@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fsun.api.bus.DocOrderApi;
 import com.fsun.biz.bus.manage.BusShopManage;
 import com.fsun.biz.bus.manage.DocAsnDetailsManage;
@@ -22,11 +24,14 @@ import com.fsun.biz.bus.manage.DocOrderHeaderManage;
 import com.fsun.biz.bus.manage.DocPoDetailsManage;
 import com.fsun.biz.bus.manage.DocPoHeaderManage;
 import com.fsun.common.utils.DateUtil;
+import com.fsun.common.utils.HttpRequestUtils;
 import com.fsun.common.utils.PKMapping;
+import com.fsun.common.utils.RouteUrlUtil;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
 import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
+import com.fsun.domain.dto.ErpOrderDto;
 import com.fsun.domain.entity.DocAsnDetailsCondition;
 import com.fsun.domain.entity.DocOrderDetailsCondition;
 import com.fsun.domain.entity.DocOrderDetailsMaterielCondition;
@@ -47,6 +52,8 @@ import com.fsun.domain.model.DocOrderDetailsMateriel;
 import com.fsun.domain.model.DocOrderHeader;
 import com.fsun.domain.model.DocPoDetails;
 import com.fsun.domain.model.DocPoHeader;
+import com.fsun.domain.model.ErpOrderDetails;
+import com.fsun.domain.model.ErpOrderHeader;
 import com.fsun.domain.model.SysUser;
 import com.fsun.exception.bus.DocOrderException;
 import com.fsun.exception.bus.OrderException;
@@ -299,6 +306,8 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		BigDecimal orderPrice = BigDecimal.ZERO;
 		//初始化明细
 		int lineNo = 1;
+		List<DocOrderDetailsMateriel> docOrderDetailsMateriels = new ArrayList<>();
+		List<DocOrderDetails> docOrderDetailsSkus = new ArrayList<>();
 		for (DocOrderDetails docOrderDetails : details) {
 			Short productType = docOrderDetails.getProductType();
 			if(ProductTypeEnum.MATERIEL.getValue().equals(productType)){
@@ -313,6 +322,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 				docOrderDetailsMateriel.setCreatedTime(now);
 				orderPrice = orderPrice.add(totalPrice);
 				docOrderDetailsMaterielManage.create(docOrderDetailsMateriel);
+				docOrderDetailsMateriels.add(docOrderDetailsMateriel);
 			}else{
 				docOrderDetails.setSoDetailId(PKMapping.GUUID(PKMapping.doc_order_details));
 				docOrderDetails.setOrderNo(orderNo);
@@ -323,7 +333,8 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 				docOrderDetails.setCreatedTime(now);
 				orderPrice = orderPrice.add(totalPrice);
 				docOrderDetailsManage.create(docOrderDetails);
-				super.skuStockOut(header, docOrderDetails);				
+				super.skuStockOut(header, docOrderDetails);	
+				docOrderDetailsSkus.add(docOrderDetails);
 			}			
 		}
 		header.setOrderPrice(orderPrice);
@@ -339,7 +350,11 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 			docAsnHeader.setUpdatedName(currUser.getRealname());
 			docAsnHeaderManage.update(docAsnHeader);
 		}
-		
+		//撤柜退货单回传erp
+		if(DocOrderTypeEnum.USE_SO.getCode().equals(header.getOrderType())){
+			String erpOrderNo = super.transferErpAllotSo(header, docOrderDetailsMateriels, docOrderDetailsSkus);
+			header.setUserDefine1(erpOrderNo);
+		}		
 		docOrderHeaderManage.create(header);		
 		return orderNo;
 	}

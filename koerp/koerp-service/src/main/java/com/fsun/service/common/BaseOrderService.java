@@ -1,16 +1,22 @@
 package com.fsun.service.common;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fsun.biz.bus.manage.BusInvSkuDetailsManage;
 import com.fsun.biz.bus.manage.BusInvSkuManage;
 import com.fsun.common.utils.DateUtil;
+import com.fsun.common.utils.HttpRequestUtils;
 import com.fsun.common.utils.PKMapping;
+import com.fsun.common.utils.RouteUrlUtil;
 import com.fsun.domain.dto.BusUserDto;
+import com.fsun.domain.dto.ErpOrderDto;
 import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
@@ -31,8 +37,16 @@ import com.fsun.domain.model.BusTakeGoods;
 import com.fsun.domain.model.DocAsnDetails;
 import com.fsun.domain.model.DocAsnHeader;
 import com.fsun.domain.model.DocOrderDetails;
+import com.fsun.domain.model.DocOrderDetailsMateriel;
 import com.fsun.domain.model.DocOrderHeader;
+import com.fsun.domain.model.DocPoDetails;
+import com.fsun.domain.model.DocPoHeader;
+import com.fsun.domain.model.ErpOrderDetails;
+import com.fsun.domain.model.ErpOrderHeader;
 import com.fsun.exception.bus.AfterSaleException;
+import com.fsun.exception.bus.DocAsnException;
+import com.fsun.exception.bus.DocOrderException;
+import com.fsun.exception.bus.DocPoException;
 import com.fsun.exception.bus.OrderException;
 import com.fsun.exception.enums.SCMErrorEnum;
 import com.github.pagehelper.StringUtil;
@@ -669,5 +683,176 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		}	
 		return newRemark;
 	}
+	
 
+	/*******************************************      回传erp      *********************************************/
+	
+	/**
+	 * 入库单签收后转成ERP调拨单(签收回传)
+	 * @param header
+	 * @return
+	 */
+	protected String transferErpAllotSo(DocAsnHeader header, List<DocAsnDetails> detailsSkus){
+		
+		ErpOrderDto erpOrderDto = new ErpOrderDto();
+		ErpOrderHeader erpOrderHeader = new ErpOrderHeader();
+		String asnNo = header.getAsnNo();
+		erpOrderHeader.setTrnNum(asnNo);
+		erpOrderHeader.setCreateDate(header.getCreatedTime());
+		erpOrderHeader.setFromSite(header.getFromShopName());
+		erpOrderHeader.setFromWhse(header.getFromShopId());
+		erpOrderHeader.setCreatedBy(header.getiName());	
+		erpOrderHeader.setOrderDate(header.getDeliveryTime());
+		erpOrderHeader.setToSite(header.getToShopName());
+		erpOrderHeader.setToWhse(header.getToShopId());
+		//erpOrderHeader.setStat(stat);
+		erpOrderDto.setHeader(erpOrderHeader);
+		//初始化明细信息		
+		List<ErpOrderDetails> details = new ArrayList<>();
+		for (DocAsnDetails detailsSku : detailsSkus) {
+			ErpOrderDetails erpOrderDetail = new ErpOrderDetails();
+			erpOrderDetail.setTrnNum(asnNo);
+			erpOrderDetail.setTrnLine(detailsSku.getLineNo());
+			erpOrderDetail.setItem(detailsSku.getSku());			
+			erpOrderDetail.setuM(detailsSku.getUnit());
+			erpOrderDetail.setUnitCost(detailsSku.getCostPrice());
+			erpOrderDetail.setMatlCost(detailsSku.getCostPrice());
+			erpOrderDetail.setUnitMatCost(detailsSku.getCostPrice());
+			erpOrderDetail.setUnitMatCostConv(detailsSku.getCostPrice());
+			erpOrderDetail.setUnitPrice(detailsSku.getCostPrice());
+			erpOrderDetail.setQtyReq(detailsSku.getOrderQty());
+			//填写默认值
+			erpOrderDetail.setQtyReceived(detailsSku.getReceiveQty());
+			erpOrderDetail.setQtyShipped(detailsSku.getExpectedQty());
+			erpOrderDetail.setQtyLoss(detailsSku.getRejectedQty());
+			details.add(erpOrderDetail);			
+		}	
+		erpOrderDto.setDetails(details);
+		String jsonParam = JSON.toJSONString(erpOrderDto);
+		System.out.println("-----------------------------" + jsonParam);
+		JSONObject result = HttpRequestUtils.httpPost(RouteUrlUtil.ERP_CREATE_ORDER_URL, null, jsonParam, false);
+		if(!result.getBoolean("status")){			
+			throw new DocAsnException(result.getString("message"));
+		}
+		return asnNo;
+	}
+	
+	/**
+	 * 申请单转成ERP调拨单(待出库审核)
+	 * @param header
+	 * @return
+	 */
+	protected String transferErpAllotSo(DocPoHeader poHeader, List<DocPoDetails> poDetails){
+		
+		ErpOrderDto erpOrderDto = new ErpOrderDto();
+		ErpOrderHeader erpOrderHeader = new ErpOrderHeader();
+		String poNo = poHeader.getPoNo();
+		erpOrderHeader.setTrnNum(poNo);
+		erpOrderHeader.setCreateDate(poHeader.getCreatedTime());
+		//erpOrderHeader.setFromSite(fromSite);
+		//erpOrderHeader.setFromWhse(fromWhse);
+		//erpOrderHeader.setStat(stat);
+		erpOrderHeader.setCreatedBy(poHeader.getiName());		
+		erpOrderHeader.setToSite(poHeader.getToShopName());
+		erpOrderHeader.setToWhse(poHeader.getToShopId());
+		erpOrderDto.setHeader(erpOrderHeader);
+		//初始化明细信息		
+		List<ErpOrderDetails> details = new ArrayList<>();
+		for (DocPoDetails docPoDetails : poDetails) {
+			ErpOrderDetails erpOrderDetail = new ErpOrderDetails();
+			erpOrderDetail.setTrnNum(poNo);
+			erpOrderDetail.setTrnLine(docPoDetails.getLineNo());
+			erpOrderDetail.setItem(docPoDetails.getSku());			
+			erpOrderDetail.setuM(docPoDetails.getUnit());
+			erpOrderDetail.setUnitCost(docPoDetails.getCostPrice());
+			erpOrderDetail.setMatlCost(docPoDetails.getCostPrice());
+			erpOrderDetail.setUnitMatCost(docPoDetails.getCostPrice());
+			erpOrderDetail.setUnitMatCostConv(docPoDetails.getCostPrice());
+			erpOrderDetail.setUnitPrice(docPoDetails.getCostPrice());
+			erpOrderDetail.setQtyReq(docPoDetails.getOrderedQty());
+			//填写默认值
+			erpOrderDetail.setQtyReceived(docPoDetails.getOrderedQty());
+			erpOrderDetail.setQtyShipped(docPoDetails.getOrderedQty());
+			erpOrderDetail.setQtyLoss(BigDecimal.ZERO);
+			details.add(erpOrderDetail);			
+		}	
+		erpOrderDto.setDetails(details);
+		String jsonParam = JSON.toJSONString(erpOrderDto);
+		System.out.println("-----------------------------" + jsonParam);
+		JSONObject result = HttpRequestUtils.httpPost(RouteUrlUtil.ERP_CREATE_ORDER_URL, null, jsonParam, false);
+		if(!result.getBoolean("status")){			
+			throw new DocPoException(result.getString("message"));
+		}
+		return poHeader.getPoNo();
+	}
+	
+	/**
+	 * 出库单转成ERP调拨单(待出库审核)
+	 * @param header
+	 * @return
+	 */
+	protected String transferErpAllotSo(DocOrderHeader header, List<DocOrderDetailsMateriel> detailsMateriels,
+		List<DocOrderDetails> detailsSkus){
+		
+		ErpOrderDto erpOrderDto = new ErpOrderDto();
+		ErpOrderHeader erpOrderHeader = new ErpOrderHeader();
+		String orderNo = header.getOrderNo();
+		erpOrderHeader.setTrnNum(orderNo);
+		erpOrderHeader.setCreateDate(header.getCreatedTime());
+		erpOrderHeader.setFromSite(header.getFromShopName());
+		erpOrderHeader.setFromWhse(header.getFromShopId());
+		erpOrderHeader.setCreatedBy(header.getiName());	
+		erpOrderHeader.setOrderDate(header.getDeliveryTime());
+		//erpOrderHeader.setToSite(poHeader.getToShopName());
+		//erpOrderHeader.setToWhse(poHeader.getToShopId());
+		//erpOrderHeader.setStat(stat);
+		erpOrderDto.setHeader(erpOrderHeader);
+		//初始化明细信息		
+		List<ErpOrderDetails> details = new ArrayList<>();
+		for (DocOrderDetails detailsSku : detailsSkus) {
+			ErpOrderDetails erpOrderDetail = new ErpOrderDetails();
+			erpOrderDetail.setTrnNum(orderNo);
+			erpOrderDetail.setTrnLine(detailsSku.getLineNo());
+			erpOrderDetail.setItem(detailsSku.getSku());			
+			erpOrderDetail.setuM(detailsSku.getUnit());
+			erpOrderDetail.setUnitCost(detailsSku.getCostPrice());
+			erpOrderDetail.setMatlCost(detailsSku.getCostPrice());
+			erpOrderDetail.setUnitMatCost(detailsSku.getCostPrice());
+			erpOrderDetail.setUnitMatCostConv(detailsSku.getCostPrice());
+			erpOrderDetail.setUnitPrice(detailsSku.getCostPrice());
+			erpOrderDetail.setQtyReq(detailsSku.getShippedQty());
+			//填写默认值
+			erpOrderDetail.setQtyReceived(detailsSku.getShippedQty());
+			erpOrderDetail.setQtyShipped(detailsSku.getShippedQty());
+			erpOrderDetail.setQtyLoss(BigDecimal.ZERO);
+			details.add(erpOrderDetail);			
+		}	
+		for (DocOrderDetailsMateriel detailsMateriel : detailsMateriels) {
+			ErpOrderDetails erpOrderDetail = new ErpOrderDetails();
+			erpOrderDetail.setTrnNum(orderNo);
+			erpOrderDetail.setTrnLine(detailsMateriel.getLineNo());
+			erpOrderDetail.setItem(detailsMateriel.getSku());			
+			erpOrderDetail.setuM(detailsMateriel.getUnit());
+			erpOrderDetail.setUnitCost(detailsMateriel.getCostPrice());
+			erpOrderDetail.setMatlCost(detailsMateriel.getCostPrice());
+			erpOrderDetail.setUnitMatCost(detailsMateriel.getCostPrice());
+			erpOrderDetail.setUnitMatCostConv(detailsMateriel.getCostPrice());
+			erpOrderDetail.setUnitPrice(detailsMateriel.getCostPrice());
+			erpOrderDetail.setQtyShipped(detailsMateriel.getShippedQty());
+			erpOrderDetail.setQtyReq(detailsMateriel.getShippedQty());
+			//填写默认值
+			erpOrderDetail.setQtyReceived(detailsMateriel.getShippedQty());			
+			erpOrderDetail.setQtyLoss(BigDecimal.ZERO);
+			details.add(erpOrderDetail);			
+		}	
+		erpOrderDto.setDetails(details);
+		String jsonParam = JSON.toJSONString(erpOrderDto);
+		System.out.println("-----------------------------" + jsonParam);
+		JSONObject result = HttpRequestUtils.httpPost(RouteUrlUtil.ERP_CREATE_ORDER_URL, null, jsonParam, false);
+		if(!result.getBoolean("status")){			
+			throw new DocOrderException(result.getString("message"));
+		}
+		return orderNo;
+	}
+	
 }
