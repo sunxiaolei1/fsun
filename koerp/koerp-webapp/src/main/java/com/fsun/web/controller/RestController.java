@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.fsun.api.bus.BusAccessLogApi;
 import com.fsun.api.bus.BusOrderApi;
+import com.fsun.api.bus.DocPoApi;
 import com.fsun.api.bus.ErpOrderApi;
 import com.fsun.domain.common.HttpResult;
 import com.fsun.domain.dto.BusOrderDto;
 import com.fsun.domain.dto.ErpOrderDto;
 import com.fsun.domain.entity.BusAccessLogCondition;
+import com.fsun.domain.entity.DocPoHeaderCondition;
+import com.fsun.domain.enums.DocPoStatusEnum;
+import com.fsun.domain.enums.DocPoTypeEnum;
 import com.fsun.domain.model.BusOrder;
 import com.fsun.domain.model.ErpOrderHeader;
 import com.fsun.exception.bus.OrderException;
@@ -37,6 +41,9 @@ public class RestController extends BaseController {
 	
 	@Autowired
 	private BusOrderApi busOrderApi;
+	
+	@Autowired
+	private DocPoApi docPoApi;
 	
 	@Autowired
 	private ErpOrderApi erpOrderApi;
@@ -184,5 +191,20 @@ public class RestController extends BaseController {
 			return failure(SCMErrorEnum.SYSTEM_ERROR);
 		}		
 	}
+	
+	@RequestMapping(value="/erp/purPo/list", method = {RequestMethod.GET})
+	@ResponseBody
+	public HttpResult findPurPoList(DocPoHeaderCondition condition) {
+		try {		
+			condition.setPoType(DocPoTypeEnum.PURCHASE_APPLY.getCode());
+			condition.setPoStatus(DocPoStatusEnum.UN_AUDIT.getCode());
+			String poNos = docPoApi.getPoNosByCondition(condition);
+			return success(poNos);
+		} catch (Exception e) {
+			e.printStackTrace();			
+			return failure(SCMErrorEnum.SYSTEM_ERROR);
+		}		
+	}
+	
 
 }

@@ -48,4 +48,11 @@ public interface DocPoApi extends BaseOrderCommonApi<DocPoHeader, DocPoHeaderCon
 	 */
 	public String updateEntity(DocPoDto docPoDto);
 
+	/**
+	 * 通过条件获取申请单号
+	 * @param condition
+	 * @return
+	 */
+	public String getPoNosByCondition(DocPoHeaderCondition condition);
+
 }

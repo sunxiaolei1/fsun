@@ -93,6 +93,16 @@ public class ErpOrderDetails {
 	 * 退货数量--(expected_qty-qtyReceived)
 	 */
 	private BigDecimal qtyLoss;
+	
+	/**
+	 * 商品分类代码
+	 */
+	private String categoryCode;
+	
+	/**
+	 * --(frm_ref_type)
+	 */
+	private String frmRefType = "I";
 
 	public String getTrnNum() {
 		return trnNum;
@@ -228,6 +238,34 @@ public class ErpOrderDetails {
 
 	public void setQtyLoss(BigDecimal qtyLoss) {
 		this.qtyLoss = qtyLoss;
+	}
+
+	/**
+	 * @return the categoryCode
+	 */
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	/**
+	 * @param categoryCode the categoryCode to set
+	 */
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
+	}
+
+	/**
+	 * @return the frmRefType
+	 */
+	public String getFrmRefType() {
+		return frmRefType;
+	}
+
+	/**
+	 * @param frmRefType the frmRefType to set
+	 */
+	public void setFrmRefType(String frmRefType) {
+		this.frmRefType = frmRefType;
 	}
 	
 }

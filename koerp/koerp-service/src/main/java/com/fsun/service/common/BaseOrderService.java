@@ -699,11 +699,9 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		String asnNo = header.getAsnNo();
 		erpOrderHeader.setTrnNum(asnNo);
 		erpOrderHeader.setCreateDate(header.getCreatedTime());
-		erpOrderHeader.setFromSite(header.getFromShopName());
 		erpOrderHeader.setFromWhse(header.getFromShopId());
 		erpOrderHeader.setCreatedBy(header.getiName());	
 		erpOrderHeader.setOrderDate(header.getDeliveryTime());
-		erpOrderHeader.setToSite(header.getToShopName());
 		erpOrderHeader.setToWhse(header.getToShopId());
 		//erpOrderHeader.setStat(stat);
 		erpOrderDto.setHeader(erpOrderHeader);
@@ -730,7 +728,12 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		erpOrderDto.setDetails(details);
 		String jsonParam = JSON.toJSONString(erpOrderDto);
 		System.out.println("-----------------------------" + jsonParam);
-		JSONObject result = HttpRequestUtils.httpPost(RouteUrlUtil.ERP_CREATE_ORDER_URL, null, jsonParam, false);
+		//门店调拨签收-新增erp调拨单,门店要货签收-erp签收回传操作
+		String url = RouteUrlUtil.ERP_CREATE_ORDER_URL;
+		if(DocAsnTypeEnum.PURCHASE_SI.getCode().equals(header.getAsnType())){
+			url = RouteUrlUtil.ERP_RECEIVE_ORDER_URL;	
+		}
+		JSONObject result = HttpRequestUtils.httpPost(url, null, jsonParam, false);
 		if(!result.getBoolean("status")){			
 			throw new DocAsnException(result.getString("message"));
 		}
@@ -748,12 +751,10 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		ErpOrderHeader erpOrderHeader = new ErpOrderHeader();
 		String poNo = poHeader.getPoNo();
 		erpOrderHeader.setTrnNum(poNo);
-		erpOrderHeader.setCreateDate(poHeader.getCreatedTime());
-		//erpOrderHeader.setFromSite(fromSite);
+		erpOrderHeader.setCreateDate(poHeader.getCreatedTime());		
 		//erpOrderHeader.setFromWhse(fromWhse);
 		//erpOrderHeader.setStat(stat);
 		erpOrderHeader.setCreatedBy(poHeader.getiName());		
-		erpOrderHeader.setToSite(poHeader.getToShopName());
 		erpOrderHeader.setToWhse(poHeader.getToShopId());
 		erpOrderDto.setHeader(erpOrderHeader);
 		//初始化明细信息		
@@ -787,7 +788,7 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 	}
 	
 	/**
-	 * 出库单转成ERP调拨单(待出库审核)
+	 * 撤柜退货单回传erp
 	 * @param header
 	 * @return
 	 */
@@ -798,12 +799,10 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		ErpOrderHeader erpOrderHeader = new ErpOrderHeader();
 		String orderNo = header.getOrderNo();
 		erpOrderHeader.setTrnNum(orderNo);
-		erpOrderHeader.setCreateDate(header.getCreatedTime());
-		erpOrderHeader.setFromSite(header.getFromShopName());
+		erpOrderHeader.setCreateDate(header.getCreatedTime());		
 		erpOrderHeader.setFromWhse(header.getFromShopId());
 		erpOrderHeader.setCreatedBy(header.getiName());	
 		erpOrderHeader.setOrderDate(header.getDeliveryTime());
-		//erpOrderHeader.setToSite(poHeader.getToShopName());
 		//erpOrderHeader.setToWhse(poHeader.getToShopId());
 		//erpOrderHeader.setStat(stat);
 		erpOrderDto.setHeader(erpOrderHeader);
@@ -821,6 +820,7 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 			erpOrderDetail.setUnitMatCostConv(detailsSku.getCostPrice());
 			erpOrderDetail.setUnitPrice(detailsSku.getCostPrice());
 			erpOrderDetail.setQtyReq(detailsSku.getShippedQty());
+			erpOrderDetail.setCategoryCode(detailsSku.getCategoryCode());
 			//填写默认值
 			erpOrderDetail.setQtyReceived(detailsSku.getShippedQty());
 			erpOrderDetail.setQtyShipped(detailsSku.getShippedQty());
@@ -840,6 +840,7 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 			erpOrderDetail.setUnitPrice(detailsMateriel.getCostPrice());
 			erpOrderDetail.setQtyShipped(detailsMateriel.getShippedQty());
 			erpOrderDetail.setQtyReq(detailsMateriel.getShippedQty());
+			erpOrderDetail.setCategoryCode(detailsMateriel.getCategoryCode());
 			//填写默认值
 			erpOrderDetail.setQtyReceived(detailsMateriel.getShippedQty());			
 			erpOrderDetail.setQtyLoss(BigDecimal.ZERO);
@@ -848,7 +849,7 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		erpOrderDto.setDetails(details);
 		String jsonParam = JSON.toJSONString(erpOrderDto);
 		System.out.println("-----------------------------" + jsonParam);
-		JSONObject result = HttpRequestUtils.httpPost(RouteUrlUtil.ERP_CREATE_ORDER_URL, null, jsonParam, false);
+		JSONObject result = HttpRequestUtils.httpPost(RouteUrlUtil.ERP_REFUND_ORDER_URL, null, jsonParam, false);
 		if(!result.getBoolean("status")){			
 			throw new DocOrderException(result.getString("message"));
 		}

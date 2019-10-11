@@ -1,6 +1,7 @@
 package com.fsun.service.docPo;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -302,6 +303,15 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 		
 	}
 	
+	@Override
+	public String getPoNosByCondition(DocPoHeaderCondition condition) {
+		List<DocPoHeader> list = this.list(condition);
+		List<String> poNos = new ArrayList<>();
+		for (DocPoHeader docPoHeader : list) {
+			poNos.add(docPoHeader.getPoNo());
+		}
+		return StringUtils.collectionToDelimitedString(poNos, ",");
+	}
 	
 	
 	/****************************    私有方法          ******************************/

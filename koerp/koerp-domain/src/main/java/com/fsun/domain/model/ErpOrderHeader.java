@@ -24,22 +24,22 @@ public class ErpOrderHeader {
 	private String createdBy = "sa";
 	
 	/**
-	 * 发货店仓--from_shop_id
+	 * 发货店仓--from_shop_code
 	 */
-	private String fromWhse = "MAIN";
+	private String fromWhse = "1155";
 	
 	/**
-	 * 收货店仓--to_shop_id
+	 * 收货店仓--to_shop_code
 	 */
-	private String toWhse = "MAIN";
+	private String toWhse = "1155";
 	
 	/**
-	 * 发货店仓--from_shop_name
+	 * 发货店仓仓位
 	 */
 	private String fromSite = "DALS";
 	
 	/**
-	 * 收货店仓--to_shop_name
+	 * 收货店仓仓位
 	 */
 	private String toSite = "DALS";
 	
