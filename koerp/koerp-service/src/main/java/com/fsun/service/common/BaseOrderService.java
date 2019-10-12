@@ -701,7 +701,7 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		erpOrderHeader.setCreateDate(header.getCreatedTime());
 		erpOrderHeader.setFromWhse(header.getFromShopId());
 		erpOrderHeader.setCreatedBy(header.getiName());	
-		erpOrderHeader.setOrderDate(header.getDeliveryTime());
+		erpOrderHeader.setOrderDate(header.getReceivingTime());
 		erpOrderHeader.setToWhse(header.getToShopId());
 		//erpOrderHeader.setStat(stat);
 		erpOrderDto.setHeader(erpOrderHeader);

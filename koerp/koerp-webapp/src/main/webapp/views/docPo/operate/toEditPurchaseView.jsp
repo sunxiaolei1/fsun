@@ -16,6 +16,8 @@
 						<input id="iName" name="iName" hidden="true" />
 						<input id="iShopId" name="iShopId" hidden="true" />
 						<input id="orderPrice" name="orderPrice" hidden="true" />
+						<input id="fromShopId" name="fromShopId" hidden="true" />
+						<input id="fromShopName" name="fromShopName" hidden="true" />	
 						<table class="nb-formTable">
 					        <tr>
 					            <th>单据编号</th>

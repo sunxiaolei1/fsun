@@ -78,7 +78,9 @@ public class ErpOrderService implements ErpOrderApi {
 		header.setAsnStatus(DocAsnStatusEnum.SI_DQS.getCode());
 		header.setAsnType(asnType);				
 		header.setToShopId(toShopId);
-		header.setToShopName(toShop.getShopName());		
+		header.setToShopName(toShop.getShopName());	
+		header.setFromShopId(poHeader.getFromShopId());
+		header.setFromShopName(poHeader.getFromShopName());		
 		header.setExtOrderNo(poNo);
 		header.setOrderPrice(zero);
 		header.setPoNo(poNo);
@@ -107,9 +109,9 @@ public class ErpOrderService implements ErpOrderApi {
 			DocAsnDetails asnDetail = new DocAsnDetails();
 			asnDetail.setAsnDetailId(PKMapping.GUUID(PKMapping.doc_asn_details));
 			asnDetail.setAsnNo(asnNo);	
-			asnDetail.setSku(sku);			
-			asnDetail.setOrderQty(orderQty);									
+			asnDetail.setSku(sku);											
 			asnDetail.setReceiveQty(orderQty);
+			asnDetail.setExpectedQty(orderQty);	
 			BigDecimal totalPrice = orderQty.multiply(docPoDetails.getPrice())
 				.setScale(2, BigDecimal.ROUND_HALF_UP);
 			asnDetail.setTotalPrice(totalPrice);
@@ -119,7 +121,7 @@ public class ErpOrderService implements ErpOrderApi {
 			asnDetail.setDamagedQty(zero);	
 			
 			asnDetail.setLineNo(docPoDetails.getLineNo());
-			asnDetail.setExpectedQty(docPoDetails.getOrderedQty());	
+			asnDetail.setOrderQty(docPoDetails.getOrderedQty());	
 			asnDetail.setBarCode(docPoDetails.getBarCode());
 			asnDetail.setBrandCode(docPoDetails.getBrandCode());
 			asnDetail.setBrandName(docPoDetails.getBrandName());

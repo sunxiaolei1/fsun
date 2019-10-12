@@ -16,6 +16,8 @@
 						<input id="iName" name="iName" hidden="true" />
 						<input id="iShopId" name="iShopId" hidden="true" />
 						<input id="orderPrice" name="orderPrice" hidden="true" />
+						<input id="fromShopId" name="fromShopId" hidden="true" />
+						<input id="fromShopName" name="fromShopName" hidden="true" />						
 						<table class="nb-formTable">
 					        <tr>
 					            <th>单据编号<span style="color:red;">*</span></th>
@@ -153,6 +155,8 @@ $(function () {
 			/***************************              基本信息初始化                        ************************/			
 			var header = docPoDto.header;
 			if(header!=null){
+				header.fromShopId = "1155";
+				header.fromShopName = "总仓";
 				$orderfm.form("load", header);	
 				var notInShopIdsStr = header.toShopId;
 				initShopComboGrid("", "", notInShopIdsStr);

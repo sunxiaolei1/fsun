@@ -84,7 +84,7 @@
    <div class="header">
     <div class="evcard_logo"></div> 
     <span class="one-line"></span> 
-    <span>润数新零售管理平台</span>
+    <span>润数新零售中台系统</span>
    </div> 
    <div class="login">
     <div class="title">
