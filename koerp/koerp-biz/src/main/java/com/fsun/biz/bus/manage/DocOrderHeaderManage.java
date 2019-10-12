@@ -1,11 +1,10 @@
 package com.fsun.biz.bus.manage;
 
-import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
 import com.fsun.biz.common.CrudManage;
-import com.fsun.common.utils.DateUtil;
 import com.fsun.dao.mapper.DocOrderHeaderMapper;
 import com.fsun.domain.model.DocOrderHeader;
 
@@ -23,7 +22,9 @@ public class DocOrderHeaderManage extends CrudManage<DocOrderHeaderMapper, DocOr
 	 * @return
 	 */
 	public String initOrderNo(String orderType, String shopCode) {
-		//String prefix = DateUtil.getNowDateStr().replace("-", "") + orderType + shopCode;
+		
+		return this.getCheckCode();
+		/*//String prefix = DateUtil.getNowDateStr().replace("-", "") + orderType + shopCode;
 		String prefix = DateUtil.getNowShortDateStr() + orderType;
 		List<String> list = mapper.getMaxNumber(prefix);
 		if(list!=null && list.size()>0){
@@ -32,7 +33,20 @@ public class DocOrderHeaderManage extends CrudManage<DocOrderHeaderMapper, DocOr
 		}else{	
 			//return prefix + "00001";
 			return prefix + "01";
+		}*/
+	}
+	
+	private String getCheckCode() {
+		String ZiMu = "123456789";
+		String result = "";
+		Random random = new Random();
+		for (int i = 0; i < 10; i++) {
+			int index = random.nextInt(ZiMu.length());
+			char c = ZiMu.charAt(index);
+			result += c;
 		}
+		return result;
+
 	}
 	
 }

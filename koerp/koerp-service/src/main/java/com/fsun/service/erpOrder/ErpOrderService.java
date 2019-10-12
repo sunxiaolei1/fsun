@@ -107,18 +107,34 @@ public class ErpOrderService implements ErpOrderApi {
 			DocAsnDetails asnDetail = new DocAsnDetails();
 			asnDetail.setAsnDetailId(PKMapping.GUUID(PKMapping.doc_asn_details));
 			asnDetail.setAsnNo(asnNo);	
-			asnDetail.setSku(sku);
-			asnDetail.setLineNo(docPoDetails.getLineNo());
-			asnDetail.setOrderQty(orderQty);
-			asnDetail.setExpectedQty(orderQty);		
-			asnDetail.setGoodsType(DocGoodsTypeEnum.NORMAL.getValue());					
+			asnDetail.setSku(sku);			
+			asnDetail.setOrderQty(orderQty);									
 			asnDetail.setReceiveQty(orderQty);
 			BigDecimal totalPrice = orderQty.multiply(docPoDetails.getPrice())
 				.setScale(2, BigDecimal.ROUND_HALF_UP);
 			asnDetail.setTotalPrice(totalPrice);
+			asnDetail.setGoodsType(DocGoodsTypeEnum.NORMAL.getValue());
 			asnDetail.setSignType(DocAsnSignTypeEnum.ALL_SIGN.getCode());
 			asnDetail.setRejectedQty(zero);
 			asnDetail.setDamagedQty(zero);	
+			
+			asnDetail.setLineNo(docPoDetails.getLineNo());
+			asnDetail.setExpectedQty(docPoDetails.getOrderedQty());	
+			asnDetail.setBarCode(docPoDetails.getBarCode());
+			asnDetail.setBrandCode(docPoDetails.getBrandCode());
+			asnDetail.setBrandName(docPoDetails.getBrandName());
+			asnDetail.setCategoryCode(docPoDetails.getCategoryCode());
+			asnDetail.setCategoryName(docPoDetails.getCategoryName());
+			asnDetail.setConvertQty(docPoDetails.getConvertQty());
+			asnDetail.setConvertUnit(docPoDetails.getConvertUnit());
+			asnDetail.setCostPrice(docPoDetails.getCostPrice());
+			asnDetail.setGoodsName(docPoDetails.getGoodsName());
+			asnDetail.setParentSku(docPoDetails.getParentSku());
+			asnDetail.setPoLineNo(docPoDetails.getLineNo());
+			asnDetail.setPrice(docPoDetails.getPrice());
+			asnDetail.setProperty(docPoDetails.getProperty());
+			asnDetail.setRatePrecent(docPoDetails.getRatePrecent());
+			asnDetail.setUnit(docPoDetails.getUnit());
 			//用于签收回显
 			asnDetail.setUserDefine1(docPoDetails.getPoDetailId());
 			docAsnDetailsManage.create(asnDetail);	

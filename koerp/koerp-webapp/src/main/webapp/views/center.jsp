@@ -234,7 +234,7 @@ function reflushData(){
         	}      	
         }
     });
-	window.setTimeout(reflushData, 15000);   //表示延时5秒执行page_list()函数
+	//window.setTimeout(reflushData, 15000);   //表示延时5秒执行page_list()函数
 }
 
 var MyMarhq = '';

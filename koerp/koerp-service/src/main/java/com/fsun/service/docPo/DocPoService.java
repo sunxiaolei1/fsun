@@ -16,6 +16,7 @@ import com.fsun.biz.bus.manage.DocAsnDetailsManage;
 import com.fsun.biz.bus.manage.DocAsnHeaderManage;
 import com.fsun.biz.bus.manage.DocPoDetailsManage;
 import com.fsun.biz.bus.manage.DocPoHeaderManage;
+import com.fsun.common.utils.DateUtil;
 import com.fsun.common.utils.PKMapping;
 import com.fsun.common.utils.StringUtils;
 import com.fsun.domain.common.PageModel;
@@ -377,6 +378,7 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 				header.setiContact(busShop.getContacts());
 				header.setiTel(busShop.getTel());
 				header.setiAddress(busShop.getAddress());	
+				header.setExpectedTime(DateUtil.getDayAfter(new Date(), 1));		
 				break;		
 			case ALLOT_APPLY:	
 				header.setPoType(poType);

@@ -32,23 +32,29 @@
 								</td>
 							</tr>	       
 					        <tr>
+					        	<th>预收时间</th>
+								<td>
+									<input id="expectedTime" name="expectedTime" class="easyui-datetimebox"  />									
+								</td>
 					        	<th>联系人</th>
 								<td>
 									<input id="iContact" name="iContact" class="easyui-textbox"  />								
 								</td>
-								<th>收货地址</th>
-								<td colspan="3">
-									<input id="iAddress" name="iAddress"data-options="multiline:true" 
-										class="easyui-textbox" style="width:90%;" />
-								</td>		
-					        </tr>
-					        <tr>
-					        	<th>联系方式</th>
+								<th>联系方式</th>
 								<td>
 									<input id="iTel" name="iTel" class="easyui-textbox"  />							
-								</td>
+								</td>										
+					        </tr>
+					        <tr>					        	
+								<th>收货地址</th>
+								<td colspan="5">
+									<input id="iAddress" name="iAddress"data-options="multiline:true" 
+										class="easyui-textbox" style="width:90%;" />
+								</td>					        	
+					        </tr>
+					        <tr>
 					        	<th>备注</th>
-								<td colspan="3">
+								<td colspan="5">
 									<input id="memo" name="memo"  data-options="multiline:true" readOnly
 										class="easyui-textbox" style="width:90%;" />
 								</td>
