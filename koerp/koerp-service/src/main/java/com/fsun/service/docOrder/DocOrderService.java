@@ -584,7 +584,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		header.setOrderSource(TradeFromEnum.PC.getCode());
 		BigDecimal orderPrice = BigDecimal.ZERO;
 		//初始化明细
-		int lineNo = 1;
+		int lineNo = 1; 
 		for (DocOrderDetails docOrderDetails : details) {
 			docOrderDetails.setSoDetailId(PKMapping.GUUID(PKMapping.doc_order_details));			
 			docOrderDetails.setLineNo(lineNo++);			
