@@ -34,7 +34,7 @@
 								</td>
 							</tr>	       
 					        <tr>
-					        	<th>预收时间</th>
+					        	<th>期望到货时间</th>
 								<td>
 									<input id="expectedTime" name="expectedTime" class="easyui-datetimebox"  />									
 								</td>

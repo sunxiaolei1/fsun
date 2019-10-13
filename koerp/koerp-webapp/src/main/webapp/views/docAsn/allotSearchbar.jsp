@@ -22,7 +22,7 @@
 				<tr>
 					<td width="8%">关键字:</td>
 					<td colspan="3">
-						<input name="q" id="q" data-options="prompt:'输入入库单号,出库单号,申请单号...'" class="easyui-textbox" style="width:80%;"/>
+						<input name="q" id="q" data-options="prompt:'输入入库单号,出库单号,申请单号...'" class="easyui-textbox" style="width:92%;"/>
 					</td>					
 					<td width="8%">单据日期:</td>
 					<td colspan="3" style="width:46%;" >

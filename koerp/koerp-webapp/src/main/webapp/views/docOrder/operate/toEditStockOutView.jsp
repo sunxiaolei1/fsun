@@ -39,7 +39,7 @@
 								</td>
 								<th width="16%">发货时间</th>
 								<td>
-									<input id="deliveryTime" name="deliveryTime" class="easyui-datebox" readOnly />							
+									<input id="deliveryTime" name="deliveryTime" class="easyui-datetimebox" readOnly />							
 								</td>	
 								<th width="16%">预收时间</th>
 								<td>

@@ -391,7 +391,8 @@ public class DocPoService extends BaseOrderService implements DocPoApi {
 				header.setiName(currUser.getRealname());
 				header.setiContact(busShop.getContacts());
 				header.setiTel(busShop.getTel());
-				header.setiAddress(busShop.getAddress());						
+				header.setiAddress(busShop.getAddress());	
+				header.setExpectedTime(DateUtil.getDayAfter(new Date(), 1));	
 				break;
 			default:
 				break;

@@ -111,12 +111,12 @@ function initOrderPagePublicInfo(LODOP, docOrderDto){
 
 	LODOP.SET_PRINT_STYLE("FontSize",19);
 	LODOP.SET_PRINT_STYLE("Bold",1);
-	LODOP.ADD_PRINT_TEXT(20,"28%","90%",20,'${applicationScope.companyName}出库单');
+	LODOP.ADD_PRINT_TEXT(20,"48%","90%",20,'${applicationScope.companyName}出库单');
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 	
 	LODOP.SET_PRINT_STYLE("FontSize",13);
 	LODOP.SET_PRINT_STYLE("Bold",1);
-	LODOP.ADD_PRINT_TEXT(65,"35%","90%",19, "NO:"+docOrderDto.orderNo);
+	LODOP.ADD_PRINT_TEXT(65,"45%","90%",19, "NO:"+docOrderDto.orderNo);
 	LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 
 	LODOP.SET_PRINT_STYLE("FontSize",9);

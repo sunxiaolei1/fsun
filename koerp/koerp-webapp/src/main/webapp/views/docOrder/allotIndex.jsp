@@ -27,9 +27,9 @@ var frozenColumns = [[
 	{field:'ck',checkbox:true},
 	{field:'order_no',title:'单据编号',width:130,align:'center',sortable:true, styler:reportContentStyler},		
 	{field:'po_no',title:'申请单号',width:130,align:'center',sortable:true, styler:reportContentStyler},
-	{field:'order_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
+	/* {field:'order_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docOrderType); 
-	}},
+	}}, */
 	{field:'order_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){		
 		var spanHeader = "<b style='color:green;'>";
 		if(value=='B90'){
@@ -38,7 +38,7 @@ var frozenColumns = [[
 		var spanFooter = "</b>";
 		return spanHeader + formatter(value, window.parent.docOrderStatus) + spanFooter;
 	}},
-	{field:'is_refund',title:'存在退货',width:80,align:'center', 
+	{field:'is_refund',title:'存在退货',width:60,align:'center', 
 		formatter:function(value, row){
 			var spanDiv = "<b style='color:green;'>--</b>";		
 			if(row.order_type=="11"){
@@ -61,9 +61,9 @@ var columns = [[
 	{field:'to_shop_id',title:'入库店仓',width:120,align:'center',sortable:true, formatter:function(value, row){
 		return row.to_shop_name; 
 	}}, 
-	{field:'delivery_time',title:'出库时间',width:100,align:'center',sortable:true, formatter:function(value, row){
+	{field:'delivery_time',title:'出库时间',width:130,align:'center',sortable:true, formatter:function(value, row){
 		if(typeof value != "undefined"){
-			return formatterDate(dateParser(value));
+			return value;
 		}	
 	}},
 	{field:'expected_time',title:'预收时间',width:130,align:'center',sortable:true},

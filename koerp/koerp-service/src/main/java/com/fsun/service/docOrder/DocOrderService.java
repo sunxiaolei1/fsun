@@ -294,7 +294,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		header.setDeliveryTime(header.getDeliveryTime()!=null?header.getDeliveryTime():now);
 		header.setCreatedName(currUser.getRealname());
 		header.setCreatedTime(now);
-		header.setOrderStatus(DocOrderStatusEnum.SO_DDCK.getCode());
+		header.setOrderStatus(DocOrderStatusEnum.SO_CKWC.getCode());
 		header.setOrderSource(TradeFromEnum.PC.getCode());
 		BigDecimal orderPrice = BigDecimal.ZERO;
 		//初始化明细

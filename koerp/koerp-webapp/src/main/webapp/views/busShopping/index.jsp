@@ -25,15 +25,15 @@
 
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
-	{field:'asn_no',title:'单据编号',width:140,align:'center',sortable:true, styler:reportContentStyler},
-	{field:'ext_order_no',title:'ERP单号',width:140,align:'center',sortable:true, styler:reportContentStyler},
-	{field:'po_no',title:'申请单号',width:140,align:'center',sortable:true, styler:reportContentStyler},
-	{field:'asn_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.docAsnType); 
-	}}
+	{field:'asn_no',title:'单据编号',width:130,align:'center',sortable:true, styler:reportContentStyler},
+	{field:'ext_order_no',title:'ERP单号',width:130,align:'center',sortable:true, styler:reportContentStyler},
+	{field:'po_no',title:'申请单号',width:130,align:'center',sortable:true, styler:reportContentStyler}
 ]];
 
 var columns = [[
+	/* {field:'asn_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.docAsnType); 
+	}}, */
 	{field:'asn_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		var spanHeader = "<b style='color:green;'>";
 		if(value=='A90' || value=='A91'){
@@ -69,14 +69,14 @@ var columns = [[
 	{field:'to_shop_id',title:'入库店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
 		return row.to_shop_name; 
 	}},
-	{field:'receiving_time',title:'入库时间',width:100,align:'center',sortable:true, formatter:function(value, row){
+	{field:'receiving_time',title:'入库时间',width:130,align:'center',sortable:true, formatter:function(value, row){
 		if(typeof value != "undefined"){
-			return formatterDate(dateParser(value));
+			return value;
 		}		
 	}},		
-	{field:'delivery_time',title:'出库时间',width:100,align:'center',sortable:true, formatter:function(value, row){
+	{field:'delivery_time',title:'出库时间',width:130,align:'center',sortable:true, formatter:function(value, row){
 		if(typeof value != "undefined"){
-			return formatterDate(dateParser(value));
+			return value;
 		}		
 	}},
 	{field:'expected_time',title:'预货时间',width:130,align:'center',sortable:true},	

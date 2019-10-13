@@ -97,7 +97,7 @@ public class DocPoHeaderManage extends CrudManage<DocPoHeaderMapper, DocPoHeader
 				poHeader.setAuditor(header.getUpdatedName());
 				poHeader.setRelationNo(header.getOrderNo());
 				poHeader.setDeliveryTime(header.getDeliveryTime());
-				poHeader.setExpectedTime(header.getExpectedTime());
+				//poHeader.setExpectedTime(header.getExpectedTime());
 				mapper.updateByPrimaryKeySelective(poHeader);
 			}
 		}

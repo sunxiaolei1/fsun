@@ -47,9 +47,9 @@ $.each(window.parent.docPoStatusData, function(){
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
 	{field:'po_no',title:'单据编号',width:130,align:'center',sortable:true, styler:reportContentStyler},		
-	{field:'po_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
+	/* {field:'po_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docPoType); 
-	}},
+	}}, */
 	{field:'po_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		var spanHeader = "<span style='color:#FF9900;'>";
 		if(value=='10'){
@@ -78,7 +78,7 @@ var columns = [[
 			return value;
 		}	
 	}},	
-	{field:'expected_time',title:'预收时间',width:130,align:'center',sortable:true},
+	{field:'expected_time',title:'期望到货时间',width:130,align:'center',sortable:true},
 	/* {field:'print_count',title:'是否打印',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return (row.print_count>0?"<span style='color:red;'>是</span>":"否"); 
 	}}, */

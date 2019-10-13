@@ -7,7 +7,7 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:170px;overflow:hidden;">
+			<div data-options="region:'north',split:true, border:false" style="height:175px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
 						<span class="title" style="top: 1px;">基本信息</span>								
@@ -45,15 +45,21 @@
 								</td>	        						        		        	
 					        </tr>
 					        <tr>
-					        	<th>收货地址</th>
+					        	<th>期望到货时间</th>
 								<td>
-									<input id="iAddress" name="iAddress"data-options="multiline:true" 
-										class="easyui-textbox" style="width:95%;height:50px;"/>
+									<input id="expectedTime" name="expectedTime" class="easyui-datetimebox"  />									
 								</td>
-					        	<th>备注</th>
+								<th>收货地址</th>
 								<td colspan="3">
+									<input id="iAddress" name="iAddress"data-options="multiline:true" 
+										class="easyui-textbox" style="width:90%;"/>
+								</td>
+					        </tr>
+					        <tr>					        	
+					        	<th>备注</th>
+								<td colspan="5">
 									<input id="memo" name="memo"  data-options="multiline:true" 
-										class="easyui-textbox" style="width:70%;height:50px;"/>
+										class="easyui-textbox" style="width:70%;"/>
 								</td>
 					        </tr>					        
 						</table>

@@ -14,13 +14,10 @@
 						<input id="orderStatusCombo" name="orderStatus" editable="false" class="easyui-combobox" style="width:80%;"/>
 					</td>
 					<td  width="8%">出库店仓:</td>
-					<td>
+					<td colspan="3">
 						<input id="fromShopCombo" name="fromShopId"  class="easyui-combogrid" style="width:80%;"/>
 					</td>					
-					<td  width="8%">入库店仓:</td>
-					<td>
-						<input id="toShopCombo" name="toShopId"  class="easyui-combogrid" style="width:80%;"/>
-					</td>																			
+																								
 				</tr>
 				<tr>
 					<td width="8%">关键字:</td>

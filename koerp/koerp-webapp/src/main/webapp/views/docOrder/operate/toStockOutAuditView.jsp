@@ -40,7 +40,7 @@
 								</td>
 								<th>发货时间<span style="color:red;">*</span></th>
 								<td>
-									<input id="deliveryTime" name="deliveryTime" class="easyui-datebox" editable="false" required/>								
+									<input id="deliveryTime" name="deliveryTime" class="easyui-datetimebox" editable="false" required/>								
 								</td>	
 								<th>预收时间<span style="color:red;">*</span></th>
 								<td>
