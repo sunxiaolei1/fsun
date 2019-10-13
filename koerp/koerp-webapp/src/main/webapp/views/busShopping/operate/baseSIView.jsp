@@ -126,8 +126,8 @@ function showSignView(){
 	            			damagedQty = CalcAmount.add(damagedQty, this.damagedQty);
 	            			rejectedQty = CalcAmount.add(rejectedQty, this.rejectedQty);
 	            		});
-	            		//var prifix = "[签收合计："+ receiveQty + ", 残次合计："+ damagedQty +", 退货合计："+ rejectedQty +"]";
-	            		var prifix = "[签收合计："+ receiveQty + ", 退货合计："+ rejectedQty +"]";
+	            		//var prifix = "[签收合计："+ receiveQty + ", 残次合计："+ damagedQty +", 拒收合计："+ rejectedQty +"]";
+	            		var prifix = "[签收合计："+ receiveQty + ", 拒收合计："+ rejectedQty +"]";
 	            		return formatter(value, window.parent.docAsnSignType) + ' - ' + rows.length + '条明细' + prifix;
 	            	}
 	                return "";

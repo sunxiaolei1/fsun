@@ -116,7 +116,7 @@ var poColumns = [[
 			}
 		}
 	},
-	{field:"expectedQty",title:"审核数量", width:80,align:"center",
+	{field:"expectedQty",title:"发货数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },

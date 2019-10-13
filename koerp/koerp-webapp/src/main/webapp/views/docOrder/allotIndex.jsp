@@ -25,7 +25,8 @@
 
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
-	{field:'order_no',title:'单据编号',width:180,align:'center',sortable:true, styler:reportContentStyler},		
+	{field:'order_no',title:'单据编号',width:130,align:'center',sortable:true, styler:reportContentStyler},		
+	{field:'po_no',title:'申请单号',width:130,align:'center',sortable:true, styler:reportContentStyler},
 	{field:'order_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docOrderType); 
 	}},
@@ -73,9 +74,9 @@ var columns = [[
 		return (value>0?"<b style='color:green;'>是</b>":(value==0?"<b style='color:red;'>否</b>":"")); 
 	}},
 	{field:'created_name',title:'制单人',width:80,align:'center',sortable:true},
-	{field:'memo',title:'备注',width:200,align:'center',sortable:true},	
+	{field:'memo',title:'备注',width:200,align:'center',sortable:true}	
 	//{field:'created_time',title:'单据时间',width:130,align:'center',sortable:true},
-	{field:'po_no',title:'申请单号',width:160,align:'center',sortable:true}
+	
 		
 ]];
 

@@ -7,17 +7,17 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:210px;overflow:hidden;">
+			<div data-options="region:'north',split:true, border:false" style="height:180px;overflow:hidden;">
 				<div class="fsun-wrap" >
 					<form id="orderfm">
-						<span class="title" style="top: 1px;">采购单信息(单号:<span>${asnNo}</span>)</span>				
+						<span class="title" style="top: 1px;">要货单信息(单号:<span>${asnNo}</span>)</span>				
 						<input id="iId" name="iId" hidden="true" />	
 						<input id="toShopId" name="toShopId" hidden="true" />	
 						<input id="fromShopId" name="fromShopId" hidden="true" />
 						<input id="asnNo" name="asnNo" hidden="true" />
 						<table class="nb-formTable">
 					        <tr>
-								<th>ERP出库单号</th>
+								<th>ERP单号</th>
 								<td>
 									<input id="extOrderNo" name="extOrderNo" class="easyui-textbox" readOnly style="width:95%;" />
 								</td>
@@ -53,14 +53,14 @@
 								<th>出库时间</th>
 								<td>
 									<input id="deliveryTime" name="deliveryTime" class="easyui-datebox" disabled style="width:95%;" />							
-								</td>	        			        		            													        						        									
-					        </tr>
-					        <tr>
+								</td>
 								<th>发货地址</th>
 								<td>
 									<input id="address" name="address" 
 										class="easyui-textbox" readOnly style="width:95%;" />
-								</td>
+								</td>	        			        		            													        						        									
+					        </tr>
+					        <!-- <tr>							
 					        	<th>审核人</th>
 								<td>
 									<input id="checkName" name="checkName" class="easyui-textbox" readOnly style="width:95%;" />
@@ -70,14 +70,14 @@
 								<td>
 									<input id="checkStatus" name="checkStatus" class="easyui-combobox" readOnly style="width:95%;" />								
 								</td>	        	
-					        </tr>
+					        </tr> -->
 					        <tr>
 					        	<th>备注</th>
 								<td colspan="5">
 									<input id="memo" name="memo"  data-options="multiline:true" 
 										class="easyui-textbox" style="width:70%;"/>
 									<input id="userDefine1" name="userDefine1" hidden=true />
-									<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach"  style="margin-left:10px;"
+									<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach"  style="display:none;margin-left:10px;"
 										plain="false" disabled onclick="openRefundView()">调退明细</a>
 								</td>	        	
 					        </tr>
@@ -165,7 +165,7 @@ var siColumns = [[
 			}
 		}
 	}, */
-	{field:"rejectedQty",title:"退货数量", width:80,align:"center",
+	{field:"rejectedQty",title:"拒收数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 			var style = 'font-weight:bold;color:green;background-color:#FF9933;';
 			if(value!=0){

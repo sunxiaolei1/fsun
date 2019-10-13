@@ -25,7 +25,8 @@
 
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
-	{field:'po_no',title:'单据编号',width:180,align:'center',sortable:true, styler:reportContentStyler},		
+	{field:'po_no',title:'单据编号',width:140,align:'center',sortable:true, styler:reportContentStyler},
+	{field:'relation_no',title:'ERP单号',width:140,align:'center',sortable:true, styler:reportContentStyler},
 	{field:'po_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.docPoType); 
 	}},
@@ -47,11 +48,11 @@ var columns = [[
 	{field:'to_shop_id',title:'入库店仓',width:160,align:'center',sortable:true, formatter:function(value, row){
 		return row.to_shop_name; 
 	}}, 
-	{field:'audit_time',title:'审核时间',width:130,align:'center',sortable:true},
-	{field:'auditor',title:'审核人',width:100,align:'center',sortable:true},
+	//{field:'audit_time',title:'审核时间',width:130,align:'center',sortable:true},
+	//{field:'auditor',title:'审核人',width:100,align:'center',sortable:true},
 	{field:'delivery_time',title:'发货时间',width:130,align:'center',sortable:true, formatter:function(value, row){
 		if(typeof value != "undefined"){
-			return formatterDate(dateParser(value));
+			return value;
 		}	
 	}},	
 	{field:'expected_time',title:'预收时间',width:130,align:'center',sortable:true},

@@ -97,7 +97,7 @@ public class DocAsnHeaderManage extends CrudManage<DocAsnHeaderMapper, DocAsnHea
 		header.setCreatedTime(orderHeader.getUpdatedTime());
 		this.create(header);
 		//初始化明细信息		
-		int lineNo = 0;
+		int lineNo = 1;
 		for (DocOrderDetails docOrderDetails : orderDetails) {
 			DocAsnDetails asnDetail = new DocAsnDetails();
 			BeanUtils.copyProperties(docOrderDetails, asnDetail);

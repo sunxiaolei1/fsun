@@ -198,7 +198,7 @@ public abstract class BaseOrderValidatorService {
 	        	isEnable = true;break;	                
 	        case CANCEL_DOC_ORDER: 	        	
 	        	if(DocOrderStatusEnum.SO_DDCK.getCode().equals(orderStatus)){
-	        		isEnable = true;
+	        		//isEnable = true;
 	        	}      
 	        	break;	        
 	        default:  
@@ -231,7 +231,7 @@ public abstract class BaseOrderValidatorService {
 	        case ADD_SI_REMARK:
 	        	isEnable = true; break;	                       
 	        case CANCEL_DOC_ASN: 
-	        	if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
+	        	/*if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
 	        		|| DocAsnStatusEnum.SI_WQSH.getCode().equals(asnStatus))){
 	        		//调拨签收入库及调退入库单据在签收之后不可撤销,采购入库在生成有效的采购退货单之后
 	        		if(!DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType) 
@@ -247,19 +247,19 @@ public abstract class BaseOrderValidatorService {
 	        			}
 	        		}	        		
 	        	}      
-	        	break;
+	        	break;*/
 	        case SIGN_DOC_ASN:
 	        	if(DocAsnStatusEnum.SI_DQS.getCode().equals(asnStatus)){
 		        	isEnable = true;        		
 		        }   
 	        	break;
 	        case CREATE_ASN_REFUND: 
-	        	if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
+	        	/*if((DocAsnStatusEnum.SI_BFQS.getCode().equals(asnStatus) 
 	        		|| DocAsnStatusEnum.SI_WQSH.getCode().equals(asnStatus))
 	        			&& !DocAsnTypeEnum.PURCHASE_SI.getCode().equals(asnType)
 	        				&& (orderNo==null || orderNo.equals(""))){
 	        		isEnable = true;
-	        	}
+	        	}*/
 	        	break;
 	        default:  
 	        	isEnable = true;

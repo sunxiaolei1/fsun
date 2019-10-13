@@ -2,7 +2,7 @@
 
 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="toAddView('10')">要货申请</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-application_osx_go" plain="true" onclick="toERPAudit()">送ERP审核</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-application_osx_go" plain="true" onclick="toERPAudit()">送ERP</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125647919_easyicon_net_16" plain="true" onclick="hide()">收起查询条件</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-20130406125519344_easyicon_net_16" plain="true" onclick="show()">展开查询条件</a>

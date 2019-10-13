@@ -698,7 +698,11 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		ErpOrderHeader erpOrderHeader = new ErpOrderHeader();
 		String asnNo = header.getAsnNo();
 		erpOrderHeader.setTrnNum(asnNo);
-		erpOrderHeader.setCreateDate(header.getCreatedTime());
+		erpOrderHeader.setCreateDate(header.getReceivingTime());		
+		if(DocAsnTypeEnum.PURCHASE_SI.getCode().equals(header.getAsnType())){
+			erpOrderHeader.setTrnNum(header.getPoNo());
+			erpOrderHeader.setCreateDate(header.getCreatedTime());
+		}		
 		erpOrderHeader.setFromWhse(header.getFromShopId());
 		erpOrderHeader.setCreatedBy(header.getiName());	
 		erpOrderHeader.setOrderDate(header.getReceivingTime());
@@ -718,7 +722,10 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 			erpOrderDetail.setUnitMatCost(detailsSku.getCostPrice());
 			erpOrderDetail.setUnitMatCostConv(detailsSku.getCostPrice());
 			erpOrderDetail.setUnitPrice(detailsSku.getCostPrice());
-			erpOrderDetail.setQtyReq(detailsSku.getOrderQty());
+			erpOrderDetail.setQtyReq(detailsSku.getReceiveQty());
+			if(DocAsnTypeEnum.PURCHASE_SI.getCode().equals(header.getAsnType())){
+				erpOrderDetail.setQtyReq(detailsSku.getOrderQty());
+			}			
 			//填写默认值
 			erpOrderDetail.setQtyReceived(detailsSku.getReceiveQty());
 			erpOrderDetail.setQtyShipped(detailsSku.getExpectedQty());
