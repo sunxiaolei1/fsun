@@ -115,7 +115,7 @@ var soColumns = [[
 	    },
 	    formatter:intNumBaseFormat
 	},
-	{field:"shippedQty",title:"退货数量", width:80,align:"center",
+	{field:"shippedQty",title:"拒收数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },

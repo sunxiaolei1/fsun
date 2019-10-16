@@ -145,6 +145,11 @@ $(function () {
 					});									
 				}
 				skuListReLoad();
+			}else{				
+				if(materiels!=null && materiels.length>0){
+					currDetailData = materiels;								
+				}
+				skuListReLoad();
 			}		
 	
 		},

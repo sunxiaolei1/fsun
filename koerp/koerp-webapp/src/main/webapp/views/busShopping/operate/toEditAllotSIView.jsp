@@ -170,7 +170,7 @@ var siColumns = [[
 			}
 		}
 	}, */
-	{field:"rejectedQty",title:"退货数量", width:80,align:"center",
+	{field:"rejectedQty",title:"拒收数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 			var style = 'font-weight:bold;color:green;background-color:#FF9933;';
 			if(value!=0){
@@ -239,7 +239,7 @@ var siViewColumns = [[
 	    },
 	    formatter:intNumBaseFormat
 	}, */
-	{field:"rejectedQty",title:"退货数量", width:80,align:"center",
+	{field:"rejectedQty",title:"拒收数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
 			var style = 'font-weight:bold;color:green;';
 			if(value!=0){
