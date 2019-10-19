@@ -327,6 +327,16 @@ public class DocOrderHeader {
      */
     private Integer printCount;
     
+    /**
+     * 承运商
+     */
+    private String expressCode;
+    
+    /**
+     * 运单号
+     */
+    private String waybillNo;
+    
     public String getOrderNo() {
         return orderNo;
     }
@@ -770,4 +780,21 @@ public class DocOrderHeader {
 	public void setPrintCount(Integer printCount) {
 		this.printCount = printCount;
 	}
+
+	public String getExpressCode() {
+		return expressCode;
+	}
+
+	public void setExpressCode(String expressCode) {
+		this.expressCode = expressCode;
+	}
+
+	public String getWaybillNo() {
+		return waybillNo;
+	}
+
+	public void setWaybillNo(String waybillNo) {
+		this.waybillNo = waybillNo;
+	}
+	
 }

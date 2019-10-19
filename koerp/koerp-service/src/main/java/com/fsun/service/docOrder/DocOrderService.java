@@ -231,7 +231,6 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 			header.setUpdatedName(user.getRealname());
 			header.setUpdatedTime(now);
 			header.setMemo(condition.getMemo());
-			docOrderHeaderManage.update(header);
 			
 			if(DocOrderStatusEnum.getByName(status)==DocOrderStatusEnum.SO_CKQX){
 				DocOrderDetailsCondition condition0 = new DocOrderDetailsCondition();
@@ -252,8 +251,23 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 					docAsnHeader.setUpdatedName(user.getRealname());
 					docAsnHeaderManage.update(docAsnHeader);
 				}
+			}			
+			//如果是代理代发单时,出库并送erp
+			if(DocOrderTypeEnum.AGENT_SO.getCode().equals(header.getOrderType())){
+				if(status.equals(DocOrderStatusEnum.SO_CKWC.getCode())){
+					DocOrderDetailsCondition condition1 = new DocOrderDetailsCondition();
+					condition1.setOrderNo(orderNo);						
+					List<DocOrderDetails> docOrderDetails = docOrderDetailsManage.list(condition1);
+					//库存扣减
+					for (DocOrderDetails docOrderDetail : docOrderDetails) {						
+						super.skuStockOut(header, docOrderDetail);										
+					}					
+					//同步erp库存
+					String relationNo = super.transferErpAgentSo(header, docOrderDetails);
+					header.setUserDefine1(relationNo);
+				}			
 			}
-			
+			docOrderHeaderManage.update(header);			
 		}
 		
 	}
@@ -270,7 +284,8 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		}		
 		//入参基本的校验
 		String iId = header.getiId();
-		if(!DocOrderTypeEnum.USE_SO.getCode().equals(header.getOrderType())){
+		if(!DocOrderTypeEnum.USE_SO.getCode().equals(header.getOrderType())
+			&& !DocOrderTypeEnum.AGENT_SO.getCode().equals(header.getOrderType())){
 			if(!currUser.getId().equals(iId)){
 				throw new DocOrderException(SCMErrorEnum.USER_ILLEGAL);
 			}
@@ -326,7 +341,10 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 				docOrderDetails.setCreatedTime(now);
 				orderPrice = orderPrice.add(totalPrice);
 				docOrderDetailsManage.create(docOrderDetails);
-				super.skuStockOut(header, docOrderDetails);	
+				//代理代发单初始状态为待审核状态,不做扣库
+				if(!DocOrderTypeEnum.AGENT_SO.getCode().equals(header.getOrderType())){
+					super.skuStockOut(header, docOrderDetails);	
+				}				
 				docOrderDetailsSkus.add(docOrderDetails);
 			}			
 		}
@@ -347,6 +365,10 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 		if(DocOrderTypeEnum.USE_SO.getCode().equals(header.getOrderType())){
 			String erpOrderNo = super.transferErpAllotSo(header, docOrderDetailsMateriels, docOrderDetailsSkus);
 			header.setUserDefine1(erpOrderNo);
+		}
+		//代理代发单设置为待审核状态
+		if(DocOrderTypeEnum.AGENT_SO.getCode().equals(header.getOrderType())){			
+			header.setOrderStatus(DocOrderStatusEnum.SO_DSH.getCode());
 		}		
 		docOrderHeaderManage.create(header);		
 		return orderNo;
@@ -505,6 +527,13 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 				header.setFromShopId(currUser.getShopId());
 				header.setFromShopName(currUser.getShopName());
 				header.setOrderMode(DocOrderModeEnum.YP.getCode());
+				break;
+			case AGENT_SO:
+				header.setOrderType(orderType);	
+				header.setiId(currUser.getId());
+				header.setToShopId(currUser.getShopId());
+				header.setToShopName(currUser.getShopName());
+				header.setExpectedTime(DateUtil.getDayAfter(new Date(), 1));	
 				break;
 			default:
 				break;

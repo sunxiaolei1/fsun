@@ -161,7 +161,7 @@ function createOneOrderPage(LODOP,docOrderDto,currRow){
 	var headerHeight = 120;
 	
 	var header = docOrderDto.header;
-    if(header.orderType==16){
+    if(header.orderType==17){
     	headerHeight += 50;
     	detailTop += 55;
    		detailHeight -= 50;
@@ -186,9 +186,9 @@ function createTableOrderHead(div,header){
 	 var orderType = formatter(header.orderType, parent.docOrderType);
 	 var createdName = header.createdName;		 
 	 var memo = header.memo;
-	 var orderMode = formatter(header.orderMode, parent.docOrderMode);
-	 var carrierName = header.carrierName;
-	 var customerName = header.onsignName;
+	 var expressCode = formatter(header.expressCode, parent.expressCode);
+	 var toShopName = header.toShopName;
+	 var waybillNo = header.waybillNo;
 	 var mobile = header.mobile;
 	 var contacts = header.contacts;
 	 var receiveAddress = header.receiveAddress;
@@ -206,17 +206,17 @@ function createTableOrderHead(div,header){
 	 td.appendTo(tr);
      
 
-	 if(header.orderType==16){
+	 if(header.orderType==17){
 		 tr=$("<tr></tr>");
 	     tr.appendTo(tbody);
-	     td = $("<td colspan='2' >客户名称：<input style='width:260px;' value='"
-				+ (customerName != null ? customerName : "")
+	     td = $("<td colspan='2' >来源店仓：<input style='width:260px;' value='"
+				+ (toShopName != null ? toShopName : "")
 				+ "' /></td>");	 
 		 td.appendTo(tr);
-	     td = $("<td>出库事由：<span>"+ (orderMode!=null?orderMode:"") +"</span></td>");			 
-		 td.appendTo(tr);
-		 td = $("<td>经办人：<span>"+ (carrierName!=null?carrierName:"") +"</span></td>");			 
-		 td.appendTo(tr);	     
+		 td = $("<td>运单号：<span>"+ (waybillNo!=null?waybillNo:"") +"</span></td>");			 
+		 td.appendTo(tr);	
+	     td = $("<td>承运商：<span>"+ (expressCode!=null?expressCode:"") +"</span></td>");			 
+		 td.appendTo(tr);		      
 		 
 		 tr=$("<tr></tr>");
 	     tr.appendTo(tbody);
@@ -226,7 +226,7 @@ function createTableOrderHead(div,header){
 		 td.appendTo(tr);
 	     td = $("<td>联系方式：<span>"+ (mobile!=null?mobile:"") +"</span></td>");			 
 		 td.appendTo(tr);
-		 td = $("<td>联系人：<span>"+ (contacts!=null?contacts:"") +"</span></td>");			 
+		 td = $("<td>收货人：<span>"+ (contacts!=null?contacts:"") +"</span></td>");			 
 		 td.appendTo(tr);	     
 	 }	
 
@@ -254,7 +254,7 @@ function CreateTableOrderContext(header, list,cellCount,div)
 		var unit = formatter(obj.unit, parent.unitCode);
 		var salePrice = 0;
 		var totalPrice = 0;
-		if(header.orderType==16){
+		if(header.orderType==17){
 			salePrice = obj.price;
 			totalPrice = obj.totalPrice;
 		}

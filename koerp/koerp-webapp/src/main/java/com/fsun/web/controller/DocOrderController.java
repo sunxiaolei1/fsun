@@ -22,7 +22,6 @@ import com.fsun.domain.dto.BusUserDto;
 import com.fsun.domain.dto.DocOrderDto;
 import com.fsun.domain.entity.DocOrderHeaderCondition;
 import com.fsun.domain.entity.DocOrderInitCondition;
-import com.fsun.domain.enums.DocAsnTypeEnum;
 import com.fsun.domain.enums.DocOrderStatusEnum;
 import com.fsun.domain.enums.DocOrderTypeEnum;
 import com.fsun.domain.enums.OrderOperateTypeEnum;
@@ -55,6 +54,13 @@ public class DocOrderController extends BaseController {
 	@RequestMapping("/allot/index")
 	public String allotIndex() {
 		return "/docOrder/allotIndex";
+	}
+	
+	@RequestMapping("/agent/index")
+	public ModelAndView agentIndex() {
+		ModelAndView modelAndView = new ModelAndView("/docOrder/agentIndex");		
+		modelAndView.addObject("toERP", DocOrderStatusEnum.SO_CKWC.getCode());			
+		return modelAndView;
 	}
 	
 	@RequestMapping("/toAddView")
@@ -319,6 +325,9 @@ public class DocOrderController extends BaseController {
 					case USE_SO:
 						url = "/docOrder/operate/toAddUseSoView";
 						break;
+					case AGENT_SO:
+						url = "/docOrder/operate/toAddAgentSoView";
+						break;
 					default:
 						break;
 				}
@@ -339,6 +348,9 @@ public class DocOrderController extends BaseController {
 						break;
 					case USE_SO:
 						url = "/docOrder/operate/toEditUseSoView";
+						break;
+					case AGENT_SO:
+						url = "/docOrder/operate/toEditAgentSoView";
 						break;
 					default:
 						break;

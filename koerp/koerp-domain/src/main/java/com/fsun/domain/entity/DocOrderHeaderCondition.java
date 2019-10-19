@@ -338,6 +338,16 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
      */
     private String[] orderTypes;
     
+    /**
+     * 承运商
+     */
+    private String expressCode;
+    
+    /**
+     * 运单号
+     */
+    private String waybillNo;
+    
     public String getOrderNo() {
         return orderNo;
     }
@@ -794,6 +804,34 @@ public class DocOrderHeaderCondition extends BaseOrderCondition{
 	 */
 	public void setOrderTypes(String[] orderTypes) {
 		this.orderTypes = orderTypes;
+	}
+
+	/**
+	 * @return the waybillNo
+	 */
+	public String getWaybillNo() {
+		return waybillNo;
+	}
+
+	/**
+	 * @param waybillNo the waybillNo to set
+	 */
+	public void setWaybillNo(String waybillNo) {
+		this.waybillNo = waybillNo;
+	}
+
+	/**
+	 * @return the expressCode
+	 */
+	public String getExpressCode() {
+		return expressCode;
+	}
+
+	/**
+	 * @param expressCode the expressCode to set
+	 */
+	public void setExpressCode(String expressCode) {
+		this.expressCode = expressCode;
 	}
     
 }

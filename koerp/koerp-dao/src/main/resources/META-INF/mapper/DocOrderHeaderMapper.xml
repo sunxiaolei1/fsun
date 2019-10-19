@@ -56,6 +56,8 @@
     <result column="place_loading" property="placeLoading" jdbcType="VARCHAR" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
     <result column="route" property="route" jdbcType="VARCHAR" />
+    <result column="express_code" property="expressCode" jdbcType="VARCHAR" />
+    <result column="waybill_no" property="waybillNo" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     order_no, print_count, order_type, order_status, order_mode, order_source, po_no, route_id, order_time, 
@@ -65,7 +67,7 @@
     descr, memo, i_shop_id, i_id, i_address, i_zip_code, i_contact, i_name, i_tel, supplier_id, 
     supplier_name, supplier_address, supplier_zip_code, supplier_contact, supplier_tel, 
     address, volume, delivery_time, created_name, created_time, updated_name, place_loading, 
-    updated_time, route
+    updated_time, route, express_code, waybill_no
   </sql>
   
   
@@ -74,6 +76,7 @@
   		<if test="q != null and q != ''">
   			and (a.order_no like concat(concat('%',#{q}),'%')  
   				or a.po_no like concat(concat('%',#{q}),'%')  
+  				or a.waybill_no like concat(concat('%',#{q}),'%')  
   				)
   		</if>
   		
@@ -101,6 +104,10 @@
 			and a.order_type = #{orderType,jdbcType=VARCHAR}
 		</if>
 		
+		<if test="expressCode != null and expressCode != ''">
+			and a.express_code = #{expressCode,jdbcType=VARCHAR}
+		</if>
+
 		<if test="orderTypes != null and orderTypes.length > 0 ">			
 			and (a.order_type in
 			<foreach collection="orderTypes" index="index" item="item" open="(" separator="," close=")" >
@@ -184,7 +191,9 @@
     <result column="o_delivery_time" property="deliveryTime"/>
     <result column="o_place_loading" property="placeLoading"/>
     <result column="o_route" property="route"/>
-    <result column="o_created_name" property="createdName"/>    
+    <result column="o_created_name" property="createdName"/>  
+    <result column="o_express_code" property="expressCode"/>
+    <result column="o_waybill_no" property="waybillNo"/>  
   </resultMap>
   
   <resultMap id="DefinedResultMap" type="java.util.Map"> 	
@@ -282,6 +291,8 @@
 		o.delivery_time as o_delivery_time,
 		o.place_loading as o_place_loading,
 		o.route as o_route,
+		o.express_code as o_express_code,
+		o.waybill_no as o_waybill_no,
 		d.so_detail_id as d_so_detail_id,
 		d.order_no as d_order_no,
 		d.line_no as d_line_no,
@@ -359,7 +370,7 @@
       supplier_tel, address, volume, 
       delivery_time, created_name, created_time, 
       updated_name, place_loading, updated_time, 
-      route)
+      route, express_code, waybill_no)
     values (#{orderNo,jdbcType=VARCHAR}, #{printCount,jdbcType=INTEGER}, #{orderType,jdbcType=CHAR}, #{orderStatus,jdbcType=CHAR}, 
       #{orderMode,jdbcType=CHAR}, #{orderSource,jdbcType=CHAR}, #{poNo,jdbcType=VARCHAR}, 
       #{routeId,jdbcType=VARCHAR}, #{orderTime,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=DECIMAL}, 
@@ -377,7 +388,7 @@
       #{supplierTel,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{volume,jdbcType=DECIMAL}, 
       #{deliveryTime,jdbcType=TIMESTAMP}, #{createdName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{updatedName,jdbcType=VARCHAR}, #{placeLoading,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, 
-      #{route,jdbcType=VARCHAR})
+      #{route,jdbcType=VARCHAR}, #{expressCode,jdbcType=VARCHAR}, #{waybillNo,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.DocOrderHeader" >
     insert into doc_order_header
@@ -544,6 +555,12 @@
       <if test="route != null" >
         route,
       </if>
+      <if test="expressCode != null" >
+        express_code,
+      </if>
+      <if test="waybillNo != null" >
+        waybill_no,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="orderNo != null" >
@@ -707,6 +724,12 @@
       </if>
       <if test="route != null" >
         #{route,jdbcType=VARCHAR},
+      </if>
+      <if test="expressCode != null" >
+        #{expressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waybillNo != null" >
+        #{waybillNo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -872,6 +895,12 @@
       <if test="route != null" >
         route = #{route,jdbcType=VARCHAR},
       </if>
+      <if test="expressCode != null" >
+        express_code = #{expressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waybillNo != null" >
+        waybill_no = #{waybillNo,jdbcType=VARCHAR},
+      </if>
     </set>
     where order_no = #{orderNo,jdbcType=VARCHAR}
   </update>
@@ -929,7 +958,9 @@
       updated_name = #{updatedName,jdbcType=VARCHAR},
       place_loading = #{placeLoading,jdbcType=VARCHAR},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
-      route = #{route,jdbcType=VARCHAR}
+      route = #{route,jdbcType=VARCHAR},
+      express_code = #{expressCode,jdbcType=VARCHAR},
+      waybill_no = #{waybillNo,jdbcType=VARCHAR}
     where order_no = #{orderNo,jdbcType=VARCHAR}
   </update>
 </mapper>

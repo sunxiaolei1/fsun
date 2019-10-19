@@ -92,7 +92,18 @@ function getSaveData(){
 	}			
 
 	var baseInfo = formJson($orderfm);
-	var orderType = baseInfo.orderType;
+	var orderType = baseInfo.orderType;	
+	if(baseInfo.orderType=='17'){
+		var fromShopName = $('#shopCombo', $orderfm).combogrid("getText");
+		baseInfo.fromShopName = fromShopName;
+		
+		var toShopName = $('#toShopCombo', $orderfm).combogrid("getText");
+		baseInfo.toShopName = toShopName;		
+		if(baseInfo.fromShopId == baseInfo.toShopId){
+			$.messager.alert("错误", "出库店仓和入库店仓不可为同一个!", "error");  
+			return null;
+		}
+	}
 	//调拨单
 	if(orderType=='11' && baseInfo.deliveryTime!=''){
 		//baseInfo.deliveryTime = (baseInfo.deliveryTime +" 00:00:00");

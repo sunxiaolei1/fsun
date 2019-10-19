@@ -11,7 +11,8 @@ public enum OrderTypeEnum {
 
 	UNKNOW(null,"未知"),
 	ORDER((short)1, "销售出库单"),
-	TAKE_ORDER((short)2, "销售寄存单");
+	TAKE_ORDER((short)2, "销售寄存单"),
+	AGENT_ORDER((short)3, "代理代发单");
 	
 	/** 常量 key */
 	private Short value;

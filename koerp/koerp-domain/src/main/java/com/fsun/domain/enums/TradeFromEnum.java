@@ -9,8 +9,10 @@ import java.util.List;
  */
 public enum TradeFromEnum {
 
+	WAP("wap", "web端"),
 	PC("pc", "PC端"),
 	APP("app", "客户端"),
+	POS("pos", "pos端"),
 	UNKNOW(null,"未知");
 	
 	/** 常量 key */

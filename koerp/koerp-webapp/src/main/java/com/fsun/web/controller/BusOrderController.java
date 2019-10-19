@@ -63,6 +63,11 @@ public class BusOrderController extends BaseController {
 		return "/busOrder/index";
 	}
 	
+	@RequestMapping("/agent/index")
+	public String agentIndex() {
+		return "/busOrder/agentIndex";
+	}
+	
 	@RequestMapping("/toSetGiftsView")
 	public String toSetGiftsView() {
 		return "/busOrder/operate/toSetGiftsView";
@@ -461,7 +466,10 @@ public class BusOrderController extends BaseController {
 						break;						
 					case TAKE_ORDER:	
 						url = "/busOrder/operate/toAddOrderView";
-						break;					
+						break;	
+					case AGENT_ORDER:
+						url = "/busOrder/operate/toAddAgentOrderView";
+						break;
 					default:
 						break;
 				}
@@ -474,6 +482,9 @@ public class BusOrderController extends BaseController {
 					case TAKE_ORDER:	
 						url = "/busOrder/operate/toEditOrderView";
 						break;	
+					case AGENT_ORDER:
+						url = "/busOrder/operate/toEditAgentOrderView";
+						break;
 					default:
 						break;
 				}
@@ -488,6 +499,9 @@ public class BusOrderController extends BaseController {
 					case TAKE_ORDER:	
 						url = "/busOrder/operate/toCopyOrderView";
 						break;	
+					case AGENT_ORDER:
+						url = "/busOrder/operate/toCopyAgentOrderView";
+						break;
 					default:
 						break;
 				}

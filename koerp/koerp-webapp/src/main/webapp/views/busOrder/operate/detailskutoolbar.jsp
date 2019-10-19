@@ -34,6 +34,14 @@ function skuListReLoad() {
 function addSkuRow() {	
 	
 	var shopId = $("#shopId", $orderfm).val();
+	var orderType = $("#orderType", $orderfm).combobox("getValue");
+	if(orderType=='3'){
+		shopId = $("#shopCombo", $orderfm).combogrid("getValue");
+		if(shopId==null || shopId==''){
+			$.messager.alert({title: '消息', msg: '请先选择发货店仓'});
+			return;
+		}
+	}
 	var customerCode = $("#allCustomer",$orderfm).combogrid("getValue");
 	if(customerCode==null || customerCode==''){
 		$.messager.alert({title: '消息', msg: '请先选择客户信息'});

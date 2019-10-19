@@ -11,7 +11,7 @@ public class BusOrder {
     private String orderId;
 
     /**
-     * 订单类型 1 pos销售订单，2 销售寄存单
+     * 订单类型 1 pos销售订单，2 销售寄存单 3 代理代发单
      * 表字段 : bus_order.order_type
      */
     private Short orderType;
@@ -119,7 +119,7 @@ public class BusOrder {
     private String tradeStatus;
 
     /**
-     * 订单状态[0 未确认，1 已确认，2已接配送，3已取餐，4已配送成功，5已完结，6已取消]
+     * 订单状态[0 未确认，1 已确认，2已发货，3已取货，4已配送成功，5已完结，6已取消]
      * 表字段 : bus_order.order_status
      */
     private String orderStatus;
@@ -459,6 +459,26 @@ public class BusOrder {
      * 表字段 : bus_order.created_name
      */
     private String createdName;
+    
+    /**
+     * 配送类型[1平台配送；2自配送；3自取]
+     */
+    private Short logisticsType;   
+    
+    /**
+     * 发货店仓ID
+     */
+    private String deliveryShopId;
+    
+    /**
+     * 发货店仓
+     */
+    private String deliveryShopName;
+    
+    /**
+     * 出库单号
+     */
+    private String docOrderNo;
 
     public String getOrderId() {
         return orderId;
@@ -1084,6 +1104,44 @@ public class BusOrder {
 	 */
 	public void setTakeStatus(String takeStatus) {
 		this.takeStatus = takeStatus;
+	}
+
+	/**
+	 * @return the logisticsType
+	 */
+	public Short getLogisticsType() {
+		return logisticsType;
+	}
+
+	/**
+	 * @param logisticsType the logisticsType to set
+	 */
+	public void setLogisticsType(Short logisticsType) {
+		this.logisticsType = logisticsType;
+	}
+
+	public String getDeliveryShopId() {
+		return deliveryShopId;
+	}
+
+	public void setDeliveryShopId(String deliveryShopId) {
+		this.deliveryShopId = deliveryShopId;
+	}
+
+	public String getDeliveryShopName() {
+		return deliveryShopName;
+	}
+
+	public void setDeliveryShopName(String deliveryShopName) {
+		this.deliveryShopName = deliveryShopName;
+	}
+
+	public String getDocOrderNo() {
+		return docOrderNo;
+	}
+
+	public void setDocOrderNo(String docOrderNo) {
+		this.docOrderNo = docOrderNo;
 	}
     
 }

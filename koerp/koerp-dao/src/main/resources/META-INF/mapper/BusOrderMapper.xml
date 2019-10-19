@@ -74,6 +74,10 @@
     <result column="settle_time" property="settleTime" jdbcType="TIMESTAMP" />
     <result column="shift" property="shift" jdbcType="SMALLINT" />
     <result column="is_read" property="isRead" jdbcType="SMALLINT" />
+    <result column="logistics_type" property="logisticsType" jdbcType="SMALLINT" />
+    <result column="delivery_shop_id" property="deliveryShopId" jdbcType="VARCHAR" />
+    <result column="delivery_shop_name" property="deliveryShopName" jdbcType="VARCHAR" />
+    <result column="doc_order_no" property="docOrderNo" jdbcType="VARCHAR" />    
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
     <result column="updated_name" property="updatedName" jdbcType="VARCHAR" />
@@ -89,8 +93,9 @@
     city_id, city, district_id, district, address, longitude_address, latitude_address, 
     mobile, zip_code, memo, buyer_notes, seller_notes, is_invoice, is_trave, invoice_type, 
     invoice_title, invoice_content, order_time, pay_time, delivery_time, confirm_time, 
-    print_count, cash_id, cash_name, settle_time, shift, is_read, created_time, updated_time, 
-    updated_name, created_name
+    print_count, cash_id, cash_name, settle_time, shift, is_read, logistics_type, 
+    delivery_shop_id, delivery_shop_name, doc_order_no,
+    created_time, updated_time, updated_name, created_name
   </sql>
   
   
@@ -103,7 +108,8 @@
   		<if test="keywords != null and keywords != ''">
   			and (a.order_id like concat(concat('%',#{keywords}),'%')
   				or a.buyer_name like concat(concat('%',#{keywords}),'%')
-  				or a.mobile like concat(concat('%',#{keywords}),'%')
+  				or a.mobile like concat(concat('%',#{keywords}),'%'),
+  				or a.doc_order_no like concat(concat('%',#{keywords}),'%')
   			)
   		</if>
   		 		
@@ -134,6 +140,18 @@
   		<if test="orderType != null">
 			and a.order_type = #{orderType}
 		</if>
+		
+		<if test="logisticsType != null">
+			and a.logistics_type = #{logisticsType}
+		</if>	
+		
+		<if test="deliveryShopId != null and deliveryShopId != ''">
+  			and a.delivery_shop_id = #{shopId}
+  		</if>
+  		
+  		<if test="deliveryShopId != null and deliveryShopId != ''">
+  			and a.delivery_shop_id = #{deliveryShopId}
+  		</if>
   		
   		<if test="startTime != null">
 			and a.order_time<![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
@@ -270,7 +288,32 @@
     <result column="o_refund_id" property="refundId"/>
     <result column="o_refund_type" property="refundType"/>
     <result column="o_seller_notes" property="sellerNotes"/>
-    <result column="o_take_status" property="takeStatus"/>    
+    <result column="o_take_status" property="takeStatus"/> 
+    <!-- 新增字段 -->
+    <result column="o_logistics_type" property="logisticsType"/> 
+    <result column="o_delivery_shop_id" property="deliveryShopId"/> 
+    <result column="o_delivery_shop_name" property="deliveryShopName"/> 
+    <result column="o_doc_order_no" property="docOrderNo"/> 
+    <result column="o_ship_price" property="shipPrice"/> 
+    <result column="o_package_price" property="packagePrice"/> 
+    <result column="o_point_fee" property="pointFee"/> 
+    <result column="o_bonus_price" property="bonusPrice"/> 
+    <result column="o_rate_price" property="ratePrice"/> 
+    <result column="o_ext_order_id" property="extOrderId"/> 
+    <result column="o_plat_id" property="platId"/> 
+    <result column="o_plat_name" property="platName"/> 
+    <result column="o_plat_shop_id" property="platShopId"/> 
+    <result column="o_province_id" property="provinceId"/> 
+    <result column="o_province" property="province"/> 
+    <result column="o_city_id" property="cityId"/> 
+    <result column="o_city" property="city"/> 
+    <result column="o_district_id" property="districtId"/> 
+    <result column="o_district" property="district"/> 
+    <result column="o_is_invoice" property="isInvoice"/> 
+    <result column="o_is_trave" property="isTrave"/> 
+    <result column="o_invoice_type" property="invoiceType"/> 
+    <result column="o_invoice_title" property="invoiceTitle"/> 
+    <result column="o_invoice_content" property="invoiceContent"/>  
   </resultMap>
   
   <resultMap id="DefinedResultMap" type="java.util.Map"> 	
@@ -382,6 +425,32 @@
 		o.refund_type as o_refund_type,
 		o.seller_notes as o_seller_notes,
 		o.take_status as o_take_status,
+		<!-- 新增字段 -->
+		o.logistics_type as o_logistics_type,
+		o.delivery_shop_id as o_delivery_shop_id,
+		o.delivery_shop_name as o_delivery_shop_name,
+		o.doc_order_no as o_doc_order_no,
+		o.ship_price as o_ship_price,
+		o.package_price as o_package_price,
+		o.point_fee as o_point_fee,
+		o.bonus_price as o_bonus_price,
+		o.rate_price as o_rate_price,
+		o.ext_order_id as o_ext_order_id,
+		o.plat_id as o_plat_id,
+		o.plat_name as o_plat_name,
+		o.plat_shop_id as o_plat_shop_id,
+		o.province_id as o_province_id,
+		o.province as o_province,		
+		o.city_id as o_city_id,
+		o.city as o_city,		
+		o.district_id as o_district_id,
+		o.district as o_district,
+		o.is_invoice as o_is_invoice,
+		o.is_trave as o_is_trave,
+		o.invoice_type as o_invoice_type,
+		o.invoice_title as o_invoice_title,
+		o.invoice_content as o_invoice_content,
+				
 		d.goods_id as d_goods_id,
 		d.order_id as d_order_id ,
 		d.line_no as d_line_no,
@@ -482,7 +551,8 @@
       invoice_title, invoice_content, order_time, 
       pay_time, delivery_time, confirm_time, 
       print_count, cash_id, cash_name, 
-      settle_time, shift, is_read, 
+      settle_time, shift, is_read, logistics_type,
+      delivery_shop_id, delivery_shop_name, doc_order_no,
       created_time, updated_time, updated_name, 
       created_name)
     values (#{orderId,jdbcType=VARCHAR}, #{orderType,jdbcType=SMALLINT}, #{payType,jdbcType=SMALLINT}, 
@@ -508,8 +578,10 @@
       #{payTime,jdbcType=TIMESTAMP}, #{deliveryTime,jdbcType=TIMESTAMP}, #{confirmTime,jdbcType=TIMESTAMP}, 
       #{printCount,jdbcType=INTEGER}, #{cashId,jdbcType=VARCHAR}, #{cashName,jdbcType=VARCHAR}, 
       #{settleTime,jdbcType=TIMESTAMP}, #{shift,jdbcType=SMALLINT}, #{isRead,jdbcType=SMALLINT}, 
-      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{updatedName,jdbcType=VARCHAR}, 
-      #{createdName,jdbcType=VARCHAR})
+      #{logisticsType,jdbcType=SMALLINT}, 
+      #{deliveryShopId,jdbcType=VARCHAR}, #{deliveryShopName,jdbcType=VARCHAR}, #{docOrderNo,jdbcType=VARCHAR},
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{updatedName,jdbcType=VARCHAR}, #{createdName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fsun.domain.model.BusOrder" >
     insert into bus_order
@@ -730,6 +802,18 @@
       <if test="isRead != null" >
         is_read,
       </if>
+      <if test="logisticsType != null" >
+        logistics_type,
+      </if>    
+      <if test="deliveryShopId != null" >
+        delivery_shop_id,
+      </if>
+      <if test="deliveryShopName != null" >
+        delivery_shop_name,
+      </if>
+      <if test="docOrderNo != null" >
+        doc_order_no,
+      </if>  
       <if test="createdTime != null" >
         created_time,
       </if>
@@ -959,6 +1043,18 @@
       </if>
       <if test="isRead != null" >
         #{isRead,jdbcType=SMALLINT},
+      </if>     
+      <if test="logisticsType != null" >
+        #{logisticsType,jdbcType=SMALLINT},
+      </if>
+      <if test="deliveryShopId != null" >
+      	#{deliveryShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryShopName != null" >
+      	#{deliveryShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="docOrderNo != null" >
+        #{docOrderNo,jdbcType=VARCHAR},
       </if>
       <if test="createdTime != null" >
         #{createdTime,jdbcType=TIMESTAMP},
@@ -1190,6 +1286,18 @@
       <if test="isRead != null" >
         is_read = #{isRead,jdbcType=SMALLINT},
       </if>
+      <if test="logisticsType != null" >
+        logistics_type = #{logisticsType,jdbcType=SMALLINT},
+      </if>
+      <if test="deliveryShopId != null" >
+      	delivery_shop_id = #{deliveryShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryShopName != null" >
+      	delivery_shop_name = #{deliveryShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="docOrderNo != null" >
+        doc_order_no = #{docOrderNo,jdbcType=VARCHAR},
+      </if>
       <if test="createdTime != null" >
         created_time = #{createdTime,jdbcType=TIMESTAMP},
       </if>
@@ -1278,6 +1386,10 @@
       settle_time = #{settleTime,jdbcType=TIMESTAMP},
       shift = #{shift,jdbcType=SMALLINT},
       is_read = #{isRead,jdbcType=SMALLINT},
+      logistics_type = #{logisticsType,jdbcType=SMALLINT},
+      delivery_shop_id = #{deliveryShopId,jdbcType=VARCHAR},
+      delivery_shop_name = #{deliveryShopName,jdbcType=VARCHAR},
+      doc_order_no = #{docOrderNo,jdbcType=VARCHAR},    
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       updated_name = #{updatedName,jdbcType=VARCHAR},

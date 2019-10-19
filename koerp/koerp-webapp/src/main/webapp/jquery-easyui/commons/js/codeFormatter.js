@@ -35,8 +35,12 @@ var refundReasonData = new Array();
 var refundOrderStatusData = new Array();
 var skuAftersaleStatusData = new Array();
 
-var orderTakeStatusData =  new Array();
-var busTakeStatusData =  new Array();
+var orderTakeStatusData = new Array();
+var busTakeStatusData = new Array();
+
+var invoiceTypeData = new Array();
+var logisticsTypeData = new Array();
+var expressCodeData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -77,8 +81,11 @@ var refundReason = {};
 var refundOrderStatus = {};
 var skuAftersaleStatus = {};
 
-var orderTakeStatus =  {};
-var busTakeStatus =  {};
+var orderTakeStatus = {};
+var busTakeStatus = {};
+var invoiceType = {};
+var logisticsType = {};
+var expressCode = {};
 
 $(function () {
 	synchronizeData();	
@@ -124,6 +131,10 @@ $(function () {
 	
 	orderTakeStatus = formatterCodeType(orderTakeStatusData);
 	busTakeStatus = formatterCodeType(busTakeStatusData);
+	
+	invoiceType = formatterCodeType(invoiceTypeData);
+	logisticsType = formatterCodeType(logisticsTypeData);
+	expressCode = formatterCodeType(expressCodeData);
 });
 
 function formatterCodeType(result) {
@@ -218,7 +229,16 @@ function synchronizeData() {
         				orderTakeStatusData.push(item);
         			}else if(item.codeType == 'BusTakeStatus'){
         				busTakeStatusData.push(item);
+        			}else if(item.codeType == 'InvoiceType'){
+        				invoiceTypeData.push(item);
+        			}else if(item.codeType == 'LogisticsType'){
+        				logisticsTypeData.push(item);
+        			}else if(item.codeType == 'ExpressCode'){
+        				expressCodeData.push(item);
         			}
+        			
+        			
+        			
         			
     	        });
         		  		
@@ -399,6 +419,21 @@ function synchronizeData() {
 				});
         		
         		busTakeStatusData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		invoiceTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		logisticsTypeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		expressCodeData.unshift({
         			codeCode:"",
 					codeName:"请选择..."
 				});

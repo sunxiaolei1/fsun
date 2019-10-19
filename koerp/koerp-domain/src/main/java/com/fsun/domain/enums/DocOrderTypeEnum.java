@@ -15,6 +15,7 @@ public enum DocOrderTypeEnum {
 	PURCHASE_SO("13","采购退货"),
 	LOSE_SO("15","报损出库"),
 	USE_SO("16","撤柜退货"),
+	AGENT_SO("17","代理代发"),
 	UNKNOW("UNKNOW","未知");
 	
 	/** 常量code */

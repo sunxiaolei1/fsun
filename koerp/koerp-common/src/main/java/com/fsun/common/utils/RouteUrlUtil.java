@@ -24,4 +24,9 @@ public class RouteUrlUtil {
 	 * 添加退货单
 	 */
 	public static final String ERP_REFUND_ORDER_URL = ERP_ADDRESS + "/erp/order/refund";
+	
+	/**
+	 * 添加代理代发单
+	 */
+	public static final String ERP_AGENT_ORDER_URL = ERP_ADDRESS + "/erp/order/agent";
 }

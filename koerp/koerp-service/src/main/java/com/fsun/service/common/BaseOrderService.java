@@ -864,4 +864,53 @@ public abstract class BaseOrderService extends BaseOrderValidatorService {
 		return orderNo;
 	}
 	
+	/**
+	 * 代理代发单回传erp
+	 * @param header
+	 * @param details
+	 * @return
+	 */
+	public String transferErpAgentSo(DocOrderHeader header, List<DocOrderDetails> detailsSkus) {
+		ErpOrderDto erpOrderDto = new ErpOrderDto();
+		ErpOrderHeader erpOrderHeader = new ErpOrderHeader();
+		String orderNo = header.getOrderNo();
+		erpOrderHeader.setTrnNum(orderNo);
+		erpOrderHeader.setCreateDate(header.getCreatedTime());		
+		erpOrderHeader.setFromWhse(header.getFromShopId());
+		erpOrderHeader.setCreatedBy(header.getiName());	
+		erpOrderHeader.setOrderDate(header.getDeliveryTime());
+		//erpOrderHeader.setToWhse(poHeader.getToShopId());
+		//erpOrderHeader.setStat(stat);
+		erpOrderDto.setHeader(erpOrderHeader);
+		//初始化明细信息		
+		List<ErpOrderDetails> details = new ArrayList<>();
+		for (DocOrderDetails detailsSku : detailsSkus) {
+			ErpOrderDetails erpOrderDetail = new ErpOrderDetails();
+			erpOrderDetail.setTrnNum(orderNo);
+			erpOrderDetail.setTrnLine(detailsSku.getLineNo());
+			erpOrderDetail.setItem(detailsSku.getSku());			
+			erpOrderDetail.setuM(detailsSku.getUnit());
+			erpOrderDetail.setUnitCost(detailsSku.getCostPrice());
+			erpOrderDetail.setMatlCost(detailsSku.getCostPrice());
+			erpOrderDetail.setUnitMatCost(detailsSku.getCostPrice());
+			erpOrderDetail.setUnitMatCostConv(detailsSku.getCostPrice());
+			erpOrderDetail.setUnitPrice(detailsSku.getCostPrice());
+			erpOrderDetail.setQtyReq(detailsSku.getShippedQty());
+			erpOrderDetail.setCategoryCode(detailsSku.getCategoryCode());
+			//填写默认值
+			erpOrderDetail.setQtyReceived(detailsSku.getShippedQty());
+			erpOrderDetail.setQtyShipped(detailsSku.getShippedQty());
+			erpOrderDetail.setQtyLoss(BigDecimal.ZERO);
+			details.add(erpOrderDetail);			
+		}			
+		erpOrderDto.setDetails(details);
+		String jsonParam = JSON.toJSONString(erpOrderDto);
+		System.out.println("-----------------------------" + jsonParam);
+		JSONObject result = HttpRequestUtils.httpPost(RouteUrlUtil.ERP_AGENT_ORDER_URL, null, jsonParam, false);
+		if(!result.getBoolean("status")){			
+			throw new DocOrderException(result.getString("message"));
+		}
+		return orderNo;
+	}
+	
 }

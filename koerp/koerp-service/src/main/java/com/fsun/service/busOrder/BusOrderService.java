@@ -30,6 +30,8 @@ import com.fsun.domain.enums.BusPayTypeEnum;
 import com.fsun.domain.enums.CustomerTypeEnum;
 import com.fsun.domain.enums.DocTradeStatusEnum;
 import com.fsun.domain.enums.FlowStatusEnum;
+import com.fsun.domain.enums.InvoiceTypeEnum;
+import com.fsun.domain.enums.LogisticsTypeEnum;
 import com.fsun.domain.enums.OrderOperateButtonsEnum;
 import com.fsun.domain.enums.OrderStatusEnum;
 import com.fsun.domain.enums.OrderTakeStatusEnum;
@@ -691,6 +693,17 @@ public class BusOrderService extends BaseOrderService implements BusOrderApi {
 		header.setIsSettlemented(true);
 		if(OrderTypeEnum.TAKE_ORDER.getValue().equals(orderType)){
 			header.setTakeStatus(OrderTakeStatusEnum.UNTAKE.getCode());
+		}else if(OrderTypeEnum.AGENT_ORDER.getValue().equals(orderType)){
+			header.setPackagePrice(BigDecimal.ZERO);
+			header.setBonusPrice(BigDecimal.ZERO);
+			header.setRatePrice(BigDecimal.ZERO);
+			header.setPointFee(0);
+			header.setIsInvoice(false);
+			header.setIsTrave(true);
+			header.setInvoiceType(InvoiceTypeEnum.GENERAL.getValue());
+			header.setLogisticsType(LogisticsTypeEnum.SELF_DELIVERY.getValue());
+			header.setBuyerId("SK100001");
+			header.setBuyerName("散客");
 		}
 		return header;
 	}
