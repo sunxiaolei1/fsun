@@ -68,7 +68,10 @@ var frozenColumns = [[
      } */
 ]];
 
-var columns = [[	
+var columns = [[
+	{field:'order_source',title:'单据来源',width:100,align:'center',sortable:true, formatter:function(value, row){
+		return formatter(value, window.parent.orderSource);
+	}},
 	{field:'from_shop_id',title:'发货店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
 		return row.from_shop_name; 
 	}},

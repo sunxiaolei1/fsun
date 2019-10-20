@@ -41,6 +41,7 @@ var busTakeStatusData = new Array();
 var invoiceTypeData = new Array();
 var logisticsTypeData = new Array();
 var expressCodeData = new Array();
+var orderSourceData = new Array();
 
 /**************************   ecorder    *********************************/
 
@@ -86,6 +87,7 @@ var busTakeStatus = {};
 var invoiceType = {};
 var logisticsType = {};
 var expressCode = {};
+var orderSource = {};
 
 $(function () {
 	synchronizeData();	
@@ -135,6 +137,7 @@ $(function () {
 	invoiceType = formatterCodeType(invoiceTypeData);
 	logisticsType = formatterCodeType(logisticsTypeData);
 	expressCode = formatterCodeType(expressCodeData);
+	orderSource = formatterCodeType(orderSourceData);
 });
 
 function formatterCodeType(result) {
@@ -235,10 +238,10 @@ function synchronizeData() {
         				logisticsTypeData.push(item);
         			}else if(item.codeType == 'ExpressCode'){
         				expressCodeData.push(item);
+        			}else if(item.codeType == 'OrderSource'){
+        				orderSourceData.push(item);
         			}
-        			
-        			
-        			
+       
         			
     	        });
         		  		
@@ -434,6 +437,11 @@ function synchronizeData() {
 				});
         		
         		expressCodeData.unshift({
+        			codeCode:"",
+					codeName:"请选择..."
+				});
+        		
+        		orderSourceData.unshift({
         			codeCode:"",
 					codeName:"请选择..."
 				});
