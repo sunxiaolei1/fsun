@@ -76,7 +76,9 @@
   		<if test="q != null and q != ''">
   			and (a.order_no like concat(concat('%',#{q}),'%')  
   				or a.po_no like concat(concat('%',#{q}),'%')  
-  				or a.waybill_no like concat(concat('%',#{q}),'%')  
+  				or a.waybill_no like concat(concat('%',#{q}),'%')
+  				or a.user_define1 like concat(concat('%',#{q}),'%')
+  				or a.user_define2 like concat(concat('%',#{q}),'%')
   				)
   		</if>
   		

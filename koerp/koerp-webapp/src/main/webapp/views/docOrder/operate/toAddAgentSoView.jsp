@@ -31,6 +31,10 @@
 								</td>								
 					        </tr>
 					        <tr>
+					        	<th>销售单号</th>
+								<td>
+									<input id="userDefine2" name="userDefine2" class="easyui-textbox" />								
+								</td>
 					        	<th>承运商</th>
 								<td>
 									<input id="expressCode" name="expressCode" class="easyui-combobox" editable="false" />								
@@ -38,7 +42,7 @@
 								<th>运单号</th>
 								<td>
 									<input id="waybillNo" name="waybillNo" class="easyui-textbox" />								
-								</td>																					        
+								</td>																												        
 					        </tr>
 					        <tr>
 					        	<th>收货人</th>

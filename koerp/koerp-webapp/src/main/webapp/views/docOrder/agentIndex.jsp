@@ -75,7 +75,9 @@ var columns = [[
 	{field:'to_shop_id',title:'来源店仓',width:120,align:'center',sortable:true, formatter:function(value, row){
 		return row.to_shop_name; 
 	}},
-	{field:'waybill_no',title:'运单号',width:130,align:'center',sortable:true, styler:reportContentStyler},
+	{field:'user_define1',title:'ERP单号',width:130,align:'center',sortable:true, styler:reportContentStyler},
+	{field:'user_define2',title:'销售单号',width:160,align:'center',sortable:true, styler:reportContentStyler},
+	{field:'waybill_no',title:'运单号',width:160,align:'center',sortable:true, styler:reportContentStyler},
 	{field:'express_code',title:'承运商',width:80,align:'center',sortable:true, formatter:function(value, row){
 		return formatter(value, window.parent.expressCode); 
 	}},

@@ -7,14 +7,14 @@
 	
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
-			<div data-options="region:'north',split:true, border:false" style="height:186px;overflow:hidden;">
+			<div data-options="region:'north',split:true, border:false" style="height:216px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
 						<span class="title" style="top: 1px;">基本信息(单号:<span id="orderNoDiv"></span>)</span>		
 						<input id="fromShopId" name="fromShopId" hidden="true" />
 						<input id="toShopId" name="toShopId" hidden="true" />	
-						<input id="orderPrice" name="orderPrice" hidden="true" />	
-						<input id="orderNo" name="orderNo" hidden="true" />	
+						<input id="orderPrice" name="orderPrice" hidden="true" />
+						<input id="orderNo" name="orderNo" hidden="true" />
 						<table class="nb-formTable">
 					        <tr>					    
 								<th>单据类型</th>
@@ -30,10 +30,10 @@
 									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly />								
 								</td>								
 					        </tr>
-					        <tr>
-					        	<th>发货时间</th>
+					        <tr> 
+								<th>销售单号</th>
 								<td>
-									<input id="deliveryTime" name="deliveryTime" class="easyui-datetimebox" readOnly />								
+									<input id="userDefine2" name="userDefine2" class="easyui-textbox" />								
 								</td>
 					        	<th>承运商</th>
 								<td>
@@ -44,32 +44,38 @@
 									<input id="waybillNo" name="waybillNo" class="easyui-textbox" readOnly />								
 								</td>														        
 					        </tr>
-					        <tr>
+					        <tr>	
 					        	<th>单据时间</th>
 								<td>
 									<input id="orderTime" name="orderTime" class="easyui-datetimebox" readOnly />								
-								</td>
+								</td>				        	
+					        	<th>发货时间</th>
+								<td>
+									<input id="deliveryTime" name="deliveryTime" class="easyui-datetimebox" readOnly />								
+								</td>					        	
 					        	<th>收货人</th>
 								<td>
 									<input id="contacts" name="contacts" class="easyui-textbox" readOnly />								
-								</td>					        		        	
-								<th>联系方式</th>
-								<td>
-									<input id="mobile" name="mobile" class="easyui-textbox"  readOnly />								
-								</td>        		        	
+								</td>					        		        									        		        	
 					        </tr>
 					        <tr>
-					        	<th>收货地址</th>
+					        	<th>联系方式</th>
 								<td>
-									<input id="receiveAddress" name="receiveAddress" class="easyui-textbox"
-										data-options="multiline:true"  style="width:95%;height:50px;" readOnly />
+									<input id="mobile" name="mobile" class="easyui-textbox"  readOnly />								
 								</td>
-					        	<th>备注</th>
+					        	<th>收货地址</th>
 								<td colspan="3">
+									<input id="receiveAddress" name="receiveAddress" class="easyui-textbox" 
+										style="width:95%;" readOnly />
+								</td>					        		        	
+					        </tr>
+					        <tr>					        	
+					        	<th>备注</th>
+								<td colspan="5">
 									<input id="memo" name="memo"  data-options="multiline:true" 
 										class="easyui-textbox" style="width:55%;height:50px;"/>		
 								</td>	        	
-					        </tr>					        				        
+					        </tr>						        				        
 						</table>
 					</form>			
 				</div>

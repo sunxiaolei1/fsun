@@ -16,7 +16,7 @@
 					</td>
 					<td width="8%">关键字:</td>
 					<td  colspan="3">
-						<input name="q" id="q" data-options="prompt:'输入单据编号,运单号...'" class="easyui-textbox" style="width:80%;"/>
+						<input name="q" id="q" data-options="prompt:'输入单据编号,销售单号,运单号...'" class="easyui-textbox" style="width:80%;"/>
 					</td>																								
 				</tr>
 				<tr>
