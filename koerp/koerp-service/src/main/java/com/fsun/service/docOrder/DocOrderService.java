@@ -263,6 +263,7 @@ public class DocOrderService extends BaseOrderService implements DocOrderApi {
 						super.skuStockOut(header, docOrderDetail);										
 					}					
 					//同步erp库存
+					header.setDeliveryTime(now);
 					String relationNo = super.transferErpAgentSo(header, docOrderDetails);
 					header.setUserDefine1(relationNo);
 				}			

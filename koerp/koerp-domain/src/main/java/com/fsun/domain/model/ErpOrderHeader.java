@@ -52,6 +52,16 @@ public class ErpOrderHeader {
 	 * ERP字段固定值--
 	 */
 	private String stat = "O";
+	
+	/**
+	 * 单据来源
+	 */
+	private String orderSource = "pc";
+	
+	/**
+	 * 销售单号
+	 */
+	private String orderId;
 
 	public String getTrnNum() {
 		return trnNum;
@@ -129,6 +139,34 @@ public class ErpOrderHeader {
 	 */
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	/**
+	 * @return the orderSource
+	 */
+	public String getOrderSource() {
+		return orderSource;
+	}
+
+	/**
+	 * @param orderSource the orderSource to set
+	 */
+	public void setOrderSource(String orderSource) {
+		this.orderSource = orderSource;
+	}
+
+	/**
+	 * @return the orderId
+	 */
+	public String getOrderId() {
+		return orderId;
+	}
+
+	/**
+	 * @param orderId the orderId to set
+	 */
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 	
 }

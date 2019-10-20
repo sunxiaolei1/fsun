@@ -3,7 +3,7 @@
 
 <a href="#" class="easyui-linkbutton" iconCls="icon-user_comment" plain="true" onclick="toAddView('17')">代理打发</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-application_view_detail" plain="true" onclick="toDetailView()">查看</a>
-<a href="#" class="easyui-linkbutton" iconCls="icon-application_osx_go" plain="true" onclick="toERPAudit()">送ERP</a>
+<a href="#" class="easyui-linkbutton" iconCls="icon-application_osx_go" plain="true" onclick="toERPAudit()">发货</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-2012081511202" plain="true" onclick="toPrintOrderView()">打印</a>
 <a href="#" class="easyui-linkbutton" iconCls="icon-arrow_refresh" plain="true" onclick="reflushDataGrid()">刷新</a>	
 
