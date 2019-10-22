@@ -33,7 +33,7 @@ $.each(window.parent.docOrderStatusData, function(){
 	if(codeCode=='B00'){
 		codeName = "新建";
 	}
-	if(codeCode=='' || codeCode=='B30' || codeCode=="B00"){
+	if(codeCode=='' || codeCode=='B30' || codeCode=="B00" || codeCode=="B90"){
 		docOrderStatusData1.push({
 			codeCode: codeCode,
 			codeName: codeName
