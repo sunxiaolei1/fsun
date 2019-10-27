@@ -1,6 +1,7 @@
 package com.fsun.service.erpOrder;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -98,6 +99,7 @@ public class ErpOrderService implements ErpOrderApi {
 		docAsnHeaderManage.create(header);
 		
 		List<DocPoDetails> poDetails = this.getPoDetails(poNo);
+		List<DocPoDetails> newPoDetails = new ArrayList<>();
 		//初始化明细信息		
 		for (ErpOrderDetails erpOrderDetail : erpOrderDto.getDetails()) {
 			String sku = erpOrderDetail.getItem();
@@ -140,9 +142,12 @@ public class ErpOrderService implements ErpOrderApi {
 			//用于签收回显
 			asnDetail.setUserDefine1(docPoDetails.getPoDetailId());
 			docAsnDetailsManage.create(asnDetail);	
+		
+			docPoDetails.setExpectedQty(orderQty);
+			newPoDetails.add(docPoDetails);
 		}
 		//审核采购申请及更新明细
-		this.auditPurchaseApply(header, poHeader, poDetails);
+		this.auditPurchaseApply(header, poHeader, newPoDetails);
 		return asnNo;
 	}
 	
@@ -181,7 +186,7 @@ public class ErpOrderService implements ErpOrderApi {
 		Date now = new Date();			
 		//更新申请单明细				
 		for (DocPoDetails docPoDetails : details) {											
-			docPoDetails.setExpectedQty(docPoDetails.getOrderedQty());
+			//docPoDetails.setExpectedQty(docPoDetails.getOrderedQty());
 			docPoDetails.setUpdatedTime(now);
 			docPoDetailsManage.update(docPoDetails);
 		}
