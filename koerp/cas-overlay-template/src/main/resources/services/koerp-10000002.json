@@ -1,6 +1,6 @@
 {
   "@class" : "org.jasig.cas.services.RegexRegisteredService",
-  "serviceId" : "^(http)://10.10.24.22:8088/koerp-webapp/shiro-cas",
+  "serviceId" : "^(http)://192.168.0.107:8868/koerp-webapp/shiro-cas",
   "name" : "koerp",
   "id" : 10000002,
   "description" : "This service definition authorizes all application urls that support HTTPS and IMAPS protocols.",

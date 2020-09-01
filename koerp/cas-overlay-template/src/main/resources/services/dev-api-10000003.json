@@ -1,6 +1,6 @@
 {
   "@class" : "org.jasig.cas.services.RegexRegisteredService",
-  "serviceId" : "^(http)://10.10.24.22:8080/dev-api",
+  "serviceId" : "^(http)://localhost:8080/dev-api",
   "name" : "dev-api",
   "id" : 10000003,
   "description" : "This 0service definition authorizes all application urls that support HTTPS and IMAPS protocols.",
