@@ -87,7 +87,7 @@
     	<div class="easyui-layout" title="首页" data-options="fit:true">
     		<div region="north" class="overview" data-options="striped: true,collapsible:false,border:true">
 				<div style="margin-top:10px;text-align:center;">
-					<b style="display:inline;font-size:22px;font-family:serif;margin:10px 60px;">金瓯酒业销售业绩及库存预警总览</b>
+					<b style="display:inline;font-size:22px;font-family:serif;margin:10px 60px;">${applicationScope.companyLtd}销售业绩及库存预警总览</b>
 					<p style="display:inline;">态度决定一切   细节决定成败</p>
 				</div>				
 			</div>

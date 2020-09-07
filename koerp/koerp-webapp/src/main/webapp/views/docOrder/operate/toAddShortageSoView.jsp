@@ -43,7 +43,7 @@
 			
 			<div data-options="region:'center',split:true, border:false" >
 				<div id="detailskutoolbar" style="display:none;">
-					<%@include file="./detailskutoolbar.jsp"%>
+					<%@include file="./detailSkuAddToolbar.jsp"%>
 				</div>
 				<table id="orderDetailDataGrid"></table>
 			</div>

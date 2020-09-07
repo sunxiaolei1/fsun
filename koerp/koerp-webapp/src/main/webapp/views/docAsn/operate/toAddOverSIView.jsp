@@ -43,7 +43,7 @@
 			
 			<div data-options="region:'center',split:true, border:false" >
 				<div id="detailskutoolbar" style="display:none;">
-					<%@include file="./detailskutoolbar.jsp"%>
+					<%@include file="./detailSkuAddToolbar.jsp"%>
 				</div>
 				<table id="orderDetailDataGrid"></table>
 			</div>
@@ -64,7 +64,7 @@ var currOrderDetailDataGrid  = $("#orderDetailDataGrid");
 var $orderfm = $("#orderfm");
 var siColumns = [[
 	{field:'ck',checkbox:true},
-	{field:"sku",title:"SKU", width:80,align:"center"},
+	{field:"sku",title:"SKU", width:80,align:"center",sortable:true},
 	{field:"goodsName",title:"商品名称", width:200,align:"center"},
 	{field:"barCode",title:"条形码", width:110,align:"center"},
 	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){

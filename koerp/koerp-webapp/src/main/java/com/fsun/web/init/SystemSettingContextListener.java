@@ -30,12 +30,12 @@ public class SystemSettingContextListener implements ServletContextListener {
 			System.out.println("Settings is loading ........................");
 			PropertiesUtil propertiesUtil= new PropertiesUtil("localConfig.properties");
 			Properties ps  = propertiesUtil.getProperties();			
-			servletContext.setAttribute("systemName", new String(ps.getProperty("systemName").getBytes("ISO-8859-1"),"UTF-8"));
-			servletContext.setAttribute("titleName", new String(ps.getProperty("titleName").getBytes("ISO-8859-1"),"UTF-8"));
-			servletContext.setAttribute("companyLtd", new String(ps.getProperty("companyLtd").getBytes("ISO-8859-1"),"UTF-8"));
-			servletContext.setAttribute("companyTel", new String(ps.getProperty("companyTel").getBytes("ISO-8859-1"),"UTF-8"));				
-			servletContext.setAttribute("companyFax", new String(ps.getProperty("companyFax").getBytes("ISO-8859-1"),"UTF-8"));				
-			servletContext.setAttribute("companyName", new String(ps.getProperty("companyName").getBytes("ISO-8859-1"),"UTF-8"));							
+			servletContext.setAttribute("systemName", new String(ps.getProperty("systemName")));
+			servletContext.setAttribute("titleName", new String(ps.getProperty("titleName")));
+			servletContext.setAttribute("companyLtd", new String(ps.getProperty("companyLtd")));			
+			servletContext.setAttribute("companyTel", new String(ps.getProperty("companyTel")));				
+			servletContext.setAttribute("companyFax", new String(ps.getProperty("companyFax")));				
+			servletContext.setAttribute("companyName", new String(ps.getProperty("companyName")));							
 			System.out.println("Settings loaded successfully !");			
 		} catch (Exception e) {
 			e.printStackTrace();
