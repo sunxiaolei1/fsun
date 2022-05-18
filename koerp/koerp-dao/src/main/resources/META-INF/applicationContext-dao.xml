@@ -39,13 +39,13 @@
         <!-- mysql 不支持 poolPreparedStatements-->
         <property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
         <property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
-        
+
         <!--开启Druid的监控统计功能,属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
                               监控统计用的filter:stat
                               日志用的filter:log4j
                               防御SQL注入的filter:wall -->
         <property name="filters" value="${druid.filters}" />
-        
+
         <!-- 并在filters属性中配置了log4j -->
         <property name="proxyFilters">
             <list>
@@ -53,17 +53,17 @@
                 <ref bean="log-filter"/>
             </list>
         </property>
-        
+
         <!--  # 合并多个DruidDataSource的监控数据 -->
         <property name="useGlobalDataSourceStat" value="true" />
-        
+
         <!-- 打开后，增强timeBetweenEvictionRunsMillis的周期性连接检查，minIdle内的空闲连接，每次检查强制验证连接有效性.
         	参考：https://github.com/alibaba/druid/wiki/KeepAlive_cn -->
         <property name="keepAlive" value="${druid.keepAlive}" />
         <!-- 关闭abanded连接时输出错误日志，这样出现连接泄露时可以通过错误日志定位忘记关闭连接的位置 -->
         <!--    <property name="logAbandoned" value="${druid.logAbandoned}" /> -->
     </bean>
-    
+
     <!-- 慢SQL记录-->
     <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
         <property name="mergeSql" value="true"/>
@@ -74,7 +74,7 @@
         <!-- <property name="resultSetLogEnabled" value="false" /> -->
         <!-- <property name="statementExecutableSqlLogEnable" value="true" /> -->
     </bean>
-   
+
     <!-- sql server数据源 -->
     <bean id="mySqlDataSource" parent="baseDataSource" >
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -84,7 +84,7 @@
         <property name="username" value="${jdbc.username}" />
         <!-- 数据库的密码 -->
         <property name="password">
-            <value><![CDATA[${jdbc.username}@${jdbc.password}@${jdbc.username}]]></value>
+            <value><![CDATA[${jdbc.password}]]></value>
         </property>
     </bean>
 
@@ -106,5 +106,5 @@
         <property name="basePackage" value="com.fsun.dao"/>
         <property name="annotationClass" value="com.fsun.dao.config.Mapper"/>
     </bean>
-    
+
 </beans>
