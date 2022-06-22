@@ -1,15 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>   
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ include file="../../../headerJS.jsp" %>
 
 <div class="easyui-layout" style="width:100%;height:100%;">
 	<div border="false" data-options="region:'center',split:true,collapsible:false" style="padding:5px">
-		<div class="easyui-layout" data-options="fit:true">	
+		<div class="easyui-layout" data-options="fit:true">
 			<!-- 查询条件 -->
 			<%@include file="./searchbar.jsp"%>
-			
+
 			<!-- table -->
 			<div id="gridDiv" data-options="region:'center'" style="border: 0px solid #D3D3D3;">
-				<table id="ordersDataGrid"> 
+				<table id="ordersDataGrid">
 				</table>
 			</div>
 		</div>
@@ -28,7 +28,7 @@ var mergeUnique = null;
 var footerFirstColumn = "order_no";
 
 var docOrderTypeFormatter = function(value, row){
-	return formatter(value, window.parent.docOrderType); 
+	return formatter(value, window.parent.docOrderType);
 };
 
 var docOrderStatusFormatter = function(value, row){
@@ -43,15 +43,15 @@ var docOrderStatusFormatter = function(value, row){
 };
 
 var docOrderModeFormatter = function(value, row){
-	return formatter(value, window.parent.docOrderMode); 
+	return formatter(value, window.parent.docOrderMode);
 };
 
 
 $(function() {
-		
+
 	$.ajax({
 		type : "GET",
-		url : "${api}/base/header/field/${queryType}",   
+		url : "${api}/base/header/field/${queryType}",
 		dataType : "json",
 		success : function(result) {
 			if(result.status){
@@ -65,8 +65,8 @@ $(function() {
 				    striped:true,
 				    border:true,
 				    fit:true,//自动大小
-				    queryParams:{				    	
-				    	"firstColumn": footerFirstColumn				    	
+				    queryParams:{
+				    	"firstColumn": footerFirstColumn
 				    },
 				    remoteSort:true,
 				    sortName:"order_no desc, sku",
@@ -85,27 +85,27 @@ $(function() {
 				    emptyMsg:"没有符合条件的记录",
 				    toolbar:'#tools',
 				    rowStyler:function(index,row){
-			        	var rowStyle = "";        	
+			        	var rowStyle = "";
 			        	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
-			        		rowStyle = 'font-weight:bold;';  
+			        		rowStyle = 'font-weight:bold;';
 			            }
 			        	return rowStyle;
 					},
-			        onLoadSuccess: function(data){						
+			        onLoadSuccess: function(data){
 			        	autoMergeCells(data.rows, mergeCells);
 			        },
 				    onDblClickRow:function(rowIndex, rowData){
-				    	toDetailView(rowData);
-				    }    
+				    	//toDetailView(rowData);
+				    }
 				});
-			}			
+			}
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			$.messager.alert("错误", errorThrown, "error");
 		}
-	});  	
+	});
 
-	
+
 });
 
 function initColumns(columnsArr){
@@ -122,18 +122,18 @@ function initColumns(columnsArr){
 							mergeUnique = column.field;
 						}
 						mergeCells.push(column.field);
-					}				
+					}
 					if(column.styler){
 						var styler = eval(column.styler);
 						if (typeof styler === 'function'){
 							column.styler = styler;
-					    } 						
+					    }
 					}
 					if(column.formatter){
 						var formatter = eval(column.formatter);
 						if (typeof formatter === 'function'){
 							column.formatter = formatter;
-					    } 						
+					    }
 					}
 				});
 			}
@@ -146,30 +146,30 @@ function initColumns(columnsArr){
  * 合并相同行数据
  */
 function autoMergeCells(rows, mergeCells){
-	//只有相同行合并唯一性字段和是否支持相同行单元格合并同时满足才可进行合并		        	
+	//只有相同行合并唯一性字段和是否支持相同行单元格合并同时满足才可进行合并
 	if(mergeCells && mergeUnique){
 		//data是默认的表格加载数据，包括rows和Total
-   		var mark=1;                                                 
+   		var mark=1;
     	//这里涉及到简单的运算，mark是计算每次需要合并的格子数
-    	for (var i=1; i <rows.length; i++) {     
+    	for (var i=1; i <rows.length; i++) {
     		//这里循环表格当前的数据
-    		if (rows[i][mergeUnique] == rows[i-1][mergeUnique]) {   
+    		if (rows[i][mergeUnique] == rows[i-1][mergeUnique]) {
     			//后一行的值与前一行的值做比较，相同就需要合并
-   				mark += 1; 
+   				mark += 1;
     			$.each(mergeCells, function(){
     				var field = this;
-    				currDataGrid.datagrid('mergeCells',{ 
+    				currDataGrid.datagrid('mergeCells',{
         				//datagrid的index，表示从第几行开始合并；紫色的内容需是最精髓的，就是记住最开始需要合并的位置
 						index: i+1-mark,
         				//合并单元格的区域，就是clomun中的filed对应的列
-        				field: field, 
+        				field: field,
         				//纵向合并的格数，如果想要横向合并，就使用colspan：mark
-        				rowspan:mark                   
+        				rowspan:mark
         			});
-    			});   			 
+    			});
     		}else{
     			//一旦前后两行的值不一样了，那么需要合并的格子数mark就需要重新计算
-   				mark=1;                                         
+   				mark=1;
     		}
     	}
 	}

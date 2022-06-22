@@ -1,15 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>  
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ include file="../headerJS.jsp" %>
 
-<div class="easyui-layout" data-options="fit:true" >	
+<div class="easyui-layout" data-options="fit:true" >
 	<div title="入库单列表" data-options="region:'center',split:true,collapsible:false,border:false" style="padding:5px">
-		<div class="easyui-layout" data-options="fit:true" >	
+		<div class="easyui-layout" data-options="fit:true" >
 			<!-- 查询条件 -->
 			<%@include file="./searchbar.jsp"%>
-			
+
 			<!-- table -->
 			<div id="gridDiv" data-options="region:'center',border:false" >
-				<table id="ordersDataGrid"> 
+				<table id="ordersDataGrid">
 				</table>
 			</div>
 		</div>
@@ -25,9 +25,9 @@
 
 var frozenColumns = [[
 	{field:'ck',checkbox:true},
-	{field:'asn_no',title:'单据编号',width:180,align:'center',sortable:true, styler:reportContentStyler},		
+	{field:'asn_no',title:'单据编号',width:180,align:'center',sortable:true, styler:reportContentStyler},
 	{field:'asn_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.docAsnType); 
+		return formatter(value, window.parent.docAsnType);
 	}},
 	{field:'asn_status',title:'单据状态',width:80,align:'center',sortable:true, formatter:function(value, row){
 		var spanHeader = "<b style='color:green;'>";
@@ -39,9 +39,9 @@ var frozenColumns = [[
 		var spanFooter = "</b>";
 		return spanHeader + formatter(value, window.parent.docAsnStatus) + spanFooter;
 	}},
-	{field:'is_refund',title:'存在退货',width:80,align:'center', 
+	{field:'is_refund',title:'存在退货',width:80,align:'center',
 		formatter:function(value, row){
-			var spanDiv = "<b style='color:green;'>--</b>";		
+			var spanDiv = "<b style='color:green;'>--</b>";
 			if(row.asn_type=="23"){
 				//采购入库存在退货
 				if(row.order_no!=null && row.order_no!=''){
@@ -56,8 +56,8 @@ var frozenColumns = [[
 					if(row.order_no!=null && row.order_no!=''){
 						spanDiv = "<b style='color:red;'>是</b>";
 					}
-				}				
-			}			
+				}
+			}
 			return spanDiv;
 		}
      }
@@ -65,39 +65,39 @@ var frozenColumns = [[
 
 var columns = [[
 	{field:'to_shop_id',title:'入库店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
-		return row.to_shop_name; 
+		return row.to_shop_name;
 	}},
 	{field:'receiving_time',title:'入库时间',width:100,align:'center',sortable:true, formatter:function(value, row){
 		if(typeof value != "undefined"){
 			return formatterDate(dateParser(value));
-		}		
-	}},	
+		}
+	}},
 	{field:'from_shop_id',title:'出库店仓',width:140,align:'center',sortable:true, formatter:function(value, row){
-		return row.from_shop_name; 
-	}},	 
+		return row.from_shop_name;
+	}},
 	{field:'delivery_time',title:'出库时间',width:100,align:'center',sortable:true, formatter:function(value, row){
 		if(typeof value != "undefined"){
 			return formatterDate(dateParser(value));
-		}		
+		}
 	}},
-	{field:'expected_time',title:'预货时间',width:130,align:'center',sortable:true},	
-	{field:'supplier_name',title:'供应商名称',width:100,align:'center',sortable:true},	
+	{field:'expected_time',title:'预货时间',width:130,align:'center',sortable:true},
+	{field:'supplier_name',title:'供应商名称',width:100,align:'center',sortable:true},
 	//{field:'print_count',title:'是否打印',width:80,align:'center',sortable:true, formatter:function(value, row){
-	//	return (row.print_count>0?"<span style='color:red;'>是</span>":"否"); 
-	//}}, 
-	{field:'created_name',title:'制单人',width:80,align:'center',sortable:true},
+	//	return (row.print_count>0?"<span style='color:red;'>是</span>":"否");
+	//}},
 	{field:'created_time',title:'单据时间',width:130,align:'center',sortable:true},
-	{field:'memo',title:'备注',width:200,align:'center',sortable:true},	
+	{field:'created_name',title:'制单人',width:80,align:'center',sortable:true},
+	{field:'memo',title:'备注',width:200,align:'center',sortable:true},
 	{field:'ext_order_no',title:'外部单号',width:140,align:'center',sortable:true},
 	{field:'po_no',title:'申请单号',width:150,align:'center',sortable:true},
 	{field:'order_no',title:'出库单号',width:150,align:'center',sortable:true}
-		
+
 ]];
 
 var currDataGrid;
 
 $(function() {
-	
+
 	currDataGrid = $("#ordersDataGrid");
 	currDataGrid.datagrid({
 		width:500,
@@ -133,7 +133,7 @@ $(function() {
 			$(this).datagrid("selectRow",rowIndex);
 			toDetailView();
 	    }
-	    
+
 	});
 });
 

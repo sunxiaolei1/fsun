@@ -4,62 +4,62 @@
 <div class="easyui-layout" data-options="fit:true" >
 	<!-- 查询条件 -->
 	<%@include file="../../busCommon/commonOrderViewToolbar.jsp"%>
-	
+
 	<div data-options="region:'center',split:true, border:false" >
 		<div class="easyui-layout" data-options="fit:true" >
 			<div data-options="region:'north',split:true, border:false" style="height:200px;overflow:hidden;">
 				<div class="fsun-wrap">
 					<form id="orderfm">
-						<span class="title" style="top: 1px;">调拨出库信息(单号:<span>${orderNo}</span>)</span>		
-						<input id="iId" name="iId" hidden="true" />	
+						<span class="title" style="top: 1px;">调拨出库信息(单号:<span>${orderNo}</span>)</span>
+						<input id="iId" name="iId" hidden="true" />
 						<input id="poNo" name="poNo" hidden="true" />
-						<input id="fromShopId" name="fromShopId" hidden="true" />	
+						<input id="fromShopId" name="fromShopId" hidden="true" />
 						<input id="toShopId" name="toShopId" hidden="true" />
 						<input id="orderPrice" name="orderPrice" hidden="true" />
-						<input id="orderNo" name="orderNo" hidden="true" />	
+						<input id="orderNo" name="orderNo" hidden="true" />
 						<table class="nb-formTable">
-					        <tr>					            
+					        <tr>
 								<th>单据类型</th>
 								<td>
-									<input id="orderType" name="orderType" class="easyui-combobox" readOnly />								
-								</td>	
+									<input id="orderType" name="orderType" class="easyui-combobox" readOnly />
+								</td>
 								<th>审核人</th>
 								<td>
-									<input id="iName" name="iName" class="easyui-textbox" readOnly />								
+									<input id="iName" name="iName" class="easyui-textbox" readOnly />
 								</td>
 								<th>经办人</th>
 								<td>
-									<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly />													
-								</td>													
+									<input id="carrierName" name="carrierName" class="easyui-textbox" readOnly />
+								</td>
 					        </tr>
 					        <tr>
 					        	<th>出库店仓</th>
 								<td>
-									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly />								
+									<input id="fromShopName" name="fromShopName" class="easyui-textbox" readOnly />
 								</td>
 								<th width="16%">发货时间</th>
 								<td>
-									<input id="deliveryTime" name="deliveryTime" class="easyui-datebox" readOnly />							
-								</td>	
+									<input id="deliveryTime" name="deliveryTime" class="easyui-datebox" readOnly />
+								</td>
 								<th width="16%">预收时间</th>
 								<td>
-									<input id="expectedTime" name="expectedTime" class="easyui-datetimebox" readOnly />								
+									<input id="expectedTime" name="expectedTime" class="easyui-datetimebox" readOnly />
 								</td>
-							</tr>	
+							</tr>
 					        <tr>
 					        	<th>收货店仓</th>
 								<td>
-									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly />							
+									<input id="toShopName" name="toShopName" class="easyui-textbox" readOnly />
 								</td>
 								<th>联系方式</th>
 								<td>
-									<input id="mobile" name="mobile" class="easyui-textbox" readOnly />								
+									<input id="mobile" name="mobile" class="easyui-textbox" readOnly />
 								</td>
 					        	<th>联系人</th>
 								<td>
-									<input id="contacts" name="contacts" class="easyui-textbox" readOnly />							
-								</td>	        									        	
-					        </tr>				               			        	               		
+									<input id="contacts" name="contacts" class="easyui-textbox" readOnly />
+								</td>
+					        </tr>
 					        <tr>
 					        	<th>收货地址</th>
 								<td>
@@ -68,18 +68,18 @@
 								</td>
 					        	<th>备注</th>
 								<td colspan="3">
-									<input id="memo" name="memo"  data-options="multiline:true" 
+									<input id="memo" name="memo"  data-options="multiline:true"
 										class="easyui-textbox" style="width:55%;height:50px;"/>
 									<input id="userDefine2" name="userDefine2" hidden=true />
 									<a id="refundLink" href="#" class="easyui-linkbutton" iconCls="icon-attach"  style="margin-left:10px;"
 										plain="false" disabled onclick="openRefundView()">调退明细</a>
-								</td>	        	
+								</td>
 					        </tr>
 						</table>
-					</form>			
-				</div>	
+					</form>
+				</div>
 			</div>
-			
+
 			<div data-options="region:'center',split:true, border:false" >
 				<div id="detailskutoolbar" style="display:none;">
 					<%@include file="./detailskutoolbar.jsp"%>
@@ -88,29 +88,29 @@
 			</div>
 		</div>
 	</div>
-</div>				
+</div>
 
 <!-- datagrid可编辑单元格 -->
 <%@include file="../../busCommon/commonEdatagridCellediting.jsp"%>
 
 <!-- datagrid操作公共方法 -->
-<%@include file="./baseSoView.jsp"%> 
+<%@include file="./baseSoView.jsp"%>
 
 <script type="text/javascript">
 
-var currDetailData = []; 
+var currDetailData = [];
 var currOrderDetailDataGrid = $("#orderDetailDataGrid");
-var $orderfm = $("#orderfm");   
+var $orderfm = $("#orderfm");
 var soColumns = [[
 	//{field:'ck',checkbox:true},
 	{field:"sku",title:"SKU", width:80,align:"center"},
 	{field:"goodsName",title:"商品名称", width:200,align:"center"},
 	{field:"barCode",title:"条形码", width:110,align:"center"},
 	{field:'brandCode',title:'品牌',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.brandCode); 
+		return formatter(value, window.parent.brandCode);
 	}},
 	{field:"categoryCode",title:"商品分类", width:100,align:"center", formatter:function(value, row){
-		return formatter(value, window.parent.categoryCode); 
+		return formatter(value, window.parent.categoryCode);
 	}},
 	{field:'property',title:'规格',width:100,align:'center',sortable:true},
 	//{field:"costPrice",title:"成本价", width:80,align:"center",formatter:numBaseFormat},
@@ -119,7 +119,7 @@ var soColumns = [[
 		styler: function(value, rowData, rowIndex){
 	    	return 'font-weight:bold;color:green;';
 	    },
-	    formatter:intNumBaseFormat
+	    formatter:numBaseFormat
 	},
 	{field:"shippedQty",title:"发货数量", width:80,align:"center",
 		styler: function(value, rowData, rowIndex){
@@ -129,12 +129,12 @@ var soColumns = [[
 			}
 	    	return style;
 	    },
-	    formatter:intNumBaseFormat,
+	    formatter:numBaseFormat,
 		editor:{
 			type:'numberbox',
-			options:{					
+			options:{
 				min:0,
-				precision:0,
+				precision:2,
 				required: true
 			}
 		}
@@ -147,28 +147,28 @@ var soColumns = [[
 			}
 	    	return style;
 	    },
-	    formatter:intNumBaseFormat
+	    formatter:numBaseFormat
 	},
 	{field:"unit",title:"单位",width:70,align:"center", formatter:function(value, row){
-		return formatter(value, window.parent.unitCode); 
+		return formatter(value, window.parent.unitCode);
 	}}
 ]];
 
 
-$(function () { 
-	
+$(function () {
+
 	$("#addGoodsBtn").css("visibility", "hidden");
-	
-	$('#orderType', $orderfm).combobox({  
+
+	$('#orderType', $orderfm).combobox({
 		prompt: '请选择...',
    	 	valueField: 'codeCode',
    	  	textField: 'codeName',
    	  	data: window.parent.docOrderTypeData
-   	});	
-	
+   	});
+
 	//去除默认的请选择项
 	editInitComboxParams($orderfm, "");
-	
+
 	$.ajax({
 		type : "GET",
 		url : "${api}/doc/order/getInitData",
@@ -176,32 +176,32 @@ $(function () {
 			"orderNo":"${orderNo}",
 			"orderType": "${orderType}"
 		},
-		contentType:"application/json;charset=utf-8",	   
+		contentType:"application/json;charset=utf-8",
 		dataType : "json",
-		success : function(result) {		
+		success : function(result) {
 			var docOrderDto = result.entry;
-			
-			/***************************              基本信息初始化                        ************************/			
+
+			/***************************              基本信息初始化                        ************************/
 			var header = docOrderDto.header;
-			if(header!=null){				
-				$orderfm.form("load", header);	
+			if(header!=null){
+				$orderfm.form("load", header);
 				var userDefine2 = header.userDefine2;
 				if(userDefine2!=null && userDefine2!=''){
 					$("#refundLink").linkbutton("enable");
 				}
 			}
-			var details = docOrderDto.details;	
+			var details = docOrderDto.details;
 			if(details!=null && details.length>0){
 				currDetailData = details;
 				skuListReLoad();
-			}			
+			}
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			$.messager.alert("错误", errorThrown, "error");
 		}
-	});  	
-	
-     
+	});
+
+
 });
 
 //打开退换货明细
@@ -211,7 +211,7 @@ function openRefundView(){
 		$.messager.alert("提示", "暂无明细!", "info");
 		return;
 	}
-	var url = "${api}/doc/asn/allotRefund/toBaseDetailView/"+ refundNo;	
+	var url = "${api}/doc/asn/allotRefund/toBaseDetailView/"+ refundNo;
 	commonDialog("ordersDialog", "调退明细", "95%", "420px", url, "icon-book_open");
 }
 

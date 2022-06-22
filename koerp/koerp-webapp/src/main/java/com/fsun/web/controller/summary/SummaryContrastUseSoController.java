@@ -35,10 +35,10 @@ import com.fsun.web.controller.base.BaseController;
 @Controller
 @RequestMapping("/summary/contrast/useSo")
 public class SummaryContrastUseSoController extends BaseController {
-	
+
 	@Autowired
 	private ContrastUseSoApi contrastUseSoApi;
-	
+
 	/**
 	 * @return
 	 */
@@ -53,18 +53,18 @@ public class SummaryContrastUseSoController extends BaseController {
 	 * 跳转至订单查看界面
 	 */
 	@RequestMapping("/toDetailView")
-	public ModelAndView toDetailView(@RequestParam("orderNo") String orderNo) {				
+	public ModelAndView toDetailView(@RequestParam("orderNo") String orderNo) {
 		ModelAndView modelAndView = new ModelAndView("/summary/contrast/useSo/toDetailView");
-		modelAndView.addObject("orderNo", orderNo);		
+		modelAndView.addObject("orderNo", orderNo);
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value="/findPage", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public HttpResult findPage(ContrastUseSoCondition condition) {
-		try {			
+		try {
 			PageModel pageModel = contrastUseSoApi.findPage(condition);
-			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn()) 
+			if(condition.getFirstColumn()!=null && !"".equals(condition.getFirstColumn())
 					&& pageModel.getTotal()>0){
 				HashMap<String, Object> footer = contrastUseSoApi.findFooter(condition);
 				return success(pageModel, new Object[]{footer});
@@ -86,13 +86,13 @@ public class SummaryContrastUseSoController extends BaseController {
 	public void exportOrders(ContrastUseSoCondition condition,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
-			//对得到的参数进行解码 				
+			//对得到的参数进行解码
 			if(condition.getKeywords()!=null &&!"".equals(condition.getKeywords())){
 				condition.setKeywords(URLDecoder.decode(condition.getKeywords(),"utf-8"));
 			}
 			condition.setQueryType(ReportQueryTypeEnum.USE_SO.getCode());
 			Map<String, Object> map = contrastUseSoApi.exportMap(condition);
-			List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");			
+			List<HashMap<String, Object>> details = (List<HashMap<String, Object>>) map.get("details");
 			LinkedHashMap<String, String> fieldsMap = (LinkedHashMap<String, String>) map.get("fields");
 			List<ColumnDto> columnDtos = (List<ColumnDto>) map.get("columns");
 			ExcelUtil.listToExcel(details, fieldsMap, columnDtos, "领用出库汇总-商品及订单", response);
@@ -100,5 +100,5 @@ public class SummaryContrastUseSoController extends BaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

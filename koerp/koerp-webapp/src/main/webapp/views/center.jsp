@@ -8,7 +8,7 @@
 <style type="text/css">
 
 .overview{
-	text-align:center; 
+	text-align:center;
 	line-height:19px;
 	height:45px;
 	padding:2px 2px;
@@ -21,7 +21,7 @@
 	font-style:italic ;
 	width:80%;
 	text-align:right;
-	margin-bottom:2px; 
+	margin-bottom:2px;
 	font-size:15px;
 	background-color:transparent;
 }
@@ -66,7 +66,7 @@
     background-color: #FFFFFF transparent;
     cursor: pointer;
     font-weight: bold;
-    
+
 }
 
 .tbl-body tr:nth-child(even) td,.tbl-body1 tr:nth-child(even) td {
@@ -87,15 +87,15 @@
     	<div class="easyui-layout" title="首页" data-options="fit:true">
     		<div region="north" class="overview" data-options="striped: true,collapsible:false,border:true">
 				<div style="margin-top:10px;text-align:center;">
-					<b style="display:inline;font-size:22px;font-family:serif;margin:10px 60px;">金瓯酒业销售业绩及库存预警总览</b>
+					<b style="display:inline;font-size:22px;font-family:serif;margin:10px 60px;">销售业绩及库存预警总览</b>
 					<p style="display:inline;">态度决定一切   细节决定成败</p>
-				</div>				
+				</div>
 			</div>
 			<div region="center" data-options="striped: true,collapsible:false,border:false,fit:true">
-				<div class="easyui-layout" fit="true">			
-					<div region="east" data-options="striped: true,collapsible:false" 
+				<div class="easyui-layout" fit="true">
+					<div region="east" data-options="striped: true,collapsible:false"
 							style="width:36%;height:100%;overflow-y:hidden;">
-						<div class="tablebox">      
+						<div class="tablebox">
 					        <div class="tbl-header">
 					            <table border="0" cellspacing="0" cellpadding="0">
 					                <thead>
@@ -108,7 +108,7 @@
 					                </thead>
 					                <tbody style="opacity:0;"></tbody>
 					            </table>
-					        </div>					        
+					        </div>
 					        <div class="tbl-body">
 					            <table border="0" cellspacing="0" cellpadding="0">
 					                <thead>
@@ -122,22 +122,22 @@
 					                <tbody></tbody>
 					            </table>
 					        </div>
-					    </div>						
-					</div>	
-					
-					<div region="center" data-options="striped: true,collapsible:false,border:false" 
+					    </div>
+					</div>
+
+					<div region="center" data-options="striped: true,collapsible:false,border:false"
 						style="width:64%;height:100%;overflow-y:hidden;">
-						<div class="easyui-layout" data-options="fit: true">	
+						<div class="easyui-layout" data-options="fit: true">
 							<div region="center" data-options="striped: true,collapsible:false,border:false">
 								<div id="saleContainer" style="min-width:400px;width:100%;height:45%"></div>
 								<div style="width:100%;height:55%">
 									<div id="skusContainer" style="height:88%" ></div>
 								</div>
 							</div>
-														
+
 						</div>
-					</div>				
-				</div>	
+					</div>
+				</div>
 			</div>
         </div>
     </div>
@@ -194,7 +194,7 @@ $(document).on('click', '.pf-nav-prev,.pf-nav-next', function(){
 
 
 $(function(){
-	
+
 	$('.pf-user').click(function (e) {
 		var topY = $(this).height() - 5;
 		var leftX = e.pageX - 65;
@@ -203,37 +203,37 @@ $(function(){
 	        top: topY
 	    });
 	});
-	
+
 	reflushData();
 });
 
 /**
  * 刷新数据
  */
-function reflushData(){		
+function reflushData(){
 	$.ajax({
         type: "GET",
         dataType: "JSON",
         async:false,
         url: "${api}/overview/getInitData",
         data: {},
-        success: function(result) {   
+        success: function(result) {
         	if(result.status){
         		var initData = result.entry;
         		var invSkus = initData.invSkus;
-            	if(invSkus!=null && invSkus.length>0){ 
-            		initInvSku(invSkus);		
+            	if(invSkus!=null && invSkus.length>0){
+            		initInvSku(invSkus);
             	}else{
             		$('.tbl-body tbody').empty();
             		$('.tbl-header tbody').empty();
-            	} 
+            	}
             	//加载销售业绩页面图
             	var saleSeriesData = initData.saleSeriesData;
             	var seriesYear = initData.seriesYear;
             	if(maxSeries <= initData.maxSeries){
             		maxSeries = initData.maxSeries;
             	}
-            	if(saleSeriesData!=null && saleSeriesData.length>0){  
+            	if(saleSeriesData!=null && saleSeriesData.length>0){
             		if(firstSaleChart){
             			initSaleChart(seriesYear, saleSeriesData);
             			firstSaleChart = false;
@@ -243,7 +243,7 @@ function reflushData(){
             	}
             	//加载商品销量饼图
             	var skusSeriesData = initData.skusSeriesData;
-            	if(skusSeriesData!=null && skusSeriesData.length>0){  
+            	if(skusSeriesData!=null && skusSeriesData.length>0){
             		if(firstSkusChart){
             			initSkusChart(seriesYear, skusSeriesData);
             			firstSkusChart = false;
@@ -251,7 +251,7 @@ function reflushData(){
                 		updateSkusChart(seriesYear, skusSeriesData);
                 	}
             	}
-        	}      	
+        	}
         }
     });
 	window.setTimeout(reflushData, 15000);   //表示延时5秒执行page_list()函数
@@ -299,7 +299,7 @@ function initInvSku(Items){
 	        	MyMarhq = setInterval(Marqueehq, speedhq);
 	    	}
 	    );
-	}	
+	}
 }
 
 var maxSeries = 30;
@@ -309,7 +309,7 @@ var saleChart = null;
 /**
  * 初始化销售业绩页面图
  */
-function initSaleChart(seriesYear, seriesData){	
+function initSaleChart(seriesYear, seriesData){
 	saleChart = Highcharts.chart('saleContainer', {
 		chart: {
 			type: 'spline'
@@ -317,8 +317,8 @@ function initSaleChart(seriesYear, seriesData){
 		exporting:{
 		    enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
 		},
-		credits: {  
-            enabled: false  
+		credits: {
+            enabled: false
         },
 		title: {
 			text: "<span style='color:red;font-size:12px;font-weight:bold;'>"+ seriesYear +'年各门店销售业绩走势</span>'
@@ -341,15 +341,15 @@ function initSaleChart(seriesYear, seriesData){
 			tickPositioner: function () {
 				return [0,10,20, maxSeries];
 			},
-			plotBands: [{ 
-				from: 0.0,            					
+			plotBands: [{
+				from: 0.0,
 				to: 10.0,
 				color: 'rgba(255, 140, 0, 0.5)',
 				label: {
 					text: '惨淡',
 					style: {color: '#606060'}
 				}
-			}, { 
+			}, {
 				from: 10.0,
 				to: 20.0,
 				color: 'rgba(68, 170, 213, 0.1)',
@@ -357,7 +357,7 @@ function initSaleChart(seriesYear, seriesData){
 					text: '较好',
 					style: {color: '#606060'}
 				}
-			}, { 
+			}, {
 				from: 20.0,
 				to: 200.0,
 				color: 'rgba(124, 252, 0, 0.5)',
@@ -395,7 +395,7 @@ function initSaleChart(seriesYear, seriesData){
 /**
  * 更新销售业绩页面图
  */
-function updateSaleChart(seriesYear, seriesData){		
+function updateSaleChart(seriesYear, seriesData){
 	var diff = saleChart.series.length - seriesData.length;
     if(diff > 0){
     	for (var i = saleChart.series.length; i > diff; i--){
@@ -422,20 +422,20 @@ var skusChart = null;
 /**
  * 初始化商品销量饼图
  */
-function initSkusChart(seriesYear, seriesData){	
+function initSkusChart(seriesYear, seriesData){
 	skusChart = Highcharts.chart('skusContainer', {
    		exporting:{
    		    enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
    		},
-   		credits: {  
-               enabled: false  
+   		credits: {
+               enabled: false
            },
    		chart: {
    			plotBackgroundColor: null,
    			plotBorderWidth: null,
    			plotShadow: false,
    			type: 'pie'
-   		},	
+   		},
    		title: {
    			text: "<span style='color:red;font-size:12px;font-weight:bold;'>"+ seriesYear +'年商品销量占比</span>'
    		},
@@ -466,7 +466,7 @@ function initSkusChart(seriesYear, seriesData){
 /**
  * 更新商品销量饼图
  */
-function updateSkusChart(seriesYear, seriesData){		
+function updateSkusChart(seriesYear, seriesData){
 	var diff = skusChart.series.length - seriesData.length;
     if(diff > 0){
     	for (var i = skusChart.series.length; i > diff; i--){
@@ -485,7 +485,7 @@ function updateSkusChart(seriesYear, seriesData){
    			name: '占比',
    			colorByPoint: true,
    			data: seriesData
-   		}]   	
+   		}]
 	});
 }
 
