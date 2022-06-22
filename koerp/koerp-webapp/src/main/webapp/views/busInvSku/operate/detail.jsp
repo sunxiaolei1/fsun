@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>  
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ include file="../../headerJS.jsp" %>
 
 <div class="easyui-layout" data-options="fit:true" >
@@ -6,7 +6,7 @@
 		<div class="easyui-layout" data-options="fit:true" >
 			<!-- 查询条件 -->
 			<%@include file="./searchbar.jsp"%>
-			
+
 			<!-- table -->
 			<div id="gridDiv" data-options="region:'center', border:false"  >
 				<table id="orderDetailDataGrid"></table>
@@ -18,27 +18,27 @@
 <script type="text/javascript">
 
 var frozenColumns = [[
-	{field:'sku',title:'SKU',width:80,align:'center'},	
+	{field:'sku',title:'SKU',width:80,align:'center'},
 	{field:'goods_name',title:'商品名称',width:140,align:'center'},
 	{field:'shop_id',title:'所属店仓',width:140,align:'center', formatter:function(value, row){
-		return row.shop_name; 
-	}}	
+		return row.shop_name;
+	}}
 ]];
 
 var columns = [[
 	{field:'qty',title:'可用数量',width:70,align:'center',
-		formatter:intNumBaseFormat, styler:reportNumberStyler},
+		formatter:numBaseFormat, styler:reportNumberStyler},
 	{field:'lock_qty',title:'冻结数量',width:70,align:'center',
-		formatter:intNumBaseFormat, styler:reportNumberStyler},	
+		formatter:numBaseFormat, styler:reportNumberStyler},
 	{field:'damaged_qty',title:'破损数量',width:70,align:'center',
-		formatter:intNumBaseFormat, styler:reportNumberStyler},
-	{field:'trade_order_no',title:'单据编号',width:220,align:'center',sortable:true},		
+		formatter:numBaseFormat, styler:reportNumberStyler},
+	{field:'trade_order_no',title:'单据编号',width:220,align:'center',sortable:true},
 	{field:'trade_type',title:'单据类型',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.docTradeType); 
+		return formatter(value, window.parent.docTradeType);
 	}},
 	{field:'trade_status',title:'交易状态',width:80,align:'center',sortable:true, formatter:function(value, row){
-		return formatter(value, window.parent.docTradeStatus); 
-	}},	
+		return formatter(value, window.parent.docTradeStatus);
+	}},
 	//{field:'trade_line_no',title:'行号',width:50,align:'center'},
 	{field:'trade_time',title:'交易时间',width:130,align:'center',sortable:true},
 	//{field:'lot_num',title:'批次号',width:70,align:'center',sortable:true},
@@ -49,7 +49,7 @@ var currDataGrid;
 var footerFirstColumn = "sku";
 
 $(function() {
-	
+
 	currDataGrid = $("#orderDetailDataGrid");
 	currDataGrid.datagrid({
 		view:footerStyleView,
@@ -85,9 +85,9 @@ $(function() {
 	    //toolbar:'#tools',
 	    singleSelect: true,
 	    rowStyler:function(index,row){
-        	var rowStyle = "";        	
+        	var rowStyle = "";
         	if (row[footerFirstColumn]=="合计:"){//这里是判断哪些行
-        		rowStyle = 'font-weight:bold;';  
+        		rowStyle = 'font-weight:bold;';
             }
         	return rowStyle;
 		}

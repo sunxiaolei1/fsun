@@ -22,61 +22,61 @@
 
 <!-- BasSku dialog -->
 <div id="chooseSkuDialog" class="alert">
-	<div class="easyui-layout" style="height:100%;">		
+	<div class="easyui-layout" style="height:100%;">
 		<div data-options="region:'west',split:true,border:false"  style="width:20%;">
 			<%@include file="./commonCategoryTreeSearch.jsp"%>
-		</div>			
-		<div data-options="region:'center',border:false">			
-			<table id="skusDatagrid"> 
+		</div>
+		<div data-options="region:'center',border:false">
+			<table id="skusDatagrid">
 			</table>
-		</div>		
+		</div>
 	</div>
 </div>
 <!-- BasSku dialog -->
 
-<div id="skuToolbar" style="dispaly:none;" >	
-	<span style="float:right;">	
+<div id="skuToolbar" style="dispaly:none;" >
+	<span style="float:right;">
 		<input id="vaguefieldText" class="easyui-searchbox" style="width:250px"
 		data-options="searcher:querySku,prompt:'输入商品名称、SKU筛选...'"  />
-	</span>		
+	</span>
 	<div style="height:24px;">
 		<span class="skutitle" >
 			商品列表[<span id="skutitle"></span>]
 		</span>
-	</div>		
+	</div>
 </div>
 
-<script type="text/javascript">	
+<script type="text/javascript">
 
-var currCheckedSkus = [];	
+var currCheckedSkus = [];
 var currDatagrid;
 var currCustomerCode;
 var currShopId;
 
 $(function() {
-	
+
 	//回显使用数据
-	var obj = $('#chooseSkuDialog').dialog('options');		
-	var queryParams = obj["view"];		
+	var obj = $('#chooseSkuDialog').dialog('options');
+	var queryParams = obj["view"];
 	if(typeof(queryParams) != "undefined") {
 		currCheckedSkus = queryParams.checkedSkus;
 		currCustomerCode = queryParams.customerCode;
-		currShopId = queryParams.currShopId;			
+		currShopId = queryParams.currShopId;
 	}
-	
+
 	currDatagrid = $("#skusDatagrid");
-	
+
 	//加载SKU
-	currDatagrid.datagrid({			
+	currDatagrid.datagrid({
 		striped: true,
-		fit: true, //自动大小		
+		fit: true, //自动大小
 		queryParams : {
 			"shopId": currShopId,
 			"customerCode": currCustomerCode
 	    },
 		pagination: true, //分页控件
-		rownumbers: true, //行号			
-		pageNumber: currPageNumber,		
+		rownumbers: true, //行号
+		pageNumber: currPageNumber,
 		pageSize: currPageSize,
 		pageList: GLOBAL_PAGE_SIZE_LIST,
 		remoteSort:true,
@@ -87,11 +87,11 @@ $(function() {
 		selectOnCheck: true,
 	    checkOnSelect: true,
 		columns: [[
-			{field: 'skuId', checkbox: true},						
+			{field: 'skuId', checkbox: true},
 			{field: "sku", title: "SKU", width: 70, align: "center"},
 			{field: "goodsName", title: "名称", width: 160, align: "center"},
 			{field:"categoryCode",title:"商品分类", width:90,align:"center", formatter:function(value, row){
-				return formatter(value, window.parent.categoryCode); 
+				return formatter(value, window.parent.categoryCode);
 			}},
 			//{field: "property", title: "规格", width: 120, align: "center"},
 			{field: "stockQty", title: "库存", width: 60, align: "center",
@@ -104,41 +104,41 @@ $(function() {
 			},
 			{field: "originSalePrice", title: "原价", width: 70, align: "center",formatter:numBaseFormat},
 			{field: "salePrice", title: "单价", width: 70, align: "center",formatter:numBaseFormat},
-			{field: "qty", title: "数量", width: 60, align: "center"},
+			{field: "qty", title: "数量", width: 60, align: "center",formatter:numBaseFormat},
 			{field:"unit",title:"单位", width:50,align:"center", formatter:function(value, row){
-				return formatter(value, window.parent.unitCode); 
+				return formatter(value, window.parent.unitCode);
 			}},
 			{field: "operatestatus", title: "状态", width: 60, align: "center",
-				formatter:function(value, row){	
+				formatter:function(value, row){
 					if(row.selected==null){
-						return '<span style="font-weight:bold;color:red;">不可选</span>';	
+						return '<span style="font-weight:bold;color:red;">不可选</span>';
 					}else {
 						if(row.selected){
 							return '<span style="font-weight:bold;color:green;">已选</span>';
 						}
 						return '<span style="font-weight:bold;color:#FF6600;">待选</span>';
-					}								
-				}	
+					}
+				}
 			},
 			{field: "selected", title: "操作", width: 80, align: "center",
-				formatter: function(value, row, index){	
+				formatter: function(value, row, index){
 					if(value!=null){
-						if(value){						
+						if(value){
 							return commonAssemBottonHtml('delSkuOne', index, '删除', 'icon-script_delete');
-						}else{						
-							return commonAssemBottonHtml('addSkuOne', index, '添加', 'icon-script_add');						
+						}else{
+							return commonAssemBottonHtml('addSkuOne', index, '添加', 'icon-script_add');
 						}
 					}
-													
+
 				}
 			}
 		]],
 		onBeforeLoad:function(param){
-			
+
 			var columnOption = $(this).datagrid("getColumnOption", "qty");
     		columnOption.editor = {
     			type:'numberbox',
-    			options:{					
+    			options:{
     				min:1,
     				precision:0,
     				required: true
@@ -151,7 +151,7 @@ $(function() {
 	    		var columnOption = $(this).datagrid("getColumnOption", "salePrice");
 	    		columnOption.editor = {
 	    			type:'numberbox',
-	    			options:{					
+	    			options:{
 	    				min:0,
 	    				precision:2,
 	    				required: true
@@ -159,116 +159,116 @@ $(function() {
 	    		};
 		    	columnOption.styler = function(value, rowData, rowIndex){
 	    	    	return 'font-weight:bold;color:green;';
-	    	    };	    
-	    	}  	
-	    },	
+	    	    };
+	    	}
+	    },
 	    onAfterEdit: function(rowIndex, rowData, changes){
-	    	$.each(currCheckedSkus, function(){	    		
+	    	$.each(currCheckedSkus, function(){
 	    		if(rowData.sku == this.sku){
-	    			this.qty = Number(rowData.qty);	    			
+	    			this.qty = Number(rowData.qty);
 	    			this.salePrice = Number(rowData.salePrice);
 	    			if(typeof this.giftCount!="undefined" && typeof this.giftPrice!="undefined"){
-	    				var receptQty = CalcAmount.subtract(this.qty, this.giftCount);	    			
+	    				var receptQty = CalcAmount.subtract(this.qty, this.giftCount);
 		    			//非赠品商品优惠
 				    	var couponPrice = CalcAmount.subtract(this.originSalePrice, this.salePrice);
-				    	var couponAmount = CalcAmount.multiply(receptQty, couponPrice);			    	
+				    	var couponAmount = CalcAmount.multiply(receptQty, couponPrice);
 				    	//计算实付金额和总商品优惠
 				    	this.couponPrice = CalcAmount.add(this.giftPrice, couponAmount, 2);
 				    	this.totalPrice = CalcAmount.multiply(receptQty, this.salePrice, 2);
-	    			}else{		    			
+	    			}else{
 		    			//非赠品商品单价
 				    	var couponPrice = CalcAmount.subtract(this.originSalePrice, this.salePrice);
 				    	//计算实付金额和总商品优惠
 		    			this.couponPrice =  CalcAmount.multiply(this.qty, couponPrice, 2);
 		    			this.totalPrice = CalcAmount.multiply(this.qty, this.salePrice, 2);
-	    			}	    			
+	    			}
 	    			//currDatagrid.datagrid("refreshRow", rowIndex);
 	    			//刷新父页面商品列表
 	    			skuListReLoad(true);
 	    			return;
 	    		}
-	    	});	    	    	
+	    	});
 	    },
 	    onSelectAll:function(rows){
 	    	if (!$(this).datagrid("isValid")){
-				$.messager.alert("错误", "编辑行的数据不正确!", "error");  
+				$.messager.alert("错误", "编辑行的数据不正确!", "error");
 			}else{
 				var toRender = false;
 				$.each(rows, function(){
 					var rowData = this;
 					if(rowData.qty>=0){
 						if('${hasEditPricePower}'=='0' && rowData.salePrice==0){
-							
+
 						}else{
 							var oldRow = getSeletedSku(rowData.sku, currCheckedSkus);
 							if(oldRow == null){
 								var newSku = initAddSku(rowData);
 								currCheckedSkus.push(newSku);
-								rowData.selected = true;			
+								rowData.selected = true;
 								toRender = true;
 							}
-						}						
-					}	
+						}
+					}
 				});
 				//判别是否需要重新渲染
-				if(toRender){										
+				if(toRender){
 					$(this).datagrid("reload");
 					//刷新父页面商品列表
-					skuListReLoad(true);															
-				}			
-			}	    	    	
+					skuListReLoad(true);
+				}
+			}
 	    },
 		showFooter: true,
-		loadFilter: function(data){	
+		loadFilter: function(data){
 			if(typeof data != "undefined"){
-				$.each(data.rows, function(){				
+				$.each(data.rows, function(){
 					this.selected = false;
-					var seletedSku = getSeletedSku(this.sku, currCheckedSkus);				
-					if(seletedSku!=null){						
-						this.qty = getSkuQty(seletedSku);	
-						this.salePrice = getSkuSalePrice(seletedSku);	
-						this.selected = true;				
-					}	
+					var seletedSku = getSeletedSku(this.sku, currCheckedSkus);
+					if(seletedSku!=null){
+						this.qty = getSkuQty(seletedSku);
+						this.salePrice = getSkuSalePrice(seletedSku);
+						this.selected = true;
+					}
 				});
-			}			
+			}
 			return data;
 		},
-		rowStyler:function(index, row){	
+		rowStyler:function(index, row){
 			var rowStyle = "";
        		$.each(currCheckedSkus,function(){
        			if(existSku(this, row.sku)){
        				rowStyle = "background-color:#FF9933;";
        				return;
        			}
-           	});        	   	
+           	});
         	return rowStyle;
 		},
 		toolbar: "#skuToolbar",
 		loadMsg: "数据加载中请稍后……"
 	});
-		
+
 	//初始化门店树
-	initCategoryTree({"enabled": 1}, 
-		function(node){			   
-	    	var queryParams = currDatagrid.datagrid("options").queryParams;	
+	initCategoryTree({"enabled": 1},
+		function(node){
+	    	var queryParams = currDatagrid.datagrid("options").queryParams;
 	    	if("0"==node.id){
 	    		queryParams.categoryCode = null;
 	    	}else{
 	    		queryParams.categoryCode = node.id;
-	    	}			
+	    	}
 			$("#skutitle").html(node.text);
 			currDatagrid.datagrid("clearSelections");
-			currDatagrid.datagrid('options').url = "${api}/bus/invSku/findListForPage";  
-			currDatagrid.datagrid("reload");	   			
+			currDatagrid.datagrid('options').url = "${api}/bus/invSku/findListForPage";
+			currDatagrid.datagrid("reload");
 		}
 	);
 });
 
 //查询待选商品
-function querySku() {		
-	var vaguefield = trim($("#vaguefieldText").textbox("getValue"));	
-	var queryParams = currDatagrid.datagrid("options").queryParams;		
-	queryParams.q = vaguefield;		
+function querySku() {
+	var vaguefield = trim($("#vaguefieldText").textbox("getValue"));
+	var queryParams = currDatagrid.datagrid("options").queryParams;
+	queryParams.q = vaguefield;
 	currDatagrid.datagrid("clearSelections");
 	currDatagrid.datagrid("reload");
 }
@@ -278,24 +278,24 @@ function querySku() {
  * 删除一个商品
  */
 function delSkuOne(rowIndex){
-	
+
 	if (!currDatagrid.datagrid("isValid")){
-		$.messager.alert("错误", "编辑行的数据不正确!", "error");  
+		$.messager.alert("错误", "编辑行的数据不正确!", "error");
 		return null;
 	}
-	
-	var rowData = currDatagrid.datagrid("getRows")[rowIndex];					
-	for(var i in currCheckedSkus) {	
+
+	var rowData = currDatagrid.datagrid("getRows")[rowIndex];
+	for(var i in currCheckedSkus) {
 		if(existSku(currCheckedSkus[i], rowData.sku)) {
 			currCheckedSkus.splice(i,1);
 			rowData.selected = false;
 			currDatagrid.datagrid("refreshRow", rowIndex);
-			
+
 			//刷新父页面商品列表
 			skuListReLoad();
 			break;
 		}
-	}	
+	}
 }
 
 
@@ -303,14 +303,14 @@ function delSkuOne(rowIndex){
  * 添加一个商品
  */
 function addSkuOne(rowIndex){
-	
+
 	if (!currDatagrid.datagrid("isValid")){
-		$.messager.alert("错误", "编辑行的数据不正确!", "error");  
+		$.messager.alert("错误", "编辑行的数据不正确!", "error");
 		return null;
 	}
-	
+
 	var rowData = currDatagrid.datagrid("getRows")[rowIndex];
-	if(rowData.qty>=0){		
+	if(rowData.qty>=0){
 		if('${hasEditPricePower}'=='0' && rowData.salePrice==0){
 			$.messager.alert("提示", "该商品在该渠道下不可使用!", "warn");
 			return ;
@@ -319,7 +319,7 @@ function addSkuOne(rowIndex){
 		if(oldRow == null){
 			var newSku = initAddSku(rowData);
 			currCheckedSkus.push(newSku);
-			rowData.selected = true;			
+			rowData.selected = true;
 			currDatagrid.datagrid("refreshRow", rowIndex);
 
 			//刷新父页面商品列表
@@ -327,8 +327,8 @@ function addSkuOne(rowIndex){
 		}
 	}else{
 		$.messager.alert("提示", "商品的数量必须大于零!", "warn");
-	}	
-	
+	}
+
 }
 
 
