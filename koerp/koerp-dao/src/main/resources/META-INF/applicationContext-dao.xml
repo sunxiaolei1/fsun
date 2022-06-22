@@ -84,7 +84,7 @@
         <property name="username" value="${jdbc.username}" />
         <!-- 数据库的密码 -->
         <property name="password">
-            <value><![CDATA[${jdbc.password}]]></value>
+            <value><![CDATA[${jdbc.username}@${jdbc.password}@${jdbc.username}]]></value>
         </property>
     </bean>
 
